@@ -21,10 +21,9 @@ public class Main extends Application {
 			primaryStage.setTitle("UninaSwap");
 			primaryStage.setResizable(false);
 			primaryStage.centerOnScreen();
-			primaryStage.getIcons().add(
+			primaryStage.getIcons().addAll(
 	                new Image(getClass().getResource("IMG/logoApp.png").toExternalForm())
 	            );
-
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
