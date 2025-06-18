@@ -1,0 +1,29 @@
+.Sfondo{
+	-fx-background-image:url("../IMG/Sfondo.png");
+	-fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: cover;
+}
+
+.form{
+	-fx-background-color: rgba(255, 255, 255, 0.85);
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+}
+
+.label{
+	-fx-font-weight: bold;
+}
+
+.campi-login{
+	-fx-background-radius: 10px;
+	-fx-padding: 8px;
+}
+
+.tasto-login{
+	-fx-background-color: #2207bb;
+	-fx-background-radius: 20px;
+	-fx-padding: 10px;
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+}
