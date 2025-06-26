@@ -6,25 +6,24 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
-
 
 public class Main extends Application {
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage stage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();
-			primaryStage.setTitle("UninaSwap-Login");
-			primaryStage.setResizable(false);
-			primaryStage.centerOnScreen();
-			primaryStage.getIcons().addAll(
-	                new Image(getClass().getResource("IMG/logoApp.png").toExternalForm())
-	            );
-		} catch(Exception e) {
+			stage.setScene(scene);
+			stage.show();
+			stage.setTitle("UninaSwap - Login");
+			stage.setResizable(false);
+			stage.centerOnScreen();
+			stage.getIcons().addAll(
+                new Image(getClass().getResource("IMG/logoApp.png").toExternalForm())
+            );
+		}
+		catch(Exception e) {
 			e.printStackTrace();
 		}
 	}

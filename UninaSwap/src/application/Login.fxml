@@ -11,12 +11,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" styleClass="Sfondo" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" styleClass="sfondo" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <children>
-      <AnchorPane prefHeight="593.0" prefWidth="500.0">
+      <AnchorPane prefHeight="593.0" prefWidth="500.0" styleClass="sfondo" stylesheets="@application.css">
          <children>
-            <ImageView fitHeight="31.0" fitWidth="32.0" layoutX="455.0" layoutY="14.0" onMouseClicked="#MostraInfoLogin" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="ImmagineInfo" fitHeight="31.0" fitWidth="30.0" layoutX="453.0" layoutY="14.0" onMouseClicked="#MostraInfoLogin" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@IMG/info.png" />
                </image>
@@ -24,34 +25,73 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <Pane fx:id="PaneLogin" layoutX="63.0" layoutY="79.0" prefHeight="442.0" prefWidth="375.0" styleClass="form">
+            <ImageView fx:id="ImmagineLogin" fitHeight="31.0" fitWidth="30.0" layoutX="453.0" layoutY="14.0" onMouseClicked="#NascondiInfoLogin" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@IMG/back.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <Pane fx:id="PaneLogin" layoutX="62.0" layoutY="104.0" prefHeight="391.0" prefWidth="375.0" styleClass="form">
                <children>
-                  <ImageView fitHeight="117.0" fitWidth="141.0" layoutX="118.0" layoutY="14.0" pickOnBounds="true">
+                  <ImageView fitHeight="118.0" fitWidth="124.0" layoutX="128.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@IMG/logo.png" />
                      </image>
                   </ImageView>
-                  <TextField layoutX="82.0" layoutY="157.0" prefHeight="25.0" prefWidth="212.0" promptText="Inserisci Username" />
-                  <Label layoutX="83.0" layoutY="132.0" prefHeight="15.0" prefWidth="83.0" text="Username" />
-                  <Label layoutX="80.0" layoutY="204.0" prefHeight="15.0" prefWidth="83.0" text="Password" />
-                  <PasswordField layoutX="82.0" layoutY="229.0" prefHeight="25.0" prefWidth="212.0" promptText="Inserisci Password" />
-                  <Button layoutX="121.0" layoutY="291.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="133.0" styleClass="bott" text="Login" textAlignment="CENTER">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor></Button>
-                  <Label layoutX="130.0" layoutY="359.0" prefHeight="17.0" prefWidth="115.0" text="Non hai un account?" />
-                  <Label layoutX="245.0" layoutY="359.0" onMouseClicked="#Registrazione" prefHeight="17.0" prefWidth="59.0" text="Registrati!" textFill="#2207bb">
+                  <TextField layoutX="68.0" layoutY="158.0" prefHeight="36.0" prefWidth="241.0" promptText="Inserire l'username" styleClass="campi" stylesheets="@application.css">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <Label layoutX="69.0" layoutY="138.0" prefHeight="15.0" prefWidth="83.0" styleClass="label-login-registrazione" stylesheets="@application.css" text="Username">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <Label layoutX="69.0" layoutY="203.0" prefHeight="15.0" prefWidth="83.0" styleClass="label-login-registrazione" stylesheets="@application.css" text="Password">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <PasswordField layoutX="68.0" layoutY="223.0" prefHeight="36.0" prefWidth="241.0" promptText="Inserire la password" styleClass="campi">
+                     <font>
+                        <Font size="14.0" />
+                     </font></PasswordField>
+                  <Button layoutX="67.0" layoutY="280.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="241.0" styleClass="tasto" stylesheets="@application.css" text="Login">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Label layoutX="80.0" layoutY="342.0" prefHeight="20.0" prefWidth="146.0" styleClass="label-login-registrazione" text="Non hai un account?">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <Label layoutX="220.0" layoutY="342.0" onMouseClicked="#MostraRegistrazione" prefHeight="20.0" prefWidth="74.0" styleClass="label-login-registrazione" text="Registrati!" textFill="#2207bb">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
                </children>
             </Pane>
-            <ScrollPane fx:id="InfoLogin" layoutX="121.0" layoutY="159.0" prefHeight="283.0" prefWidth="259.0" visible="false">
+            <ScrollPane fx:id="InformazioniLogin" layoutX="144.0" layoutY="195.0" prefHeight="210.0" prefWidth="212.0" visible="false">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="282.0" prefWidth="135.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="303.0" prefWidth="194.0" />
               </content>
             </ScrollPane>
+            <Label fx:id="LabelInfo" layoutX="454.0" layoutY="44.0" styleClass="label-login-registrazione" stylesheets="@application.css" text="Info" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="LabelLogin" layoutX="449.0" layoutY="44.0" styleClass="label-login-registrazione" text="Login" textFill="WHITE" visible="false">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

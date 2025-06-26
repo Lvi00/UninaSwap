@@ -10,50 +10,96 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="550.0" styleClass="Sfondo" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="600.0" styleClass="Sfondo" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <children>
-      <AnchorPane prefHeight="700.0" prefWidth="571.0">
+      <AnchorPane prefHeight="650.0" prefWidth="603.0" styleClass="sfondo">
          <children>
-            <Pane layoutX="88.0" layoutY="45.0" prefHeight="597.0" prefWidth="375.0" styleClass="form">
+            <Pane layoutX="100.0" layoutY="34.0" prefHeight="581.0" prefWidth="399.0" styleClass="form">
                <children>
-                  <ImageView fitHeight="117.0" fitWidth="141.0" layoutX="118.0" layoutY="14.0" pickOnBounds="true">
+                  <ImageView fitHeight="110.0" fitWidth="191.0" layoutX="139.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@IMG/logo.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="84.0" layoutY="144.0" text="Nome" />
-                  <TextField layoutX="84.0" layoutY="173.0" prefHeight="25.0" prefWidth="106.0" promptText="Inserire nome" />
+                  <Label layoutX="52.0" layoutY="130.0" styleClass="label-login-registrazione" text="Nome">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
                  
-                  <Label layoutX="188.0" layoutY="144.0" text="Cognome" />
-                  <TextField layoutX="188.0" layoutY="173.0" prefHeight="25.0" prefWidth="106.0" promptText="Inserire cognome" />
+                  <Label layoutX="201.0" layoutY="130.0" styleClass="label-login-registrazione" text="Cognome">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <TextField layoutX="200.0" layoutY="150.0" prefHeight="36.0" prefWidth="137.0" promptText="Inserire il cognome" styleClass="campi">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
                   
-                  <Label layoutX="84.0" layoutY="212.0" prefHeight="15.0" prefWidth="83.0" text="Matricola" />
-                  <TextField layoutX="82.0" layoutY="236.0" prefHeight="25.0" prefWidth="212.0" promptText="Inserire matricola" />
+                  <Label layoutX="56.0" layoutY="196.0" prefHeight="15.0" prefWidth="83.0" styleClass="label-login-registrazione" text="Matricola">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <TextField layoutX="54.0" layoutY="216.0" prefHeight="36.0" prefWidth="280.0" promptText="Inserire la matricola" styleClass="campi">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
                   
-                  <Label layoutX="84.0" layoutY="269.0" prefHeight="15.0" prefWidth="83.0" text="Mail" />                  
-          		  <TextField layoutX="83.0" layoutY="286.0" prefHeight="25.0" prefWidth="212.0" promptText="Inserire e-mail" />
+                  <Label layoutX="56.0" layoutY="264.0" prefHeight="15.0" prefWidth="83.0" styleClass="label-login-registrazione" text="Email">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>                  
+          		  <TextField layoutX="54.0" layoutY="284.0" prefHeight="36.0" prefWidth="280.0" promptText="Inserire l'email istituzionale" styleClass="campi">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
           		  
-                  <Label layoutX="84.0" layoutY="320.0" prefHeight="15.0" prefWidth="83.0" text="Username" />
-                  <TextField layoutX="82.0" layoutY="337.0" prefHeight="25.0" prefWidth="212.0" promptText="Inserire Username" />
+                  <Label layoutX="56.0" layoutY="331.0" prefHeight="15.0" prefWidth="83.0" styleClass="label-login-registrazione" text="Username">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <TextField layoutX="54.0" layoutY="351.0" prefHeight="36.0" prefWidth="280.0" promptText="Inserire l'username" styleClass="campi">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
                   
-                  <Label layoutX="84.0" layoutY="371.0" prefHeight="15.0" prefWidth="83.0" text="Password" />
-                  <PasswordField layoutX="82.0" layoutY="396.0" prefHeight="25.0" prefWidth="212.0" promptText="Inserire Password" />
+                  <Label layoutX="56.0" layoutY="396.0" prefHeight="15.0" prefWidth="83.0" styleClass="label-login-registrazione" text="Password">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <PasswordField layoutX="54.0" layoutY="416.0" prefHeight="36.0" prefWidth="280.0" promptText="Inserire la password" styleClass="campi">
+                     <font>
+                        <Font size="14.0" />
+                     </font></PasswordField>
                   
-                  <Label layoutX="144.0" layoutY="524.0" prefHeight="17.0" prefWidth="92.0" text="Hai un account?" />
-                  <Label layoutX="240.0" layoutY="524.0" onMouseClicked="#Login" prefHeight="17.0" prefWidth="59.0" text="Login!" textFill="#2207bb">
+                  <Label layoutX="118.0" layoutY="541.0" prefHeight="20.0" prefWidth="106.0" styleClass="label-login-registrazione" text="Hai un account?">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <Label layoutX="228.0" layoutY="541.0" onMouseClicked="#MostraLogin" prefHeight="20.0" prefWidth="46.0" styleClass="label-login-registrazione" text="Login!" textFill="#2207bb">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
-                  <Button layoutX="124.0" layoutY="466.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="133.0" styleClass="bott" text="Registrati" textAlignment="CENTER">
+                  <Button layoutX="56.0" layoutY="480.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="280.0" styleClass="tasto" stylesheets="@application.css" text="Registrati" textAlignment="CENTER">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Button>
+                  <TextField layoutX="52.0" layoutY="150.0" prefHeight="36.0" prefWidth="137.0" promptText="Inserire il nome" styleClass="campi">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
                </children>
             </Pane>
-            <ImageView fitHeight="31.0" fitWidth="32.0" layoutX="505.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="31.0" fitWidth="32.0" layoutX="555.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@IMG/info.png" />
                </image>

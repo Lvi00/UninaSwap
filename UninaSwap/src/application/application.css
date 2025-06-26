@@ -1,34 +1,40 @@
-.Sfondo{
-	-fx-background-image:url("IMG/Sfondo.png");
+.sfondo{
+	-fx-background-image: url("IMG/Sfondo.png");
 	-fx-background-repeat: no-repeat;
     -fx-background-position: center center;
     -fx-background-size: cover;
 }
 
 .form{
-	-fx-background-color: rgba(255, 255, 255, 0.8);
+	-fx-background-color: rgba(255, 255, 255, 0.85);
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
 
-.bott {
-    -fx-background-color: rgba(255, 255, 255, 0.1);
-    -fx-border-color: black;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
-    -fx-text-fill: black;
-    -fx-font-size: 14px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0);
-    -fx-padding: 8px 16px;
+.label-login-registrazione{
+	-fx-font-weight: bold;
 }
 
-.bott:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.25);
-    -fx-border-color: white;
-    -fx-text-fill: black;
-    -fx-effect: dropshadow(gaussian, #ffffffaa, 10, 0.3, 0, 0);
+.campi{
+	-fx-background-radius: 10px;
+	-fx-padding: 8px;
+}
+
+.tasto{
+    -fx-background-color: #2207bb;
+    -fx-background-radius: 20px;
+    -fx-padding: 10px;
+    -fx-text-fill: white;
     -fx-font-weight: bold;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+    -fx-opacity: 1.0;
+    -fx-font-size: 14px;
 }
 
-
+.tasto:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-opacity: 0.9;
+    -fx-font-size: 15px;
+}
