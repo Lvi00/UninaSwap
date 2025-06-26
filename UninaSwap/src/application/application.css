@@ -1,5 +1,5 @@
 .Sfondo{
-	-fx-background-image:url("IMG/sfondo2.png");
+	-fx-background-image:url("IMG/Sfondo.png");
 	-fx-background-repeat: no-repeat;
     -fx-background-position: center center;
     -fx-background-size: cover;
@@ -10,3 +10,25 @@
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
+
+#bottLogin {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-border-color: black;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0);
+    -fx-padding: 8px 16px;
+}
+
+#bottLogin:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.25);
+    -fx-border-color: white;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(gaussian, #ffffffaa, 10, 0.3, 0, 0);
+    -fx-font-weight: bold;
+}
+
+

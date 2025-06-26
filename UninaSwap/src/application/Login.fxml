@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" styleClass="Sfondo" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="593.0" prefWidth="500.0">
@@ -20,19 +19,25 @@
                <image>
                   <Image url="@IMG/info.png" />
                </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ImageView>
-            <Pane layoutX="63.0" layoutY="62.0" prefHeight="391.0" prefWidth="375.0" styleClass="form">
+            <Pane layoutX="63.0" layoutY="62.0" prefHeight="411.0" prefWidth="375.0" styleClass="form">
                <children>
                   <ImageView fitHeight="117.0" fitWidth="141.0" layoutX="118.0" layoutY="14.0" pickOnBounds="true">
                      <image>
                         <Image url="@IMG/logo.png" />
                      </image>
                   </ImageView>
-                  <TextField layoutX="82.0" layoutY="157.0" prefHeight="25.0" prefWidth="212.0" />
+                  <TextField layoutX="82.0" layoutY="157.0" prefHeight="25.0" prefWidth="212.0" promptText="Inserisci Username" />
                   <Label layoutX="83.0" layoutY="132.0" prefHeight="15.0" prefWidth="83.0" text="Username" />
                   <Label layoutX="83.0" layoutY="192.0" prefHeight="15.0" prefWidth="83.0" text="Password" />
-                  <PasswordField layoutX="82.0" layoutY="216.0" prefHeight="25.0" prefWidth="212.0" />
-                  <Button layoutX="121.0" layoutY="274.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="133.0" text="Login" />
+                  <PasswordField layoutX="82.0" layoutY="216.0" prefHeight="25.0" prefWidth="212.0" promptText="Inserisci Password" />
+                  <Button id="bottLogin" layoutX="121.0" layoutY="274.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="133.0" text="Login" textAlignment="CENTER">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
                   <Label layoutX="130.0" layoutY="342.0" prefHeight="17.0" prefWidth="115.0" text="Non hai un account?" />
                   <Label layoutX="245.0" layoutY="342.0" prefHeight="17.0" prefWidth="59.0" text="Registrati!" textFill="#2207bb">
                      <cursor>
