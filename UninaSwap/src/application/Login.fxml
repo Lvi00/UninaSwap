@@ -79,16 +79,11 @@
                   </Label>
                </children>
             </Pane>
-            <ScrollPane fx:id="InformazioniLogin" layoutX="74.0" layoutY="120.0" prefHeight="359.0" prefWidth="351.0" visible="false">
+            <ScrollPane fx:id="InformazioniLogin" layoutX="74.0" layoutY="120.0" prefHeight="378.0" prefWidth="347.0" visible="false">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="534.0" prefWidth="315.0">
+                <AnchorPane accessibleRole="TEXT" minHeight="0.0" minWidth="0.0" prefHeight="650.0" prefWidth="316.0">
                      <children>
-                        <Text layoutX="33.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae efficitur metus, sit amet dignissim turpis. Morbi sollicitudin, lectus a sollicitudin eleifend, lacus sapien malesuada elit, vel tincidunt ligula lacus sit amet nulla. Sed laoreet malesuada nisl in convallis. Nulla vel efficitur est, nec elementum lorem. Curabitur luctus efficitur orci, ac pharetra ligula. Suspendisse potenti. Nullam et porta nibh. Praesent in tellus ligula. Vestibulum vehicula ligula non sodales varius. Morbi accumsan, magna non fermentum luctus, erat elit egestas est, sed tincidunt metus purus in metus.Ut dapibus tristique pretium. Sed eu efficitur purus. Etiam egestas iaculis risus. Nullam vel mauris pretium, vulputate nunc nec, efficitur mi. Vivamus lobortis lectus velit, ac volutpat tortor feugiat a. Sed iaculis tincidunt mauris, ut semper turpis vulputate non. Vestibulum rhoncus erat in quam placerat, vitae tincidunt lorem varius. Etiam laoreet rhoncus ligula, non fermentum nisi fermentum nec. Suspendisse potenti. Integer pulvinar libero et tellus egestas, nec rutrum libero volutpat." wrappingWidth="250.0" />
-                        <Label layoutX="79.0" layoutY="14.0" styleClass="label-login-registrazione" text="Informazioni login">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
+                        <Text layoutX="17.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae efficitur metus, sit amet dignissim turpis. Morbi sollicitudin, lectus a sollicitudin eleifend, lacus sapien malesuada elit, vel tincidunt ligula lacus sit amet nulla. Sed laoreet malesuada nisl in convallis. Nulla vel efficitur est, nec elementum lorem. Curabitur luctus efficitur orci, ac pharetra ligula. Suspendisse potenti. Nullam et porta nibh. Praesent in tellus ligula. Vestibulum vehicula ligula non sodales varius. Morbi accumsan, magna non fermentum luctus, erat elit egestas est, sed tincidunt metus purus in metus.Ut dapibus tristique pretium. Sed eu efficitur purus. Etiam egestas iaculis risus. Nullam vel mauris pretium, vulputate nunc nec, efficitur mi. Vivamus lobortis lectus velit, ac volutpat tortor feugiat a. Sed iaculis tincidunt mauris, ut semper turpis vulputate non. Vestibulum rhoncus erat in quam placerat, vitae tincidunt lorem varius. Etiam laoreet rhoncus ligula, non fermentum nisi fermentum nec. Suspendisse potenti. Integer pulvinar libero et tellus egestas, nec rutrum libero volutpat." wrappingWidth="282.66668701171875" />
                      </children>
                   </AnchorPane>
               </content>
@@ -109,6 +104,35 @@
                   <Tooltip anchorLocation="WINDOW_TOP_RIGHT" text="Ritorna alla login" />
                </tooltip>
             </Button>
+            <Pane fx:id="PaneLabelInfo" layoutX="85.0" layoutY="130.0" prefHeight="55.0" prefWidth="317.0" styleClass="colore-pannello-info" visible="false">
+               <children>
+                  <Label layoutX="76.0" layoutY="13.0" prefHeight="27.0" prefWidth="164.0" styleClass="label-login-registrazione" text="Informazioni login">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="LinkFooter" layoutX="149.0" layoutY="555.0" prefHeight="36.0" prefWidth="199.0" styleClass="footer" visible="false">
+               <children>
+                  <Label layoutX="14.0" layoutY="10.0" onMouseClicked="#LinkLuigi" styleClass="link-github" text="Luigi Castaldo">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
+                  <Label layoutX="99.0" layoutY="10.0" onMouseClicked="#LinkGiuseppe" styleClass="link-github" text="Giuseppe Cautiero">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
+               </children>
+            </Pane>
          </children>
       </AnchorPane>
    </children>

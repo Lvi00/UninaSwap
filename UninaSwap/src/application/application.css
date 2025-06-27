@@ -82,3 +82,27 @@
 .tooltip {
     -fx-font-family: 'Montserrat';
 }
+
+.colore-pannello-info{
+	-fx-background-color: #d0d4da;
+    -fx-border-radius: 10px 10px 0px 0px;
+    -fx-background-radius: 10px 10px 0px 0px;
+}
+
+.footer{
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+}
+
+.link-github{
+	-fx-font-weight: bold;
+}
+
+.link-github:hover{
+	-fx-text-fill: blue;
+	-fx-font-size: 10px;
+    -fx-border-color: transparent transparent blue transparent;
+    -fx-border-width: 0 0 1.2 0;
+    -fx-padding: 0 0 2 0;
+}

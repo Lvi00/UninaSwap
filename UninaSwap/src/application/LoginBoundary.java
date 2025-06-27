@@ -1,5 +1,8 @@
 package application;
 
+import java.awt.Desktop;
+import java.net.URI;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -20,11 +23,16 @@ public class LoginBoundary {
 	@FXML private ImageView ImmagineLogin;
 	@FXML private Button ButtonInfo;
 	@FXML private Button ButtonReturnLogin;
+	@FXML private Pane PaneLabelInfo;
+	@FXML private Pane LinkFooter;
 	
 	@FXML
 	public void MostraInfoLogin (MouseEvent e) {
 		PaneLogin.setVisible(false);
 		InformazioniLogin.setVisible(true);
+		
+		PaneLabelInfo.setVisible(true);
+		LinkFooter.setVisible(true);
 		
 		ImmagineInfo.setVisible(false);
 		ImmagineLogin.setVisible(true);
@@ -37,6 +45,9 @@ public class LoginBoundary {
 	public void NascondiInfoLogin (MouseEvent e) {
 		InformazioniLogin.setVisible(false);
 		PaneLogin.setVisible(true);
+		
+		PaneLabelInfo.setVisible(false);
+		LinkFooter.setVisible(false);
 		
 		ImmagineLogin.setVisible(false);
 		ImmagineInfo.setVisible(true);
@@ -58,5 +69,25 @@ public class LoginBoundary {
 		catch(Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	@FXML
+	public void LinkLuigi(MouseEvent e) {
+		try {
+            Desktop.getDesktop().browse(new URI("https://github.com/Lvi00"));
+        }
+		catch (Exception ex) {
+            ex.printStackTrace();
+        }
+	}
+	
+	@FXML
+	public void LinkGiuseppe(MouseEvent e) {
+		try {
+            Desktop.getDesktop().browse(new URI("https://github.com/giuseeee88"));
+        }
+		catch (Exception ex) {
+            ex.printStackTrace();
+        }
 	}
 }
