@@ -38,3 +38,47 @@
     -fx-opacity: 0.9;
     -fx-font-size: 15px;
 }
+
+/* ScrollPane container */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 10;
+}
+
+/* Viewport (contenuto visibile) */
+.scroll-pane .viewport {
+    -fx-background-color: rgba(255, 255, 255, 0.8); /* colore di sfondo chiaro */
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+}
+
+/* Barre di scorrimento */
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+/* Thumb (parte mobile) */
+.scroll-bar .thumb {
+    -fx-background-color: #c2c2c2;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+    -fx-padding: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 1);
+}
+
+/* Track (binario) */
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+/* Pulsanti freccia (opzionali) */
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}
+
+.tooltip {
+    -fx-font-family: 'Montserrat';
+}

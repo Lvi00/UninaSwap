@@ -6,18 +6,20 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" styleClass="sfondo" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" styleClass="sfondo" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginBoundary">
    <children>
       <AnchorPane prefHeight="593.0" prefWidth="500.0" styleClass="sfondo" stylesheets="@application.css">
          <children>
-            <ImageView fx:id="ImmagineInfo" fitHeight="31.0" fitWidth="30.0" layoutX="453.0" layoutY="14.0" onMouseClicked="#MostraInfoLogin" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="ImmagineInfo" fitHeight="31.0" fitWidth="30.0" layoutX="453.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@IMG/info.png" />
                </image>
@@ -25,7 +27,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <ImageView fx:id="ImmagineLogin" fitHeight="31.0" fitWidth="30.0" layoutX="453.0" layoutY="14.0" onMouseClicked="#NascondiInfoLogin" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="ImmagineLogin" fitHeight="31.0" fitWidth="30.0" layoutX="453.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@IMG/back.png" />
                </image>
@@ -77,21 +79,36 @@
                   </Label>
                </children>
             </Pane>
-            <ScrollPane fx:id="InformazioniLogin" layoutX="144.0" layoutY="195.0" prefHeight="210.0" prefWidth="212.0" visible="false">
+            <ScrollPane fx:id="InformazioniLogin" layoutX="74.0" layoutY="120.0" prefHeight="359.0" prefWidth="351.0" visible="false">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="303.0" prefWidth="194.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="534.0" prefWidth="315.0">
+                     <children>
+                        <Text layoutX="33.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae efficitur metus, sit amet dignissim turpis. Morbi sollicitudin, lectus a sollicitudin eleifend, lacus sapien malesuada elit, vel tincidunt ligula lacus sit amet nulla. Sed laoreet malesuada nisl in convallis. Nulla vel efficitur est, nec elementum lorem. Curabitur luctus efficitur orci, ac pharetra ligula. Suspendisse potenti. Nullam et porta nibh. Praesent in tellus ligula. Vestibulum vehicula ligula non sodales varius. Morbi accumsan, magna non fermentum luctus, erat elit egestas est, sed tincidunt metus purus in metus.Ut dapibus tristique pretium. Sed eu efficitur purus. Etiam egestas iaculis risus. Nullam vel mauris pretium, vulputate nunc nec, efficitur mi. Vivamus lobortis lectus velit, ac volutpat tortor feugiat a. Sed iaculis tincidunt mauris, ut semper turpis vulputate non. Vestibulum rhoncus erat in quam placerat, vitae tincidunt lorem varius. Etiam laoreet rhoncus ligula, non fermentum nisi fermentum nec. Suspendisse potenti. Integer pulvinar libero et tellus egestas, nec rutrum libero volutpat." wrappingWidth="250.0" />
+                        <Label layoutX="79.0" layoutY="14.0" styleClass="label-login-registrazione" text="Informazioni login">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
               </content>
             </ScrollPane>
-            <Label fx:id="LabelInfo" layoutX="454.0" layoutY="44.0" styleClass="label-login-registrazione" stylesheets="@application.css" text="Info" textFill="WHITE">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="LabelLogin" layoutX="449.0" layoutY="44.0" styleClass="label-login-registrazione" text="Login" textFill="WHITE" visible="false">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
+            <Button fx:id="ButtonInfo" layoutX="452.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#MostraInfoLogin" opacity="0.0" prefHeight="25.0" prefWidth="31.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <tooltip>
+                  <Tooltip anchorLocation="WINDOW_TOP_RIGHT" text="Mostra informazioni" />
+               </tooltip>
+            </Button>
+            <Button fx:id="ButtonReturnLogin" layoutX="452.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#NascondiInfoLogin" opacity="0.0" prefHeight="25.0" prefWidth="31.0" visible="false">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <tooltip>
+                  <Tooltip anchorLocation="WINDOW_TOP_RIGHT" text="Ritorna alla login" />
+               </tooltip>
+            </Button>
          </children>
       </AnchorPane>
    </children>
