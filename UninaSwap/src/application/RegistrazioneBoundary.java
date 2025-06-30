@@ -6,7 +6,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +19,7 @@ public class RegistrazioneBoundary {
 	@FXML private ImageView ImmagineRegistrazione;
 	@FXML private Button ButtonInfoReg;
 	@FXML private Button ButtonReturnRegistrazione;
+	@FXML private Pane PaneLabelInfoReg;
 	
 	@FXML
 	public void MostraLogin (MouseEvent e) {
@@ -41,6 +41,8 @@ public class RegistrazioneBoundary {
 		PaneRegistrazione.setVisible(false);
 		InformazioniRegistrazione.setVisible(true);
 		
+		PaneLabelInfoReg.setVisible(true);
+		
 		ImmagineInfoReg.setVisible(false);
 		ImmagineRegistrazione.setVisible(true);
 		
@@ -52,6 +54,8 @@ public class RegistrazioneBoundary {
 	public void NascondiInfoRegistrazione (MouseEvent e) {
 		InformazioniRegistrazione.setVisible(false);
 		PaneRegistrazione.setVisible(true);
+		
+		PaneLabelInfoReg.setVisible(false);
 		
 		ImmagineRegistrazione.setVisible(false);
 		ImmagineInfoReg.setVisible(true);

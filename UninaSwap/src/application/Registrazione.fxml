@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="600.0" styleClass="Sfondo" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RegistrazioneBoundary">
    <children>
@@ -117,9 +118,13 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </ImageView>
-            <ScrollPane fx:id="InformazioniRegistrazione" layoutX="197.0" layoutY="203.0" prefHeight="243.0" prefWidth="224.0" visible="false">
+            <ScrollPane fx:id="InformazioniRegistrazione" layoutX="143.0" layoutY="136.0" prefHeight="378.0" prefWidth="347.0" visible="false">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="303.0" prefWidth="206.0" />
+                  <AnchorPane accessibleRole="TEXT" minHeight="0.0" minWidth="0.0" prefHeight="650.0" prefWidth="316.0">
+                     <children>
+                        <Text layoutX="17.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae efficitur metus, sit amet dignissim turpis. Morbi sollicitudin, lectus a sollicitudin eleifend, lacus sapien malesuada elit, vel tincidunt ligula lacus sit amet nulla. Sed laoreet malesuada nisl in convallis. Nulla vel efficitur est, nec elementum lorem. Curabitur luctus efficitur orci, ac pharetra ligula. Suspendisse potenti. Nullam et porta nibh. Praesent in tellus ligula. Vestibulum vehicula ligula non sodales varius. Morbi accumsan, magna non fermentum luctus, erat elit egestas est, sed tincidunt metus purus in metus.Ut dapibus tristique pretium. Sed eu efficitur purus. Etiam egestas iaculis risus. Nullam vel mauris pretium, vulputate nunc nec, efficitur mi. Vivamus lobortis lectus velit, ac volutpat tortor feugiat a. Sed iaculis tincidunt mauris, ut semper turpis vulputate non. Vestibulum rhoncus erat in quam placerat, vitae tincidunt lorem varius. Etiam laoreet rhoncus ligula, non fermentum nisi fermentum nec. Suspendisse potenti. Integer pulvinar libero et tellus egestas, nec rutrum libero volutpat." wrappingWidth="282.66668701171875" />
+                     </children>
+                  </AnchorPane>
                </content>
             </ScrollPane>
             <Button fx:id="ButtonInfoReg" layoutX="555.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#MostraInfoRegistrazione" opacity="0.0" prefHeight="25.0" prefWidth="31.0">
@@ -138,6 +143,15 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <Pane fx:id="PaneLabelInfoReg" layoutX="155.0" layoutY="140.0" prefHeight="55.0" prefWidth="315.0" styleClass="colore-pannello-info" visible="false">
+               <children>
+                  <Label layoutX="76.0" layoutY="13.0" prefHeight="27.0" prefWidth="164.0" styleClass="label-login-registrazione" text="Informazioni login">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
          </children>
       </AnchorPane>
    </children>
