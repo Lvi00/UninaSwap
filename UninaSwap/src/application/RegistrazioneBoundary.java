@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -25,6 +26,9 @@ public class RegistrazioneBoundary {
 	@FXML private Button ButtonReturnRegistrazione;
 	@FXML private Pane PaneLabelInfoReg;
 	@FXML private Pane LinkFooterRegistrazione;
+	
+	// Campi di registrazione
+	@FXML private TextField NomeRegistrazione;
 	
 	@FXML
 	public void MostraLogin (MouseEvent e) {
@@ -92,4 +96,10 @@ public class RegistrazioneBoundary {
             ex.printStackTrace();
         }
 	}
+	
+	@FXML
+	public void PrelevaDati(MouseEvent e) {
+		System.out.println(NomeRegistrazione.getText());
+	}
+	
 }
