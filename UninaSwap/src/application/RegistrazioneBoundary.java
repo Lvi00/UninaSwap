@@ -101,27 +101,21 @@ public class RegistrazioneBoundary {
 	        switch (result) {
             case "nome":
                 nomeFieldReg.clear();
-                nomeFieldReg.setPromptText("Nome non valido");
                 break;
             case "cognome":
                 cognomeFieldReg.clear();
-                cognomeFieldReg.setPromptText("Cognome non valido");
                 break;
             case "matricola":
                 matricolaFieldReg.clear();
-                matricolaFieldReg.setPromptText("Matricola non valida");
                 break;
             case "email":
                 emailFieldReg.clear();
-                emailFieldReg.setPromptText("Email non valida");
                 break;
             case "username":
                 usernameFieldReg.clear();
-                usernameFieldReg.setPromptText("Username non valido");
                 break;
             case "password":
                 passwordFieldReg.clear();
-                passwordFieldReg.setPromptText("Password non valida");
                 break;
             default: System.out.println("bene");
 	        }
