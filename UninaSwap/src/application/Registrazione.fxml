@@ -152,6 +152,26 @@
                   </Label>
                </children>
             </Pane>
+            <Pane layoutX="213.0" layoutY="597.0" prefHeight="36.0" prefWidth="199.0" styleClass="footer" visible="false">
+               <children>
+                  <Label layoutX="14.0" layoutY="10.0" onMouseClicked="#LinkLuigi" styleClass="link-github" text="Luigi Castaldo">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
+                  <Label layoutX="99.0" layoutY="10.0" onMouseClicked="#LinkGiuseppe" styleClass="link-github" text="Giuseppe Cautiero">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
+               </children>
+            </Pane>
          </children>
       </AnchorPane>
    </children>

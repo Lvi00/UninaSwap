@@ -20,7 +20,7 @@ public class RegistrazioneBoundary {
 	@FXML private Button ButtonInfoReg;
 	@FXML private Button ButtonReturnRegistrazione;
 	@FXML private Pane PaneLabelInfoReg;
-	
+
 	@FXML
 	public void MostraLogin (MouseEvent e) {
 		try {
@@ -42,7 +42,7 @@ public class RegistrazioneBoundary {
 		InformazioniRegistrazione.setVisible(true);
 		
 		PaneLabelInfoReg.setVisible(true);
-		
+
 		ImmagineInfoReg.setVisible(false);
 		ImmagineRegistrazione.setVisible(true);
 		
@@ -56,7 +56,7 @@ public class RegistrazioneBoundary {
 		PaneRegistrazione.setVisible(true);
 		
 		PaneLabelInfoReg.setVisible(false);
-		
+
 		ImmagineRegistrazione.setVisible(false);
 		ImmagineInfoReg.setVisible(true);
 		
