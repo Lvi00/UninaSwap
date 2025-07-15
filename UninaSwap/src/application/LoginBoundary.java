@@ -3,6 +3,7 @@ package application;
 import java.awt.Desktop;
 import java.net.URI;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,13 +11,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class LoginBoundary {
+	private Controller controller = new Controller();
 	@FXML private Pane PaneLogin;
 	@FXML private ScrollPane InformazioniLogin;
 	@FXML private ImageView ImmagineInfo;
@@ -25,6 +29,10 @@ public class LoginBoundary {
 	@FXML private Button ButtonReturnLogin;
 	@FXML private Pane PaneLabelInfo;
 	@FXML private Pane LinkFooter;
+	
+	//Campi login
+	@FXML private TextField UsernameLogin;
+	@FXML private PasswordField PasswordLogin;
 	
 	@FXML
 	public void MostraInfoLogin (MouseEvent e) {
@@ -89,5 +97,16 @@ public class LoginBoundary {
 		catch (Exception ex) {
             ex.printStackTrace();
         }
+	}
+	
+	@FXML
+	public void invioDatiLogin(ActionEvent e) {
+		if(!UsernameLogin.getText().isEmpty() && !PasswordLogin.getText().isEmpty()){
+			String username = UsernameLogin.getText();
+			String password = PasswordLogin.getText();
+			System.out.println(username);
+			System.out.println(password);
+		}
+		else System.out.println("Username e Password non possono essere vuoti.");
 	}
 }

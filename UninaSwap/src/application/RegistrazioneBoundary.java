@@ -1,5 +1,8 @@
 package application;
 
+import java.awt.Desktop;
+import java.net.URI;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class RegistrazioneBoundary {
+	Controller controller = new Controller();
 	@FXML private Pane PaneRegistrazione;
 	@FXML private ScrollPane InformazioniRegistrazione;
 	@FXML private ImageView ImmagineInfoReg;
@@ -20,6 +24,7 @@ public class RegistrazioneBoundary {
 	@FXML private Button ButtonInfoReg;
 	@FXML private Button ButtonReturnRegistrazione;
 	@FXML private Pane PaneLabelInfoReg;
+	@FXML private Pane LinkFooterRegistrazione;
 	
 	@FXML
 	public void MostraLogin (MouseEvent e) {
@@ -43,6 +48,8 @@ public class RegistrazioneBoundary {
 		
 		PaneLabelInfoReg.setVisible(true);
 		
+		LinkFooterRegistrazione.setVisible(true);
+		
 		ImmagineInfoReg.setVisible(false);
 		ImmagineRegistrazione.setVisible(true);
 		
@@ -57,10 +64,32 @@ public class RegistrazioneBoundary {
 		
 		PaneLabelInfoReg.setVisible(false);
 		
+		LinkFooterRegistrazione.setVisible(false);
+		
 		ImmagineRegistrazione.setVisible(false);
 		ImmagineInfoReg.setVisible(true);
 		
 		ButtonReturnRegistrazione.setVisible(false);
 		ButtonInfoReg.setVisible(true);
+	}
+	
+	@FXML
+	public void LinkLuigi(MouseEvent e) {
+		try {
+            Desktop.getDesktop().browse(new URI("https://github.com/Lvi00"));
+        }
+		catch (Exception ex) {
+            ex.printStackTrace();
+        }
+	}
+	
+	@FXML
+	public void LinkGiuseppe(MouseEvent e) {
+		try {
+            Desktop.getDesktop().browse(new URI("https://github.com/giuseeee88"));
+        }
+		catch (Exception ex) {
+            ex.printStackTrace();
+        }
 	}
 }
