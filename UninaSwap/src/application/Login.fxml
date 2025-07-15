@@ -113,7 +113,7 @@
                   </Label>
                </children>
             </Pane>
-            <Pane fx:id="LinkFooter" layoutX="149.0" layoutY="555.0" prefHeight="36.0" prefWidth="199.0" styleClass="footer" visible="false">
+            <Pane fx:id="LinkFooter" layoutX="150.0" layoutY="555.0" prefHeight="36.0" prefWidth="199.0" styleClass="footer" visible="false">
                <children>
                   <Label layoutX="14.0" layoutY="10.0" onMouseClicked="#LinkLuigi" styleClass="link-github" text="Luigi Castaldo">
                      <font>

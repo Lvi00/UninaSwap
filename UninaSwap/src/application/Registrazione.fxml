@@ -26,12 +26,12 @@
                         <Image url="@IMG/logo.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="52.0" layoutY="130.0" styleClass="label-login-registrazione" text="Nome">
+                  <Label layoutX="56.0" layoutY="130.0" styleClass="label-login-registrazione" text="Nome">
                      <font>
                         <Font size="14.0" />
                      </font></Label>
                  
-                  <Label layoutX="201.0" layoutY="130.0" styleClass="label-login-registrazione" text="Cognome">
+                  <Label layoutX="205.0" layoutY="130.0" styleClass="label-login-registrazione" text="Cognome">
                      <font>
                         <Font size="14.0" />
                      </font></Label>
