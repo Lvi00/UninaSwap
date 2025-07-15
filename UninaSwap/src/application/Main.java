@@ -21,7 +21,7 @@ public class Main extends Application {
 			stage.centerOnScreen();
 			stage.getIcons().addAll(
                 new Image(getClass().getResource("IMG/logoApp.png").toExternalForm())
-            );
+            ); 
 		}
 		catch(Exception e) {
 			e.printStackTrace();
