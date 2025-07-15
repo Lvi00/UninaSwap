@@ -42,7 +42,7 @@
                         <Image url="@IMG/logo.png" />
                      </image>
                   </ImageView>
-                  <TextField layoutX="68.0" layoutY="158.0" prefHeight="36.0" prefWidth="241.0" promptText="Inserire l'username" styleClass="campi" stylesheets="@application.css">
+                  <TextField fx:id="UsernameLogin" layoutX="68.0" layoutY="158.0" prefHeight="36.0" prefWidth="241.0" promptText="Inserire l'username" styleClass="campi" stylesheets="@application.css">
                      <font>
                         <Font size="14.0" />
                      </font></TextField>
@@ -54,11 +54,11 @@
                      <font>
                         <Font size="14.0" />
                      </font></Label>
-                  <PasswordField layoutX="68.0" layoutY="223.0" prefHeight="36.0" prefWidth="241.0" promptText="Inserire la password" styleClass="campi">
+                  <PasswordField fx:id="PasswordLogin" layoutX="68.0" layoutY="223.0" prefHeight="36.0" prefWidth="241.0" promptText="Inserire la password" styleClass="campi">
                      <font>
                         <Font size="14.0" />
                      </font></PasswordField>
-                  <Button layoutX="67.0" layoutY="280.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="241.0" styleClass="tasto" stylesheets="@application.css" text="Login">
+                  <Button layoutX="67.0" layoutY="280.0" mnemonicParsing="false" onAction="#invioDatiLogin" prefHeight="40.0" prefWidth="241.0" styleClass="tasto" stylesheets="@application.css" text="Login">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -104,7 +104,7 @@
                   <Tooltip anchorLocation="WINDOW_TOP_RIGHT" text="Ritorna alla login" />
                </tooltip>
             </Button>
-            <Pane fx:id="PaneLabelInfo" layoutX="85.0" layoutY="130.0" prefHeight="55.0" prefWidth="317.0" styleClass="colore-pannello-info" visible="false">
+            <Pane fx:id="PaneLabelInfo" layoutX="86.0" layoutY="130.0" prefHeight="55.0" prefWidth="315.0" styleClass="colore-pannello-info" visible="false">
                <children>
                   <Label layoutX="76.0" layoutY="13.0" prefHeight="27.0" prefWidth="164.0" styleClass="label-login-registrazione" text="Informazioni login">
                      <font>
