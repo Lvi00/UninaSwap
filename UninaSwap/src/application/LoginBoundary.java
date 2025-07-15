@@ -20,7 +20,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class LoginBoundary {
-	private Controller controller = new Controller();
 	@FXML private Pane PaneLogin;
 	@FXML private ScrollPane InformazioniLogin;
 	@FXML private ImageView ImmagineInfo;
