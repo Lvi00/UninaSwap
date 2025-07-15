@@ -28,7 +28,7 @@ public class LoginBoundary {
 	@FXML private Button ButtonInfo;
 	@FXML private Button ButtonReturnLogin;
 	@FXML private Pane PaneLabelInfo;
-	@FXML private Pane LinkFooter; 
+	@FXML private Pane LinkFooter;
 	
 	//Campi login
 	@FXML private TextField UsernameLogin;

@@ -25,7 +25,7 @@ public class RegistrazioneBoundary {
 	@FXML private Button ButtonReturnRegistrazione;
 	@FXML private Pane PaneLabelInfoReg;
 	@FXML private Pane LinkFooterRegistrazione;
-	 
+	
 	@FXML
 	public void MostraLogin (MouseEvent e) {
 		try {
