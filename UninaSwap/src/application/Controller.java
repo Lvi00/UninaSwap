@@ -14,27 +14,27 @@ public class Controller {
 
 	    
 	    if ((cognome.length() > 40 || cognome.length() < 2) || isValidNameSurname(cognome) == 1) {
-	        System.out.println("Cognome non valido..");
+	        System.out.println("Cognome non valido.");
 	        return "cognome";
 	    }
 	    
 	    
 	    if (matricola.length() != 9) {
-	    	System.out.println("Matricola non valido..");
+	    	System.out.println("Matricola non valido.");
 	        return "matricola";
 	    }
 	    
 	    if(isValidEmail(email) == 1) {
-	    	 System.out.println("Email non valido..");
+	    	 System.out.println("Email non valido.");
 	    	 return "email";
 	    } 
 	    
 	    if (username.length() > 10) {
-	    	 System.out.println("Username non valido..");
+	    	 System.out.println("Username non valido.");
 	        return "username";
 	    }
 	    if (password.length() < 8 || password.length() > 20) {
-	    	 System.out.println("Password non valido..");
+	    	 System.out.println("Password non valido.");
 	        return "password";
 	    }
 	    // Se arrivi qui, tutti i campi sono validi
