@@ -137,6 +137,16 @@ public class RegistrazioneBoundary {
 	                ShowPopupError("Errore nella password", "Password non valida. Deve essere lunga tra 8 e 20 caratteri.");
                 break;
                 
+	            case "Utente Esistente":
+	            	matricolaFieldReg.clear();
+	                nomeFieldReg.clear();
+	                cognomeFieldReg.clear();
+	                emailFieldReg.clear();
+	                passwordFieldReg.clear();
+	                usernameFieldReg.clear();
+	                ShowPopupError("Utente già esistente", "Un utente con la stessa matricola, email o username è già registrato.");
+                break;
+                
 	            default:
 	        		System.out.println("bene");
 	        	break;

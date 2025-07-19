@@ -2,6 +2,7 @@ package application;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.sql.*;
 
 public class Controller {
 
@@ -38,6 +39,11 @@ public class Controller {
 	        return "password";
 	    }
 	    
+	    if(CheckUtenteEsistente(matricola, email, username) == 1) {
+	    	System.out.println("Utente già esistente.");
+	    	return "Utente Esistente";
+	    }
+	    
 	    System.out.println(nome + " " + cognome + " " + matricola + " " + email + " " + username + " " + password);
 	    
 	    // Se arrivi qui, tutti i campi sono validi
@@ -54,8 +60,6 @@ public class Controller {
         if (matcher.matches()) return 0;
         
         return 1;
-        
-
 	}
 	
 	private int isValidNameSurname(String s) {
@@ -68,7 +72,31 @@ public class Controller {
         if (matcher.matches()) return 0;
         
         return 1;
-        
-
+	}
+	
+	private int CheckUtenteEsistente(String matricola, String email, String username) {
+		try {
+		    Connection conn = ConnessioneDB.getConnection();
+		    String query = "SELECT 1 FROM STUDENTE WHERE matricola = ? OR email = ? OR username = ?;";
+		    PreparedStatement statement = conn.prepareStatement(query);
+		    statement.setString(1, matricola);
+		    statement.setString(2, email);
+		    statement.setString(3, username);
+	        ResultSet rs = statement.executeQuery();
+	        if (rs.next()) {
+	            System.out.println("Errore: Utente già esistente.");
+	            rs.close();
+	            statement.close();
+	            return 1;
+	        }
+		}
+		catch (SQLException ex) {
+		    System.out.println("Errore nella connessione al database");
+		    ex.printStackTrace();
+		}
+		
+		System.out.println("Utente non esistente.");
+		
+		return 0;
 	}
 }
