@@ -102,6 +102,27 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
+                  <ImageView fx:id="TastoHidePassword" fitHeight="27.0" fitWidth="31.0" layoutX="337.0" layoutY="421.0" onMouseClicked="#VisibilitàPassword" opacity="0.8" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@IMG/visibilità.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <TextField fx:id="VisualizzaPasswordReg" layoutX="54.0" layoutY="416.0" prefHeight="36.0" prefWidth="280.0" styleClass="campi" visible="false">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <ImageView fx:id="TastoShowPassword" fitHeight="27.0" fitWidth="31.0" layoutX="337.0" layoutY="421.0" onMouseClicked="#VisibilitàPassword" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@IMG/non_visibilità.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
                </children>
             </Pane>
             <ImageView fx:id="ImmagineInfoReg" fitHeight="31.0" fitWidth="32.0" layoutX="555.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">

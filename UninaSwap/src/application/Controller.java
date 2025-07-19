@@ -37,6 +37,9 @@ public class Controller {
 	    	 System.out.println("Password non valido.");
 	        return "password";
 	    }
+	    
+	    System.out.println(nome + " " + cognome + " " + matricola + " " + email + " " + username + " " + password);
+	    
 	    // Se arrivi qui, tutti i campi sono validi
 	    return "Tutti i campi sono correttamente compilati.";
 	}
