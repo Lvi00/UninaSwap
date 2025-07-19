@@ -35,10 +35,12 @@
                      <font>
                         <Font size="14.0" />
                      </font></Label>
+
                   <TextField fx:id="nomeFieldReg" layoutX="52.0" layoutY="150.0" prefHeight="36.0" prefWidth="137.0" promptText="Inserire il nome" styleClass="campi">
                      <font>
                         <Font size="14.0" />
                      </font></TextField>
+
                   <TextField fx:id="cognomeFieldReg" layoutX="200.0" layoutY="150.0" prefHeight="36.0" prefWidth="137.0" promptText="Inserire il cognome" styleClass="campi">
                      <font>
                         <Font size="14.0" />
