@@ -102,7 +102,7 @@ public class RegistrazioneBoundary {
         String password = passwordFieldReg.getText().trim();
 
 		if(nome == "" || cognome == "" ||  matricola == "" || email == "" || username ==  "" || password ==  "")
-			System.out.println("merda");
+			ShowPopupError("Campi mancanti", "Mancano dei campi obbligatori. Compila tutti i campi per procedere.");
 		else {
 			String result = controller.checkData(nome, cognome, matricola, email, username, password);
 			

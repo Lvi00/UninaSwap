@@ -21,10 +21,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="LabelDescrizioneErrore" layoutX="96.0" layoutY="60.0" prefHeight="51.0" prefWidth="271.0" textFill="WHITE" wrapText="true">
-               <font>
-                  <Font size="14.0" />
-               </font></Label>
+            <Label fx:id="LabelDescrizioneErrore" layoutX="96.0" layoutY="60.0" prefHeight="47.0" prefWidth="289.0" textFill="WHITE" wrapText="true" />
             <Label fx:id="LabelErrore" layoutX="171.0" layoutY="29.0" prefHeight="30.0" prefWidth="220.0" styleClass="popupLabel" textFill="WHITE">
                <font>
                   <Font size="16.0" />
