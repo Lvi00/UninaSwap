@@ -1,5 +1,5 @@
 .sfondo{
-	-fx-background-image: url("IMG/Sfondo.png");
+	-fx-background-image: url("../IMG/Sfondo.png");
 	-fx-background-repeat: no-repeat;
     -fx-background-position: center center;
     -fx-background-size: cover;

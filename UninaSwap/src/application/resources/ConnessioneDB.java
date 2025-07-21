@@ -1,4 +1,4 @@
-package application;
+package application.resources;
 
 import java.io.InputStream;
 import java.sql.*;

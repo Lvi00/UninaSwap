@@ -1,8 +1,9 @@
-package application;
+package application.boundary;
 
 import java.awt.Desktop;
 import java.net.URI;
 
+import application.control.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 
 public class LoginBoundary {
 	private Controller controller = new Controller();
+	
 	@FXML private Pane PaneLogin;
 	@FXML private ScrollPane InformazioniLogin;
 	@FXML private ImageView ImmagineInfo;

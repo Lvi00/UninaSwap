@@ -7,13 +7,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox id="popupError" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="400.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.PopupErrorController">
+<HBox id="popupError" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="400.0" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.PopupErrorBoundary">
    <children>
       <AnchorPane prefHeight="120.0" prefWidth="401.0">
          <children>
             <ImageView fitHeight="72.0" fitWidth="70.0" layoutX="14.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@IMG/danger.png" />
+                  <Image url="@../IMG/danger.png" />
                </image>
             </ImageView>
             <Label layoutX="96.0" layoutY="29.0" styleClass="popupLabel" text="Ooops!" textFill="WHITE">

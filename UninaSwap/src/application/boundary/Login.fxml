@@ -15,13 +15,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" styleClass="sfondo" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginBoundary">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" styleClass="sfondo" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.LoginBoundary">
    <children>
-      <AnchorPane prefHeight="593.0" prefWidth="500.0" styleClass="sfondo" stylesheets="@application.css">
+      <AnchorPane prefHeight="593.0" prefWidth="500.0" styleClass="sfondo">
          <children>
             <ImageView fx:id="ImmagineInfo" fitHeight="31.0" fitWidth="30.0" layoutX="453.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@IMG/info.png" />
+                  <Image url="@../IMG/info.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -29,7 +29,7 @@
             </ImageView>
             <ImageView fx:id="ImmagineLogin" fitHeight="31.0" fitWidth="30.0" layoutX="453.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
-                  <Image url="@IMG/back.png" />
+                  <Image url="@../IMG/back.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -39,18 +39,18 @@
                <children>
                   <ImageView fitHeight="118.0" fitWidth="124.0" layoutX="128.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@IMG/logo.png" />
+                        <Image url="@../IMG/logo.png" />
                      </image>
                   </ImageView>
-                  <TextField fx:id="UsernameLogin" layoutX="68.0" layoutY="158.0" prefHeight="36.0" prefWidth="241.0" promptText="Inserire l'username" styleClass="campi" stylesheets="@application.css">
+                  <TextField fx:id="UsernameLogin" layoutX="68.0" layoutY="158.0" prefHeight="36.0" prefWidth="241.0" promptText="Inserire l'username" styleClass="campi" stylesheets="@../resources/application.css">
                      <font>
                         <Font size="14.0" />
                      </font></TextField>
-                  <Label layoutX="69.0" layoutY="138.0" prefHeight="15.0" prefWidth="83.0" styleClass="label-login-registrazione" stylesheets="@application.css" text="Username">
+                  <Label layoutX="69.0" layoutY="138.0" prefHeight="15.0" prefWidth="83.0" styleClass="label-login-registrazione" stylesheets="@../resources/application.css" text="Username">
                      <font>
                         <Font size="14.0" />
                      </font></Label>
-                  <Label layoutX="69.0" layoutY="203.0" prefHeight="15.0" prefWidth="83.0" styleClass="label-login-registrazione" stylesheets="@application.css" text="Password">
+                  <Label layoutX="69.0" layoutY="203.0" prefHeight="15.0" prefWidth="83.0" styleClass="label-login-registrazione" stylesheets="@../resources/application.css" text="Password">
                      <font>
                         <Font size="14.0" />
                      </font></Label>
@@ -58,7 +58,7 @@
                      <font>
                         <Font size="14.0" />
                      </font></PasswordField>
-                  <Button layoutX="67.0" layoutY="280.0" mnemonicParsing="false" onAction="#invioDatiLogin" prefHeight="40.0" prefWidth="241.0" styleClass="tasto" stylesheets="@application.css" text="Login">
+                  <Button layoutX="67.0" layoutY="280.0" mnemonicParsing="false" onAction="#invioDatiLogin" prefHeight="40.0" prefWidth="241.0" styleClass="tasto" stylesheets="@../resources/application.css" text="Login">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>

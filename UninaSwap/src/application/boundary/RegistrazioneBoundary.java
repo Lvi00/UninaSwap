@@ -1,9 +1,10 @@
-package application;
+package application.boundary;
 
 import java.awt.Desktop;
 import java.net.URI;
 import java.util.ArrayList;
 
+import application.control.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -21,7 +22,9 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class RegistrazioneBoundary {
-	Controller controller = new Controller();
+	
+	private Controller controller = new Controller();
+	
 	@FXML private Pane PaneRegistrazione;
 	@FXML private ScrollPane InformazioniRegistrazione;
 	@FXML private ImageView ImmagineInfoReg;
@@ -46,7 +49,7 @@ public class RegistrazioneBoundary {
 	boolean visibilitaPassword = false;
 	
 	@FXML
-	public void MostraLogin (MouseEvent e) {
+	public void MostraLogin(MouseEvent e) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
 			Scene scene = new Scene(root);
@@ -94,25 +97,23 @@ public class RegistrazioneBoundary {
 	
 	@FXML	
 	public void PrelevaDati(MouseEvent e) {
-		
-		ArrayList<String> credenziali = new ArrayList<String>();
-		
-        credenziali.add(nomeFieldReg.getText().trim());
-        credenziali.add(cognomeFieldReg.getText().trim());
-        credenziali.add(matricolaFieldReg.getText().trim());
-        credenziali.add(emailFieldReg.getText().trim());
-        credenziali.add(usernameFieldReg.getText().trim());
-        credenziali.add(passwordFieldReg.getText().trim());
-
 		if(nomeFieldReg.getText().trim() == "" || cognomeFieldReg.getText().trim() == "" ||  matricolaFieldReg.getText().trim() == "" ||
-			emailFieldReg.getText().trim() == "" || usernameFieldReg.getText().trim() ==  "" || passwordFieldReg.getText().trim() ==  "")
+		emailFieldReg.getText().trim() == "" || usernameFieldReg.getText().trim() ==  "" || passwordFieldReg.getText().trim() ==  "")
 				ShowPopupError("Campi mancanti", "Mancano dei campi obbligatori. Compila tutti i campi per procedere.");
 		else {
-			int result = controller.checkData(credenziali);
+			ArrayList<String> credenziali = new ArrayList<String>();
 			
-	        switch (result) {
+	        credenziali.add(nomeFieldReg.getText().trim());
+	        credenziali.add(cognomeFieldReg.getText().trim());
+	        credenziali.add(matricolaFieldReg.getText().trim());
+	        credenziali.add(emailFieldReg.getText().trim());
+	        credenziali.add(usernameFieldReg.getText().trim());
+	        credenziali.add(passwordFieldReg.getText().trim());
+	        
+	        switch (controller.checkData(credenziali)) {
 	        	case 0:
 	        		System.out.println("Tutti i campi sono validi");
+	        		MostraLogin(e);
 	        	break;
 	        	
 	            case 1:
@@ -169,7 +170,7 @@ public class RegistrazioneBoundary {
 			Scene scene = new Scene(root);
 			Stage stage = new Stage();
 			
-	        PopupErrorController popupController = loader.getController();
+	        PopupErrorBoundary popupController = loader.getController();
 	        popupController.setLabels(title, message);
 	        
 			stage.setTitle("UninaSwap - " + title);
@@ -179,7 +180,7 @@ public class RegistrazioneBoundary {
 			stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);		
 		    stage.show();
 			stage.getIcons().addAll(
-                new Image(getClass().getResource("IMG/logoApp.png").toExternalForm())
+                new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm())
             );
 		}
 		catch(Exception ex) {

@@ -1,9 +1,9 @@
-package application;
+package application.boundary;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class PopupErrorController {
+public class PopupErrorBoundary {
     @FXML private Label LabelErrore;
     @FXML private Label LabelDescrizioneErrore;
 
