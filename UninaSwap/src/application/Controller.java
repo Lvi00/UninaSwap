@@ -1,58 +1,66 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.sql.*;
 
 public class Controller {
 
-	public String checkData(String nome, String cognome, String matricola, String email, String username, String password) {
-	
-	    if ((nome.length() > 40 || nome.length() < 2) || isValidNameSurname(nome) == 1) {
+	public int checkData(ArrayList<String> credenziali) {
+		
+		//Controllo nome
+	    if ((credenziali.get(0).length() > 40 || credenziali.get(0).length() < 2) || isValidNameSurname(credenziali.get(0)) == 1) {
 	        System.out.println("Nome non valido.");
-	        return "nome";
+	        return 1;
 	    }
 
-	    
-	    if ((cognome.length() > 40 || cognome.length() < 2) || isValidNameSurname(cognome) == 1) {
+	  //Controllo cognome
+	    if ((credenziali.get(1).length() > 40 || credenziali.get(1).length() < 2) || isValidNameSurname(credenziali.get(1)) == 1) {
 	        System.out.println("Cognome non valido.");
-	        return "cognome";
+	        return 2;
 	    }
 	    
-	    
-	    if (matricola.length() != 9) {
+	    //Controllo matricola
+	    if (credenziali.get(2).length() != 9) {
 	    	System.out.println("Matricola non valido.");
-	        return "matricola";
+	        return 3;
 	    }
 	    
-	    if(isValidEmail(email) == 1) {
+	    //Controllo email
+	    if(isValidEmail(credenziali.get(3)) == 1) {
 	    	 System.out.println("Email non valido.");
-	    	 return "email";
+	    	 return 4;
 	    } 
 	    
-	    if (username.length() > 10) {
+	    //Controllo username
+	    if (credenziali.get(4).length() > 10) {
 	    	 System.out.println("Username non valido.");
-	        return "username";
+	        return 5;
 	    }
-	    if (password.length() < 8 || password.length() > 20) {
+	    
+	    //Controllo password
+	    if (credenziali.get(5).length() < 8 || credenziali.get(5).length() > 20) {
 	    	 System.out.println("Password non valido.");
-	        return "password";
+	        return 6;
 	    }
 	    
-	    if(CheckUtenteEsistente(matricola, email, username) == 1) {
+	    //Controllo se l'utente esiste già
+	    if(CheckUtenteEsistente(credenziali.get(2), credenziali.get(3), credenziali.get(4)) == 1) {
 	    	System.out.println("Utente già esistente.");
-	    	return "Utente Esistente";
+	    	return 7;
 	    }
-	    
-	    System.out.println(nome + " " + cognome + " " + matricola + " " + email + " " + username + " " + password);
 	    
 	    // Se arrivi qui, tutti i campi sono validi
-	    return "Tutti i campi sono correttamente compilati.";
+	    
+	    System.out.println(credenziali);
+	    
+	    return 0;
 	}
 	
 	private int isValidEmail(String email) {
 		
-        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+		String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);

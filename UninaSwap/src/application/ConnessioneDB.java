@@ -17,7 +17,6 @@ public class ConnessioneDB {
                 String username = props.getProperty("db.username");
                 String password = props.getProperty("db.password");
                 conn = DriverManager.getConnection(url, username, password);
-                System.out.println("Connessione creata");
             }
             catch (Exception e) {
                 e.printStackTrace();

@@ -2,6 +2,7 @@ package application;
 
 import java.awt.Desktop;
 import java.net.URI;
+import java.util.ArrayList;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -94,50 +95,57 @@ public class RegistrazioneBoundary {
 	@FXML	
 	public void PrelevaDati(MouseEvent e) {
 		
-        String nome = nomeFieldReg.getText().trim();
-        String cognome = cognomeFieldReg.getText().trim();
-        String matricola = matricolaFieldReg.getText().trim();
-        String email = emailFieldReg.getText().trim();
-        String username = usernameFieldReg.getText().trim();
-        String password = passwordFieldReg.getText().trim();
+		ArrayList<String> credenziali = new ArrayList<String>();
+		
+        credenziali.add(nomeFieldReg.getText().trim());
+        credenziali.add(cognomeFieldReg.getText().trim());
+        credenziali.add(matricolaFieldReg.getText().trim());
+        credenziali.add(emailFieldReg.getText().trim());
+        credenziali.add(usernameFieldReg.getText().trim());
+        credenziali.add(passwordFieldReg.getText().trim());
 
-		if(nome == "" || cognome == "" ||  matricola == "" || email == "" || username ==  "" || password ==  "")
-			ShowPopupError("Campi mancanti", "Mancano dei campi obbligatori. Compila tutti i campi per procedere.");
+		if(nomeFieldReg.getText().trim() == "" || cognomeFieldReg.getText().trim() == "" ||  matricolaFieldReg.getText().trim() == "" ||
+			emailFieldReg.getText().trim() == "" || usernameFieldReg.getText().trim() ==  "" || passwordFieldReg.getText().trim() ==  "")
+				ShowPopupError("Campi mancanti", "Mancano dei campi obbligatori. Compila tutti i campi per procedere.");
 		else {
-			String result = controller.checkData(nome, cognome, matricola, email, username, password);
+			int result = controller.checkData(credenziali);
 			
 	        switch (result) {
-	            case "nome":
+	        	case 0:
+	        		System.out.println("Tutti i campi sono validi");
+	        	break;
+	        	
+	            case 1:
 	                nomeFieldReg.clear();
 	                ShowPopupError("Errore nel nome", "Nome non valido. Deve essere lungo tra 2 e 40 caratteri e non contenere numeri o simboli.");
                 break;
                 
-	            case "cognome":
+	            case 2:
 	                cognomeFieldReg.clear();
 	                ShowPopupError("Errore nel cognome", "Cognome non valido. Deve essere lungo tra 2 e 40 caratteri e non contenere numeri o simboli.");
                 break;
                 
-	            case "matricola":
+	            case 3:
 	                matricolaFieldReg.clear();
 	                ShowPopupError("Errore nella matricola", "Matricola non valida. Deve essere lunga 9 caratteri.");
                 break;
                 
-	            case "email":
+	            case 4:
 	                emailFieldReg.clear();
 	                ShowPopupError("Errrore nell'email", "Email non valida. Non rispetta il formato standard.");
                 break;
                 
-	            case "username":
+	            case 5:
 	                usernameFieldReg.clear();
 	                ShowPopupError("Errore nell'username", "Username non valido. Deve essere lungo al massimo 10 caratteri.");
                 break;
                 
-	            case "password":
+	            case 6:
 	                passwordFieldReg.clear();
 	                ShowPopupError("Errore nella password", "Password non valida. Deve essere lunga tra 8 e 20 caratteri.");
                 break;
                 
-	            case "Utente Esistente":
+	            case 7:
 	            	matricolaFieldReg.clear();
 	                nomeFieldReg.clear();
 	                cognomeFieldReg.clear();
@@ -148,7 +156,7 @@ public class RegistrazioneBoundary {
                 break;
                 
 	            default:
-	        		System.out.println("bene");
+	        		System.out.println("Errore sconosciuto durante la registrazione.");
 	        	break;
 	        }
 		}		
