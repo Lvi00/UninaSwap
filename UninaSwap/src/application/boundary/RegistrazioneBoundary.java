@@ -97,22 +97,26 @@ public class RegistrazioneBoundary {
 	
 	@FXML	
 	public void PrelevaDati(MouseEvent e) {
+		if(visibilitaPassword) {
+			VisibilitàPassword(e);
+		}
 		if(nomeFieldReg.getText().trim() == "" || cognomeFieldReg.getText().trim() == "" ||  matricolaFieldReg.getText().trim() == "" ||
 		emailFieldReg.getText().trim() == "" || usernameFieldReg.getText().trim() ==  "" || passwordFieldReg.getText().trim() ==  "")
 				ShowPopupError("Campi mancanti", "Mancano dei campi obbligatori. Compila tutti i campi per procedere.");
 		else {
 			ArrayList<String> credenziali = new ArrayList<String>();
 			
-	        credenziali.add(nomeFieldReg.getText().trim());
-	        credenziali.add(cognomeFieldReg.getText().trim());
-	        credenziali.add(matricolaFieldReg.getText().trim());
-	        credenziali.add(emailFieldReg.getText().trim());
+	        credenziali.add(nomeFieldReg.getText().toLowerCase().trim());
+	        credenziali.add(cognomeFieldReg.getText().toLowerCase().trim());
+	        credenziali.add(matricolaFieldReg.getText().toUpperCase().trim());
+	        credenziali.add(emailFieldReg.getText().toLowerCase().trim());
 	        credenziali.add(usernameFieldReg.getText().trim());
 	        credenziali.add(passwordFieldReg.getText().trim());
 	        
 	        switch (controller.checkData(credenziali)) {
 	        	case 0:
 	        		System.out.println("Tutti i campi sono validi");
+	        		controller.InserisciStudente(credenziali);
 	        		MostraLogin(e);
 	        	break;
 	        	
@@ -128,7 +132,7 @@ public class RegistrazioneBoundary {
                 
 	            case 3:
 	                matricolaFieldReg.clear();
-	                ShowPopupError("Errore nella matricola", "Matricola non valida. Deve essere lunga 9 caratteri.");
+	                ShowPopupError("Errore nella matricola", "Matricola non valida. Deve essere lunga 9 caratteri e non contenere spazzi.");
                 break;
                 
 	            case 4:
@@ -138,11 +142,12 @@ public class RegistrazioneBoundary {
                 
 	            case 5:
 	                usernameFieldReg.clear();
-	                ShowPopupError("Errore nell'username", "Username non valido. Deve essere lungo al massimo 10 caratteri.");
+	                ShowPopupError("Errore nell'username", "Username non valido. Deve essere lungo al massimo 10 caratteri e non contenere spazzi.");
                 break;
                 
 	            case 6:
 	                passwordFieldReg.clear();
+	                VisualizzaPasswordReg.clear();
 	                ShowPopupError("Errore nella password", "Password non valida. Deve essere lunga tra 8 e 20 caratteri.");
                 break;
                 
@@ -152,6 +157,7 @@ public class RegistrazioneBoundary {
 	                cognomeFieldReg.clear();
 	                emailFieldReg.clear();
 	                passwordFieldReg.clear();
+	                VisualizzaPasswordReg.clear();
 	                usernameFieldReg.clear();
 	                ShowPopupError("Utente già esistente", "Un utente con la stessa matricola, email o username è già registrato.");
                 break;
@@ -159,6 +165,8 @@ public class RegistrazioneBoundary {
 	            default:
 	        		System.out.println("Errore sconosciuto durante la registrazione.");
 	        	break;
+	        	
+	        	
 	        }
 		}		
 	}
@@ -220,6 +228,7 @@ public class RegistrazioneBoundary {
 			visibilitaPassword = true;
 		}
 		else {
+			passwordFieldReg.setText(VisualizzaPasswordReg.getText());
 			VisualizzaPasswordReg.setVisible(false);
 			passwordFieldReg.setVisible(true);
 			TastoShowPassword.setVisible(true);

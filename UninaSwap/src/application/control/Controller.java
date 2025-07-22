@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import application.DAO.StudenteDAO;
+import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
 import java.sql.*;
@@ -25,7 +27,7 @@ public class Controller {
 	    }
 	    
 	    //Controllo matricola
-	    if (credenziali.get(2).length() != 9) {
+	    if (credenziali.get(2).length() != 9 || credenziali.get(2).contains(" ") || credenziali.get(2).contains("\t")) {
 	    	System.out.println("Matricola non valido.");
 	        return 3;
 	    }
@@ -37,7 +39,7 @@ public class Controller {
 	    } 
 	    
 	    //Controllo username
-	    if (credenziali.get(4).length() > 10) {
+	    if (credenziali.get(4).length() > 10 || credenziali.get(4).contains(" ") || credenziali.get(4).contains("\t")) {
 	    	 System.out.println("Username non valido.");
 	        return 5;
 	    }
@@ -54,15 +56,23 @@ public class Controller {
 	    	return 7;
 	    }
 	    
-	    // Se arrivi qui, tutti i campi sono validi
-	    
-	    System.out.println(credenziali);
-	    
 	    return 0;
+	}
+
+	public void InserisciStudente(ArrayList<String> credenziali)
+	{
+	    // Se arrivi qui, tutti i campi sono validi
+	    StudenteDAO studenteDAO = new StudenteDAO();
+	    studenteDAO.SaveStudente(new Studente(credenziali.get(2),credenziali.get(3),credenziali.get(0),credenziali.get(1),credenziali.get(5),credenziali.get(4)));
+	    
 	}
 	
 	private int isValidEmail(String email) {
 		
+	    if (email == null || email.contains(" ") || email.contains("\t")) {
+	        return 1; // email non valida per spazi o null
+	    }
+
 		String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 
         Pattern pattern = Pattern.compile(regex);
@@ -110,4 +120,6 @@ public class Controller {
 		
 		return 0;
 	}
+	
+	
 }
