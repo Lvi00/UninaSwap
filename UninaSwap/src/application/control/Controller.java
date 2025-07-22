@@ -58,6 +58,7 @@ public class Controller {
 	    
 	    return 0;
 	}
+	
 
 	public void InserisciStudente(ArrayList<String> credenziali)
 	{
@@ -121,5 +122,32 @@ public class Controller {
 		return 0;
 	}
 	
+	public int LogStudente(String username, String password)
+	{	
+		
+		try {
+		    Connection conn = ConnessioneDB.getConnection();
+		    String query = "SELECT 1 FROM STUDENTE WHERE username = ? AND passkey = ?";
+		    PreparedStatement statement = conn.prepareStatement(query);
+		    statement.setString(1, username);
+		    statement.setString(2, password);
+	        ResultSet rs = statement.executeQuery();
+	        if (!rs.next()) {
+	            System.out.println("Utente non esistente.");
+	            rs.close();
+	            statement.close();
+	            return 1;
+	        }
+	        else {
+	        	System.out.println("Utente esistente.");
+	        }
+		}
+		catch (SQLException ex) {
+		    System.out.println("Errore nella connessione al database");
+		    ex.printStackTrace();
+		}
+		
+		return 0;
+	}
 	
 }

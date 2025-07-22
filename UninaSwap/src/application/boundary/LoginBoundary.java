@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -103,12 +104,45 @@ public class LoginBoundary {
 	
 	@FXML
 	public void invioDatiLogin(ActionEvent e) {
-		if(!UsernameLogin.getText().isEmpty() && !PasswordLogin.getText().isEmpty()){
-			String username = UsernameLogin.getText();
-			String password = PasswordLogin.getText();
-			System.out.println(username);
-			System.out.println(password);
+		if(UsernameLogin.getText().trim().isEmpty() || PasswordLogin.getText().trim().isEmpty()){
+			ShowPopupError("Campi Vuoti", "I campi Username e Password non possono essere vuoti!");
 		}
-		else System.out.println("Username e Password non possono essere vuoti.");
+		else {
+			String username = UsernameLogin.getText().trim();
+			String password = PasswordLogin.getText().trim();
+
+			if(controller.LogStudente(username, password)==1)
+			{
+                ShowPopupError("Utente non esistente", "Le credenziali inserite non sono corrette");
+			}
+			else {
+				
+			}
+		}
+	}
+	
+	private void ShowPopupError(String title, String message) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
+	        Parent root = loader.load();
+			Scene scene = new Scene(root);
+			Stage stage = new Stage();
+			
+	        PopupErrorBoundary popupController = loader.getController();
+	        popupController.setLabels(title, message);
+	        
+			stage.setTitle("UninaSwap - " + title);
+			stage.setScene(scene);
+			stage.centerOnScreen();
+			stage.setResizable(false);
+			stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);		
+		    stage.show();
+			stage.getIcons().addAll(
+                new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm())
+            );
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 }
