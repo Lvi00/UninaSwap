@@ -122,6 +122,7 @@ public class LoginBoundary {
 	}
 	
 	private void ShowPopupError(String title, String message) {
+		
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
 	        Parent root = loader.load();

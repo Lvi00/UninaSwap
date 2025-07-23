@@ -122,8 +122,7 @@ public class Controller {
 		return 0;
 	}
 	
-	public int LogStudente(String username, String password)
-	{	
+	public int LogStudente(String username, String password){	
 		
 		try {
 		    Connection conn = ConnessioneDB.getConnection();
