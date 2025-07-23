@@ -68,7 +68,7 @@ public class LoginBoundary {
 	}
 	
 	@FXML
-	public void MostraRegistrazione (MouseEvent e) {
+	public void MostraRegistrazione(MouseEvent e) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("Registrazione.fxml"));
 			Scene scene = new Scene(root);
