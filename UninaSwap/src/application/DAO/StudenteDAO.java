@@ -25,12 +25,9 @@ public class StudenteDAO {
 		    int rowsInserted = statement.executeUpdate();
 		    statement.close();
 
-            if (rowsInserted > 0) {
-                System.out.println("Studente inserito con successo.");
-                return 0;
-            } else {
+            if (rowsInserted == 0) {
                 System.out.println("Errore: inserimento fallito.");
-                return 1; // codice errore: inserimento fallito
+                return 1;
             }
 
 		}
@@ -38,6 +35,58 @@ public class StudenteDAO {
 		    System.out.println("Errore nella connessione al database");
 		    ex.printStackTrace();
 		}
+		
+		return 0;
+	}
+	
+	public int LoginStudente(String username, String password){
+		try {
+		    Connection conn = ConnessioneDB.getConnection();
+		    String query = "SELECT 1 FROM STUDENTE WHERE username = ? AND passkey = ?";
+		    PreparedStatement statement = conn.prepareStatement(query);
+		    statement.setString(1, username);
+		    statement.setString(2, password);
+	        ResultSet rs = statement.executeQuery();
+	        if (!rs.next()) {
+	            System.out.println("Utente non esistente.");
+	            rs.close();
+	            statement.close();
+	            return 1;
+	        }
+		}
+		catch (SQLException ex) {
+		    System.out.println("Errore nella connessione al database");
+		    ex.printStackTrace();
+		}
+		
+		System.out.println("Utente esistente.");
+		
+		return 0;
+	}
+	
+	public int CheckUtenteEsistenteRegistrazione(String matricola, String email, String username) {
+		try {
+		    Connection conn = ConnessioneDB.getConnection();
+		    String query = "SELECT 1 FROM STUDENTE WHERE matricola = ? OR email = ? OR username = ?;";
+		    PreparedStatement statement = conn.prepareStatement(query);
+		    statement.setString(1, matricola);
+		    statement.setString(2, email);
+		    statement.setString(3, username);
+	        ResultSet rs = statement.executeQuery();
+	        if (rs.next()) {
+	            System.out.println("Errore: Utente già esistente.");
+	            rs.close();
+	            statement.close();
+	            return 1;
+	        }
+		}
+		catch (SQLException ex) {
+		    System.out.println("Errore nella connessione al database");
+		    ex.printStackTrace();
+		}
+		
+		System.out.println("Utente non esistente.");
+		
 		return 0;
 	}
 }

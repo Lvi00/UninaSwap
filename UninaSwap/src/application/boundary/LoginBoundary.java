@@ -18,6 +18,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -37,6 +39,20 @@ public class LoginBoundary {
 	@FXML private TextField UsernameLogin;
 	@FXML private PasswordField PasswordLogin;
 	
+	//Componeni finestra
+	@FXML private AnchorPane anchorPane;
+    @FXML private HBox container;
+
+    public void setContainerSize(double width, double height) {
+        container.setPrefWidth(width);
+        container.setPrefHeight(height);
+    }
+
+    public void setAnchorPaneSize(double width, double height) {
+        anchorPane.setPrefWidth(width);
+        anchorPane.setPrefHeight(height);
+    }
+    
 	@FXML
 	public void MostraInfoLogin (MouseEvent e) {
 		PaneLogin.setVisible(false);
@@ -111,12 +127,11 @@ public class LoginBoundary {
 			String username = UsernameLogin.getText().trim();
 			String password = PasswordLogin.getText().trim();
 
-			if(controller.LogStudente(username, password)==1)
-			{
-                ShowPopupError("Utente non esistente", "Le credenziali inserite non sono corrette");
-			}
+			if(controller.CheckLoginStudente(username, password) == 1)
+				ShowPopupError("Utente non esistente", "Le credenziali inserite non sono corrette");
 			else {
-				
+				System.out.println("Login effettuato con successo");
+				//Vai alla dashboard
 			}
 		}
 	}

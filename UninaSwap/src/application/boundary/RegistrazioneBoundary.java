@@ -97,78 +97,76 @@ public class RegistrazioneBoundary {
 	
 	@FXML	
 	public void PrelevaDati(MouseEvent e) {
-		if(visibilitaPassword) {
-			VisibilitàPassword(e);
-		}
-		if(nomeFieldReg.getText().trim() == "" || cognomeFieldReg.getText().trim() == "" ||  matricolaFieldReg.getText().trim() == "" ||
-		emailFieldReg.getText().trim() == "" || usernameFieldReg.getText().trim() ==  "" || passwordFieldReg.getText().trim() ==  "")
-				ShowPopupError("Campi mancanti", "Mancano dei campi obbligatori. Compila tutti i campi per procedere.");
-		else {
-			ArrayList<String> credenziali = new ArrayList<String>();
-			
-	        credenziali.add(nomeFieldReg.getText().toLowerCase().trim());
-	        credenziali.add(cognomeFieldReg.getText().toLowerCase().trim());
-	        credenziali.add(matricolaFieldReg.getText().toUpperCase().trim());
-	        credenziali.add(emailFieldReg.getText().toLowerCase().trim());
-	        credenziali.add(usernameFieldReg.getText().trim());
-	        credenziali.add(passwordFieldReg.getText().trim());
+		if(visibilitaPassword) VisibilitàPassword(e);
+							
+		ArrayList<String> credenziali = new ArrayList<String>();
+		
+        credenziali.add(nomeFieldReg.getText().toLowerCase().trim());
+        credenziali.add(cognomeFieldReg.getText().toLowerCase().trim());
+        credenziali.add(matricolaFieldReg.getText().toUpperCase().trim());
+        credenziali.add(emailFieldReg.getText().toLowerCase().trim());
+        credenziali.add(usernameFieldReg.getText().trim());
+        credenziali.add(passwordFieldReg.getText().trim());
+        
+        switch (controller.checkData(credenziali)) {
+	        case -1:
+	        	ShowPopupError("Campi mancanti", "Mancano dei campi obbligatori. Compila tutti i campi per procedere.");
+	        break;
 	        
-	        switch (controller.checkData(credenziali)) {
-	        	case 0:
-	        		System.out.println("Tutti i campi sono validi");
-	        		controller.InserisciStudente(credenziali);
-	        		MostraLogin(e);
-	        	break;
-	        	
-	            case 1:
-	                nomeFieldReg.clear();
-	                ShowPopupError("Errore nel nome", "Nome non valido. Deve essere lungo tra 2 e 40 caratteri e non contenere numeri o simboli.");
-                break;
-                
-	            case 2:
-	                cognomeFieldReg.clear();
-	                ShowPopupError("Errore nel cognome", "Cognome non valido. Deve essere lungo tra 2 e 40 caratteri e non contenere numeri o simboli.");
-                break;
-                
-	            case 3:
-	                matricolaFieldReg.clear();
-	                ShowPopupError("Errore nella matricola", "Matricola non valida. Deve essere lunga 9 caratteri e non contenere spazzi.");
-                break;
-                
-	            case 4:
-	                emailFieldReg.clear();
-	                ShowPopupError("Errrore nell'email", "Email non valida. Non rispetta il formato standard.");
-                break;
-                
-	            case 5:
-	                usernameFieldReg.clear();
-	                ShowPopupError("Errore nell'username", "Username non valido. Deve essere lungo al massimo 10 caratteri e non contenere spazzi.");
-                break;
-                
-	            case 6:
-	                passwordFieldReg.clear();
-	                VisualizzaPasswordReg.clear();
-	                ShowPopupError("Errore nella password", "Password non valida. Deve essere lunga tra 8 e 20 caratteri.");
-                break;
-                
-	            case 7:
-	            	matricolaFieldReg.clear();
-	                nomeFieldReg.clear();
-	                cognomeFieldReg.clear();
-	                emailFieldReg.clear();
-	                passwordFieldReg.clear();
-	                VisualizzaPasswordReg.clear();
-	                usernameFieldReg.clear();
-	                ShowPopupError("Utente già esistente", "Un utente con la stessa matricola, email o username è già registrato.");
-                break;
-                
-	            default:
-	        		System.out.println("Errore sconosciuto durante la registrazione.");
-	        	break;
-	        	
-	        	
-	        }
-		}		
+        	case 0:
+        		System.out.println("Tutti i campi sono validi");
+        		controller.InserisciStudente(credenziali);
+        		MostraLogin(e);
+        	break;
+        	
+            case 1:
+                nomeFieldReg.clear();
+                ShowPopupError("Errore nel nome", "Nome non valido. Deve essere lungo tra 2 e 40 caratteri e non contenere numeri o simboli.");
+            break;
+            
+            case 2:
+                cognomeFieldReg.clear();
+                ShowPopupError("Errore nel cognome", "Cognome non valido. Deve essere lungo tra 2 e 40 caratteri e non contenere numeri o simboli.");
+            break;
+            
+            case 3:
+                matricolaFieldReg.clear();
+                ShowPopupError("Errore nella matricola", "Matricola non valida. Deve essere lunga 9 caratteri e non contenere spazzi.");
+            break;
+            
+            case 4:
+                emailFieldReg.clear();
+                ShowPopupError("Errrore nell'email", "Email non valida. Non rispetta il formato standard.");
+            break;
+            
+            case 5:
+                usernameFieldReg.clear();
+                ShowPopupError("Errore nell'username", "Username non valido. Deve essere lungo al massimo 10 caratteri e non contenere spazzi.");
+            break;
+            
+            case 6:
+                passwordFieldReg.clear();
+                VisualizzaPasswordReg.clear();
+                ShowPopupError("Errore nella password", "Password non valida. Deve essere lunga tra 8 e 20 caratteri.");
+            break;
+            
+            case 7:
+            	matricolaFieldReg.clear();
+                nomeFieldReg.clear();
+                cognomeFieldReg.clear();
+                emailFieldReg.clear();
+                passwordFieldReg.clear();
+                VisualizzaPasswordReg.clear();
+                usernameFieldReg.clear();
+                ShowPopupError("Utente già esistente", "Un utente con la stessa matricola, email o username è già registrato.");
+            break;
+            
+            default:
+        		System.out.println("Errore sconosciuto durante la registrazione.");
+        	break;
+        	
+        	
+        }
 	}
 	
 	private void ShowPopupError(String title, String message) {
