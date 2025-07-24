@@ -11,7 +11,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
+	
     @Override
     public void start(Stage stage) {
         try {
@@ -42,7 +42,6 @@ public class Main extends Application {
             controller.setAnchorPaneSize(width, height);
 
             stage.show();
-
         }
         catch (Exception e) {
             e.printStackTrace();

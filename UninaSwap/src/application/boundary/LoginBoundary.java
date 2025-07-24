@@ -4,7 +4,6 @@ import java.awt.Desktop;
 import java.net.URI;
 
 import application.control.Controller;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -26,6 +25,7 @@ import javafx.stage.Stage;
 
 public class LoginBoundary {
 	private Controller controller = new Controller();
+	private String username;
 	
 	@FXML private Pane PaneLogin;
 	@FXML private ScrollPane InformazioniLogin;
@@ -39,6 +39,12 @@ public class LoginBoundary {
 	//Campi login
 	@FXML private TextField UsernameLogin;
 	@FXML private PasswordField PasswordLogin;
+	
+	//Visibilità Password
+	@FXML private ImageView TastoShowPassword;
+	@FXML private ImageView TastoHidePassword;
+	@FXML private TextField VisualizzaPasswordLogin;
+	boolean visibilitaPassword = false;
 	
 	//Componeni finestra
 	@FXML private AnchorPane anchorPane;
@@ -140,7 +146,9 @@ public class LoginBoundary {
 	}
 	
 	@FXML
-	public void invioDatiLogin(ActionEvent e) {
+	public void invioDatiLogin(MouseEvent e) {
+		if(visibilitaPassword) VisibilitàPassword(e);
+		
 		if(UsernameLogin.getText().trim().isEmpty() || PasswordLogin.getText().trim().isEmpty()){
 			ShowPopupError("Campi Vuoti", "I campi Username e Password non possono essere vuoti!");
 		}
@@ -151,9 +159,43 @@ public class LoginBoundary {
 			if(controller.CheckLoginStudente(username, password) == 1)
 				ShowPopupError("Utente non esistente", "Le credenziali inserite non sono corrette");
 			else {
-				System.out.println("Login effettuato con successo");
-				//Vai alla dashboard
+				this.username = username;
+				MostraDashboard(e);
 			}
+		}
+	}
+	
+	@FXML
+	public void MostraDashboard(MouseEvent e) {
+		try {
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            double width = screenBounds.getWidth();
+            double height = screenBounds.getHeight();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
+            Parent root = loader.load();
+            DashboardBoundary controller = loader.getController();
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
+            stage.setWidth(width);
+            stage.setHeight(height);
+            stage.setX(0);
+            stage.setY(0);
+
+            Scene scene = new Scene(root, width, height);
+            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+
+            controller.creaDashboard(width, height, this.username);
+            
+            stage.setScene(scene);
+            stage.setTitle("UninaSwap - Dashboard");
+            stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
+            stage.setResizable(false);
+
+            stage.show();
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 	
@@ -180,6 +222,26 @@ public class LoginBoundary {
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
+		}
+	}
+	
+	@FXML
+	public void VisibilitàPassword(MouseEvent e) {
+		if(!visibilitaPassword) {
+			PasswordLogin.setVisible(false);
+			VisualizzaPasswordLogin.setVisible(true);
+			VisualizzaPasswordLogin.setText(PasswordLogin.getText());
+			TastoShowPassword.setVisible(false);
+			TastoHidePassword.setVisible(true);
+			visibilitaPassword = true;
+		}
+		else {
+			VisualizzaPasswordLogin.setVisible(false);
+			PasswordLogin.setVisible(true);
+			PasswordLogin.setText(VisualizzaPasswordLogin.getText());
+			TastoShowPassword.setVisible(true);
+			TastoHidePassword.setVisible(false);
+			visibilitaPassword = false;
 		}
 	}
 }

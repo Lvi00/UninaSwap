@@ -255,11 +255,11 @@ public class RegistrazioneBoundary {
 	@FXML
 	public void VisibilitàPassword(MouseEvent e) {
 		if(!visibilitaPassword) {
-			VisualizzaPasswordReg.setText(passwordFieldReg.getText());
 			passwordFieldReg.setVisible(false);
+			VisualizzaPasswordReg.setVisible(true);
+			VisualizzaPasswordReg.setText(passwordFieldReg.getText());
 			TastoShowPassword.setVisible(false);
 			TastoHidePassword.setVisible(true);
-			VisualizzaPasswordReg.setVisible(true);
 			visibilitaPassword = true;
 		}
 		else {

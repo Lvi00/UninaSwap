@@ -8,7 +8,7 @@ import application.DAO.StudenteDAO;
 import application.entity.Studente;
 
 public class Controller {
-
+	
 	public int checkData(ArrayList<String> credenziali) {
 		
 		String nome = credenziali.get(0);
