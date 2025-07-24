@@ -6,9 +6,6 @@ import java.util.regex.Pattern;
 
 import application.DAO.StudenteDAO;
 import application.entity.Studente;
-import application.resources.ConnessioneDB;
-
-import java.sql.*;
 
 public class Controller {
 
@@ -23,48 +20,48 @@ public class Controller {
 		
 		if(nome == "" || cognome == "" ||  matricola == "" || email == "" || username ==  "" || password ==  "") {
 			System.out.println("Campi vuoti.");
-			return -1;
+			return 1;
 		}
 		//Controllo nome
 	    if ((nome.length() > 40 || nome.length() < 2) || isValidNameSurname(nome) == 1) {
 	        System.out.println("Nome non valido.");
-	        return 1;
+	        return 2;
 	    }
 
 	  //Controllo cognome
 	    if ((cognome.length() > 40 || cognome.length() < 2) || isValidNameSurname(cognome) == 1) {
 	        System.out.println("Cognome non valido.");
-	        return 2;
+	        return 3;
 	    }
 	    
 	    //Controllo matricola
 	    if (matricola.length() != 9 || matricola.contains(" ") || matricola.contains("\t")) {
 	    	System.out.println("Matricola non valido.");
-	        return 3;
+	        return 4;
 	    }
 	    
 	    //Controllo email
 	    if(isValidEmail(email) == 1) {
 	    	 System.out.println("Email non valido.");
-	    	 return 4;
+	    	 return 5;
 	    } 
 	    
 	    //Controllo username
 	    if (username.length() > 10 || username.contains(" ") || username.contains("\t")) {
 	    	 System.out.println("Username non valido.");
-	        return 5;
+	        return 6;
 	    }
 	    
 	    //Controllo password
 	    if (password.length() < 8 || password.length() > 20) {
 	    	 System.out.println("Password non valido.");
-	        return 6;
+	        return 7;
 	    }
 	    
 	    //Controllo se l'utente esiste già
 	    if(new StudenteDAO().CheckUtenteEsistenteRegistrazione(matricola, email, username) == 1) {
 	    	System.out.println("Utente già esistente.");
-	    	return 7;
+	    	return 8;
 	    }
 	    
 	    return 0;

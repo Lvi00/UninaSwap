@@ -7,18 +7,21 @@ import java.util.ArrayList;
 import application.control.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class RegistrazioneBoundary {
@@ -48,15 +51,49 @@ public class RegistrazioneBoundary {
 	@FXML private TextField VisualizzaPasswordReg;
 	boolean visibilitaPassword = false;
 	
+	//Componenti finestra
+	@FXML private AnchorPane anchorPaneRegistrazione;
+    @FXML private HBox containerRegistrazione;
+
+    public void setContainerSize(double width, double height) {
+    	containerRegistrazione.setPrefWidth(width);
+    	containerRegistrazione.setPrefHeight(height);
+    }
+
+    public void setAnchorPaneSize(double width, double height) {
+    	anchorPaneRegistrazione.setPrefWidth(width);
+    	anchorPaneRegistrazione.setPrefHeight(height);
+    }
+	
 	@FXML
 	public void MostraLogin(MouseEvent e) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
-			Scene scene = new Scene(root);
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            double width = screenBounds.getWidth();
+            double height = screenBounds.getHeight();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+            Parent root = loader.load();
+            LoginBoundary controller = loader.getController();
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
+            stage.setWidth(width);
+            stage.setHeight(height);
+            stage.setX(0);
+            stage.setY(0);
+
+            Scene scene = new Scene(root, width, height);
+            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+
+            stage.setScene(scene);
             stage.setTitle("UninaSwap - Login");
-			stage.setScene(scene);
-			stage.centerOnScreen();
+            stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
+            stage.setResizable(false);
+            
+            controller.setContainerSize(width, height);
+            controller.setAnchorPaneSize(width, height);
+
+            stage.show();
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
@@ -109,48 +146,48 @@ public class RegistrazioneBoundary {
         credenziali.add(passwordFieldReg.getText().trim());
         
         switch (controller.checkData(credenziali)) {
-	        case -1:
-	        	ShowPopupError("Campi mancanti", "Mancano dei campi obbligatori. Compila tutti i campi per procedere.");
-	        break;
-	        
         	case 0:
         		System.out.println("Tutti i campi sono validi");
         		controller.InserisciStudente(credenziali);
         		MostraLogin(e);
         	break;
         	
-            case 1:
+        	case 1:
+	        	ShowPopupError("Campi mancanti", "Mancano dei campi obbligatori. Compila tutti i campi per procedere.");
+	        break;
+	        
+            case 2:
                 nomeFieldReg.clear();
                 ShowPopupError("Errore nel nome", "Nome non valido. Deve essere lungo tra 2 e 40 caratteri e non contenere numeri o simboli.");
             break;
             
-            case 2:
+            case 3:
                 cognomeFieldReg.clear();
                 ShowPopupError("Errore nel cognome", "Cognome non valido. Deve essere lungo tra 2 e 40 caratteri e non contenere numeri o simboli.");
             break;
             
-            case 3:
+            case 4:
                 matricolaFieldReg.clear();
                 ShowPopupError("Errore nella matricola", "Matricola non valida. Deve essere lunga 9 caratteri e non contenere spazzi.");
             break;
             
-            case 4:
+            case 5:
                 emailFieldReg.clear();
                 ShowPopupError("Errrore nell'email", "Email non valida. Non rispetta il formato standard.");
             break;
             
-            case 5:
+            case 6:
                 usernameFieldReg.clear();
                 ShowPopupError("Errore nell'username", "Username non valido. Deve essere lungo al massimo 10 caratteri e non contenere spazzi.");
             break;
             
-            case 6:
+            case 7:
                 passwordFieldReg.clear();
                 VisualizzaPasswordReg.clear();
                 ShowPopupError("Errore nella password", "Password non valida. Deve essere lunga tra 8 e 20 caratteri.");
             break;
             
-            case 7:
+            case 8:
             	matricolaFieldReg.clear();
                 nomeFieldReg.clear();
                 cognomeFieldReg.clear();
