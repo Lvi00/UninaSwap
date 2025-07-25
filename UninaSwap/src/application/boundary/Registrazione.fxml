@@ -19,6 +19,24 @@
    <children>
       <AnchorPane fx:id="anchorPaneRegistrazione" prefHeight="200.0" prefWidth="200.0">
          <children>
+            <AnchorPane prefHeight="800.0" prefWidth="600.0">
+               <children>
+                  <Pane layoutX="102.0" layoutY="130.0" prefHeight="391.0" prefWidth="395.0">
+                     <children>
+                        <Label layoutX="52.0" layoutY="227.0" prefHeight="47.0" prefWidth="294.0" text="Compra, vendi, scambia e regala" textFill="WHITE">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="213.0" fitWidth="226.0" layoutX="92.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../IMG/logo2.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
             <AnchorPane fx:id="anchorPaneRegistrazione" layoutX="600.0" prefHeight="800.0" prefWidth="600.0">
                <children>
                   <Pane fx:id="PaneRegistrazione" layoutX="68.0" layoutY="42.0" prefHeight="565.0" prefWidth="463.0" styleClass="form">
@@ -156,11 +174,51 @@
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </ImageView>
-                  <ScrollPane fx:id="InformazioniRegistrazione" layoutX="143.0" layoutY="136.0" prefHeight="378.0" prefWidth="347.0" visible="false">
+                  <ScrollPane fx:id="InformazioniRegistrazione" layoutX="143.0" layoutY="113.0" prefHeight="370.0" prefWidth="347.0" visible="false">
                      <content>
-                        <AnchorPane accessibleRole="TEXT" minHeight="0.0" minWidth="0.0" prefHeight="650.0" prefWidth="316.0">
+                        <AnchorPane accessibleRole="TEXT" minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="315.0">
                            <children>
-                              <Text layoutX="17.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae efficitur metus, sit amet dignissim turpis. Morbi sollicitudin, lectus a sollicitudin eleifend, lacus sapien malesuada elit, vel tincidunt ligula lacus sit amet nulla. Sed laoreet malesuada nisl in convallis. Nulla vel efficitur est, nec elementum lorem. Curabitur luctus efficitur orci, ac pharetra ligula. Suspendisse potenti. Nullam et porta nibh. Praesent in tellus ligula. Vestibulum vehicula ligula non sodales varius. Morbi accumsan, magna non fermentum luctus, erat elit egestas est, sed tincidunt metus purus in metus.Ut dapibus tristique pretium. Sed eu efficitur purus. Etiam egestas iaculis risus. Nullam vel mauris pretium, vulputate nunc nec, efficitur mi. Vivamus lobortis lectus velit, ac volutpat tortor feugiat a. Sed iaculis tincidunt mauris, ut semper turpis vulputate non. Vestibulum rhoncus erat in quam placerat, vitae tincidunt lorem varius. Etiam laoreet rhoncus ligula, non fermentum nisi fermentum nec. Suspendisse potenti. Integer pulvinar libero et tellus egestas, nec rutrum libero volutpat." wrappingWidth="282.66668701171875" />
+                              <Text layoutX="18.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Per registrarti correttamente al sistema, è necessario compilare tutti i campi richiesti con attenzione. Ogni informazione verrà verificata per garantire l'integrità dei dati. Segui attentamente le indicazioni qui sotto:" wrappingWidth="282.66668701171875" />
+                              <Label layoutX="18.0" layoutY="149.0" prefHeight="20.0" prefWidth="136.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Nome e Cognome">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="18.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inserisci il tuo nome di battesimo e il tuo cognome. Deve essere composto solo da lettere, senza numeri o simboli. Entrambi devono avere una lunghezza compresa tra 2 e 40 caratteri." wrappingWidth="282.66668701171875" />
+                              <Text layoutX="18.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi validi: Marco Rossi, Giulia Bianchi" wrappingWidth="282.66668701171875" />
+                              <Text layoutX="18.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi non validi: GS, 123 Luca, @ ndrea" wrappingWidth="282.66668701171875" />
+                              <Label layoutX="18.0" layoutY="272.0" prefHeight="20.0" prefWidth="66.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Matricola">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="18.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deve essere una stringa esattamente di 9 caratteri, senza spazi o tabulazioni." wrappingWidth="282.66668701171875" />
+                              <Text layoutX="18.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempio valido: N86005564" wrappingWidth="282.66668701171875" />
+                              <Text layoutX="18.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi non validi: 123456789, S12345678, N8600!3AC" wrappingWidth="291.33331298828125" />
+                              <Label layoutX="18.0" layoutY="364.0" prefHeight="20.0" prefWidth="66.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Email">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="18.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inserisci un indirizzo email valido. Il formato corretto è simile a: nome.cognome@esempio.it" wrappingWidth="282.66668701171875" />
+                              <Text layoutX="18.0" layoutY="429.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempio valido: gius.cautiero@studenti.unina.it" wrappingWidth="282.66668701171875" />
+                              <Text layoutX="18.0" layoutY="445.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi non validi: nome.cognome, email@, test@.com" wrappingWidth="291.33331298828125" />
+                              <Label layoutX="18.0" layoutY="457.0" prefHeight="20.0" prefWidth="66.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Username">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="18.0" layoutY="490.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scegli un nome utente che ti identifichi. Deve essere lungo massimo 10 caratteri e composto da lettere, numeri e simboli ma non deve contenere spazi o tabulazioni" wrappingWidth="282.66668701171875" />
+                              <Text layoutX="18.0" layoutY="558.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempio valido: giuse05, Lui@10" wrappingWidth="282.66668701171875" />
+                              <Text layoutX="18.0" layoutY="574.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi non validi: giulia rossi, nome_troppo_lungo" wrappingWidth="291.33331298828125" />
+                              <Label layoutX="18.0" layoutY="585.0" prefHeight="20.0" prefWidth="66.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Password">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="18.0" layoutY="618.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deve essere una stringa di lunghezza compresa tra 8 e 20 caratteri" wrappingWidth="282.66668701171875" />
+                              <Text layoutX="18.0" layoutY="652.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempio valido: Pa$$wordSicura10, Hndj928f29j.!" wrappingWidth="282.66668701171875" />
+                              <Text layoutX="18.0" layoutY="669.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi non validi: 123, ciao" wrappingWidth="291.33331298828125" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -181,7 +239,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Pane fx:id="PaneLabelInfoReg" layoutX="155.0" layoutY="140.0" prefHeight="55.0" prefWidth="315.0" styleClass="colore-pannello-info" visible="false">
+                  <Pane fx:id="PaneLabelInfoReg" layoutX="155.0" layoutY="125.0" prefHeight="55.0" prefWidth="315.0" styleClass="colore-pannello-info" visible="false">
                      <children>
                         <Label layoutX="43.0" layoutY="14.0" prefHeight="27.0" prefWidth="230.0" styleClass="label-login-registrazione" text="Informazioni registrazione">
                            <font>
@@ -190,9 +248,9 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane fx:id="LinkFooterRegistrazione" layoutX="200.0" layoutY="590.0" prefHeight="36.0" prefWidth="199.0" styleClass="footer" visible="false">
+                  <Pane fx:id="LinkFooterRegistrazione" layoutX="200.0" layoutY="518.0" prefHeight="36.0" prefWidth="199.0" styleClass="footer" visible="false">
                      <children>
-                        <Label layoutX="14.0" layoutY="10.0" onMouseClicked="#LinkLuigi" styleClass="link-github" text="Luigi Castaldo">
+                        <Label layoutX="14.0" layoutY="10.0" onMouseClicked="#LinkProfiloGithub" styleClass="link-github" text="Luigi Castaldo">
                            <font>
                               <Font size="10.0" />
                            </font>
@@ -200,7 +258,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
-                        <Label layoutX="99.0" layoutY="10.0" onMouseClicked="#LinkGiuseppe" styleClass="link-github" text="Giuseppe Cautiero">
+                        <Label layoutX="99.0" layoutY="10.0" onMouseClicked="#LinkProfiloGithub" styleClass="link-github" text="Giuseppe Cautiero">
                            <font>
                               <Font size="10.0" />
                            </font>
@@ -208,24 +266,6 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
-                     </children>
-                  </Pane>
-               </children>
-            </AnchorPane>
-            <AnchorPane prefHeight="800.0" prefWidth="600.0">
-               <children>
-                  <Pane layoutX="102.0" layoutY="130.0" prefHeight="391.0" prefWidth="395.0">
-                     <children>
-                        <Label layoutX="85.0" layoutY="227.0" prefHeight="47.0" prefWidth="225.0" text="Compra, vendi e scambia" textFill="WHITE">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <ImageView fitHeight="213.0" fitWidth="226.0" layoutX="92.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../IMG/logo2.png" />
-                           </image>
-                        </ImageView>
                      </children>
                   </Pane>
                </children>

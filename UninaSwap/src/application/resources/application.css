@@ -120,3 +120,7 @@
 .popupLabel{
 	-fx-font-weight: bold;
 }
+
+.label-info{
+	-fx-font-weight: bold;
+}

@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -126,23 +127,28 @@ public class LoginBoundary {
 	}
 	
 	@FXML
-	public void LinkLuigi(MouseEvent e) {
-		try {
-            Desktop.getDesktop().browse(new URI("https://github.com/Lvi00"));
-        }
-		catch (Exception ex) {
-            ex.printStackTrace();
-        }
-	}
-	
-	@FXML
-	public void LinkGiuseppe(MouseEvent e) {
-		try {
-            Desktop.getDesktop().browse(new URI("https://github.com/giuseeee88"));
-        }
-		catch (Exception ex) {
-            ex.printStackTrace();
-        }
+	public void LinkProfiloGithub(MouseEvent e) {
+	    Node source = (Node) e.getSource();
+	    String text = "";
+		String name = "";
+
+	    if (source instanceof Labeled) {
+	        text = ((Labeled) source).getText();
+	        System.out.println(text);
+	        
+	        if(text.equals("Luigi Castaldo")) name = "Lvi00";
+	        else if(text.equals("Giuseppe Cautiero")) name = "giuseeee88";
+	        else System.out.println("Nome non riconosciuto.");
+	        
+	        try {
+	            Desktop.getDesktop().browse(new URI("https://github.com/" + name));
+	        }
+			catch (Exception ex) {
+	            ex.printStackTrace();
+	        }
+	    }
+	    
+	    else System.out.println("Elemento cliccato non contiene testo.");
 	}
 	
 	@FXML

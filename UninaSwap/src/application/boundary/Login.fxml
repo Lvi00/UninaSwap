@@ -23,7 +23,7 @@
                <children>
                   <Pane layoutX="102.0" layoutY="130.0" prefHeight="391.0" prefWidth="395.0">
                      <children>
-                        <Label layoutX="85.0" layoutY="227.0" prefHeight="47.0" prefWidth="225.0" text="Compra, vendi e scambia" textFill="WHITE">
+                        <Label layoutX="49.0" layoutY="227.0" prefHeight="47.0" prefWidth="300.0" text="Compra, vendi, scambia e regala" textFill="WHITE">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -126,13 +126,28 @@
                         </ImageView>
                      </children>
                   </Pane>
-                  <ScrollPane fx:id="InformazioniLogin" layoutX="137.0" layoutY="113.0" prefHeight="378.0" prefWidth="347.0" visible="false">
+                  <ScrollPane fx:id="InformazioniLogin" layoutX="137.0" layoutY="113.0" prefHeight="369.0" prefWidth="347.0" visible="false">
                     <content>
-                      <AnchorPane accessibleRole="TEXT" minHeight="0.0" minWidth="0.0" prefHeight="650.0" prefWidth="316.0">
+                      <AnchorPane accessibleRole="TEXT" minHeight="0.0" minWidth="0.0" prefHeight="425.0" prefWidth="315.0">
                            <children>
-                              <Text layoutX="17.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae efficitur metus, sit amet dignissim turpis. Morbi sollicitudin, lectus a sollicitudin eleifend, lacus sapien malesuada elit, vel tincidunt ligula lacus sit amet nulla. Sed laoreet malesuada nisl in convallis. Nulla vel efficitur est, nec elementum lorem. Curabitur luctus efficitur orci, ac pharetra ligula. Suspendisse potenti. Nullam et porta nibh. Praesent in tellus ligula. Vestibulum vehicula ligula non sodales varius. Morbi accumsan, magna non fermentum luctus, erat elit egestas est, sed tincidunt metus purus in metus.Ut dapibus tristique pretium. Sed eu efficitur purus. Etiam egestas iaculis risus. Nullam vel mauris pretium, vulputate nunc nec, efficitur mi. Vivamus lobortis lectus velit, ac volutpat tortor feugiat a. Sed iaculis tincidunt mauris, ut semper turpis vulputate non. Vestibulum rhoncus erat in quam placerat, vitae tincidunt lorem varius. Etiam laoreet rhoncus ligula, non fermentum nisi fermentum nec. Suspendisse potenti. Integer pulvinar libero et tellus egestas, nec rutrum libero volutpat." wrappingWidth="282.66668701171875" />
-                           </children>
-                        </AnchorPane>
+                              <Text layoutX="17.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Per loggarti correttamente al sistema, è necessario compilare tutti i campi richiesti con attenzione. Segui attentamente le indicazioni qui sotto:" wrappingWidth="282.66668701171875" />
+                              <Label layoutX="17.0" layoutY="125.0" prefHeight="20.0" prefWidth="74.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Username">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="17.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scegli un nome utente che ti identifichi. Deve essere lungo massimo 10 caratteri e composto da lettere, numeri e simboli ma non deve contenere spazi o tabulazioni" wrappingWidth="282.66668701171875" />
+                              <Text layoutX="17.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempio valido: giuse05, Lui@10" wrappingWidth="282.66668701171875" />
+                              <Label layoutX="18.0" layoutY="258.0" prefHeight="20.0" prefWidth="74.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Password">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="17.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deve essere una stringa di lunghezza compresa tra 8 e 20 caratteri" wrappingWidth="282.66668701171875" />
+                              <Text layoutX="17.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempio valido: Pa$$wordSicura10, Hndj928f29j.!" wrappingWidth="282.66668701171875" />
+                              <Text layoutX="18.0" layoutY="342.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi non validi: 123, ciao" wrappingWidth="315.3333333333332" />
+                              <Text layoutX="17.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi non validi: giulia rossi, nome_troppo_lungo" wrappingWidth="282.66668701171875" />
+                           </children></AnchorPane>
                     </content>
                   </ScrollPane>
                   <Button fx:id="ButtonInfo" layoutX="535.0" layoutY="30.0" mnemonicParsing="false" onMouseClicked="#MostraInfoLogin" opacity="0.0" prefHeight="25.0" prefWidth="31.0">
@@ -151,7 +166,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Pane fx:id="PaneLabelInfo" layoutX="149.0" layoutY="127.0" prefHeight="55.0" prefWidth="315.0" styleClass="colore-pannello-info" visible="false">
+                  <Pane fx:id="PaneLabelInfo" layoutX="149.0" layoutY="125.0" prefHeight="55.0" prefWidth="315.0" styleClass="colore-pannello-info" visible="false">
                      <children>
                         <Label layoutX="76.0" layoutY="13.0" prefHeight="27.0" prefWidth="164.0" styleClass="label-login-registrazione" text="Informazioni login">
                            <font>
@@ -160,9 +175,9 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane fx:id="LinkFooter" layoutX="203.0" layoutY="518.0" prefHeight="36.0" prefWidth="199.0" styleClass="footer" visible="false">
+                  <Pane fx:id="LinkFooter" layoutX="200.0" layoutY="518.0" prefHeight="36.0" prefWidth="199.0" styleClass="footer" visible="false">
                      <children>
-                        <Label layoutX="14.0" layoutY="10.0" onMouseClicked="#LinkLuigi" styleClass="link-github" text="Luigi Castaldo">
+                        <Label layoutX="14.0" layoutY="10.0" onMouseClicked="#LinkProfiloGithub" styleClass="link-github" text="Luigi Castaldo">
                            <font>
                               <Font size="10.0" />
                            </font>
@@ -170,7 +185,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
-                        <Label layoutX="99.0" layoutY="10.0" onMouseClicked="#LinkGiuseppe" styleClass="link-github" text="Giuseppe Cautiero">
+                        <Label layoutX="99.0" layoutY="10.0" onMouseClicked="#LinkProfiloGithub" styleClass="link-github" text="Giuseppe Cautiero">
                            <font>
                               <Font size="10.0" />
                            </font>
