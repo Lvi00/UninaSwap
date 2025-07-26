@@ -23,7 +23,7 @@
                <children>
                   <Pane layoutX="102.0" layoutY="130.0" prefHeight="391.0" prefWidth="395.0">
                      <children>
-                        <Label layoutX="49.0" layoutY="227.0" prefHeight="47.0" prefWidth="300.0" text="Compra, vendi, scambia e regala" textFill="WHITE">
+                        <Label layoutX="52.0" layoutY="227.0" prefHeight="47.0" prefWidth="300.0" text="Compra, vendi, scambia e regala" textFill="WHITE">
                            <font>
                               <Font size="20.0" />
                            </font>
