@@ -18,7 +18,7 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("boundary/Login.fxml"));
             Parent root = loader.load();
 
-            Scene scene = new Scene(root, width, height);
+            Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("resources/application.css").toExternalForm());
 
             stage.setScene(scene);
