@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import application.control.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,10 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class RegistrazioneBoundary {
@@ -52,38 +48,16 @@ public class RegistrazioneBoundary {
 	@FXML private TextField VisualizzaPasswordReg;
 	boolean visibilitaPassword = false;
 	
-	//Componenti finestra
-	@FXML private AnchorPane anchorPaneRegistrazione;
-    @FXML private HBox containerRegistrazione;
-
-    public void setContainerSize(double width, double height) {
-    	containerRegistrazione.setPrefWidth(width);
-    	containerRegistrazione.setPrefHeight(height);
-    }
-
-    public void setAnchorPaneSize(double width, double height) {
-    	anchorPaneRegistrazione.setPrefWidth(width);
-    	anchorPaneRegistrazione.setPrefHeight(height);
-    }
-	
 	@FXML
 	public void MostraLogin(MouseEvent e) {
 		try {
-            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            double width = screenBounds.getWidth();
-            double height = screenBounds.getHeight();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
             Parent root = loader.load();
-            LoginBoundary controller = loader.getController();
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-            stage.setWidth(width);
-            stage.setHeight(height);
-            stage.setX(0);
-            stage.setY(0);
 
-            Scene scene = new Scene(root, width, height);
+            Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 
             stage.setScene(scene);
@@ -91,8 +65,6 @@ public class RegistrazioneBoundary {
             stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
             stage.setResizable(false);
             
-            controller.setContainerSize(width, height);
-            controller.setAnchorPaneSize(width, height);
 
             stage.show();
 		}

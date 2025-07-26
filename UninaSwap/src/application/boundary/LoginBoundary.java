@@ -18,8 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -47,20 +45,7 @@ public class LoginBoundary {
 	@FXML private TextField VisualizzaPasswordLogin;
 	boolean visibilitaPassword = false;
 	
-	//Componeni finestra
-	@FXML private AnchorPane anchorPane;
-    @FXML private HBox container;
 
-    public void setContainerSize(double width, double height) {
-        container.setPrefWidth(width);
-        container.setPrefHeight(height);
-    }
-
-    public void setAnchorPaneSize(double width, double height) {
-        anchorPane.setPrefWidth(width);
-        anchorPane.setPrefHeight(height);
-    }
-    
 	@FXML
 	public void MostraInfoLogin (MouseEvent e) {
 		PaneLogin.setVisible(false);
@@ -94,21 +79,13 @@ public class LoginBoundary {
 	@FXML
 	public void MostraRegistrazione(MouseEvent e) {
 		try {
-            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            double width = screenBounds.getWidth();
-            double height = screenBounds.getHeight();
+
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Registrazione.fxml"));
             Parent root = loader.load();
-            RegistrazioneBoundary controller = loader.getController();
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-            stage.setWidth(width);
-            stage.setHeight(height);
-            stage.setX(0);
-            stage.setY(0);
-
-            Scene scene = new Scene(root, width, height);
+            Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 
             stage.setScene(scene);
@@ -116,8 +93,6 @@ public class LoginBoundary {
             stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
             stage.setResizable(false);
             
-            controller.setContainerSize(width, height);
-            controller.setAnchorPaneSize(width, height);
 
             stage.show();
 		}
