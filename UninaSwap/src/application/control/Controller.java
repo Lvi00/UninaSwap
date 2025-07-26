@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import application.DAO.StudenteDAO;
+import application.boundary.DashboardBoundary;
 import application.entity.Studente;
 
 public class Controller {
@@ -76,6 +77,8 @@ public class Controller {
 	    
 	}
 	
+	
+	
 	private int isValidEmail(String email) {
 		
 	    if (email == null || email.contains(" ") || email.contains("\t")) {
@@ -104,7 +107,8 @@ public class Controller {
         return 1;
 	}
 	
-	public int CheckLoginStudente(String username, String password){
+	public Studente CheckLoginStudente(String username, String password){
 		return new StudenteDAO().LoginStudente(username, password);
 	}
+	
 }

@@ -29,7 +29,7 @@ public class StudenteDAO {
                 System.out.println("Errore: inserimento fallito.");
                 return 1;
             }
-
+           
 		}
 		catch (SQLException ex) {
 		    System.out.println("Errore nella connessione al database");
@@ -39,10 +39,12 @@ public class StudenteDAO {
 		return 0;
 	}
 	
-	public int LoginStudente(String username, String password){
+	public Studente LoginStudente(String username, String password){
+		
+		Studente studente = null;
 		try {
 		    Connection conn = ConnessioneDB.getConnection();
-		    String query = "SELECT 1 FROM STUDENTE WHERE username = ? AND passkey = ?";
+		    String query = "SELECT * FROM STUDENTE WHERE username = ? AND passkey = ?";
 		    PreparedStatement statement = conn.prepareStatement(query);
 		    statement.setString(1, username);
 		    statement.setString(2, password);
@@ -51,17 +53,28 @@ public class StudenteDAO {
 	            System.out.println("Utente non esistente.");
 	            rs.close();
 	            statement.close();
-	            return 1;
+	            return null;
 	        }
+	        
+        	System.out.println("Utente esistente.");
+            String Matricola = rs.getString(1);
+            String Email = rs.getString(2);
+            String Nome = rs.getString(3);
+            String Cognome = rs.getString(4);
+            String Passkey = rs.getString(5);
+            String Username = rs.getString(6);
+            studente = new Studente (Matricola,Email,Nome,Cognome,Passkey,Username);
+            
+            rs.close();
+            statement.close();
+
 		}
 		catch (SQLException ex) {
 		    System.out.println("Errore nella connessione al database");
 		    ex.printStackTrace();
 		}
-		
-		System.out.println("Utente esistente.");
-		
-		return 0;
+	
+		return studente;
 	}
 	
 	public int CheckUtenteEsistenteRegistrazione(String matricola, String email, String username) {

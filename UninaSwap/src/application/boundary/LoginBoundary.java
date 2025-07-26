@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.net.URI;
 
 import application.control.Controller;
+import application.entity.Studente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -24,7 +25,6 @@ import javafx.stage.Stage;
 
 public class LoginBoundary {
 	private Controller controller = new Controller();
-	private String username;
 	
 	@FXML private Pane PaneLogin;
 	@FXML private ScrollPane InformazioniLogin;
@@ -44,7 +44,7 @@ public class LoginBoundary {
 	@FXML private ImageView TastoHidePassword;
 	@FXML private TextField VisualizzaPasswordLogin;
 	boolean visibilitaPassword = false;
-	
+	private Studente studente=null;
 
 	@FXML
 	public void MostraInfoLogin (MouseEvent e) {
@@ -80,7 +80,6 @@ public class LoginBoundary {
 	public void MostraRegistrazione(MouseEvent e) {
 		try {
 
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Registrazione.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -89,6 +88,7 @@ public class LoginBoundary {
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 
             stage.setScene(scene);
+            stage.centerOnScreen();
             stage.setTitle("UninaSwap - Registrazione");
             stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
             stage.setResizable(false);
@@ -136,11 +136,10 @@ public class LoginBoundary {
 		else {
 			String username = UsernameLogin.getText().trim();
 			String password = PasswordLogin.getText().trim();
-
-			if(controller.CheckLoginStudente(username, password) == 1)
+			this.studente = controller.CheckLoginStudente(username, password);
+			if(this.studente==null)
 				ShowPopupError("Utente non esistente", "Le credenziali inserite non sono corrette");
 			else {
-				this.username = username;
 				MostraDashboard(e);
 			}
 		}
@@ -149,24 +148,18 @@ public class LoginBoundary {
 	@FXML
 	public void MostraDashboard(MouseEvent e) {
 		try {
-            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            double width = screenBounds.getWidth();
-            double height = screenBounds.getHeight();
+  
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
             Parent root = loader.load();
-            DashboardBoundary controller = loader.getController();
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-            stage.setWidth(width);
-            stage.setHeight(height);
-            stage.setX(0);
-            stage.setY(0);
-
-            Scene scene = new Scene(root, width, height);
+            Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-
-            controller.creaDashboard(width, height, this.username);
+            
+            
+            DashboardBoundary dashboard = loader.getController();
+            dashboard.CostruisciDashboard(this.studente);
             
             stage.setScene(scene);
             stage.setTitle("UninaSwap - Dashboard");

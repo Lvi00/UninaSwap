@@ -61,6 +61,7 @@ public class RegistrazioneBoundary {
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 
             stage.setScene(scene);
+            stage.centerOnScreen();
             stage.setTitle("UninaSwap - Login");
             stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
             stage.setResizable(false);
