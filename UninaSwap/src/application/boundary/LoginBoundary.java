@@ -162,6 +162,7 @@ public class LoginBoundary {
             dashboard.CostruisciDashboard(this.studente);
             
             stage.setScene(scene);
+            stage.centerOnScreen();
             stage.setTitle("UninaSwap - Dashboard");
             stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
             stage.setResizable(false);
