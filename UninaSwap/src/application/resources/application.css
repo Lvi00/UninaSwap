@@ -124,3 +124,28 @@
 .label-info{
 	-fx-font-weight: bold;
 }
+
+#sidebar{
+	-fx-background-color: linear-gradient(from 0% 50% to 0% 100%, #2207bb 0%, #153464 100%);
+    -fx-background-radius: 0px 0px 20px 0px;
+    -fx-padding: 10px;
+}
+
+#navbar{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #2207bb, #153464);
+}
+
+.sezioni-sidebar{
+	-fx-background-color: #F2EFEA;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+}
+
+.label-sidebar{
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+#label-profilo{
+	-fx-font-weight: bold;
+}

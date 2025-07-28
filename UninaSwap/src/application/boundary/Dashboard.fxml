@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -10,18 +11,113 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.DashboardBoundary">
    <children>
-      <AnchorPane prefHeight="600.0" prefWidth="1100.0">
+      <AnchorPane prefHeight="614.0" prefWidth="1100.0">
          <children>
-            <AnchorPane layoutY="89.0" prefHeight="611.0" prefWidth="200.0" />
-            <AnchorPane prefHeight="90.0" prefWidth="1100.0">
+            <AnchorPane id="sidebar" prefHeight="601.0" prefWidth="220.0" stylesheets="@../resources/application.css">
                <children>
-                  <Pane layoutX="900.0" prefHeight="90.0" prefWidth="200.0">
+                  <Pane layoutX="20.0" layoutY="141.0" prefHeight="50.0" prefWidth="180.0" styleClass="sezioni-sidebar" stylesheets="@../resources/application.css">
                      <children>
-                        <Label fx:id="UserNameDashboard" layoutX="63.0" layoutY="29.0" prefHeight="33.0" prefWidth="123.0">
+                        <Label layoutX="-5.0" onMouseClicked="#selezioneSezione" prefHeight="50.0" prefWidth="190.0" styleClass="label-sidebar" stylesheets="@../resources/application.css" text="Catalogo">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Label>
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </Pane>
+                  <Pane layoutX="20.0" layoutY="221.0" prefHeight="50.0" prefWidth="180.0" styleClass="sezioni-sidebar" stylesheets="@../resources/application.css">
+                     <children>
+                        <Label layoutX="-5.0" onMouseClicked="#selezioneSezione" prefHeight="50.0" prefWidth="190.0" styleClass="label-sidebar" stylesheets="@../resources/application.css" text="Le tue vendite">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Label>
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </Pane>
+                  <Pane layoutX="20.0" layoutY="301.0" prefHeight="50.0" prefWidth="180.0" styleClass="sezioni-sidebar" stylesheets="@../resources/application.css">
+                     <children>
+                        <Label layoutX="-5.0" onMouseClicked="#selezioneSezione" prefHeight="50.0" prefWidth="190.0" styleClass="label-sidebar" stylesheets="@../resources/application.css" text="I tuoi acquisti">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Label>
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </Pane>
+                  <Pane layoutX="20.0" layoutY="381.0" prefHeight="50.0" prefWidth="180.0" styleClass="sezioni-sidebar" stylesheets="@../resources/application.css">
+                     <children>
+                        <Label layoutX="-5.0" onMouseClicked="#selezioneSezione" prefHeight="50.0" prefWidth="190.0" styleClass="label-sidebar" stylesheets="@../resources/application.css" text="I tuoi scambi">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Label>
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </Pane>
+                  <Pane layoutX="20.0" layoutY="461.0" prefHeight="50.0" prefWidth="180.0" styleClass="sezioni-sidebar" stylesheets="@../resources/application.css">
+                     <children>
+                        <Label layoutX="-5.0" onMouseClicked="#selezioneSezione" prefHeight="50.0" prefWidth="190.0" styleClass="label-sidebar" stylesheets="@../resources/application.css" text="Statistiche">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Label>
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </Pane>
+                  <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="96.0" layoutY="529.0" onMouseClicked="#logout" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../IMG/logout.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <Label layoutX="86.0" layoutY="562.0" styleClass="label-sidebar" text="Logout" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="113.0" fitWidth="112.0" layoutX="57.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../IMG/logo2.png" />
+                     </image>
+                  </ImageView>
+               </children></AnchorPane>
+            <AnchorPane id="navbar" layoutX="218.0" prefHeight="102.0" prefWidth="882.0" stylesheets="@../resources/application.css">
+               <children>
+                  <Pane layoutX="611.0" layoutY="14.0" prefHeight="73.0" prefWidth="257.0">
+                     <children>
+                        <Label id="label-profilo" fx:id="usernameDashboard" layoutX="60.0" layoutY="20.0" prefHeight="33.0" prefWidth="180.0" stylesheets="@../resources/application.css" textFill="WHITE">
+                           <font>
+                              <Font size="16.0" />
                            </font></Label>
-                        <ImageView fitHeight="33.0" fitWidth="37.0" layoutX="22.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="14.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../IMG/account.png" />
                            </image>
@@ -30,7 +126,11 @@
                   </Pane>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="200.0" layoutY="90.0" prefHeight="611.0" prefWidth="900.0" />
+            <HBox layoutX="219.0" layoutY="101.0" prefHeight="500.0" prefWidth="882.0" style="-fx-background-color: #F2EFEA;">
+               <children>
+                  <AnchorPane prefHeight="500.0" prefWidth="885.0" />
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
    </children>

@@ -19,7 +19,7 @@
    <children>
       <AnchorPane prefHeight="600.0" prefWidth="1100.0">
          <children>
-            <ImageView fx:id="ImmagineInfo" fitHeight="31.0" fitWidth="30.0" layoutX="990.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="ImmagineInfo" fitHeight="31.0" fitWidth="32.0" layoutX="1010.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../IMG/info.png" />
                </image>
@@ -27,7 +27,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <ImageView fx:id="ImmagineLogin" fitHeight="31.0" fitWidth="30.0" layoutX="990.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="ImmagineLogin" fitHeight="31.0" fitWidth="32.0" layoutX="1010.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../IMG/back.png" />
                </image>
@@ -131,7 +131,7 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
-            <Button fx:id="ButtonInfo" layoutX="993.0" layoutY="20.0" mnemonicParsing="false" onMouseClicked="#MostraInfoLogin" opacity="0.0" prefHeight="25.0" prefWidth="31.0">
+            <Button fx:id="ButtonInfo" layoutX="1010.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#MostraInfoLogin" opacity="0.0" prefHeight="31.0" prefWidth="32.0">
                <tooltip>
                   <Tooltip anchorLocation="WINDOW_TOP_RIGHT" text="Mostra info" />
                </tooltip>
@@ -148,7 +148,7 @@
                   </Label>
                </children>
             </Pane>
-            <Button fx:id="ButtonReturnLogin" layoutX="994.0" layoutY="23.0" mnemonicParsing="false" onMouseClicked="#NascondiInfoLogin" opacity="0.0" prefHeight="25.0" prefWidth="31.0" visible="false">
+            <Button fx:id="ButtonReturnLogin" layoutX="1010.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#NascondiInfoLogin" opacity="0.0" prefHeight="31.0" prefWidth="32.0" visible="false">
                <tooltip>
                   <Tooltip anchorLocation="WINDOW_TOP_RIGHT" text="Ritorna alla registrazione" />
                </tooltip>

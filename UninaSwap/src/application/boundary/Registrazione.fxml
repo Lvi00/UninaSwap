@@ -32,7 +32,7 @@
                      </font>
                   </Label>
                  
-                        <Label layoutX="239.0" layoutY="102.0" prefHeight="20.0" prefWidth="77.0" styleClass="label-login-registrazione" text="Cognome">
+                        <Label layoutX="242.0" layoutY="102.0" prefHeight="20.0" prefWidth="83.0" styleClass="label-login-registrazione" text="Cognome">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -50,7 +50,7 @@
                      </font>
                   </TextField>
                   
-                        <Label layoutX="54.0" layoutY="158.0" prefHeight="27.0" prefWidth="86.0" styleClass="label-login-registrazione" text="Matricola">
+                        <Label layoutX="56.0" layoutY="158.0" prefHeight="27.0" prefWidth="86.0" styleClass="label-login-registrazione" text="Matricola">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -61,7 +61,7 @@
                      </font>
                   </TextField>
                   
-                        <Label layoutX="54.0" layoutY="221.0" prefHeight="25.0" prefWidth="86.0" styleClass="label-login-registrazione" text="Email">
+                        <Label layoutX="57.0" layoutY="221.0" prefHeight="25.0" prefWidth="86.0" styleClass="label-login-registrazione" text="Email">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -83,12 +83,12 @@
                      </font>
                   </TextField>
                   
-                        <Label layoutX="57.0" layoutY="342.0" prefHeight="25.0" prefWidth="83.0" styleClass="label-login-registrazione" text="Password">
+                        <Label layoutX="59.0" layoutY="342.0" prefHeight="25.0" prefWidth="83.0" styleClass="label-login-registrazione" text="Password">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <PasswordField fx:id="passwordFieldReg" layoutX="56.0" layoutY="367.0" prefHeight="36.0" prefWidth="360.0" promptText="Inserire la password" styleClass="campi">
+                  <PasswordField fx:id="passwordFieldReg" layoutX="56.0" layoutY="368.0" prefHeight="36.0" prefWidth="360.0" promptText="Inserire la password" styleClass="campi">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -123,7 +123,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <TextField fx:id="VisualizzaPasswordReg" layoutX="56.0" layoutY="377.0" prefHeight="36.0" prefWidth="360.0" styleClass="campi" visible="false">
+                  <TextField fx:id="VisualizzaPasswordReg" layoutX="56.0" layoutY="368.0" prefHeight="36.0" prefWidth="360.0" styleClass="campi" visible="false">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -154,28 +154,28 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </ImageView>
-            <ScrollPane fx:id="InformazioniRegistrazione" layoutX="558.0" layoutY="98.0" prefHeight="370.0" prefWidth="347.0" visible="false">
+            <ScrollPane fx:id="InformazioniRegistrazione" layoutX="558.0" layoutY="98.0" prefHeight="376.0" prefWidth="347.0" visible="false">
                <content>
                   <AnchorPane accessibleRole="TEXT" minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="315.0">
                      <children>
                         <Text layoutX="18.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Per registrarti correttamente al sistema, è necessario compilare tutti i campi richiesti con attenzione. Ogni informazione verrà verificata per garantire l'integrità dei dati. Segui attentamente le indicazioni qui sotto:" wrappingWidth="282.66668701171875" />
-                        <Label layoutX="18.0" layoutY="149.0" prefHeight="20.0" prefWidth="136.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Nome e Cognome">
+                        <Label layoutX="18.0" layoutY="144.0" prefHeight="25.0" prefWidth="134.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Nome e Cognome">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
                         <Text layoutX="18.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inserisci il tuo nome di battesimo e il tuo cognome. Deve essere composto solo da lettere, senza numeri o simboli. Entrambi devono avere una lunghezza compresa tra 2 e 40 caratteri." wrappingWidth="282.66668701171875" />
-                        <Text layoutX="18.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi validi: Marco Rossi, Giulia Bianchi" wrappingWidth="282.66668701171875" />
-                        <Text layoutX="18.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi non validi: GS, 123 Luca, @ ndrea" wrappingWidth="282.66668701171875" />
-                        <Label layoutX="18.0" layoutY="272.0" prefHeight="20.0" prefWidth="66.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Matricola">
+                        <Text layoutX="18.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi validi: Marco Rossi, Giulia Bianchi" wrappingWidth="282.66668701171875" />
+                        <Text layoutX="18.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi non validi: GS, 123 Luca, @ ndrea" wrappingWidth="282.66668701171875" />
+                        <Label layoutX="18.0" layoutY="270.0" prefHeight="25.0" prefWidth="134.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Matricola">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
                         <Text layoutX="18.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deve essere una stringa esattamente di 9 caratteri, senza spazi o tabulazioni." wrappingWidth="282.66668701171875" />
-                        <Text layoutX="18.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempio valido: N86005564" wrappingWidth="282.66668701171875" />
-                        <Text layoutX="18.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi non validi: 123456789, S12345678, N8600!3AC" wrappingWidth="291.33331298828125" />
-                        <Label layoutX="18.0" layoutY="364.0" prefHeight="20.0" prefWidth="66.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Email">
+                        <Text layoutX="18.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempio valido: N86005564" wrappingWidth="282.66668701171875" />
+                        <Text layoutX="18.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi non validi: 123456789, S12345678, N8600!3AC" wrappingWidth="291.33331298828125" />
+                        <Label layoutX="17.0" layoutY="358.0" prefHeight="25.0" prefWidth="134.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Email">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -183,12 +183,12 @@
                         <Text layoutX="18.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inserisci un indirizzo email valido. Il formato corretto è simile a: nome.cognome@esempio.it" wrappingWidth="282.66668701171875" />
                         <Text layoutX="18.0" layoutY="429.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempio valido: gius.cautiero@studenti.unina.it" wrappingWidth="282.66668701171875" />
                         <Text layoutX="18.0" layoutY="445.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi non validi: nome.cognome, email@, test@.com" wrappingWidth="291.33331298828125" />
-                        <Label layoutX="18.0" layoutY="457.0" prefHeight="20.0" prefWidth="66.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Username">
+                        <Label layoutX="18.0" layoutY="449.0" prefHeight="25.0" prefWidth="134.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Username">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Text layoutX="18.0" layoutY="490.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scegli un nome utente che ti identifichi. Deve essere lungo massimo 10 caratteri e composto da lettere, numeri e simboli ma non deve contenere spazi o tabulazioni" wrappingWidth="282.66668701171875" />
+                        <Text layoutX="18.0" layoutY="487.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scegli un nome utente che ti identifichi. Deve essere lungo massimo 10 caratteri e composto da lettere, numeri e simboli ma non deve contenere spazi o tabulazioni" wrappingWidth="282.66668701171875" />
                         <Text layoutX="18.0" layoutY="558.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempio valido: giuse05, Lui@10" wrappingWidth="282.66668701171875" />
                         <Text layoutX="18.0" layoutY="574.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Esempi non validi: giulia rossi, nome_troppo_lungo" wrappingWidth="291.33331298828125" />
                         <Label layoutX="18.0" layoutY="585.0" prefHeight="20.0" prefWidth="66.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Password">
@@ -203,7 +203,7 @@
                   </AnchorPane>
                </content>
             </ScrollPane>
-            <Button fx:id="ButtonInfoReg" layoutX="1010.0" layoutY="31.0" mnemonicParsing="false" onMouseClicked="#MostraInfoRegistrazione" opacity="0.0" prefHeight="25.0" prefWidth="31.0">
+            <Button fx:id="ButtonInfoReg" layoutX="1010.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#MostraInfoRegistrazione" opacity="0.0" prefHeight="31.0" prefWidth="32.0">
                <tooltip>
                   <Tooltip anchorLocation="WINDOW_TOP_RIGHT" text="Mostra info" />
                </tooltip>
@@ -211,7 +211,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="ButtonReturnRegistrazione" layoutX="1010.0" layoutY="31.0" mnemonicParsing="false" onMouseClicked="#NascondiInfoRegistrazione" opacity="0.0" prefHeight="25.0" prefWidth="31.0" visible="false">
+            <Button fx:id="ButtonReturnRegistrazione" layoutX="1010.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#NascondiInfoRegistrazione" opacity="0.0" prefHeight="25.0" prefWidth="31.0" visible="false">
                <tooltip>
                   <Tooltip anchorLocation="WINDOW_TOP_RIGHT" text="Ritorna alla registrazione" />
                </tooltip>
