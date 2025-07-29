@@ -41,5 +41,4 @@ public class Studente {
     public String getUsername() {
         return username;
     }
-	
 }

@@ -1,17 +1,15 @@
 package application.control;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import application.DAO.StudenteDAO;
-import application.boundary.DashboardBoundary;
 import application.entity.Studente;
 
 public class Controller {
 	
 	public int checkData(ArrayList<String> credenziali) {
-		
 		String nome = credenziali.get(0);
 		String cognome = credenziali.get(1);
 		String matricola = credenziali.get(2);
@@ -60,7 +58,7 @@ public class Controller {
 	    }
 	    
 	    //Controllo se l'utente esiste già
-	    if(new StudenteDAO().CheckUtenteEsistenteRegistrazione(matricola, email, username) == 1) {
+	    if(new StudenteDAO().CheckStudenteEsistente(matricola, email, username) == 1) {
 	    	System.out.println("Utente già esistente.");
 	    	return 8;
 	    }
@@ -69,18 +67,19 @@ public class Controller {
 	}
 	
 
-	public void InserisciStudente(ArrayList<String> credenziali)
-	{
+	public void InserisciStudente(ArrayList<String> credenziali){
 	    // Se arrivi qui, tutti i campi sono validi
 	    StudenteDAO studenteDAO = new StudenteDAO();
-	    studenteDAO.SaveStudente(new Studente(credenziali.get(2), credenziali.get(3), credenziali.get(0), credenziali.get(1), credenziali.get(5), credenziali.get(4)));
-	    
+	    try {
+			studenteDAO.Save(new Studente(credenziali.get(2), credenziali.get(3), credenziali.get(0), credenziali.get(1), credenziali.get(5), credenziali.get(4)));
+		} catch (SQLException e) {
+			System.out.println("Errore durante l'inserimento dello studente: " + e.getMessage());
+		}
 	}
 	
 	
 	
 	private int isValidEmail(String email) {
-		
 	    if (email == null || email.contains(" ") || email.contains("\t")) {
 	        return 1; // email non valida per spazi o null
 	    }

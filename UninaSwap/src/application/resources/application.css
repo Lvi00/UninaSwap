@@ -133,6 +133,8 @@
 
 #navbar{
     -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #2207bb, #153464);
+    -fx-background-radius: 0px 0px 20px 0px;
+    -fx-border-radius: 0px 0px 20px 0px;
 }
 
 .sezioni-sidebar{
@@ -148,4 +150,16 @@
 
 #label-profilo{
 	-fx-font-weight: bold;
+}
+
+#logout-icon{
+    -fx-scale-x: 1.00;
+    -fx-scale-y: 1.00;
+    -fx-opacity: 1.0;
+}
+
+#logout-icon:hover{
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-opacity: 0.9;
 }

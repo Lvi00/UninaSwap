@@ -2,12 +2,10 @@ package application.boundary;
 
 import java.awt.Desktop;
 import java.net.URI;
-
 import application.control.Controller;
 import application.entity.Studente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,7 +18,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class LoginBoundary {
@@ -43,8 +40,49 @@ public class LoginBoundary {
 	@FXML private ImageView TastoShowPassword;
 	@FXML private ImageView TastoHidePassword;
 	@FXML private TextField VisualizzaPasswordLogin;
-	boolean visibilitaPassword = false;
-	private Studente studente=null;
+	private boolean visibilitaPassword = false;
+	
+	private Studente studente = null;
+	
+	@FXML
+	public void MostraLogin(MouseEvent e) {
+	    try {
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+	        Parent root = loader.load();
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+	        Scene scene = new Scene(root);
+	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+	        stage.setScene(scene);
+	        stage.centerOnScreen();
+	        stage.setTitle("UninaSwap - Login");
+	        stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
+	        stage.setResizable(false);
+	        stage.show();
+	    }
+	    catch(Exception ex) {
+	        ex.printStackTrace();
+	    }
+	}
+	
+	@FXML
+	public void MostraRegistrazione(MouseEvent e) {
+		try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Registrazione.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+            stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.setTitle("UninaSwap - Registrazione");
+            stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
+            stage.setResizable(false);
+            stage.show();
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 
 	@FXML
 	public void MostraInfoLogin (MouseEvent e) {
@@ -74,31 +112,6 @@ public class LoginBoundary {
 		
 		ButtonReturnLogin.setVisible(false);
 		ButtonInfo.setVisible(true);
-	}
-	
-	@FXML
-	public void MostraRegistrazione(MouseEvent e) {
-		try {
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Registrazione.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-
-            stage.setScene(scene);
-            stage.centerOnScreen();
-            stage.setTitle("UninaSwap - Registrazione");
-            stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
-            stage.setResizable(false);
-            
-
-            stage.show();
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 	
 	@FXML
@@ -137,36 +150,29 @@ public class LoginBoundary {
 			String username = UsernameLogin.getText().trim();
 			String password = PasswordLogin.getText().trim();
 			this.studente = controller.CheckLoginStudente(username, password);
-			if(this.studente==null)
+			
+			if(this.studente == null)
 				ShowPopupError("Utente non esistente", "Le credenziali inserite non sono corrette");
-			else {
+			else
 				MostraDashboard(e);
-			}
 		}
 	}
 	
 	@FXML
 	public void MostraDashboard(MouseEvent e) {
 		try {
-  
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-            
-            
             DashboardBoundary dashboard = loader.getController();
             dashboard.CostruisciDashboard(this.studente);
-            
             stage.setScene(scene);
             stage.centerOnScreen();
             stage.setTitle("UninaSwap - Dashboard");
             stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
             stage.setResizable(false);
-
             stage.show();
 		}
 		catch(Exception ex) {
@@ -175,16 +181,13 @@ public class LoginBoundary {
 	}
 	
 	private void ShowPopupError(String title, String message) {
-		
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
 	        Parent root = loader.load();
 			Scene scene = new Scene(root);
 			Stage stage = new Stage();
-			
 	        PopupErrorBoundary popupController = loader.getController();
 	        popupController.setLabels(title, message);
-	        
 			stage.setTitle("UninaSwap - " + title);
 			stage.setScene(scene);
 			stage.centerOnScreen();

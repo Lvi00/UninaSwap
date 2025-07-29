@@ -50,23 +50,22 @@ public class RegistrazioneBoundary {
 	
 	@FXML
 	public void MostraLogin(MouseEvent e) {
-		try {
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
-            Parent root = loader.load();
+	    try {
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+	        Parent root = loader.load();
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-            stage.setScene(scene);
-            stage.centerOnScreen();
-            stage.setTitle("UninaSwap - Login");
-            stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
-            stage.setResizable(false);
-            stage.show();
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-		}
+	        Scene scene = new Scene(root);
+	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+	        stage.setScene(scene);
+	        stage.centerOnScreen();
+	        stage.setTitle("UninaSwap - Login");
+	        stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
+	        stage.setResizable(false);
+	        stage.show();
+	    }
+	    catch(Exception ex) {
+	        ex.printStackTrace();
+	    }
 	}
 	
 	@FXML

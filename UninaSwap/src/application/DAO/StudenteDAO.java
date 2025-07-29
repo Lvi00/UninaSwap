@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
-public class StudenteDAO {
+public class StudenteDAO implements PostreSQLDAO<Studente, String>{
 	
-	public int SaveStudente(Studente studente) {
+	public int Save(Studente studente) throws SQLException {
 		try {
 		    Connection conn = ConnessioneDB.getConnection();
 		    String query = "INSERT INTO STUDENTE(matricola,email,nome,cognome,passkey,username) VALUES (?,?,?,?,?,?)";
@@ -70,14 +70,13 @@ public class StudenteDAO {
 
 		}
 		catch (SQLException ex) {
-		    System.out.println("Errore nella connessione al database");
 		    ex.printStackTrace();
 		}
 	
 		return studente;
 	}
 	
-	public int CheckUtenteEsistenteRegistrazione(String matricola, String email, String username) {
+	public int CheckStudenteEsistente(String matricola, String email, String username) {
 		try {
 		    Connection conn = ConnessioneDB.getConnection();
 		    String query = "SELECT 1 FROM STUDENTE WHERE matricola = ? OR email = ? OR username = ?;";
@@ -94,12 +93,21 @@ public class StudenteDAO {
 	        }
 		}
 		catch (SQLException ex) {
-		    System.out.println("Errore nella connessione al database");
 		    ex.printStackTrace();
 		}
 		
-		System.out.println("Utente non esistente.");
-		
+		return 0;
+	}
+
+    @Override
+    public int Delete(Studente studente) throws SQLException {
+        // ancora da implementare
+        return 0;
+    }
+
+	@Override
+	public int Find(String value) throws SQLException {
+        // ancora da implementare
 		return 0;
 	}
 }

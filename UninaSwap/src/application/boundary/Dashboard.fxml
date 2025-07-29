@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.DashboardBoundary">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" stylesheets="@../resources/application.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.DashboardBoundary">
    <children>
       <AnchorPane prefHeight="614.0" prefWidth="1100.0">
          <children>
@@ -90,7 +90,7 @@
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </Pane>
-                  <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="96.0" layoutY="529.0" onMouseClicked="#logout" pickOnBounds="true" preserveRatio="true">
+                  <ImageView id="logout-icon" fitHeight="33.0" fitWidth="33.0" layoutX="96.0" layoutY="529.0" onMouseClicked="#logout" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../IMG/logout.png" />
                      </image>
