@@ -1,0 +1,188 @@
+.sfondo{
+	-fx-background-image: url("../IMG/Sfondo.png");
+	-fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: cover;
+}
+
+.form{
+	-fx-background-color: rgba(255, 255, 255, 0.85);
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+}
+
+.label-login-registrazione{
+	-fx-font-weight: bold;
+}
+
+.campi{
+	-fx-background-radius: 10px;
+	-fx-padding: 8px;
+}
+
+.tasto{
+    -fx-background-color: #2207bb;
+    -fx-background-radius: 20px;
+    -fx-padding: 10px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+    -fx-opacity: 1.0;
+    -fx-font-size: 14px;
+}
+
+.tasto:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-opacity: 0.9;
+    -fx-font-size: 15px;
+}
+
+/* ScrollPane container */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 10;
+}
+
+/* Viewport (contenuto visibile) */
+.scroll-pane .viewport {
+    -fx-background-color: rgba(255, 255, 255, 0.8); /* colore di sfondo chiaro */
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+}
+
+/* Barre di scorrimento */
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+/* Thumb (parte mobile) */
+.scroll-bar .thumb {
+    -fx-background-color: #c2c2c2;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+    -fx-padding: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 1);
+}
+
+/* Track (binario) */
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+/* Pulsanti freccia (opzionali) */
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}
+
+.tooltip {
+    -fx-font-family: 'Montserrat';
+}
+
+.colore-pannello-info{
+	-fx-background-color: #d0d4da;
+    -fx-border-radius: 10px 10px 0px 0px;
+    -fx-background-radius: 10px 10px 0px 0px;
+}
+
+.footer{
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+}
+
+.link-github{
+	-fx-font-weight: bold;
+}
+
+.link-github:hover{
+	-fx-text-fill: blue;
+	-fx-font-size: 10px;
+    -fx-border-color: transparent transparent blue transparent;
+    -fx-border-width: 0 0 1.2 0;
+    -fx-padding: 0 0 2 0;
+}
+
+#popupError {
+  -fx-background-color: linear-gradient(
+    from 0% 0%
+    to   100% 0%,
+    #000000 0%,
+    #220000 100%
+  );
+  -fx-text-fill: white;
+}
+
+.popupLabel{
+	-fx-font-weight: bold;
+}
+
+.label-info{
+	-fx-font-weight: bold;
+}
+
+#sidebar {
+    -fx-background-color: linear-gradient(from 0% 50% to 0% 100%, #153464 0%, #0d1e3a 100%);
+    -fx-padding: 10px;
+}
+
+#navbar {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #153464, #0d1e3a);
+}
+
+.sezioni-sidebar{
+	-fx-background-color: #F2EFEA;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+}
+
+.label-sidebar{
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+#label-profilo{
+	-fx-font-weight: bold;
+	-fx-label-padding: 0px 15px 0px 0px;
+}
+
+#logout-icon{
+    -fx-scale-x: 1.00;
+    -fx-scale-y: 1.00;
+    -fx-opacity: 1.0;
+}
+
+#logout-icon:hover{
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-opacity: 0.9;
+}
+
+#pannelloScrollabile{
+	-fx-background-color: #F2EFEA;
+}
+
+.card-annuncio{
+	-fx-background-color: white;
+	-fx-padding: 10;
+	-fx-border-color: #cccccc;
+	-fx-border-radius: 10;
+	-fx-background-radius: 10;
+}
+
+.titolo-annuncio{
+	-fx-font-weight: bold;
+	-fx-font-size: 14;
+}
+
+.prezzo-annuncio{
+	-fx-text-fill: #153464;
+}
+
+.tipo-annuncio{
+	-fx-text-fill: gray;
+}
