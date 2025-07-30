@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import application.entity.Annuncio;
@@ -14,11 +12,11 @@ import application.resources.ConnessioneDB;
 public class AnnuncioDAO {
 
     public ArrayList<Annuncio> getAnnunci() {
-        ArrayList<Annuncio> annunci = new ArrayList<>();
+        ArrayList<Annuncio> annunci = new ArrayList<Annuncio>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM ANNUNCIO";
+            String query = "SELECT * FROM ANNUNCIO LIMIT 100";
             PreparedStatement statement = conn.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
 
