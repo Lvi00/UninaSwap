@@ -8,9 +8,10 @@ import java.sql.SQLException;
 import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
-public class StudenteDAO implements PostreSQLDAO<Studente, String>{
+public class StudenteDAO{
 	
-	public int Save(Studente studente) throws SQLException {
+	
+	public int Save(Studente studente) {
 		try {
 		    Connection conn = ConnessioneDB.getConnection();
 		    String query = "INSERT INTO STUDENTE(matricola,email,nome,cognome,passkey,username) VALUES (?,?,?,?,?,?)";
@@ -96,18 +97,6 @@ public class StudenteDAO implements PostreSQLDAO<Studente, String>{
 		    ex.printStackTrace();
 		}
 		
-		return 0;
-	}
-
-    @Override
-    public int Delete(Studente studente) throws SQLException {
-        // ancora da implementare
-        return 0;
-    }
-
-	@Override
-	public int Find(String value) throws SQLException {
-        // ancora da implementare
 		return 0;
 	}
 }

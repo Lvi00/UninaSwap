@@ -4,7 +4,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import application.DAO.AnnuncioDAO;
 import application.DAO.StudenteDAO;
+import application.entity.Annuncio;
 import application.entity.Studente;
 
 public class Controller {
@@ -70,11 +73,8 @@ public class Controller {
 	public void InserisciStudente(ArrayList<String> credenziali){
 	    // Se arrivi qui, tutti i campi sono validi
 	    StudenteDAO studenteDAO = new StudenteDAO();
-	    try {
-			studenteDAO.Save(new Studente(credenziali.get(2), credenziali.get(3), credenziali.get(0), credenziali.get(1), credenziali.get(5), credenziali.get(4)));
-		} catch (SQLException e) {
-			System.out.println("Errore durante l'inserimento dello studente: " + e.getMessage());
-		}
+	   	studenteDAO.Save(new Studente(credenziali.get(2), credenziali.get(3), credenziali.get(0), credenziali.get(1), credenziali.get(5), credenziali.get(4)));
+
 	}
 	
 	
@@ -110,4 +110,8 @@ public class Controller {
 		return new StudenteDAO().LoginStudente(username, password);
 	}
 	
+	public ArrayList<Annuncio> getAnnunci(){
+		AnnuncioDAO annuncioDAO = new AnnuncioDAO();
+		return annuncioDAO.getAnnunci();
+	}
 }

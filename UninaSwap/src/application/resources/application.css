@@ -125,16 +125,13 @@
 	-fx-font-weight: bold;
 }
 
-#sidebar{
-	-fx-background-color: linear-gradient(from 0% 50% to 0% 100%, #2207bb 0%, #153464 100%);
-    -fx-background-radius: 0px 0px 20px 0px;
+#sidebar {
+    -fx-background-color: linear-gradient(from 0% 50% to 0% 100%, #153464 0%, #0d1e3a 100%);
     -fx-padding: 10px;
 }
 
-#navbar{
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #2207bb, #153464);
-    -fx-background-radius: 0px 0px 20px 0px;
-    -fx-border-radius: 0px 0px 20px 0px;
+#navbar {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #153464, #0d1e3a);
 }
 
 .sezioni-sidebar{
@@ -162,4 +159,8 @@
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
     -fx-opacity: 0.9;
+}
+
+#pannelloScrollabile{
+	-fx-background-color: #F2EFEA;
 }
