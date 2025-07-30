@@ -22,8 +22,8 @@ import javafx.stage.Stage;
 
 public class DashboardBoundary {
 
-    private Studente studente;
     private Controller controller = new Controller();
+    private Studente studente;
 
     @FXML private Label usernameDashboard;
     @FXML private GridPane gridProdotti;
@@ -53,9 +53,9 @@ public class DashboardBoundary {
     private VBox creaCardAnnuncio(Annuncio a) {
         VBox box = new VBox();
         box.setSpacing(8);
-        box.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-background-radius: 10;");
         box.setPrefWidth(200);
-
+        box.getStyleClass().add("card-annuncio");
+        
         Label titolo = new Label(a.getTitoloAnnuncio());
         titolo.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
 

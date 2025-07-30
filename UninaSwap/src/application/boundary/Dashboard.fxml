@@ -19,7 +19,7 @@
          <children>
 
             <!-- Sidebar -->
-            <AnchorPane id="sidebar" prefHeight="600.0" prefWidth="144.0">
+            <AnchorPane id="sidebar" prefHeight="600.0" prefWidth="143.0">
                <children>
                   <ImageView fitHeight="102.0" fitWidth="112.0" layoutX="26.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image><Image url="@../IMG/logo2.png" /></image>
@@ -28,23 +28,19 @@
                   <!-- Sezioni -->
                   <Label layoutX="19.0" layoutY="140.0" onMouseClicked="#selezioneSezione" prefHeight="50.0" prefWidth="112.0" styleClass="label-sidebar" text="Prodotti" textFill="WHITE">
                      <cursor><Cursor fx:constant="HAND" /></cursor>
-                     <font><Font size="14.0" /></font>
+                     <font><Font size="16.0" /></font>
                   </Label>
-                  <Label layoutX="34.0" layoutY="210.0" onMouseClicked="#selezioneSezione" prefHeight="50.0" prefWidth="82.0" styleClass="label-sidebar" text="Statistiche" textFill="WHITE">
+                  <Label layoutX="24.0" layoutY="210.0" onMouseClicked="#selezioneSezione" prefHeight="50.0" prefWidth="102.0" styleClass="label-sidebar" text="Operazioni" textFill="WHITE">
                      <cursor><Cursor fx:constant="HAND" /></cursor>
-                     <font><Font size="14.0" /></font>
+                     <font><Font size="16.0" /></font>
                   </Label>
-                  <Label layoutX="17.0" layoutY="280.0" onMouseClicked="#selezioneSezione" prefHeight="54.0" prefWidth="120.0" styleClass="label-sidebar" text="Le tue operazioni" textFill="WHITE">
+                  <Label layoutX="18.0" layoutY="280.0" onMouseClicked="#selezioneSezione" prefHeight="54.0" prefWidth="112.0" styleClass="label-sidebar" text="Statistiche" textFill="WHITE">
                      <cursor><Cursor fx:constant="HAND" /></cursor>
-                     <font><Font size="14.0" /></font>
+                     <font><Font size="16.0" /></font>
                   </Label>
-                  <Label layoutX="29.0" layoutY="350.0" onMouseClicked="#selezioneSezione" prefHeight="54.0" prefWidth="96.0" styleClass="label-sidebar" text="I tuoi acquisti" textFill="WHITE">
+                  <Label layoutX="13.0" layoutY="350.0" onMouseClicked="#selezioneSezione" prefHeight="54.0" prefWidth="128.0" styleClass="label-sidebar" text="Il tuo profilo" textFill="WHITE">
                      <cursor><Cursor fx:constant="HAND" /></cursor>
-                     <font><Font size="14.0" /></font>
-                  </Label>
-                  <Label layoutX="27.0" layoutY="420.0" onMouseClicked="#selezioneSezione" prefHeight="53.0" prefWidth="96.0" styleClass="label-sidebar" text="Le tue vendite" textFill="WHITE">
-                     <cursor><Cursor fx:constant="HAND" /></cursor>
-                     <font><Font size="14.0" /></font>
+                     <font><Font size="16.0" /></font>
                   </Label>
 
                   <!-- Logout -->
@@ -54,6 +50,14 @@
                   </ImageView>
                   <Label layoutX="51.0" layoutY="553.0" styleClass="label-sidebar" text="Logout" textFill="WHITE">
                      <font><Font size="14.0" /></font>
+                  </Label>
+                  <Label layoutX="13.0" layoutY="420.0" onMouseClicked="#selezioneSezione" prefHeight="54.0" prefWidth="128.0" styleClass="label-sidebar" text="Informazioni" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
                   </Label>
                </children>
             </AnchorPane>
@@ -85,11 +89,11 @@
                         <Button layoutX="278.0" layoutY="14.0" mnemonicParsing="false" text="Cerca" />
 
                         <!-- Scroll con GridPane -->
-                        <ScrollPane layoutX="-2.0" layoutY="64.0" prefHeight="434.0" prefWidth="952.0" fitToWidth="true" fitToHeight="true">
+                        <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="64.0" prefHeight="434.0" prefWidth="952.0">
                            <content>
                               <AnchorPane id="pannelloScrollabile" prefWidth="922.0">
                                  <children>
-                                    <GridPane fx:id="gridProdotti" layoutX="20.0" layoutY="10.0" hgap="30" vgap="30">
+                                    <GridPane fx:id="gridProdotti" hgap="30" layoutX="20.0" layoutY="10.0" vgap="30">
                                        <!-- I prodotti verranno aggiunti dinamicamente -->
                                     </GridPane>
                                  </children>

@@ -147,6 +147,7 @@
 
 #label-profilo{
 	-fx-font-weight: bold;
+	-fx-label-padding: 0px 15px 0px 0px;
 }
 
 #logout-icon{
@@ -163,4 +164,25 @@
 
 #pannelloScrollabile{
 	-fx-background-color: #F2EFEA;
+}
+
+.card-annuncio{
+	-fx-background-color: white;
+	-fx-padding: 10;
+	-fx-border-color: #cccccc;
+	-fx-border-radius: 10;
+	-fx-background-radius: 10;
+}
+
+.titolo-annuncio{
+	-fx-font-weight: bold;
+	-fx-font-size: 14;
+}
+
+.prezzo-annuncio{
+	-fx-text-fill: #153464;
+}
+
+.tipo-annuncio{
+	-fx-text-fill: gray;
 }
