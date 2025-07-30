@@ -42,8 +42,6 @@ public class LoginBoundary {
 	@FXML private TextField VisualizzaPasswordLogin;
 	private boolean visibilitaPassword = false;
 	
-	private Studente studente = null;
-	
 	@FXML
 	public void MostraLogin(MouseEvent e) {
 	    try {
@@ -149,34 +147,30 @@ public class LoginBoundary {
 		else {
 			String username = UsernameLogin.getText().trim();
 			String password = PasswordLogin.getText().trim();
-			this.studente = controller.CheckLoginStudente(username, password);
+			Studente studente = controller.CheckLoginStudente(username, password);
 			
-			if(this.studente == null)
+			if(studente == null)
 				ShowPopupError("Utente non esistente", "Le credenziali inserite non sono corrette");
-			else
-				MostraDashboard(e);
-		}
-	}
-	
-	@FXML
-	public void MostraDashboard(MouseEvent e) {
-		try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-            DashboardBoundary dashboard = loader.getController();
-            dashboard.CostruisciDashboard(this.studente);
-            stage.setScene(scene);
-            stage.centerOnScreen();
-            stage.setTitle("UninaSwap - Dashboard");
-            stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
-            stage.setResizable(false);
-            stage.show();
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
+			else {
+				try {
+		            FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
+		            Parent root = loader.load();
+		            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		            Scene scene = new Scene(root);
+		            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+		            DashboardBoundary dashboardController = loader.getController();
+		            dashboardController.CostruisciDashboard(studente);
+		            stage.setScene(scene);
+		            stage.centerOnScreen();
+		            stage.setTitle("UninaSwap - Dashboard");
+		            stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
+		            stage.setResizable(false);
+		            stage.show();
+				}
+				catch(Exception ex) {
+					ex.printStackTrace();
+				}
+			}
 		}
 	}
 	

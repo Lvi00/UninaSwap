@@ -10,12 +10,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -23,15 +20,13 @@ import javafx.stage.Stage;
 public class DashboardBoundary {
 
     private Controller controller = new Controller();
-    private Studente studente;
 
     @FXML private Label usernameDashboard;
     @FXML private GridPane gridProdotti;
     @FXML private TextField searchField;
 
     public void CostruisciDashboard(Studente s) {
-        this.studente = s;
-        usernameDashboard.setText(this.studente.getUsername());
+        usernameDashboard.setText(s.getUsername());
 
         ArrayList<Annuncio> annunci = controller.getAnnunci();
 
@@ -89,34 +84,6 @@ public class DashboardBoundary {
             stage.show();
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            this.studente = null;
-        }
-    }
-
-    public void selezioneSezione(MouseEvent e) {
-        Node source = (Node) e.getSource();
-        String selezione = ((Labeled) source).getText();
-
-        switch (selezione) {
-            case "Catalogo":
-                System.out.println("Hai selezionato: Catalogo");
-                break;
-            case "Le tue vendite":
-                System.out.println("Hai selezionato: Le tue vendite");
-                break;
-            case "I tuoi acquisti":
-                System.out.println("Hai selezionato: I tuoi acquisti");
-                break;
-            case "I tuoi scambi":
-                System.out.println("Hai selezionato: I tuoi scambi");
-                break;
-            case "Statistiche":
-                System.out.println("Hai selezionato: Statistiche");
-                break;
-            default:
-                System.out.println("Si è verificato un errore nella selezione della sezione.");
-                break;
         }
     }
 } 
