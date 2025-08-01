@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -50,7 +51,22 @@ public class DashboardBoundary {
         box.setSpacing(8);
         box.setPrefWidth(200);
         box.getStyleClass().add("card-annuncio");
-        
+
+        ImageView imageView = new ImageView();
+        try {
+        	//a.getOggetto().getImmagineOggetto()
+            Image img = new Image("", 200, 150, true, true);
+            imageView.setImage(img);
+        } catch (Exception e) {
+            System.out.println("Immagine non trovata: " + a.getOggetto().getImmagineOggetto());
+        }
+        imageView.setFitWidth(200);
+        imageView.setPreserveRatio(true);
+        imageView.setSmooth(true);
+
+        // Aggiungi l'immagine al VBox
+        box.getChildren().add(imageView);
+
         Label titolo = new Label(a.getTitoloAnnuncio());
         titolo.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
 

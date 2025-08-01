@@ -3,7 +3,7 @@ package application.entity;
 import java.time.LocalDateTime;
 
 public class Annuncio {
-
+	private int idAnnuncio;
     private String titoloAnnuncio;
     private boolean statoAnnuncio;
     private LocalDateTime fasciaOrariaInizio;
@@ -11,12 +11,12 @@ public class Annuncio {
     private double prezzo;
     private String tipologia;
     private String descrizioneAnnuncio;
+    private Oggetto oggetto;
 
-
-
-    public Annuncio(String titoloAnnuncio, boolean statoAnnuncio,
-                    LocalDateTime fasciaOrariaInizio, LocalDateTime fasciaOrariaFine,
-                    double prezzo, String tipologia, String descrizioneAnnuncio) {
+    public Annuncio(int idAnnuncio, String titoloAnnuncio, boolean statoAnnuncio,
+    LocalDateTime fasciaOrariaInizio, LocalDateTime fasciaOrariaFine,
+    double prezzo, String tipologia, String descrizioneAnnuncio, Oggetto oggetto) {
+    	this.idAnnuncio = idAnnuncio;
         this.titoloAnnuncio = titoloAnnuncio;
         this.statoAnnuncio = statoAnnuncio;
         this.fasciaOrariaInizio = fasciaOrariaInizio;
@@ -24,10 +24,12 @@ public class Annuncio {
         this.prezzo = prezzo;
         this.tipologia = tipologia;
         this.descrizioneAnnuncio = descrizioneAnnuncio;
-
+		this.oggetto = oggetto;
     }
-
-
+    
+    public int getIdAnnuncio() {
+		return idAnnuncio;
+	}
 
     public String getTitoloAnnuncio() {
         return titoloAnnuncio;
@@ -56,5 +58,8 @@ public class Annuncio {
     public String getDescrizioneAnnuncio() {
         return descrizioneAnnuncio;
     }
-
+    
+    public Oggetto getOggetto() {
+		return oggetto;
+	}
 }
