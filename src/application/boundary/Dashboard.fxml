@@ -70,8 +70,11 @@
                         <ImageView fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                            <image><Image url="@../IMG/account.png" /></image>
                         </ImageView>
-                        <Label id="label-profilo" fx:id="usernameDashboard" textFill="WHITE">
+                        <Label id="label-profilo" fx:id="usernameDashboard" onMouseClicked="#showProfile" textFill="WHITE">
                            <font><Font size="16.0" /></font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Label>
                      </children>
                   </HBox>

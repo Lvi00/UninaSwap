@@ -55,7 +55,7 @@ public class DashboardBoundary {
         ImageView imageView = new ImageView();
         try {
         	//a.getOggetto().getImmagineOggetto()
-            Image img = new Image("", 200, 150, true, true);
+            Image img = new Image("https://pbs.twimg.com/profile_images/806149032091549696/PglCYB9X_400x400.jpg", 200, 150, true, true);
             imageView.setImage(img);
         } catch (Exception e) {
             System.out.println("Immagine non trovata: " + a.getOggetto().getImmagineOggetto());
@@ -101,5 +101,9 @@ public class DashboardBoundary {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    
+    public void showProfile(MouseEvent e) {
+    	
     }
 } 

@@ -168,10 +168,10 @@
 
 .card-annuncio{
 	-fx-background-color: white;
-	-fx-padding: 10;
+	-fx-padding: 10px;
 	-fx-border-color: #cccccc;
-	-fx-border-radius: 10;
-	-fx-background-radius: 10;
+	-fx-border-radius: 10px;
+	-fx-background-radius: 10px;
 }
 
 .titolo-annuncio{
