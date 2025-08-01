@@ -39,7 +39,7 @@ public class AnnuncioDAO {
 
             rs.close();
             statement.close();
-
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

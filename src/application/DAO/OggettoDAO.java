@@ -32,7 +32,7 @@ public class OggettoDAO {
 
             rs.close();
             statement.close();
-
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

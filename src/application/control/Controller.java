@@ -74,7 +74,7 @@ public class Controller {
 	public void InserisciStudente(ArrayList<String> credenziali){
 	    // Se arrivi qui, tutti i campi sono validi
 	    StudenteDAO studenteDAO = new StudenteDAO();
-	   	studenteDAO.Save(new Studente(credenziali.get(2), credenziali.get(3), credenziali.get(0), credenziali.get(1), credenziali.get(4)));
+	   	studenteDAO.Save(new Studente(credenziali.get(2), credenziali.get(3), credenziali.get(0), credenziali.get(1), credenziali.get(4)), credenziali.get(5));
 	}
 	
 	

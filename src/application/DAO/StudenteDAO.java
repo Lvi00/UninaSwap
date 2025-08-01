@@ -13,28 +13,26 @@ public class StudenteDAO{
 	
 	Controller controller = new Controller();
 	
-	public int Save(Studente studente) {
+	public int Save(Studente studente, String password) {
 		try {
 		    Connection conn = ConnessioneDB.getConnection();
-		    String query = "INSERT INTO STUDENTE(matricola,email,nome,cognome,passkey,username) VALUES (?,?,?,?,?)";
+		    String query = "INSERT INTO STUDENTE(matricola,email,nome,cognome,passkey,username) VALUES (?,?,?,?,?,?)";
 		    PreparedStatement statement = conn.prepareStatement(query);
 		    statement.setString(1, studente.getMatricola());
 		    statement.setString(2, studente.getEmail());
 		    statement.setString(3, studente.getNome());
 		    statement.setString(4, studente.getCognome());
-		    statement.setString(5, studente.getUsername());
-		    
+		    statement.setString(5, password);
+		    statement.setString(6, studente.getUsername());
 		    int rowsInserted = statement.executeUpdate();
 		    statement.close();
-
+		    
             if (rowsInserted == 0) {
                 System.out.println("Errore: inserimento fallito.");
                 return 1;
             }
-           
 		}
 		catch (SQLException ex) {
-		    System.out.println("Errore nella connessione al database");
 		    ex.printStackTrace();
 		}
 		
@@ -64,11 +62,10 @@ public class StudenteDAO{
             String Nome = rs.getString(3);
             String Cognome = rs.getString(4);
             String Username = rs.getString(6);
-            studente = new Studente (Matricola,Email,Nome,Cognome,Username);
-            
+            studente = new Studente (Matricola, Email, Nome, Cognome, Username);
             rs.close();
             statement.close();
-
+            
 		}
 		catch (SQLException ex) {
 		    ex.printStackTrace();
@@ -86,12 +83,13 @@ public class StudenteDAO{
 		    statement.setString(2, email);
 		    statement.setString(3, username);
 	        ResultSet rs = statement.executeQuery();
-	        if (rs.next()) {
-	            System.out.println("Errore: Utente già esistente.");
-	            rs.close();
-	            statement.close();
-	            return 1;
-	        }
+	        
+	        int risultato = rs.next() ? 1 : 0;
+	        
+	        if(risultato == 1) return 1;
+	        
+            rs.close();
+            statement.close();
 		}
 		catch (SQLException ex) {
 		    ex.printStackTrace();
