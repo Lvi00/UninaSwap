@@ -6,31 +6,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Oggetto;
 import application.resources.ConnessioneDB;
 
 public class AnnuncioDAO {
+	
+	Controller controller = new Controller();
 
     public ArrayList<Annuncio> getAnnunci() {
         ArrayList<Annuncio> annunci = new ArrayList<Annuncio>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM ANNUNCIO AS A INNER JOIN OGGETTO AS O ON A.idoggetto = O.idoggetto LIMIT 100";
+            String query = "SELECT * FROM ANNUNCIO LIMIT 100";
             PreparedStatement statement = conn.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-            	Oggetto oggetto = new Oggetto(
-                    rs.getInt("idoggetto"),
-                    rs.getString("immagineoggetto"),
-                    rs.getString("categoria"),
-                    rs.getString("descrizione"),
-                    rs.getString("matstudente"),
-                    rs.getString("nomeoggetto")
-            	);
-                
                 Annuncio annuncio = new Annuncio(
                 	rs.getInt("idannuncio"),
                     rs.getString("titoloannuncio"),
@@ -40,7 +34,7 @@ public class AnnuncioDAO {
                     rs.getDouble("prezzo"),
                     rs.getString("tipologia"),
                     rs.getString("descrizioneannuncio"),
-                    oggetto
+                    rs.getInt("idoggetto")
                 );
                 annunci.add(annuncio);
             }

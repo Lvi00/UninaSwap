@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -25,11 +26,12 @@ public class DashboardBoundary {
     @FXML private Label usernameDashboard;
     @FXML private GridPane gridProdotti;
     @FXML private TextField searchField;
+    @FXML private AnchorPane contentPane;
 
     public void CostruisciDashboard(Studente s) {
         usernameDashboard.setText(s.getUsername());
 
-        ArrayList<Annuncio> annunci = controller.getAnnunci();
+        ArrayList<Annuncio> annunci = controller.getInfoAnnunci();
 
         int column = 0;
         int row = 0;
@@ -102,8 +104,8 @@ public class DashboardBoundary {
             ex.printStackTrace();
         }
     }
-    
+
     public void showProfile(MouseEvent e) {
-    	
+    	System.out.println("Profilo utente");
     }
 } 

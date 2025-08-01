@@ -5,8 +5,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import application.DAO.AnnuncioDAO;
+import application.DAO.OggettoDAO;
 import application.DAO.StudenteDAO;
 import application.entity.Annuncio;
+import application.entity.Oggetto;
 import application.entity.Studente;
 
 public class Controller {
@@ -109,8 +111,18 @@ public class Controller {
 		return new StudenteDAO().LoginStudente(username, password);
 	}
 	
-	public ArrayList<Annuncio> getAnnunci(){
-		AnnuncioDAO annuncioDAO = new AnnuncioDAO();
-		return annuncioDAO.getAnnunci();
+	public ArrayList<Annuncio> getInfoAnnunci() {
+	    AnnuncioDAO annuncioDAO = new AnnuncioDAO();
+	    OggettoDAO oggettoDAO = new OggettoDAO();
+	    ArrayList<Annuncio> annunci = annuncioDAO.getAnnunci();
+
+	    for (Annuncio annuncio : annunci) {
+	        int idOggetto = annuncio.getIdOggetto();
+	        //Da modificare e inserire nel controller tramite un metodo
+	        Oggetto oggetto = oggettoDAO.getOggetto(idOggetto);
+	        annuncio.setOggetto(oggetto);
+	    }
+
+	    return annunci;
 	}
 }

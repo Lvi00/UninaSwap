@@ -5,11 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import application.control.Controller;
 import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
 public class StudenteDAO{
 	
+	Controller controller = new Controller();
 	
 	public int Save(Studente studente) {
 		try {
