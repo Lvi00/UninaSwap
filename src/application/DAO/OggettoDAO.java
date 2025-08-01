@@ -23,11 +23,9 @@ public class OggettoDAO {
             
             if(rs.next()) {
             	oggetto = new Oggetto(
-					rs.getInt("idoggetto"),
 					rs.getString("immagineoggetto"),
 					rs.getString("categoria"),
 					rs.getString("descrizione"),
-					rs.getString("matstudente"),
 					rs.getString("nomeoggetto")
 				);
             }

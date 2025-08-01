@@ -108,7 +108,7 @@
             </Pane>
             <ScrollPane fx:id="InformazioniLogin" layoutX="615.0" layoutY="121.0" prefHeight="369.0" prefWidth="347.0" visible="false">
               <content>
-                <AnchorPane accessibleRole="TEXT" minHeight="0.0" minWidth="0.0" prefHeight="425.0" prefWidth="315.0">
+                <AnchorPane accessibleRole="TEXT" minHeight="0.0" minWidth="0.0" prefHeight="427.0" prefWidth="308.0">
                      <children>
                         <Text layoutX="17.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Per loggarti correttamente al sistema, è necessario compilare tutti i campi richiesti con attenzione. Segui attentamente le indicazioni qui sotto:" wrappingWidth="282.66668701171875" />
                         <Label layoutX="17.0" layoutY="125.0" prefHeight="20.0" prefWidth="74.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Username">

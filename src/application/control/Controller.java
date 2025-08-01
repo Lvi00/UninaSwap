@@ -74,8 +74,7 @@ public class Controller {
 	public void InserisciStudente(ArrayList<String> credenziali){
 	    // Se arrivi qui, tutti i campi sono validi
 	    StudenteDAO studenteDAO = new StudenteDAO();
-	   	studenteDAO.Save(new Studente(credenziali.get(2), credenziali.get(3), credenziali.get(0), credenziali.get(1), credenziali.get(5), credenziali.get(4)));
-
+	   	studenteDAO.Save(new Studente(credenziali.get(2), credenziali.get(3), credenziali.get(0), credenziali.get(1), credenziali.get(4)));
 	}
 	
 	
@@ -111,18 +110,11 @@ public class Controller {
 		return new StudenteDAO().LoginStudente(username, password);
 	}
 	
+	public Oggetto getOggetto(int idOggetto) {
+		return new OggettoDAO().getOggetto(idOggetto);
+	}
+	
 	public ArrayList<Annuncio> getInfoAnnunci() {
-	    AnnuncioDAO annuncioDAO = new AnnuncioDAO();
-	    OggettoDAO oggettoDAO = new OggettoDAO();
-	    ArrayList<Annuncio> annunci = annuncioDAO.getAnnunci();
-
-	    for (Annuncio annuncio : annunci) {
-	        int idOggetto = annuncio.getIdOggetto();
-	        //Da modificare e inserire nel controller tramite un metodo
-	        Oggetto oggetto = oggettoDAO.getOggetto(idOggetto);
-	        annuncio.setOggetto(oggetto);
-	    }
-
-	    return annunci;
+	    return new AnnuncioDAO().getAnnunci();
 	}
 }

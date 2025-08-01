@@ -16,14 +16,13 @@ public class StudenteDAO{
 	public int Save(Studente studente) {
 		try {
 		    Connection conn = ConnessioneDB.getConnection();
-		    String query = "INSERT INTO STUDENTE(matricola,email,nome,cognome,passkey,username) VALUES (?,?,?,?,?,?)";
+		    String query = "INSERT INTO STUDENTE(matricola,email,nome,cognome,passkey,username) VALUES (?,?,?,?,?)";
 		    PreparedStatement statement = conn.prepareStatement(query);
 		    statement.setString(1, studente.getMatricola());
 		    statement.setString(2, studente.getEmail());
 		    statement.setString(3, studente.getNome());
 		    statement.setString(4, studente.getCognome());
-		    statement.setString(5, studente.getPasskey());
-		    statement.setString(6, studente.getUsername());
+		    statement.setString(5, studente.getUsername());
 		    
 		    int rowsInserted = statement.executeUpdate();
 		    statement.close();
@@ -64,9 +63,8 @@ public class StudenteDAO{
             String Email = rs.getString(2);
             String Nome = rs.getString(3);
             String Cognome = rs.getString(4);
-            String Passkey = rs.getString(5);
             String Username = rs.getString(6);
-            studente = new Studente (Matricola,Email,Nome,Cognome,Passkey,Username);
+            studente = new Studente (Matricola,Email,Nome,Cognome,Username);
             
             rs.close();
             statement.close();

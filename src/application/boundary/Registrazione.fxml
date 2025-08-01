@@ -156,7 +156,7 @@
             </ImageView>
             <ScrollPane fx:id="InformazioniRegistrazione" layoutX="558.0" layoutY="98.0" prefHeight="376.0" prefWidth="347.0" visible="false">
                <content>
-                  <AnchorPane accessibleRole="TEXT" minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="315.0">
+                  <AnchorPane accessibleRole="TEXT" minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="308.0">
                      <children>
                         <Text layoutX="18.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Per registrarti correttamente al sistema, è necessario compilare tutti i campi richiesti con attenzione. Ogni informazione verrà verificata per garantire l'integrità dei dati. Segui attentamente le indicazioni qui sotto:" wrappingWidth="282.66668701171875" />
                         <Label layoutX="18.0" layoutY="144.0" prefHeight="25.0" prefWidth="134.0" styleClass="label-info" stylesheets="@../resources/application.css" text="Nome e Cognome">

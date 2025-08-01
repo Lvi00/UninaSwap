@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import application.control.Controller;
 import application.entity.Annuncio;
-import application.entity.Oggetto;
 import application.resources.ConnessioneDB;
 
 public class AnnuncioDAO {
@@ -25,18 +24,17 @@ public class AnnuncioDAO {
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-                Annuncio annuncio = new Annuncio(
-                	rs.getInt("idannuncio"),
-                    rs.getString("titoloannuncio"),
-                    rs.getBoolean("statoannuncio"),
-                    rs.getTimestamp("fasciaorariainizio").toLocalDateTime(),
-                    rs.getTimestamp("fasciaorariafine").toLocalDateTime(),
-                    rs.getDouble("prezzo"),
-                    rs.getString("tipologia"),
-                    rs.getString("descrizioneannuncio"),
-                    rs.getInt("idoggetto")
+                annunci.add(new Annuncio(
+	                    rs.getString("titoloannuncio"),
+	                    rs.getBoolean("statoannuncio"),
+	                    rs.getTimestamp("fasciaorariainizio").toLocalDateTime(),
+	                    rs.getTimestamp("fasciaorariafine").toLocalDateTime(),
+	                    rs.getDouble("prezzo"),
+	                    rs.getString("tipologia"),
+	                    rs.getString("descrizioneannuncio"),
+	                    controller.getOggetto(rs.getInt("idoggetto"))
+	                )
                 );
-                annunci.add(annuncio);
             }
 
             rs.close();
