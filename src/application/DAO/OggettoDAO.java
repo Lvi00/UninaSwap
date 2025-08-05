@@ -9,7 +9,7 @@ import application.entity.Oggetto;
 import application.resources.ConnessioneDB;
 
 public class OggettoDAO {
-	Controller controller = new Controller();
+	private Controller controller = new Controller();
 
     public Oggetto getOggetto(int idOggetto) {
     	Oggetto oggetto = null;

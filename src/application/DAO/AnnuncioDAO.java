@@ -12,7 +12,7 @@ import application.resources.ConnessioneDB;
 
 public class AnnuncioDAO {
 	
-	Controller controller = new Controller();
+	private Controller controller = new Controller();
 
     public ArrayList<Annuncio> getAnnunci(String matricola) {
         ArrayList<Annuncio> annunci = new ArrayList<Annuncio>();

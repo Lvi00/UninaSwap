@@ -37,33 +37,32 @@ public class CreaAnnuncioBoundary {
             String testo = label.getText();
        
             switch (testo) {
-            case "Prodotti":
-            	try{
-            		FXMLLoader loader = new FXMLLoader(getClass().getResource("Prodotti.fxml"));
-	            	Parent root = loader.load();
+	            case "Prodotti":
+	            	try{
+	            		FXMLLoader loader = new FXMLLoader(getClass().getResource("Prodotti.fxml"));
+		            	Parent root = loader.load();
+		                ProdottiBoundary prodottiCtrl = loader.getController();
+		                prodottiCtrl.setController(this.controller);
+		                prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
+		                prodottiCtrl.setLabel(this.controller.getStudente().getUsername());
+		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+				        Scene scene = new Scene(root);
+				        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+				        stage.setScene(scene);
+				        stage.centerOnScreen();
+				        stage.setTitle("UninaSwap - Prodotti");
+				        stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
+				        stage.setResizable(false);
+				        stage.show();
+	            	}
+	                catch (Exception ex) {
+	                    ex.printStackTrace();
+	                }
 	            	
-	                ProdottiBoundary prodottiCtrl = loader.getController();
-	                // PASSO lo stesso controller (contiene lo studente)
-	                prodottiCtrl.setController(this.controller);
-	                // ora costruisco il catalogo
-	                prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
-	                //Mette il nome in alto a destra
-	                prodottiCtrl.setLabel(this.controller.getStudente().getUsername());
-	                
-	                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			        Scene scene = new Scene(root);
-			        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-			        stage.setScene(scene);
-			        stage.centerOnScreen();
-			        stage.setTitle("UninaSwap - Prodotti");
-			        stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
-			        stage.setResizable(false);
-			        stage.show();
-            	}
-                catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            	
+	            break;
+	            
+	            default:
+	            	System.out.println("Selezione non valida: " + testo);
 	            break;
             }
         }

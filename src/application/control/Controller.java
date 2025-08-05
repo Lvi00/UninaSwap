@@ -110,7 +110,6 @@ public class Controller {
 	}
 	
 	public Studente CheckLoginStudente(String username, String password){
-		
 		Studente studente = new StudenteDAO().LoginStudente(username, password);
 		this.studente=studente;
 		return this.studente;

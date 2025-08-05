@@ -11,7 +11,7 @@ import application.resources.ConnessioneDB;
 
 public class StudenteDAO{
 	
-	Controller controller = new Controller();
+	private Controller controller = new Controller();
 	
 	public int Save(Studente studente, String password) {
 		try {

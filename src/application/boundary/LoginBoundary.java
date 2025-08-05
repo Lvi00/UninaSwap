@@ -43,26 +43,6 @@ public class LoginBoundary {
 	private boolean visibilitaPassword = false;
 	
 	@FXML
-	public void MostraLogin(MouseEvent e) {
-	    try {
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
-	        Parent root = loader.load();
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-	        Scene scene = new Scene(root);
-	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-	        stage.setScene(scene);
-	        stage.centerOnScreen();
-	        stage.setTitle("UninaSwap - Login");
-	        stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
-	        stage.setResizable(false);
-	        stage.show();
-	    }
-	    catch(Exception ex) {
-	        ex.printStackTrace();
-	    }
-	}
-	
-	@FXML
 	public void MostraRegistrazione(MouseEvent e) {
 		try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Registrazione.fxml"));
@@ -155,16 +135,10 @@ public class LoginBoundary {
 				try {
 		            FXMLLoader loader = new FXMLLoader(getClass().getResource("Prodotti.fxml"));
 		            Parent root = loader.load();
-
                     ProdottiBoundary prodottiCtrl = loader.getController();
-
-                    // PASSO il controller che contiene lo studente autenticato:
                     prodottiCtrl.setController(this.controller);
-                    // chiedi al boundary di costruire la vista usando il controller
 	                prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
-	                //Mette il nome in alto a destra
 	                prodottiCtrl.setLabel(this.controller.getStudente().getUsername());
-	                
 		            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		            Scene scene = new Scene(root);
 		            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());

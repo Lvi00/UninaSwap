@@ -47,36 +47,36 @@ public class ProdottiBoundary {
             String testo = label.getText();
        
             switch (testo) {
-            case "Crea annuncio":
-                try {
-        	        FXMLLoader loader = new FXMLLoader(getClass().getResource("CreaAnnuncio.fxml"));
-        	        Parent root = loader.load();
-        	        
-                    CreaAnnuncioBoundary creaCtrl = loader.getController();
-                    // PASSO IL CONTROLLER (stesso oggetto di sessione)
-                    creaCtrl.setController(this.controller);
-	                //Mette il nome in alto a destra
-                    creaCtrl.setLabel(this.controller.getStudente().getUsername());
-	                
-                    Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-        	        Scene scene = new Scene(root);
-        	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-        	        stage.setScene(scene);
-        	        stage.centerOnScreen();
-        	        stage.setTitle("UninaSwap - Crea Annuncio");
-        	        stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
-        	        stage.setResizable(false);
-        	        stage.show();
-                }
-                catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                break;
+	            case "Crea annuncio":
+		            try {
+		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("CreaAnnuncio.fxml"));
+		    	        Parent root = loader.load();
+		                CreaAnnuncioBoundary creaCtrl = loader.getController();
+		                creaCtrl.setController(this.controller);
+		                creaCtrl.setLabel(this.controller.getStudente().getUsername());
+		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		    	        Scene scene = new Scene(root);
+		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+		    	        stage.setScene(scene);
+		    	        stage.centerOnScreen();
+		    	        stage.setTitle("UninaSwap - Crea Annuncio");
+		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
+		    	        stage.setResizable(false);
+		    	        stage.show();
+		            }
+		            catch (Exception ex) {
+		                ex.printStackTrace();
+		            }
+	            break;
+	            
+	            default:
+	            	System.out.println("Selezione non valida: " + testo);
+	            break;
             }
         }
     }
     
-    public void CostruisciCatalogoProdotti(Studente s) {
+    public boolean CostruisciCatalogoProdotti(Studente s) {
 
         ArrayList<Annuncio> annunci = controller.getInfoAnnunci(s.getMatricola());
 
@@ -93,6 +93,8 @@ public class ProdottiBoundary {
                 row++;
             }
         }
+        
+        return true;
     }
 
     private VBox creaCardAnnuncio(Annuncio a) {
