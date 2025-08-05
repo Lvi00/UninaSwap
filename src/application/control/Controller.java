@@ -7,11 +7,14 @@ import java.util.regex.Pattern;
 import application.DAO.AnnuncioDAO;
 import application.DAO.OggettoDAO;
 import application.DAO.StudenteDAO;
+import application.boundary.ProdottiBoundary;
 import application.entity.Annuncio;
 import application.entity.Oggetto;
 import application.entity.Studente;
 
 public class Controller {
+	
+	private Studente studente;
 	
 	public int checkData(ArrayList<String> credenziali) {
 		String nome = credenziali.get(0);
@@ -20,7 +23,7 @@ public class Controller {
 		String email = credenziali.get(3);
 		String username = credenziali.get(4);
 		String password = credenziali.get(5);
-		
+	
 		if(nome == "" || cognome == "" ||  matricola == "" || email == "" || username ==  "" || password ==  "") {
 			System.out.println("Campi vuoti.");
 			return 1;
@@ -107,14 +110,21 @@ public class Controller {
 	}
 	
 	public Studente CheckLoginStudente(String username, String password){
-		return new StudenteDAO().LoginStudente(username, password);
+		
+		Studente studente = new StudenteDAO().LoginStudente(username, password);
+		this.studente=studente;
+		return this.studente;
 	}
 	
 	public Oggetto getOggetto(int idOggetto) {
 		return new OggettoDAO().getOggetto(idOggetto);
 	}
 	
-	public ArrayList<Annuncio> getInfoAnnunci() {
-	    return new AnnuncioDAO().getAnnunci();
+	public ArrayList<Annuncio> getInfoAnnunci(String s) {
+	    return new AnnuncioDAO().getAnnunci(s);
+	}
+	
+	public Studente getStudente() {
+	    return this.studente;
 	}
 }

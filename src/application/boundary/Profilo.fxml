@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 
 
-<HBox prefHeight="600.0" prefWidth="1100.0" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.DashboardBoundary">
+<HBox prefHeight="600.0" prefWidth="1100.0" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.ProdottiBoundary">
    <children>
       <AnchorPane prefHeight="600.0" prefWidth="1162.0">
          <children>

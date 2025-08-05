@@ -175,6 +175,10 @@
 	-fx-background-radius: 10px;
 }
 
+.immagineCard {
+
+}
+
 .titolo-annuncio{
 	-fx-font-weight: bold;
 	-fx-font-size: 14;

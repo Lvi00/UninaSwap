@@ -153,16 +153,24 @@ public class LoginBoundary {
 				ShowPopupError("Utente non esistente", "Le credenziali inserite non sono corrette");
 			else {
 				try {
-		            FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
+		            FXMLLoader loader = new FXMLLoader(getClass().getResource("Prodotti.fxml"));
 		            Parent root = loader.load();
+
+                    ProdottiBoundary prodottiCtrl = loader.getController();
+
+                    // PASSO il controller che contiene lo studente autenticato:
+                    prodottiCtrl.setController(this.controller);
+                    // chiedi al boundary di costruire la vista usando il controller
+	                prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
+	                //Mette il nome in alto a destra
+	                prodottiCtrl.setLabel(this.controller.getStudente().getUsername());
+	                
 		            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		            Scene scene = new Scene(root);
 		            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-		            DashboardBoundary dashboardController = loader.getController();
-		            dashboardController.CostruisciDashboard(studente);
 		            stage.setScene(scene);
 		            stage.centerOnScreen();
-		            stage.setTitle("UninaSwap - Dashboard");
+		            stage.setTitle("UninaSwap - Prodotti");
 		            stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
 		            stage.setResizable(false);
 		            stage.show();

@@ -19,19 +19,66 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class DashboardBoundary {
+public class ProdottiBoundary {
 
-    private Controller controller = new Controller();
+    private Controller controller;
 
     @FXML private Label usernameDashboard;
     @FXML private GridPane gridProdotti;
     @FXML private TextField searchField;
     @FXML private AnchorPane contentPane;
 
-    public void CostruisciDashboard(Studente s) {
-        usernameDashboard.setText(s.getUsername());
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
 
-        ArrayList<Annuncio> annunci = controller.getInfoAnnunci();
+    public void setLabel(String s) {
+        usernameDashboard.setText(s);
+    }
+    
+    public void SelezionaPagina(MouseEvent e) {
+        
+    	//Prende l'oggetto cliccato
+        Object source = e.getSource();
+        
+        //Controlla se è una Label
+        if (source instanceof Label) {
+            Label label = (Label) source;
+            String testo = label.getText();
+       
+            switch (testo) {
+            case "Crea annuncio":
+                try {
+        	        FXMLLoader loader = new FXMLLoader(getClass().getResource("CreaAnnuncio.fxml"));
+        	        Parent root = loader.load();
+        	        
+                    CreaAnnuncioBoundary creaCtrl = loader.getController();
+                    // PASSO IL CONTROLLER (stesso oggetto di sessione)
+                    creaCtrl.setController(this.controller);
+	                //Mette il nome in alto a destra
+                    creaCtrl.setLabel(this.controller.getStudente().getUsername());
+	                
+                    Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        	        Scene scene = new Scene(root);
+        	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+        	        stage.setScene(scene);
+        	        stage.centerOnScreen();
+        	        stage.setTitle("UninaSwap - Crea Annuncio");
+        	        stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
+        	        stage.setResizable(false);
+        	        stage.show();
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                break;
+            }
+        }
+    }
+    
+    public void CostruisciCatalogoProdotti(Studente s) {
+
+        ArrayList<Annuncio> annunci = controller.getInfoAnnunci(s.getMatricola());
 
         int column = 0;
         int row = 0;
@@ -59,6 +106,7 @@ public class DashboardBoundary {
         	//a.getOggetto().getImmagineOggetto()
             Image img = new Image("https://pbs.twimg.com/profile_images/806149032091549696/PglCYB9X_400x400.jpg", 200, 150, true, true);
             imageView.setImage(img);
+            imageView.getStyleClass().add("immagineCard");
         } catch (Exception e) {
             System.out.println("Immagine non trovata: " + a.getOggetto().getImmagineOggetto());
         }

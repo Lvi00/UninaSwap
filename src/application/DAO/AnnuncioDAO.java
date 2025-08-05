@@ -14,15 +14,15 @@ public class AnnuncioDAO {
 	
 	Controller controller = new Controller();
 
-    public ArrayList<Annuncio> getAnnunci() {
+    public ArrayList<Annuncio> getAnnunci(String matricola) {
         ArrayList<Annuncio> annunci = new ArrayList<Annuncio>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM ANNUNCIO LIMIT 100";
+            String query = "SELECT * FROM ANNUNCIO WHERE matstudente <> ? LIMIT 100";
             PreparedStatement statement = conn.prepareStatement(query);
+            statement.setString(1, matricola);
             ResultSet rs = statement.executeQuery();
-
             while (rs.next()) {
                 annunci.add(new Annuncio(
 	                    rs.getString("titoloannuncio"),

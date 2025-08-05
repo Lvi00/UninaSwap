@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="600.0" prefWidth="1100.0" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.DashboardBoundary">
+<HBox prefHeight="600.0" prefWidth="1100.0" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.CreaAnnuncioBoundary">
    <children>
       <!-- Root AnchorPane -->
       <AnchorPane prefHeight="614.0" prefWidth="1100.0">
@@ -26,15 +22,15 @@
                   </ImageView>
 
                   <!-- Sezioni -->
-                  <Label layoutX="19.0" layoutY="140.0" prefHeight="50.0" prefWidth="112.0" styleClass="label-sidebar" text="Prodotti" textFill="WHITE">
+                  <Label layoutX="19.0" layoutY="140.0" onMouseClicked="#SelezionaPagina" prefHeight="50.0" prefWidth="112.0" styleClass="label-sidebar" text="Prodotti" textFill="WHITE">
                      <cursor><Cursor fx:constant="HAND" /></cursor>
                      <font><Font size="16.0" /></font>
                   </Label>
-                  <Label layoutX="24.0" layoutY="210.0" prefHeight="50.0" prefWidth="102.0" styleClass="label-sidebar" text="Operazioni" textFill="WHITE">
+                  <Label layoutX="18.0" layoutY="210.0" prefHeight="50.0" prefWidth="112.0" styleClass="label-sidebar" text="Crea annuncio" textFill="WHITE">
                      <cursor><Cursor fx:constant="HAND" /></cursor>
                      <font><Font size="16.0" /></font>
                   </Label>
-                  <Label layoutX="18.0" layoutY="280.0" prefHeight="54.0" prefWidth="112.0" styleClass="label-sidebar" text="Statistiche" textFill="WHITE">
+                  <Label layoutX="18.0" layoutY="280.0" prefHeight="54.0" prefWidth="112.0" styleClass="label-sidebar" text="Operazioni" textFill="WHITE">
                      <cursor><Cursor fx:constant="HAND" /></cursor>
                      <font><Font size="16.0" /></font>
                   </Label>
@@ -84,28 +80,7 @@
             <!-- Contenuto principale -->
             <HBox layoutX="149.0" layoutY="102.0" prefHeight="498.0" prefWidth="949.0" style="-fx-background-color: #F2EFEA;">
                <children>
-                  <AnchorPane prefHeight="498.0" prefWidth="949.0">
-                     <children>
-
-                        <!-- Barra di ricerca -->
-                        <TextField fx:id="searchField" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="255.0" promptText="Cerca prodotto..." />
-                        <Button layoutX="278.0" layoutY="14.0" mnemonicParsing="false" text="Cerca" />
-
-                        <!-- Scroll con GridPane -->
-                        <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="64.0" prefHeight="434.0" prefWidth="952.0">
-                           <content>
-                              <AnchorPane id="pannelloScrollabile" prefWidth="922.0">
-                                 <children>
-                                    <GridPane fx:id="gridProdotti" hgap="100" layoutX="30" layoutY="30" vgap="50">
-                                       <!-- I prodotti verranno aggiunti dinamicamente -->
-                                    </GridPane>
-                                 </children>
-                              </AnchorPane>
-                           </content>
-                        </ScrollPane>
-
-                     </children>
-                  </AnchorPane>
+                  <AnchorPane prefHeight="498.0" prefWidth="949.0" />
                </children>
             </HBox>
 
