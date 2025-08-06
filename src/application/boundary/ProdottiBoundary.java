@@ -54,6 +54,7 @@ public class ProdottiBoundary {
 		                CreaAnnuncioBoundary creaCtrl = loader.getController();
 		                creaCtrl.setController(this.controller);
 		                creaCtrl.setLabel(this.controller.getStudente().getUsername());
+		                creaCtrl.setCampiForm();
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -105,8 +106,8 @@ public class ProdottiBoundary {
 
         ImageView imageView = new ImageView();
         try {
-        	//a.getOggetto().getImmagineOggetto()
-            Image img = new Image("https://pbs.twimg.com/profile_images/806149032091549696/PglCYB9X_400x400.jpg", 200, 150, true, true);
+        	String path = a.getOggetto().getImmagineOggetto();
+            Image img = new Image(getClass().getResource(path).toExternalForm(), 200, 150, true, true);
             imageView.setImage(img);
             imageView.getStyleClass().add("immagineCard");
         } catch (Exception e) {
