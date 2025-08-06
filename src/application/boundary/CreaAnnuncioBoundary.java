@@ -23,11 +23,23 @@ public class CreaAnnuncioBoundary {
 	    Cultura,
 	    Musica
 	}
+	
+	enum ParticellaToponomastica{
+		Via,
+		Viale,
+		Largo,
+		Piazza,
+		Corso,
+		Strada,
+		Contrada,
+		Traversa
+	}
 	  
 	private Controller controller;
 
     @FXML private Label usernameDashboard;
-    @FXML private ChoiceBox<Categorie> campoSelezioneCategoria;
+    @FXML private ChoiceBox<Categorie> campoCategoriaOggetto;
+    @FXML private ChoiceBox<ParticellaToponomastica> campoIndirizzo1;
 
     public void setController(Controller controller) {
         this.controller = controller;
@@ -104,7 +116,10 @@ public class CreaAnnuncioBoundary {
     
     @FXML
     public void setCampiForm() {
-		campoSelezioneCategoria.setItems(FXCollections.observableArrayList(Categorie.values()));
-		campoSelezioneCategoria.getSelectionModel().selectFirst();
+    	campoCategoriaOggetto.setItems(FXCollections.observableArrayList(Categorie.values()));
+    	campoCategoriaOggetto.getSelectionModel().selectFirst();
+		
+		campoIndirizzo1.setItems(FXCollections.observableArrayList(ParticellaToponomastica.values()));
+		campoIndirizzo1.getSelectionModel().selectFirst();
     }
 }
