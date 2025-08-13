@@ -20,7 +20,7 @@
 	-fx-padding: 8px;
 }
 
-.tasto{
+.freccia-avanti, .tasto{
     -fx-background-color: #2207bb;
     -fx-background-radius: 20px;
     -fx-padding: 10px;
@@ -170,7 +170,7 @@
 	-fx-alignment: center;
 	-fx-background-color: white;
 	-fx-padding: 10px;
-	-fx-border-color: #cccccc;
+	-fx-border-color: #a3b1c6;
 	-fx-border-radius: 10px;
 	-fx-background-radius: 10px;
 }
@@ -197,4 +197,14 @@
     -fx-background-color: #1e2a38;
     -fx-background-radius: 10px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 2, 0, 0, 1);
+}
+
+.textarea-rounded {
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+}
+
+.textarea-rounded .content {
+    -fx-background-radius: 20px;
+    -fx-padding: 5px;
 }

@@ -25,7 +25,6 @@ public class AnnuncioDAO {
             statement.setString(1, matricola);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                // Conversione dei campi TIME in LocalTime
                 LocalTime fasciaInizio = rs.getTime("fasciaorariainizio").toLocalTime();
                 LocalTime fasciaFine = rs.getTime("fasciaorariafine").toLocalTime();
 

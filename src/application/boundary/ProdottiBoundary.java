@@ -7,6 +7,7 @@ import application.entity.Annuncio;
 import application.entity.Studente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -101,13 +102,13 @@ public class ProdottiBoundary {
     private VBox creaCardAnnuncio(Annuncio a) {
         VBox box = new VBox();
         box.setSpacing(8);
-        box.setPrefWidth(200);
+        box.setPrefWidth(230);
         box.getStyleClass().add("card-annuncio");
 
         ImageView imageView = new ImageView();
         try {
             String path = a.getOggetto().getImmagineOggetto();
-            Image img = new Image(getClass().getResource(path).toExternalForm(), 200, 150, true, true);
+            Image img = new Image(getClass().getResource(path).toExternalForm(), 230, 150, true, true);
             imageView.setImage(img);
             imageView.getStyleClass().add("immagineCard");
         } catch (Exception e) {
@@ -127,8 +128,8 @@ public class ProdottiBoundary {
         tipo.setStyle("-fx-text-fill: gray;");
 
         Label fascia = new Label("Disponibile: " +
-                a.getFasciaOrariaInizio() + " - " +
-                a.getFasciaOrariaFine());
+        a.getFasciaOrariaInizio() + " - " +
+        a.getFasciaOrariaFine());
 
         Label giorniLabel = new Label("Giorni: " + (a.getGiorni() != null ? a.getGiorni() : "N/D"));
         giorniLabel.setStyle("-fx-text-fill: #555;");
