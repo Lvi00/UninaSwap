@@ -1,5 +1,5 @@
 .sfondo{
-	-fx-background-image: url("../IMG/Sfondo.png");
+	-fx-background-image: url("../IMG/immaginiProgramma/Sfondo.png");
 	-fx-background-repeat: no-repeat;
     -fx-background-position: center center;
     -fx-background-size: cover;
@@ -20,7 +20,7 @@
 	-fx-padding: 8px;
 }
 
-.freccia-avanti, .tasto{
+.tasto, .tasto-secondario{
     -fx-background-color: #2207bb;
     -fx-background-radius: 20px;
     -fx-padding: 10px;

@@ -23,7 +23,7 @@
                <children>
                   <ImageView fitHeight="112.0" fitWidth="126.0" layoutX="176.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../IMG/logo.png" />
+                        <Image url="@../IMG/immaginiProgramma/logo.png" />
                      </image>
                   </ImageView>
                   <Label layoutX="57.0" layoutY="102.0" prefHeight="20.0" prefWidth="66.0" styleClass="label-login-registrazione" text="Nome">
@@ -117,7 +117,7 @@
                   </Button>
                   <ImageView fx:id="TastoHidePassword" fitHeight="27.0" fitWidth="31.0" layoutX="422.0" layoutY="372.0" onMouseClicked="#VisibilitàPassword" opacity="0.8" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
-                        <Image url="@../IMG/visibilità.png" />
+                        <Image url="@../IMG/immaginiProgramma/visibilità.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -130,7 +130,7 @@
                   </TextField>
                   <ImageView fx:id="TastoShowPassword" fitHeight="27.0" fitWidth="31.0" layoutX="422.0" layoutY="372.0" onMouseClicked="#VisibilitàPassword" opacity="0.8" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../IMG/non_visibilità.png" />
+                        <Image url="@../IMG/immaginiProgramma/non_visibilità.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -140,7 +140,7 @@
             </Pane>
             <ImageView fx:id="ImmagineInfoReg" fitHeight="31.0" fitWidth="32.0" layoutX="1010.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../IMG/info.png" />
+                  <Image url="@../IMG/immaginiProgramma/info.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
@@ -148,7 +148,7 @@
             </ImageView>
             <ImageView fx:id="ImmagineRegistrazione" fitHeight="31.0" fitWidth="32.0" layoutX="1010.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
-                  <Image url="@../IMG/back.png" />
+                  <Image url="@../IMG/immaginiProgramma/back.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
@@ -250,7 +250,7 @@
             </Pane>
             <ImageView fitHeight="207.0" fitWidth="199.0" layoutX="128.0" layoutY="153.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../IMG/logo2.png" />
+                  <Image url="@../IMG/immaginiProgramma/logo2.png" />
                </image>
             </ImageView>
             <Label layoutX="82.0" layoutY="337.0" prefHeight="30.0" prefWidth="291.0" text="Compra, vendi, scambia e regala" textFill="WHITE">

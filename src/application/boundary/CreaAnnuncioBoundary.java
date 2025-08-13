@@ -3,6 +3,8 @@ package application.boundary;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+
+import java.io.File;
 import java.util.ArrayList;
 
 import application.control.Controller;
@@ -17,7 +19,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class CreaAnnuncioBoundary {
@@ -45,7 +50,6 @@ public class CreaAnnuncioBoundary {
     private Controller controller;
 
     @FXML private Label usernameDashboard;
-
     @FXML private ChoiceBox<Categorie> campoCategoriaOggetto;
     @FXML private ChoiceBox<ParticellaToponomastica> campoIndirizzo1;
     @FXML private ChoiceBox<String> inizioDisponibilità;
@@ -63,6 +67,10 @@ public class CreaAnnuncioBoundary {
     @FXML private RadioButton campoVendita;
     @FXML private RadioButton campoRegalo;
     @FXML private RadioButton campoScambio;
+    @FXML private Pane primaPagina;
+    @FXML private Pane secondaPagina;
+    @FXML private Pane campiPrezzo;
+    @FXML private ImageView immagineCaricata;
     
     public void setController(Controller controller) {
         this.controller = controller;
@@ -95,7 +103,7 @@ public class CreaAnnuncioBoundary {
                         stage.setScene(scene);
                         stage.centerOnScreen();
                         stage.setTitle("UninaSwap - Prodotti");
-                        stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
+                        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
                         stage.setResizable(false);
                         stage.show();
                     }
@@ -122,7 +130,7 @@ public class CreaAnnuncioBoundary {
             stage.setScene(scene);
             stage.centerOnScreen();
             stage.setTitle("UninaSwap - Login");
-            stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
+            stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
             stage.setResizable(false);
             stage.show();
         }
@@ -146,6 +154,7 @@ public class CreaAnnuncioBoundary {
         
         inizioDisponibilità.setItems(FXCollections.observableArrayList());
         fineDisponibilità.setItems(FXCollections.observableArrayList());
+        
         for (int i = 7; i <= 22; i++) {
             String ora = (i < 10 ? "0" + i : i) + ":00";
             inizioDisponibilità.getItems().add(ora);
@@ -160,7 +169,54 @@ public class CreaAnnuncioBoundary {
         campoScambio.setToggleGroup(gruppoTipologia);
         campoVendita.setSelected(true);
     }
+    
+    public void MostraPrimaPaginaForm(MouseEvent e) {
+        primaPagina.setVisible(true);
+        secondaPagina.setVisible(false);
+    }
+    
+    @FXML
+    public void MostraSecondaPaginaForm(MouseEvent e) {
+        primaPagina.setVisible(false);
+        secondaPagina.setVisible(true);
 
+        // Logica per tipologia
+        if (campoVendita.isSelected()) {
+            System.out.println("Tipologia: Vendita");
+            campiPrezzo.setVisible(true);
+        }
+        else if (campoRegalo.isSelected()) {
+            System.out.println("Tipologia: Regalo");
+        }
+        else {
+            System.out.println("Tipologia: Scambio");
+        }
+    }
+    
+    @FXML
+    public String showFileChooser(MouseEvent e) {
+    	Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Seleziona un'immagine");
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Immagini", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(stage);
+
+    	String path = null;
+    	
+        if (selectedFile != null) {
+        	path = selectedFile.toURI().toString();
+            Image image = new Image(path);
+            immagineCaricata.setImage(image);
+        }
+        
+        return path;
+    }
+
+    //Da inserire nel controller
     @FXML
     public void VisualizzaDati(MouseEvent e) {
         // Titolo e descrizione

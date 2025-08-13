@@ -22,7 +22,7 @@
             <AnchorPane id="sidebar" prefHeight="600.0" prefWidth="143.0">
                <children>
                   <ImageView fitHeight="102.0" fitWidth="112.0" layoutX="26.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                     <image><Image url="@../IMG/logo2.png" /></image>
+                     <image><Image url="@../IMG/immaginiProgramma/logo2.png" /></image>
                   </ImageView>
 
                   <!-- Sezioni -->
@@ -45,7 +45,7 @@
 
                   <!-- Logout -->
                   <ImageView id="logout-icon" fitHeight="33.0" fitWidth="33.0" layoutX="58.0" layoutY="520.0" onMouseClicked="#logout" pickOnBounds="true" preserveRatio="true">
-                     <image><Image url="@../IMG/logout.png" /></image>
+                     <image><Image url="@../IMG/immaginiProgramma/logout.png" /></image>
                      <cursor><Cursor fx:constant="HAND" /></cursor>
                   </ImageView>
                   <Label layoutX="51.0" layoutY="553.0" styleClass="label-sidebar" text="Logout" textFill="WHITE">
@@ -68,8 +68,9 @@
                   <HBox alignment="CENTER_RIGHT" layoutX="719.0" layoutY="20.0" prefHeight="62.0" prefWidth="220.0" spacing="10.0">
                      <children>
                         <ImageView fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
-                           <image><Image url="@../IMG/account.png" /></image>
-                        </ImageView>
+                           <image>
+                              <Image url="@../IMG/immaginiProgramma/account.png" />
+                           </image></ImageView>
                         <Label id="label-profilo" fx:id="usernameDashboard" onMouseClicked="#showProfile" textFill="WHITE">
                            <font><Font size="16.0" /></font>
                            <cursor>
@@ -96,7 +97,7 @@
                            <content>
                               <AnchorPane id="pannelloScrollabile" prefWidth="922.0">
                                  <children>
-                                    <GridPane fx:id="gridProdotti" hgap="90" layoutX="30" layoutY="50" vgap="80" alignment="CENTER">
+                                    <GridPane fx:id="gridProdotti" alignment="CENTER" hgap="70" layoutX="40" layoutY="40" vgap="40">
                                        <!-- I prodotti verranno aggiunti dinamicamente -->
                                     </GridPane>
                                  </children>

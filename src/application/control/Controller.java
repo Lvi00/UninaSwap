@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import application.DAO.AnnuncioDAO;
 import application.DAO.OggettoDAO;
 import application.DAO.StudenteDAO;
+import application.boundary.CreaAnnuncioBoundary;
 import application.boundary.ProdottiBoundary;
 import application.entity.Annuncio;
 import application.entity.Oggetto;

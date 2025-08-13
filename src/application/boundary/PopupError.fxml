@@ -13,7 +13,7 @@
          <children>
             <ImageView fitHeight="72.0" fitWidth="70.0" layoutX="14.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../IMG/danger.png" />
+                  <Image url="@../IMG/immaginiProgramma/danger.png" />
                </image>
             </ImageView>
             <Label layoutX="96.0" layoutY="29.0" styleClass="popupLabel" text="Ooops!" textFill="WHITE">
