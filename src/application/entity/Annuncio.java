@@ -1,20 +1,27 @@
 package application.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Annuncio {
     private String titoloAnnuncio;
     private boolean statoAnnuncio;
-    private LocalDateTime fasciaOrariaInizio;
-    private LocalDateTime fasciaOrariaFine;
+    private LocalTime fasciaOrariaInizio;
+    private LocalTime fasciaOrariaFine;
     private double prezzo;
     private String tipologia;
     private String descrizioneAnnuncio;
     private Oggetto oggetto;
+    private String giorni; 
 
-    public Annuncio(String titoloAnnuncio, boolean statoAnnuncio,
-    LocalDateTime fasciaOrariaInizio, LocalDateTime fasciaOrariaFine,
-    double prezzo, String tipologia, String descrizioneAnnuncio, Oggetto oggetto) {
+    public Annuncio(String titoloAnnuncio,
+                    boolean statoAnnuncio,
+                    LocalTime fasciaOrariaInizio,
+                    LocalTime fasciaOrariaFine,
+                    double prezzo,
+                    String tipologia,
+                    String descrizioneAnnuncio,
+                    Oggetto oggetto,
+                    String giorni) { 
         this.titoloAnnuncio = titoloAnnuncio;
         this.statoAnnuncio = statoAnnuncio;
         this.fasciaOrariaInizio = fasciaOrariaInizio;
@@ -23,6 +30,7 @@ public class Annuncio {
         this.tipologia = tipologia;
         this.descrizioneAnnuncio = descrizioneAnnuncio;
         this.oggetto = oggetto;
+        this.giorni = giorni;
     }
 
     public String getTitoloAnnuncio() {
@@ -33,11 +41,11 @@ public class Annuncio {
         return statoAnnuncio;
     }
 
-    public LocalDateTime getFasciaOrariaInizio() {
+    public LocalTime getFasciaOrariaInizio() {
         return fasciaOrariaInizio;
     }
 
-    public LocalDateTime getFasciaOrariaFine() {
+    public LocalTime getFasciaOrariaFine() {
         return fasciaOrariaFine;
     }
 
@@ -52,8 +60,12 @@ public class Annuncio {
     public String getDescrizioneAnnuncio() {
         return descrizioneAnnuncio;
     }
-    
+
     public Oggetto getOggetto() {
-		return oggetto;
-	}
+        return oggetto;
+    }
+
+    public String getGiorni() { // getter per il nuovo campo
+        return giorni;
+    }
 }

@@ -106,16 +106,13 @@ public class ProdottiBoundary {
 
         ImageView imageView = new ImageView();
         try {
-        	String path = a.getOggetto().getImmagineOggetto();
+            String path = a.getOggetto().getImmagineOggetto();
             Image img = new Image(getClass().getResource(path).toExternalForm(), 200, 150, true, true);
             imageView.setImage(img);
             imageView.getStyleClass().add("immagineCard");
         } catch (Exception e) {
             System.out.println("Immagine non trovata: " + a.getOggetto().getImmagineOggetto());
         }
-        imageView.setFitWidth(200);
-        imageView.setPreserveRatio(true);
-        imageView.setSmooth(true);
 
         // Aggiungi l'immagine al VBox
         box.getChildren().add(imageView);
@@ -130,14 +127,17 @@ public class ProdottiBoundary {
         tipo.setStyle("-fx-text-fill: gray;");
 
         Label fascia = new Label("Disponibile: " +
-                a.getFasciaOrariaInizio().toLocalTime() + " - " +
-                a.getFasciaOrariaFine().toLocalTime());
+                a.getFasciaOrariaInizio() + " - " +
+                a.getFasciaOrariaFine());
 
-        box.getChildren().addAll(titolo, prezzo, tipo, fascia);
+        Label giorniLabel = new Label("Giorni: " + (a.getGiorni() != null ? a.getGiorni() : "N/D"));
+        giorniLabel.setStyle("-fx-text-fill: #555;");
+
+        box.getChildren().addAll(titolo, prezzo, tipo, fascia, giorniLabel);
 
         return box;
     }
-
+    
     public void logout(MouseEvent e) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));

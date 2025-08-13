@@ -3,8 +3,8 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Spinner?>
@@ -121,59 +121,39 @@
                      <children>
                         <Pane prefHeight="498.0" prefWidth="500.0" styleClass="form">
                            <children>
-                              <Label layoutX="43.0" layoutY="55.0" prefHeight="20.0" prefWidth="112.0" styleClass="label-login-registrazione" text="Titolo annuncio">
+                              <Label layoutX="43.0" layoutY="24.0" prefHeight="20.0" prefWidth="112.0" styleClass="label-login-registrazione" text="Titolo annuncio">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="campoTitoloAnnuncio" layoutX="43.0" layoutY="75.0" prefHeight="36.0" prefWidth="196.0" promptText="Inserire il titolo" styleClass="campi">
+                              <TextField fx:id="campoTitoloAnnuncio" layoutX="43.0" layoutY="44.0" prefHeight="36.0" prefWidth="196.0" promptText="Inserire il titolo" styleClass="campi">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </TextField>
-                              <Label layoutX="42.0" layoutY="118.0" prefHeight="27.0" prefWidth="128.0" styleClass="label-login-registrazione" text="Inizio disponibilità">
+                              <Label layoutX="41.0" layoutY="90.0" prefHeight="27.0" prefWidth="128.0" styleClass="label-login-registrazione" text="Inizio disponibilità">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="255.0" layoutY="52.0" prefHeight="25.0" prefWidth="144.0" styleClass="label-login-registrazione" text="Categoria oggetto">
+                              <Label layoutX="255.0" layoutY="22.0" prefHeight="25.0" prefWidth="144.0" styleClass="label-login-registrazione" text="Categoria oggetto">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="43.0" layoutY="189.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Descrizione annuncio">
+                              <Label layoutX="37.0" layoutY="233.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Descrizione annuncio">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Button layoutX="129.0" layoutY="445.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="196.0" styleClass="tasto" stylesheets="@../resources/application.css" text="Avanti" textAlignment="CENTER">
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Button>
-                              <Label layoutX="122.0" layoutY="14.0" text="Creazione di un annuncio">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                              <DatePicker fx:id="campoInizioDisponibilità" layoutX="41.0" layoutY="145.0" prefHeight="36.0" prefWidth="196.0" promptText="Inserire una fascia oraria" />
-                              <Label layoutX="255.0" layoutY="118.0" prefHeight="27.0" prefWidth="128.0" styleClass="label-login-registrazione" text="Fine disponibilità">
+                              <Label layoutX="254.0" layoutY="90.0" prefHeight="27.0" prefWidth="128.0" styleClass="label-login-registrazione" text="Fine disponibilità">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <DatePicker fx:id="campoFineDisponibilità" layoutX="255.0" layoutY="145.0" prefHeight="36.0" prefWidth="196.0" promptText="Inserire una fascia oraria" />
-                              <Label layoutX="235.0" layoutY="430.0" prefHeight="30.0" prefWidth="23.0" style="-fx-alignment: center; -fx-font-weight: bold;" text=".">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                              <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="256.0" layoutY="76.0" prefHeight="33.0" prefWidth="196.0" />
-                              <TextArea fx:id="campoDescrizioneAnnuncio" layoutX="43.0" layoutY="214.0" prefHeight="74.0" prefWidth="413.0" wrapText="true" />
-                              <Label layoutX="235.0" layoutY="145.0" prefHeight="36.0" prefWidth="23.0" style="-fx-alignment: center; -fx-font-weight: bold;" text="-">
+                              <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="259.0" layoutY="46.0" prefHeight="33.0" prefWidth="196.0" />
+                              <TextArea fx:id="campoDescrizioneAnnuncio" layoutX="39.0" layoutY="258.0" prefHeight="36.0" prefWidth="413.0" wrapText="true" />
+                              <Label layoutX="238.0" layoutY="123.0" prefHeight="36.0" prefWidth="16.0" style="-fx-alignment: center; -fx-font-weight: bold;" text="-">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -199,33 +179,33 @@
                                     </Label>
                                  </children>
                               </Pane>
-                              <Label layoutX="40.0" layoutY="365.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Tipologia annuncio">
+                              <Label layoutX="39.0" layoutY="387.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Tipologia annuncio">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="42.0" layoutY="295.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Sede">
+                              <Label layoutX="38.0" layoutY="317.0" prefHeight="25.0" prefWidth="33.0" styleClass="label-login-registrazione" text="Sede">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="campoIndirizzo2" layoutX="170.0" layoutY="322.0" prefHeight="36.0" prefWidth="128.0" promptText="Descrizione" styleClass="campi">
+                              <TextField fx:id="campoIndirizzo2" layoutX="175.0" layoutY="342.0" prefHeight="36.0" prefWidth="128.0" promptText="Descrizione" styleClass="campi">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </TextField>
-                              <ChoiceBox fx:id="campoIndirizzo1" layoutX="43.0" layoutY="322.0" prefHeight="33.0" prefWidth="118.0" />
-                              <TextField fx:id="campoIndirizzo3" layoutX="311.0" layoutY="322.0" prefHeight="36.0" prefWidth="59.0" promptText="Civico" styleClass="campi">
+                              <ChoiceBox fx:id="campoIndirizzo1" layoutX="42.0" layoutY="344.0" prefHeight="33.0" prefWidth="118.0" />
+                              <TextField fx:id="campoIndirizzo3" layoutX="309.0" layoutY="342.0" prefHeight="36.0" prefWidth="59.0" promptText="Civico" styleClass="campi">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </TextField>
-                              <TextField fx:id="campoCap" layoutX="380.0" layoutY="321.0" prefHeight="36.0" prefWidth="70.0" promptText="CAP" styleClass="campi">
+                              <TextField fx:id="campoCap" layoutX="380.0" layoutY="342.0" prefHeight="36.0" prefWidth="70.0" promptText="CAP" styleClass="campi">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </TextField>
-                              <Group layoutX="43.0" layoutY="390.0">
+                              <Group layoutX="37.0" layoutY="411.0">
                                  <children>
                                     <RadioButton fx:id="campoVendita" mnemonicParsing="false" prefHeight="30.0" prefWidth="94.0" selected="true" text="Vendita">
                                        <font>
@@ -244,6 +224,26 @@
                                     </RadioButton>
                                  </children>
                               </Group>
+                              <ChoiceBox fx:id="inizioDisponibilità" layoutX="40.0" layoutY="123.0" prefHeight="36.0" prefWidth="196.0" />
+                              <ChoiceBox fx:id="fineDisponibilità" layoutX="258.0" layoutY="123.0" prefHeight="36.0" prefWidth="196.0" />
+                              <CheckBox fx:id="checklun" layoutX="54.0" layoutY="205.0" mnemonicParsing="false" text="Lun" />
+                              <CheckBox fx:id="checkmar" layoutX="139.0" layoutY="205.0" mnemonicParsing="false" text="Mar" />
+                              <CheckBox fx:id="checkmer" layoutX="223.0" layoutY="205.0" mnemonicParsing="false" text="Mer" />
+                              <CheckBox fx:id="checkgio" layoutX="305.0" layoutY="205.0" mnemonicParsing="false" text="Gio" />
+                              <CheckBox fx:id="checkven" layoutX="393.0" layoutY="205.0" mnemonicParsing="false" text="Ven" />
+                              <Label layoutX="36.0" layoutY="172.0" prefHeight="27.0" prefWidth="128.0" styleClass="label-login-registrazione" text="Giorni disponibilità">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Button layoutX="141.0" layoutY="443.0" mnemonicParsing="false" onMouseClicked="#VisualizzaDati" prefHeight="43.0" prefWidth="196.0" styleClass="tasto" stylesheets="@../resources/application.css" text="Avanti" textAlignment="CENTER">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
                            </children>
                         </Pane>
                      </children></AnchorPane>
