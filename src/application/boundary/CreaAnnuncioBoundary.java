@@ -9,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -38,6 +40,9 @@ public class CreaAnnuncioBoundary {
 	private Controller controller;
 
     @FXML private Label usernameDashboard;
+    @FXML private RadioButton campoVendita;
+    @FXML private RadioButton campoRegalo;
+    @FXML private RadioButton campoScambio;
     @FXML private ChoiceBox<Categorie> campoCategoriaOggetto;
     @FXML private ChoiceBox<ParticellaToponomastica> campoIndirizzo1;
 
@@ -121,5 +126,11 @@ public class CreaAnnuncioBoundary {
 		
 		campoIndirizzo1.setItems(FXCollections.observableArrayList(ParticellaToponomastica.values()));
 		campoIndirizzo1.getSelectionModel().selectFirst();
+		
+		ToggleGroup gruppoTipologia = new ToggleGroup();
+	    campoVendita.setToggleGroup(gruppoTipologia);
+	    campoRegalo.setToggleGroup(gruppoTipologia);
+	    campoScambio.setToggleGroup(gruppoTipologia);
+	    campoVendita.setSelected(true);
     }
 }
