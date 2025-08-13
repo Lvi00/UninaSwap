@@ -189,7 +189,7 @@ public class RegistrazioneBoundary {
 			stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);		
 		    stage.show();
 			stage.getIcons().addAll(
-                new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm())
+                new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
             );
 		}
 		catch(Exception ex) {

@@ -61,7 +61,7 @@ public class ProdottiBoundary {
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 		    	        stage.setScene(scene);
 		    	        stage.centerOnScreen();
-		    	        stage.setTitle("UninaSwap - Crea Annuncio");
+		    	        stage.setTitle("UninaSwap - Crea annuncio");
 		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 		    	        stage.setResizable(false);
 		    	        stage.show();

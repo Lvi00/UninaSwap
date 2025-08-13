@@ -5,6 +5,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 import application.control.Controller;
@@ -17,6 +20,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,7 +31,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class CreaAnnuncioBoundary {
-    
+	
+	private File fileSelezionato = null;
+	
     enum Categorie {
         Abbigliamento,
         Informatica,
@@ -71,6 +78,8 @@ public class CreaAnnuncioBoundary {
     @FXML private Pane secondaPagina;
     @FXML private Pane campiPrezzo;
     @FXML private ImageView immagineCaricata;
+    @FXML private Spinner<Integer> campoPrezzoIntero;
+    @FXML private Spinner<Integer> campoPrezzoDecimale;
     
     public void setController(Controller controller) {
         this.controller = controller;
@@ -155,6 +164,14 @@ public class CreaAnnuncioBoundary {
         inizioDisponibilità.setItems(FXCollections.observableArrayList());
         fineDisponibilità.setItems(FXCollections.observableArrayList());
         
+        campoPrezzoIntero.setValueFactory(
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 999, 0)
+        );
+
+        campoPrezzoDecimale.setValueFactory(
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, 0)
+        );
+        
         for (int i = 7; i <= 22; i++) {
             String ora = (i < 10 ? "0" + i : i) + ":00";
             inizioDisponibilità.getItems().add(ora);
@@ -171,6 +188,7 @@ public class CreaAnnuncioBoundary {
     }
     
     public void MostraPrimaPaginaForm(MouseEvent e) {
+        campiPrezzo.setVisible(false);
         primaPagina.setVisible(true);
         secondaPagina.setVisible(false);
     }
@@ -180,21 +198,11 @@ public class CreaAnnuncioBoundary {
         primaPagina.setVisible(false);
         secondaPagina.setVisible(true);
 
-        // Logica per tipologia
-        if (campoVendita.isSelected()) {
-            System.out.println("Tipologia: Vendita");
-            campiPrezzo.setVisible(true);
-        }
-        else if (campoRegalo.isSelected()) {
-            System.out.println("Tipologia: Regalo");
-        }
-        else {
-            System.out.println("Tipologia: Scambio");
-        }
+        if (campoVendita.isSelected()) campiPrezzo.setVisible(true);
     }
     
     @FXML
-    public String showFileChooser(MouseEvent e) {
+    public void showFileChooser(MouseEvent e) {
     	Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
         FileChooser fileChooser = new FileChooser();
@@ -204,21 +212,26 @@ public class CreaAnnuncioBoundary {
         );
 
         File selectedFile = fileChooser.showOpenDialog(stage);
-
-    	String path = null;
     	
         if (selectedFile != null) {
-        	path = selectedFile.toURI().toString();
-            Image image = new Image(path);
+            Image image = new Image(selectedFile.toURI().toString());
             immagineCaricata.setImage(image);
+            this.fileSelezionato = selectedFile;
         }
-        
-        return path;
     }
 
-    //Da inserire nel controller
     @FXML
     public void VisualizzaDati(MouseEvent e) {
+    	try {
+    		File destinationDir = new File(System.getProperty("user.dir"), "src/application/IMG/uploads");
+    		if (!destinationDir.exists()) destinationDir.mkdirs();
+    		File destinationFile = new File(destinationDir, this.fileSelezionato.getName());
+    		Files.copy(this.fileSelezionato.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+    	catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    	
         // Titolo e descrizione
         String titolo = campoTitoloAnnuncio.getText();
         String descrizione = campoDescrizioneAnnuncio.getText();
