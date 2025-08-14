@@ -10,12 +10,14 @@ import java.util.regex.Pattern;
 
 import application.DAO.AnnuncioDAO;
 import application.DAO.OggettoDAO;
+import application.DAO.SedeDAO;
 import application.DAO.StudenteDAO;
 import application.boundary.CreaAnnuncioBoundary;
 import application.boundary.PopupErrorBoundary;
 import application.boundary.ProdottiBoundary;
 import application.entity.Annuncio;
 import application.entity.Oggetto;
+import application.entity.Sede;
 import application.entity.Studente;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -84,14 +86,11 @@ public class Controller {
 	    return 0;
 	}
 	
-
 	public void InserisciStudente(ArrayList<String> credenziali){
 	    // Se arrivi qui, tutti i campi sono validi
 	    StudenteDAO studenteDAO = new StudenteDAO();
 	   	studenteDAO.Save(new Studente(credenziali.get(2), credenziali.get(3), credenziali.get(0), credenziali.get(1), credenziali.get(4)), credenziali.get(5));
 	}
-	
-	
 	
 	private int isValidEmail(String email) {
 	    if (email == null || email.contains(" ") || email.contains("\t")) {
@@ -122,7 +121,7 @@ public class Controller {
 	
 	public Studente CheckLoginStudente(String username, String password){
 		Studente studente = new StudenteDAO().LoginStudente(username, password);
-		this.studente=studente;
+		this.studente = studente;
 		return this.studente;
 	}
 	
@@ -165,23 +164,34 @@ public class Controller {
 		String civico = datiAnnuncio.get(8);
 		String cap = datiAnnuncio.get(9);
 		
+		String capRegex = "^[0-9]{5}$";
+		
 		if(particellatoponomastica == "" || descrizioneIndirizzo == "" || descrizioneIndirizzo.length() > 255 || civico == "" ||
-		civico.length() > 4 || cap == "" || cap.length() > 5) return 6;
+		civico.length() > 4 || cap == "" || cap.length() != 5 || !cap.matches(capRegex)) return 6;
 		
 		String tipologia = datiAnnuncio.get(7);
 		
 		if(tipologia == "") return 7;
 		
+		if(fileSelezionato == null || fileSelezionato.getName().isEmpty()) return 8;
+		
+		Sede sede = new Sede(particellatoponomastica, descrizioneIndirizzo, civico, cap);
+		
+		new SedeDAO().Save(sede);
+		
+		return 0;
+	}
+	
+	public void copiaFileCaricato(File fileSelezionato) {
     	try {
     		File destinationDir = new File(System.getProperty("user.dir"), "src/application/IMG/uploads");
     		if (!destinationDir.exists()) destinationDir.mkdirs();
     		File destinationFile = new File(destinationDir, fileSelezionato.getName());
     		Files.copy(fileSelezionato.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    		System.out.println("File copiato con successo");
         }
     	catch (IOException ex) {
             System.err.println("Errore durante la copia del file: " + ex.getMessage());
         }
-		
-		return 0;
 	}
 }

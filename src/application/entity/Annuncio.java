@@ -65,7 +65,7 @@ public class Annuncio {
         return oggetto;
     }
 
-    public String getGiorni() { // getter per il nuovo campo
+    public String getGiorni() {
         return giorni;
     }
 }

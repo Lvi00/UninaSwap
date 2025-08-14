@@ -282,7 +282,11 @@ public class CreaAnnuncioBoundary {
         
         switch(controller.checkDatiAnnuncio(datiAnnuncio, this.fileSelezionato)) {
 	        case 0:
-	        	System.out.println("Dati dell'annuncio validi.");
+	        	ShowPopupAlert("Annuncio creato con successo!", "Ora puoi visualizzare il tuo annuncio.");
+	        	controller.copiaFileCaricato(this.fileSelezionato);
+	        	inizializzaCampi();
+	        	MostraPrimaPaginaForm(e);
+	        	this.fileSelezionato = null;
 	        break;
 	        
         	case 1:
@@ -310,7 +314,7 @@ public class CreaAnnuncioBoundary {
         	break;
         	
         	case 6:
-        		ShowPopupError("Sede non valida", "I campi dell'indirizzo della sede non possono essere vuoti.");
+        		ShowPopupError("Sede non valida", "I campi dell'indirizzo della sede sono possono essere vuoti e devono rispettare il formato corretto.");
         		campoIndirizzo2.clear();
         		campoIndirizzo3.clear();
         		campoCap.clear();
@@ -320,9 +324,60 @@ public class CreaAnnuncioBoundary {
         		ShowPopupError("Tipologia non valida", "La tipologia dell'annuncio non può essere vuota.");
         	break;
         	
+        	case 8:
+        		ShowPopupError("Immagine non valida", "L'immagine inserita non è valida oppure non ha un nome valido.");
+				this.fileSelezionato = null;
+			break;
+        	
         	default:
         		System.out.println("Dati dell'annuncio non validi.");
         	break;
         }
+    }
+    
+    private void ShowPopupAlert(String title, String message) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupAlert.fxml"));
+	        Parent root = loader.load();
+			Scene scene = new Scene(root);
+			Stage stage = new Stage();
+	        PopupErrorBoundary popupController = loader.getController();
+	        popupController.setLabels(title, message);
+			stage.setTitle("UninaSwap - " + title);
+			stage.setScene(scene);
+			stage.centerOnScreen();
+			stage.setResizable(false);
+			stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);		
+		    stage.show();
+			stage.getIcons().addAll(
+                new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
+            );
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+    
+    private void inizializzaCampi() {
+    	campoTitoloAnnuncio.clear();
+		inizioDisponibilità.getSelectionModel().clearSelection();
+		fineDisponibilità.getSelectionModel().clearSelection();
+    	campoDescrizioneAnnuncio.clear();
+    	campoIndirizzo2.clear();
+    	campoIndirizzo3.clear();
+    	campoCap.clear();
+    	checklun.setSelected(false);
+    	checkmar.setSelected(false);
+    	checkmer.setSelected(false);
+    	checkgio.setSelected(false);
+    	checkven.setSelected(false);
+    	campoVendita.setSelected(true);
+    	immagineCaricata.setImage(null);
+    	campoPrezzoIntero.setValueFactory(
+			new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 999, 0)
+		);
+    	campoPrezzoDecimale.setValueFactory(
+			new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, 0)
+		);
     }
 }
