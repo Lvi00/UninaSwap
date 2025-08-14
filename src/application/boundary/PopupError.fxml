@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox id="popupError" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="400.0" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.PopupErrorBoundary">
+<HBox id="popupError" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="500.0" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.PopupErrorBoundary">
    <children>
-      <AnchorPane prefHeight="120.0" prefWidth="401.0">
+      <AnchorPane prefHeight="120.0" prefWidth="500">
          <children>
             <ImageView fitHeight="72.0" fitWidth="70.0" layoutX="14.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -21,8 +21,8 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="LabelDescrizioneErrore" layoutX="96.0" layoutY="53.0" prefHeight="46.0" prefWidth="289.0" textFill="WHITE" wrapText="true" />
-            <Label fx:id="LabelErrore" layoutX="171.0" layoutY="29.0" prefHeight="30.0" prefWidth="220.0" styleClass="popupLabel" textFill="WHITE">
+            <Label fx:id="LabelDescrizioneErrore" layoutX="96.0" layoutY="59.0" prefHeight="41.0" prefWidth="387.0" textFill="WHITE" wrapText="true" />
+            <Label fx:id="LabelErrore" layoutX="171.0" layoutY="29.0" prefHeight="30.0" prefWidth="307.0" styleClass="popupLabel" textFill="WHITE" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>

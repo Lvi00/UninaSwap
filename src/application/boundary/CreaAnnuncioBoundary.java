@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import application.control.Controller;
@@ -219,59 +220,109 @@ public class CreaAnnuncioBoundary {
             this.fileSelezionato = selectedFile;
         }
     }
+    
+    private void ShowPopupError(String title, String message) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
+	        Parent root = loader.load();
+			Scene scene = new Scene(root);
+			Stage stage = new Stage();
+			
+	        PopupErrorBoundary popupController = loader.getController();
+	        popupController.setLabels(title, message);
+	        
+			stage.setTitle("UninaSwap - " + title);
+			stage.setScene(scene);
+			stage.centerOnScreen();
+			stage.setResizable(false);
+			stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);		
+		    stage.show();
+			stage.getIcons().addAll(
+                new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
+            );
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 
     @FXML
     public void VisualizzaDati(MouseEvent e) {
-    	try {
-    		File destinationDir = new File(System.getProperty("user.dir"), "src/application/IMG/uploads");
-    		if (!destinationDir.exists()) destinationDir.mkdirs();
-    		File destinationFile = new File(destinationDir, this.fileSelezionato.getName());
-    		Files.copy(this.fileSelezionato.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        }
-    	catch (IOException ex) {
-            ex.printStackTrace();
-        }
+    	ArrayList<String> datiAnnuncio = new ArrayList<String>();
     	
-        // Titolo e descrizione
-        String titolo = campoTitoloAnnuncio.getText();
-        String descrizione = campoDescrizioneAnnuncio.getText();
+    	datiAnnuncio.add(campoTitoloAnnuncio.getText());
+    	datiAnnuncio.add(campoCategoriaOggetto.getValue().name());
+        
+    	datiAnnuncio.add(inizioDisponibilità.getValue());
+    	datiAnnuncio.add(fineDisponibilità.getValue());
+        
+        String giorniDisponibilità = "";
+        
+        if (checklun.isSelected()) giorniDisponibilità += "Lun-";
+        if (checkmar.isSelected()) giorniDisponibilità += "Mar-";
+        if (checkmer.isSelected()) giorniDisponibilità += "Mer-";
+        if (checkgio.isSelected()) giorniDisponibilità += "Gio-";
+        if (checkven.isSelected()) giorniDisponibilità += "Ven-";
+        
+        datiAnnuncio.add(giorniDisponibilità);
 
-        // Categoria
-        String categoria = campoCategoriaOggetto.getValue().name();
+        datiAnnuncio.add(campoDescrizioneAnnuncio.getText());
+        
+        datiAnnuncio.add(campoIndirizzo1.getValue().name());
+        datiAnnuncio.add(campoIndirizzo2.getText());
+        datiAnnuncio.add(campoIndirizzo3.getText());
+        datiAnnuncio.add(campoCap.getText());
 
-        // Indirizzo
-        String indirizzoTop = campoIndirizzo1.getValue().name();
-        String indirizzo2 = campoIndirizzo2.getText();
-        String indirizzo3 = campoIndirizzo3.getText();
-        String indirizzo4 = campoCap.getText();
-        String indirizzoCompleto = indirizzoTop + " " + indirizzo2 + " " + indirizzo3 + " " + indirizzo4;
-
-        // Disponibilità oraria
-        String inizio = inizioDisponibilità.getValue();
-        String fine = fineDisponibilità.getValue();
-
-        // Giorni selezionati
-        ArrayList<String> giorniSelezionati = new ArrayList<String>();
-        if (checklun.isSelected()) giorniSelezionati.add("Lunedì");
-        if (checkmar.isSelected()) giorniSelezionati.add("Martedì");
-        if (checkmer.isSelected()) giorniSelezionati.add("Mercoledì");
-        if (checkgio.isSelected()) giorniSelezionati.add("Giovedì");
-        if (checkven.isSelected()) giorniSelezionati.add("Venerdì");
-
-        // Tipologia annuncio
-        String tipologia;
-        if (campoVendita.isSelected()) tipologia = "Vendita";
-        else if (campoRegalo.isSelected()) tipologia = "Regalo";
-        else tipologia = "Scambio";
-
-        // Stampa dei dati in console
-        System.out.println("---- Dati Annuncio ----");
-        System.out.println("Titolo: " + titolo);
-        System.out.println("Descrizione: " + descrizione);
-        System.out.println("Categoria: " + categoria);
-        System.out.println("Indirizzo: " + indirizzoCompleto);
-        System.out.println("Disponibilità: " + inizio + " - " + fine);
-        System.out.println("Giorni selezionati: " + giorniSelezionati);
-        System.out.println("Tipologia: " + tipologia);
+        String tipologiaAnnuncio = "";
+        if (campoVendita.isSelected()) tipologiaAnnuncio += "Vendita";
+        else if (campoRegalo.isSelected()) tipologiaAnnuncio += "Regalo";
+        else tipologiaAnnuncio += "Scambio";
+        
+        datiAnnuncio.add(tipologiaAnnuncio);
+        
+        switch(controller.checkDatiAnnuncio(datiAnnuncio, this.fileSelezionato)) {
+	        case 0:
+	        	System.out.println("Dati dell'annuncio validi.");
+	        break;
+	        
+        	case 1:
+        		ShowPopupError("Titolo non valido", "Il titolo dell'annuncio non può essere vuoto e deve contenere al massimo 50 caratteri.");
+        		campoTitoloAnnuncio.clear();
+        	break;
+        	
+        	case 2:
+        		ShowPopupError("Categoria non valida", "La cateogira dell'annuncio non può essere vuota.");
+        	break;
+        	
+        	case 3:
+        		ShowPopupError("Fascia oraria non valida", "La fascia oraria della disponibilità non può essere vuota.");
+        		inizioDisponibilità.getSelectionModel().clearSelection();
+        		fineDisponibilità.getSelectionModel().clearSelection();
+        	break;
+        	
+        	case 4:
+        		ShowPopupError("Giorni disponibilità non validi", "Specificare almeno un giorno della disponibilità.");
+        	break;
+        	
+        	case 5:
+        		ShowPopupError("Descrizione non valida", "La descrizione dell'annuncio non può essere vuota e deve contenere al massimo 255 caratteri.");
+        		campoDescrizioneAnnuncio.clear();
+        	break;
+        	
+        	case 6:
+        		ShowPopupError("Sede non valida", "I campi dell'indirizzo della sede non possono essere vuoti.");
+        		campoIndirizzo2.clear();
+        		campoIndirizzo3.clear();
+        		campoCap.clear();
+        	break;
+        	
+        	case 7:
+        		ShowPopupError("Tipologia non valida", "La tipologia dell'annuncio non può essere vuota.");
+        	break;
+        	
+        	default:
+        		System.out.println("Dati dell'annuncio non validi.");
+        	break;
+        }
     }
 }

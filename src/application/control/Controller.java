@@ -1,5 +1,9 @@
 package application.control;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,10 +12,16 @@ import application.DAO.AnnuncioDAO;
 import application.DAO.OggettoDAO;
 import application.DAO.StudenteDAO;
 import application.boundary.CreaAnnuncioBoundary;
+import application.boundary.PopupErrorBoundary;
 import application.boundary.ProdottiBoundary;
 import application.entity.Annuncio;
 import application.entity.Oggetto;
 import application.entity.Studente;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public class Controller {
 	
@@ -126,5 +136,52 @@ public class Controller {
 	
 	public Studente getStudente() {
 	    return this.studente;
+	}
+	
+	public int checkDatiAnnuncio(ArrayList<String> datiAnnuncio, File fileSelezionato) {
+		String titolo = datiAnnuncio.get(0);
+		
+		if(titolo == "" || titolo.length() > 50) return 1;
+		
+		String categoria = datiAnnuncio.get(1);
+		
+		if(categoria == "") return 2;
+		
+		String inizioOrarioDisponibilità = datiAnnuncio.get(2);
+		String fineOrarioDisponibilità = datiAnnuncio.get(3);
+		
+		if(inizioOrarioDisponibilità == "" || fineOrarioDisponibilità == "") return 3;
+		
+		String giorniDisponibilità = datiAnnuncio.get(4);
+		
+		if(giorniDisponibilità == "") return 4;
+		
+		String descrizione = datiAnnuncio.get(5);
+		
+		if(descrizione == "" || descrizione.length() > 255) return 5;
+		
+		String particellatoponomastica = datiAnnuncio.get(6);
+		String descrizioneIndirizzo = datiAnnuncio.get(7);
+		String civico = datiAnnuncio.get(8);
+		String cap = datiAnnuncio.get(9);
+		
+		if(particellatoponomastica == "" || descrizioneIndirizzo == "" || descrizioneIndirizzo.length() > 255 || civico == "" ||
+		civico.length() > 4 || cap == "" || cap.length() > 5) return 6;
+		
+		String tipologia = datiAnnuncio.get(7);
+		
+		if(tipologia == "") return 7;
+		
+    	try {
+    		File destinationDir = new File(System.getProperty("user.dir"), "src/application/IMG/uploads");
+    		if (!destinationDir.exists()) destinationDir.mkdirs();
+    		File destinationFile = new File(destinationDir, fileSelezionato.getName());
+    		Files.copy(fileSelezionato.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+    	catch (IOException ex) {
+            System.err.println("Errore durante la copia del file: " + ex.getMessage());
+        }
+		
+		return 0;
 	}
 }
