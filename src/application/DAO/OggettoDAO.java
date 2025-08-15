@@ -25,8 +25,7 @@ public class OggettoDAO {
             	oggetto = new Oggetto(
 					rs.getString("immagineoggetto"),
 					rs.getString("categoria"),
-					rs.getString("descrizione"),
-					rs.getString("nomeoggetto")
+					rs.getString("descrizione")
 				);
             }
 

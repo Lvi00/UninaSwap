@@ -31,7 +31,9 @@
     -fx-opacity: 1.0;
     -fx-font-size: 14px;
 }
-
+.tasto-secondario{
+	-fx-background-radius: 100px;
+}
 .tasto:hover {
     -fx-scale-x: 1.02;
     -fx-scale-y: 1.02;
@@ -119,10 +121,10 @@
 
 #popupAlert {
 	-fx-background-color: linear-gradient(
-		from 0% 0%
-		to 100% 0%,
-		#001000 0%,
-		#002200 100%
+	    from 0% 0%
+	    to 100% 0%,
+	    #003300 10%,  
+	    #006600 100%  
 	);
 }
 

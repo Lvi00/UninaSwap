@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -117,156 +116,140 @@
                <children>
                   <AnchorPane prefHeight="498.0" prefWidth="949.0">
                      <children>
-                        <Pane prefHeight="498.0" prefWidth="500.0" styleClass="form">
+                        <Pane prefHeight="498.0" prefWidth="949.0">
                            <children>
-                              <Pane fx:id="primaPagina" layoutX="32.0" layoutY="18.0">
+                              <Pane prefHeight="498.0" prefWidth="480.0">
                                  <children>
-                                    <Label fx:id="labelTipologiaAnnuncio" layoutX="10.0" layoutY="381.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Tipologia annuncio">
+                                    <Label fx:id="labelTipologiaAnnuncio" layoutX="50.0" layoutY="408.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Tipologia annuncio">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <RadioButton fx:id="campoVendita" layoutX="28.0" layoutY="406.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="94.0" selected="true" text="Vendita">
+                                    <RadioButton fx:id="campoVendita" layoutX="68.0" layoutY="433.0" mnemonicParsing="false" onMouseClicked="#MostraPaneVendita" prefHeight="30.0" prefWidth="94.0" selected="true" text="Vendita">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </RadioButton>
-                                    <RadioButton fx:id="campoRegalo" layoutX="158.0" layoutY="406.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="98.0" text="Regalo">
+                                    <RadioButton fx:id="campoRegalo" layoutX="198.0" layoutY="433.0" mnemonicParsing="false" onMouseClicked="#NascondiPaneVendita" prefHeight="30.0" prefWidth="98.0" text="Regalo">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </RadioButton>
-                                    <RadioButton fx:id="campoScambio" layoutX="273.0" layoutY="406.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="103.0" text="Scambio">
+                                    <RadioButton fx:id="campoScambio" layoutX="313.0" layoutY="433.0" mnemonicParsing="false" onMouseClicked="#NascondiPaneVendita" prefHeight="30.0" prefWidth="103.0" text="Scambio">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </RadioButton>
-                                    <Label layoutX="12.0" layoutY="2.0" prefHeight="25.0" prefWidth="112.0" styleClass="label-login-registrazione" text="Titolo annuncio">
+                                    <Label layoutX="37.0" layoutY="29.0" prefHeight="25.0" prefWidth="112.0" styleClass="label-login-registrazione" text="Titolo annuncio">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="campoTitoloAnnuncio" layoutX="11.0" layoutY="26.0" prefHeight="36.0" prefWidth="196.0" promptText="Inserire il titolo" styleClass="campi">
+                                    <TextField fx:id="campoTitoloAnnuncio" layoutX="36.0" layoutY="53.0" prefHeight="36.0" prefWidth="196.0" promptText="Inserire il titolo" styleClass="campi">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </TextField>
-                                    <Label layoutX="10.0" layoutY="78.0" prefHeight="27.0" prefWidth="161.0" styleClass="label-login-registrazione" text="Inizio disponibilità">
+                                    <Label layoutX="35.0" layoutY="105.0" prefHeight="27.0" prefWidth="161.0" styleClass="label-login-registrazione" text="Inizio disponibilità">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="227.0" prefHeight="30.0" prefWidth="144.0" styleClass="label-login-registrazione" text="Categoria oggetto">
+                                    <Label layoutX="252.0" layoutY="27.0" prefHeight="30.0" prefWidth="144.0" styleClass="label-login-registrazione" text="Categoria oggetto">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="10.0" layoutY="215.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Descrizione annuncio">
+                                    <Label layoutX="35.0" layoutY="242.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Descrizione annuncio">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="226.0" layoutY="78.0" prefHeight="27.0" prefWidth="144.0" styleClass="label-login-registrazione" text="Fine disponibilità">
+                                    <Label layoutX="251.0" layoutY="105.0" prefHeight="27.0" prefWidth="144.0" styleClass="label-login-registrazione" text="Fine disponibilità">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="226.0" layoutY="28.0" prefHeight="33.0" prefWidth="196.0" />
-                                    <TextArea fx:id="campoDescrizioneAnnuncio" layoutX="10.0" layoutY="240.0" prefHeight="74.0" prefWidth="413.0" promptText="Inserire la descrizione" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
+                                    <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="251.0" layoutY="55.0" prefHeight="33.0" prefWidth="196.0" />
+                                    <TextArea fx:id="campoDescrizioneAnnuncio" layoutX="35.0" layoutY="267.0" prefHeight="74.0" prefWidth="413.0" promptText="Inserire la descrizione" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </TextArea>
-                                    <Label layoutX="207.0" layoutY="105.0" prefHeight="36.0" prefWidth="16.0" style="-fx-alignment: center; -fx-font-weight: bold;" text="-">
+                                    <Label layoutX="232.0" layoutY="132.0" prefHeight="36.0" prefWidth="16.0" style="-fx-alignment: center; -fx-font-weight: bold;" text="-">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="11.0" layoutY="316.0" prefHeight="25.0" prefWidth="59.0" styleClass="label-login-registrazione" text="Sede">
+                                    <Label layoutX="39.0" layoutY="341.0" prefHeight="25.0" prefWidth="59.0" styleClass="label-login-registrazione" text="Sede">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="campoIndirizzo2" layoutX="140.0" layoutY="339.0" prefHeight="36.0" prefWidth="128.0" promptText="Descrizione" styleClass="campi">
+                                    <TextField fx:id="campoIndirizzo2" layoutX="180.0" layoutY="366.0" prefHeight="36.0" prefWidth="128.0" promptText="Descrizione" styleClass="campi">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </TextField>
-                                    <ChoiceBox fx:id="campoIndirizzo1" layoutX="9.0" layoutY="340.0" prefHeight="33.0" prefWidth="118.0" />
-                                    <TextField fx:id="campoIndirizzo3" layoutX="275.0" layoutY="339.0" prefHeight="36.0" prefWidth="59.0" promptText="Civico" styleClass="campi">
+                                    <ChoiceBox fx:id="campoIndirizzo1" layoutX="49.0" layoutY="367.0" prefHeight="33.0" prefWidth="118.0" />
+                                    <TextField fx:id="campoIndirizzo3" layoutX="315.0" layoutY="366.0" prefHeight="36.0" prefWidth="59.0" promptText="Civico" styleClass="campi">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </TextField>
-                                    <TextField fx:id="campoCap" layoutX="340.0" layoutY="339.0" prefHeight="36.0" prefWidth="83.0" promptText="CAP" styleClass="campi">
+                                    <TextField fx:id="campoCap" layoutX="380.0" layoutY="366.0" prefHeight="36.0" prefWidth="83.0" promptText="CAP" styleClass="campi">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </TextField>
-                                    <ChoiceBox fx:id="inizioDisponibilità" layoutX="8.0" layoutY="105.0" prefHeight="36.0" prefWidth="196.0" />
-                                    <ChoiceBox fx:id="fineDisponibilità" layoutX="226.0" layoutY="105.0" prefHeight="36.0" prefWidth="196.0" />
-                                    <CheckBox fx:id="checklun" layoutX="27.0" layoutY="180.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Lunedì" />
-                                    <CheckBox fx:id="checkmar" layoutX="99.0" layoutY="180.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Martedì" />
-                                    <CheckBox fx:id="checkmer" layoutX="173.0" layoutY="180.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Mercoledì" />
-                                    <CheckBox fx:id="checkgio" layoutX="262.0" layoutY="180.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Giovedì" />
-                                    <CheckBox fx:id="checkven" layoutX="334.0" layoutY="180.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Venerdì" />
-                                    <Label layoutX="11.0" layoutY="153.0" prefHeight="27.0" prefWidth="128.0" styleClass="label-login-registrazione" text="Giorni disponibilità">
+                                    <ChoiceBox fx:id="inizioDisponibilità" layoutX="33.0" layoutY="132.0" prefHeight="36.0" prefWidth="196.0" />
+                                    <ChoiceBox fx:id="fineDisponibilità" layoutX="251.0" layoutY="132.0" prefHeight="36.0" prefWidth="196.0" />
+                                    <CheckBox fx:id="checklun" layoutX="52.0" layoutY="207.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Lunedì" />
+                                    <CheckBox fx:id="checkmar" layoutX="124.0" layoutY="207.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Martedì" />
+                                    <CheckBox fx:id="checkmer" layoutX="198.0" layoutY="207.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Mercoledì" />
+                                    <CheckBox fx:id="checkgio" layoutX="287.0" layoutY="207.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Giovedì" />
+                                    <CheckBox fx:id="checkven" layoutX="359.0" layoutY="207.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Venerdì" />
+                                    <Label layoutX="36.0" layoutY="180.0" prefHeight="27.0" prefWidth="128.0" styleClass="label-login-registrazione" text="Giorni disponibilità">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <Button layoutX="399.0" layoutY="414.0" mnemonicParsing="false" onMouseClicked="#MostraSecondaPaginaForm" prefHeight="43.0" prefWidth="47.0" styleClass="tasto-secondario" stylesheets="@../resources/application.css" textAlignment="CENTER">
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Button>
-                                    <ImageView fitHeight="27.0" fitWidth="33.0" layoutX="409.0" layoutY="422.0" onMouseClicked="#MostraSecondaPaginaForm" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../IMG/immaginiProgramma/right_arrow.png" />
-                                       </image>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                    </ImageView>
                                  </children>
                               </Pane>
-                              <Pane fx:id="secondaPagina" layoutX="32.0" layoutY="18.0" prefHeight="457.0" prefWidth="446.0" visible="false">
+                              <Pane layoutX="473.0" prefHeight="498.0" prefWidth="480.0">
                                  <children>
-                                    <Pane fx:id="campiPrezzo" layoutX="31.0" layoutY="229.0" prefHeight="102.0" prefWidth="385.0" visible="false">
+                                    <Pane fx:id="campiPrezzo" layoutX="36.0" layoutY="249.0" prefHeight="102.0" prefWidth="385.0">
                                        <children>
                                           <Label layoutX="169.0" layoutY="2.0" prefHeight="25.0" prefWidth="47.0" styleClass="label-login-registrazione" text="Prezzo">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="192.0" layoutY="51.0" prefHeight="36.0" prefWidth="23.0" style="-fx-alignment: center; -fx-font-weight: bold;" text=",">
+                                          <Label layoutX="192.0" layoutY="53.0" prefHeight="36.0" prefWidth="23.0" style="-fx-alignment: center; -fx-font-weight: bold;" text=",">
                                              <font>
                                                 <Font size="20.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="9.0" layoutY="51.0" prefHeight="36.0" prefWidth="27.0" style="-fx-alignment: center; -fx-font-weight: bold;" text="€">
+                                          <Label layoutX="14.0" layoutY="51.0" prefHeight="36.0" prefWidth="27.0" style="-fx-alignment: center; -fx-font-weight: bold;" text="€">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </Label>
-                                          <Spinner fx:id="campoPrezzoIntero" layoutX="42.0" layoutY="54.0" prefHeight="30.0" prefWidth="150.0" style="-fx-font-size: 14px;" />
-                                          <Spinner fx:id="campoPrezzoDecimale" layoutX="215.0" layoutY="54.0" prefHeight="30.0" prefWidth="150.0" style="-fx-font-size: 14px;" />
+                                          <TextField fx:id="campoPrezzoIntero" layoutX="41.0" layoutY="53.0" promptText="Inserire un numero" styleClass="campi" />
+                                          <TextField fx:id="campoPrezzoDecimale" layoutX="216.0" layoutY="53.0" promptText="Inserire un numero" styleClass="campi" />
                                        </children>
                                     </Pane>
-                                    <Label layoutX="160.0" layoutY="34.0" prefHeight="25.0" prefWidth="128.0" styleClass="label-login-registrazione" text="Immagine oggetto">
+                                    <Label layoutX="165.0" layoutY="28.0" prefHeight="25.0" prefWidth="128.0" styleClass="label-login-registrazione" text="Immagine oggetto">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fx:id="immagineCaricata" fitHeight="160.0" fitWidth="220.0" layoutX="212.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="immagineCaricata" fitHeight="160.0" fitWidth="220.0" layoutX="130.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../IMG/immaginiProgramma/no_image.png" />
                                        </image>
                                     </ImageView>
-                                    <Button layoutX="52.0" layoutY="112.0" mnemonicParsing="false" onMouseClicked="#showFileChooser" prefHeight="36.0" prefWidth="118.0" styleClass="tasto-secondario" text="Seleziona file" textFill="WHITE">
+                                    <Button layoutX="87.0" layoutY="118.0" mnemonicParsing="false" onMouseClicked="#showFileChooser" prefHeight="36.0" prefWidth="43.0" styleClass="tasto-secondario" textFill="WHITE">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
@@ -274,30 +257,22 @@
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </Button>
-                                    <Button layoutX="164.0" layoutY="401.0" mnemonicParsing="false" onMouseClicked="#VisualizzaDati" prefHeight="43.0" prefWidth="128.0" styleClass="tasto-secondario" text="Crea annuncio" textFill="WHITE">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                    </Button>
-                                    <Button layoutX="28.0" layoutY="403.0" mnemonicParsing="false" onMouseClicked="#MostraPrimaPaginaForm" prefHeight="43.0" prefWidth="47.0" styleClass="tasto-secondario" textFill="WHITE">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                    </Button>
-                                    <ImageView fitHeight="33.0" fitWidth="27.0" layoutX="38.0" layoutY="411.0" onMouseClicked="#MostraPrimaPaginaForm" pickOnBounds="true" preserveRatio="true" styleClass="tasto">
+                                    <ImageView fitHeight="43.0" fitWidth="47.0" layoutX="87.0" layoutY="117.0" onMouseClicked="#showFileChooser" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../IMG/immaginiProgramma/arrow_back.png" />
+                                          <Image url="@../IMG/immaginiProgramma/add.png" />
                                        </image>
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </ImageView>
+                                    <Button layoutX="176.0" layoutY="423.0" mnemonicParsing="false" onMouseClicked="#InviaDati" prefHeight="43.0" prefWidth="128.0" styleClass="tasto-secondario" text="Crea annuncio" textFill="WHITE">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
                                  </children>
                               </Pane>
                            </children>

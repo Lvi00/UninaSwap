@@ -75,12 +75,10 @@ public class CreaAnnuncioBoundary {
     @FXML private RadioButton campoVendita;
     @FXML private RadioButton campoRegalo;
     @FXML private RadioButton campoScambio;
-    @FXML private Pane primaPagina;
-    @FXML private Pane secondaPagina;
     @FXML private Pane campiPrezzo;
     @FXML private ImageView immagineCaricata;
-    @FXML private Spinner<Integer> campoPrezzoIntero;
-    @FXML private Spinner<Integer> campoPrezzoDecimale;
+    @FXML private TextField campoPrezzoIntero;
+    @FXML private TextField campoPrezzoDecimale;
     
     public void setController(Controller controller) {
         this.controller = controller;
@@ -164,15 +162,7 @@ public class CreaAnnuncioBoundary {
         
         inizioDisponibilità.setItems(FXCollections.observableArrayList());
         fineDisponibilità.setItems(FXCollections.observableArrayList());
-        
-        campoPrezzoIntero.setValueFactory(
-            new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 999, 0)
-        );
 
-        campoPrezzoDecimale.setValueFactory(
-            new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, 0)
-        );
-        
         for (int i = 7; i <= 22; i++) {
             String ora = (i < 10 ? "0" + i : i) + ":00";
             inizioDisponibilità.getItems().add(ora);
@@ -188,18 +178,15 @@ public class CreaAnnuncioBoundary {
         campoVendita.setSelected(true);
     }
     
-    public void MostraPrimaPaginaForm(MouseEvent e) {
-        campiPrezzo.setVisible(false);
-        primaPagina.setVisible(true);
-        secondaPagina.setVisible(false);
+    public void MostraPaneVendita(MouseEvent e) {
+    	campiPrezzo.setVisible(true);
     }
     
     @FXML
-    public void MostraSecondaPaginaForm(MouseEvent e) {
-        primaPagina.setVisible(false);
-        secondaPagina.setVisible(true);
-
-        if (campoVendita.isSelected()) campiPrezzo.setVisible(true);
+    public void NascondiPaneVendita(MouseEvent e) {
+    	campiPrezzo.setVisible(false);
+    	campoPrezzoIntero.clear();
+    	campoPrezzoDecimale.clear();
     }
     
     @FXML
@@ -216,6 +203,7 @@ public class CreaAnnuncioBoundary {
     	
         if (selectedFile != null) {
             Image image = new Image(selectedFile.toURI().toString());
+            //Carica sull'imaggine di defoult la nuova immagine
             immagineCaricata.setImage(image);
             this.fileSelezionato = selectedFile;
         }
@@ -247,7 +235,8 @@ public class CreaAnnuncioBoundary {
 	}
 
     @FXML
-    public void VisualizzaDati(MouseEvent e) {
+    public void InviaDati(MouseEvent e) {
+    	
     	ArrayList<String> datiAnnuncio = new ArrayList<String>();
     	
     	datiAnnuncio.add(campoTitoloAnnuncio.getText());
@@ -274,18 +263,37 @@ public class CreaAnnuncioBoundary {
         datiAnnuncio.add(campoCap.getText());
 
         String tipologiaAnnuncio = "";
-        if (campoVendita.isSelected()) tipologiaAnnuncio += "Vendita";
-        else if (campoRegalo.isSelected()) tipologiaAnnuncio += "Regalo";
-        else tipologiaAnnuncio += "Scambio";
+        if (campoVendita.isSelected()) tipologiaAnnuncio = "Vendita";
+        else if (campoRegalo.isSelected()) tipologiaAnnuncio = "Regalo";
+        else tipologiaAnnuncio = "Scambio";
         
         datiAnnuncio.add(tipologiaAnnuncio);
         
+        if(tipologiaAnnuncio == "Vendita")
+        {
+        	String intero = campoPrezzoIntero.getText();
+	        String decimale = campoPrezzoDecimale.getText();
+	
+	        // Se intero è vuoto, aggiungi "0"
+	        if (intero.isEmpty()) {
+	        	intero = "0";
+	        }
+	        // Se decimale è vuoto, aggiungi "00"
+	        if (decimale.isEmpty()) {
+	            decimale = "00";
+	        }
+	
+	        // Costruisci il prezzo finale
+	        String stringaPrezzo = intero + "." + decimale;
+	        datiAnnuncio.add(stringaPrezzo);
+	        
+    	}
+    
         switch(controller.checkDatiAnnuncio(datiAnnuncio, this.fileSelezionato)) {
 	        case 0:
-	        	ShowPopupAlert("Annuncio creato con successo!", "Ora puoi visualizzare il tuo annuncio.");
+	        	ShowPopupAlert("Annuncio creato con successo!", "Dati inseriti con successo in UninaSwap");
 	        	controller.copiaFileCaricato(this.fileSelezionato);
 	        	inizializzaCampi();
-	        	MostraPrimaPaginaForm(e);
 	        	this.fileSelezionato = null;
 	        break;
 	        
@@ -300,8 +308,6 @@ public class CreaAnnuncioBoundary {
         	
         	case 3:
         		ShowPopupError("Fascia oraria non valida", "La fascia oraria della disponibilità non può essere vuota.");
-        		inizioDisponibilità.getSelectionModel().clearSelection();
-        		fineDisponibilità.getSelectionModel().clearSelection();
         	break;
         	
         	case 4:
@@ -324,7 +330,13 @@ public class CreaAnnuncioBoundary {
         		ShowPopupError("Tipologia non valida", "La tipologia dell'annuncio non può essere vuota.");
         	break;
         	
-        	case 8:
+         	case 8:
+        		ShowPopupError("Prezzo non valido", "Il prezzo inserito non è valido");
+        	    campoPrezzoIntero.clear();
+        	    campoPrezzoDecimale.clear();
+			break;
+			
+        	case 9:
         		ShowPopupError("Immagine non valida", "L'immagine inserita non è valida oppure non ha un nome valido.");
 				this.fileSelezionato = null;
 			break;
@@ -359,25 +371,31 @@ public class CreaAnnuncioBoundary {
 	}
     
     private void inizializzaCampi() {
+    	
     	campoTitoloAnnuncio.clear();
-		inizioDisponibilità.getSelectionModel().clearSelection();
-		fineDisponibilità.getSelectionModel().clearSelection();
-    	campoDescrizioneAnnuncio.clear();
-    	campoIndirizzo2.clear();
-    	campoIndirizzo3.clear();
-    	campoCap.clear();
+        campoCategoriaOggetto.getSelectionModel().selectFirst();
+        
+        inizioDisponibilità.getSelectionModel().selectFirst();
+        fineDisponibilità.getSelectionModel().selectLast();
+        
     	checklun.setSelected(false);
     	checkmar.setSelected(false);
     	checkmer.setSelected(false);
     	checkgio.setSelected(false);
     	checkven.setSelected(false);
+
+    	campoDescrizioneAnnuncio.clear();
+
+    	campoIndirizzo1.getSelectionModel().selectFirst();
+    	campoIndirizzo2.clear();
+    	campoIndirizzo3.clear();
+    	campoCap.clear();
+    	
     	campoVendita.setSelected(true);
-    	immagineCaricata.setImage(null);
-    	campoPrezzoIntero.setValueFactory(
-			new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 999, 0)
-		);
-    	campoPrezzoDecimale.setValueFactory(
-			new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99, 0)
-		);
+    	campiPrezzo.setVisible(true);
+    	campoPrezzoIntero.clear();
+    	campoPrezzoDecimale.clear();
+    	
+    	immagineCaricata.setImage(new Image(getClass().getResource("..\\IMG\\immaginiProgramma\\no_image.png").toExternalForm()));
     }
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -138,18 +139,20 @@ public class Controller {
 	}
 	
 	public int checkDatiAnnuncio(ArrayList<String> datiAnnuncio, File fileSelezionato) {
-		String titolo = datiAnnuncio.get(0);
 		
+		String titolo = datiAnnuncio.get(0);
 		if(titolo == "" || titolo.length() > 50) return 1;
 		
 		String categoria = datiAnnuncio.get(1);
-		
 		if(categoria == "") return 2;
 		
 		String inizioOrarioDisponibilità = datiAnnuncio.get(2);
 		String fineOrarioDisponibilità = datiAnnuncio.get(3);
 		
-		if(inizioOrarioDisponibilità == "" || fineOrarioDisponibilità == "") return 3;
+		//trasforma le stringe in oggetti LocalTime e le confronta
+		if (!LocalTime.parse(inizioOrarioDisponibilità).isBefore(LocalTime.parse(fineOrarioDisponibilità))) {
+		    return 3; // inizio >= fine, fascia oraria non valida
+		}
 		
 		String giorniDisponibilità = datiAnnuncio.get(4);
 		
@@ -163,21 +166,36 @@ public class Controller {
 		String descrizioneIndirizzo = datiAnnuncio.get(7);
 		String civico = datiAnnuncio.get(8);
 		String cap = datiAnnuncio.get(9);
-		
+		//Evita lettere nel CAP
 		String capRegex = "^[0-9]{5}$";
 		
-		if(particellatoponomastica == "" || descrizioneIndirizzo == "" || descrizioneIndirizzo.length() > 255 || civico == "" ||
+		if(particellatoponomastica == "" || descrizioneIndirizzo == "" || descrizioneIndirizzo.length() > 100 || civico == "" ||
 		civico.length() > 4 || cap == "" || cap.length() != 5 || !cap.matches(capRegex)) return 6;
 		
-		String tipologia = datiAnnuncio.get(7);
+		String tipologia = datiAnnuncio.get(10);
 		
 		if(tipologia == "") return 7;
 		
-		if(fileSelezionato == null || fileSelezionato.getName().isEmpty()) return 8;
+		if(tipologia == "Vendita")
+		{
+			String stringaPrezzo = datiAnnuncio.get(11);
+			
+			//Evita i caratteri speciali e le lettere, max un punto, max 3 cifre prima e 2 dopo, niente negativi
+			String prezzoRegex = "^\\d{1,3}(\\.\\d{1,2})?$";
+		    if (!stringaPrezzo.matches(prezzoRegex)) return 8; 
+		    
+			double prezzo = Double.parseDouble(stringaPrezzo);
+			System.out.println(prezzo);
+			
+			if(prezzo<=0 || prezzo>=1000) return 8;
+		}
+		
+		if(fileSelezionato == null || fileSelezionato.getName().isEmpty() || fileSelezionato.getName().startsWith("no_image")) return 9;
 		
 		Sede sede = new Sede(particellatoponomastica, descrizioneIndirizzo, civico, cap);
 		
 		new SedeDAO().Save(sede);
+		
 		
 		return 0;
 	}
@@ -187,6 +205,7 @@ public class Controller {
     		File destinationDir = new File(System.getProperty("user.dir"), "src/application/IMG/uploads");
     		if (!destinationDir.exists()) destinationDir.mkdirs();
     		File destinationFile = new File(destinationDir, fileSelezionato.getName());
+    		//non carica file con lo stesso nome
     		Files.copy(fileSelezionato.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     		System.out.println("File copiato con successo");
         }
