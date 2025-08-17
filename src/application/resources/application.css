@@ -11,13 +11,13 @@
     -fx-background-radius: 20px;
 }
 
-.label-login-registrazione{
-	-fx-font-weight: bold;
+.campi{
+	-fx-padding: 8px;
+	-fx-background-radius: 10px;
 }
 
-.campi{
-	-fx-background-radius: 10px;
-	-fx-padding: 8px;
+.label-login-registrazione{
+	-fx-font-weight: bold;
 }
 
 .tasto, .tasto-secondario{
@@ -229,4 +229,187 @@
     -fx-border-color: #2c3e50;
     -fx-border-width: 2;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
+}
+
+/* Modern CheckBox Style */
+.check-box {
+    -fx-cursor: hand;
+    -fx-padding: 5;
+    -fx-font-size: 12px;
+    -fx-text-fill: #333333;
+}
+
+/* Nascondi il box di default */
+.check-box .box {
+    -fx-background-color: transparent;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 4;
+    -fx-border-width: 2;
+    -fx-pref-width: 20;
+    -fx-pref-height: 20;
+    -fx-background-radius: 4;
+    -fx-padding: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 1,0,0,1);
+}
+
+/* Effetto hover */
+.check-box:hover .box {
+    -fx-border-color: #0078d7;
+}
+
+/* Stato selezionato */
+.check-box:selected .box {
+    -fx-background-color: #0078d7;
+    -fx-border-color: #0078d7;
+}
+
+/* Spunta moderna */
+.check-box:selected .mark {
+    -fx-background-color: white;
+    -fx-scale-x: 0.7;
+    -fx-scale-y: 0.7;
+}
+
+/* Testo della checkbox */
+.check-box .text {
+    -fx-padding: 0 0 0 10;
+}
+
+/* Modern RadioButton Style */
+.radio-button {
+    -fx-padding: 5 10 5 10;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+/* Cerchio esterno del RadioButton */
+.radio-button .radio {
+    -fx-background-color: transparent;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 50%;
+    -fx-border-width: 2;
+    -fx-pref-width: 20;
+    -fx-pref-height: 20;
+    -fx-background-radius: 50%;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 1,0,0,1);
+    -fx-alignment: center;
+}
+
+/* Effetto hover */
+.radio-button:hover .radio {
+    -fx-border-color: #0078d7;
+}
+
+/* Stato selezionato */
+.radio-button:selected .radio {
+    -fx-background-color: #0078d7;
+    -fx-border-color: #0078d7;
+}
+
+.radio-button:selected .radio .dot {
+    -fx-background-color: white;
+    -fx-pref-width: 5;
+    -fx-pref-height: 5;
+    -fx-translate-y: -0.2;
+}
+
+/* Testo della radio */
+.radio-button .text {
+    -fx-padding: 0 0 0 10;
+}
+
+/* Modern ChoiceBox Style */
+.choice-box {
+    -fx-font-size: 14px;
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-border-width: 2;
+}
+
+/* Effetto hover */
+.choice-box:hover {
+    -fx-border-color: #0078d7;
+}
+
+/* Testo selezionato */
+.choice-box .label {
+    -fx-text-fill: #333333;
+}
+
+/* Lista a tendina */
+.choice-box .list-cell {
+    -fx-padding: 5 10;
+    -fx-background-color: white;
+    -fx-text-fill: #333333;
+}
+
+/* Hover sulle voci della lista */
+.choice-box .list-cell:hover {
+    -fx-background-color: #e6f0ff;
+}
+
+/* Freccia dropdown personalizzata più grande */
+.choice-box .arrow {
+    -fx-background-color: #153464;
+    -fx-background-insets: 0;
+    -fx-padding: 3.1; /* padding leggermente maggiore */
+    -fx-shape: "M 0 0 L 8 0 L 4 4 Z"; /* triangolo più grande */
+}
+
+.text-field, .password-field {
+    -fx-padding: 5 10 5 10;
+    -fx-font-size: 14px;
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-border-width: 2;
+    -fx-prompt-text-fill: #999999; /* colore del placeholder */
+}
+
+/* Effetto hover */
+.text-field:hover, .password-field:hover {
+    -fx-border-color: #0078d7;
+}
+
+/* Focus (quando l'utente scrive dentro) */
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #0078d7;
+    -fx-background-color: #ffffff; /* leggero cambiamento di sfondo */
+}
+
+/* Testo dentro il campo */
+.text-field .text, .password-field .text {
+    -fx-text-fill: #333333;
+}
+
+/* Stile moderno per TextArea */
+.text-area {
+    -fx-padding: 5 10 5 10;
+    -fx-font-size: 14px;
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-border-width: 2;
+    -fx-prompt-text-fill: #999999; /* colore del placeholder */
+    -fx-cursor: text;
+}
+
+/* Effetto hover */
+.text-area:hover {
+    -fx-border-color: #0078d7;
+}
+
+/* Focus (quando l'utente scrive dentro) */
+.text-area:focused {
+    -fx-border-color: #0078d7;
+    -fx-background-color: #ffffff; /* leggero cambiamento di sfondo */
+}
+
+/* Testo dentro il campo */
+.text-area .text {
+    -fx-text-fill: #333333;
 }
