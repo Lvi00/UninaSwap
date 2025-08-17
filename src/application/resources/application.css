@@ -23,6 +23,7 @@
 .tasto, .tasto-secondario{
     -fx-background-color: #2207bb;
     -fx-background-radius: 20px;
+    -fx-cursor: hand;
     -fx-padding: 10px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
@@ -277,12 +278,13 @@
 
 /* Modern RadioButton Style */
 .radio-button {
+    -fx-cursor: hand;
     -fx-padding: 5 10 5 10;
     -fx-font-size: 14px;
     -fx-text-fill: #333333;
 }
 
-/* Cerchio esterno del RadioButton */
+/* Nascondi il cerchio di default */
 .radio-button .radio {
     -fx-background-color: transparent;
     -fx-border-color: #ccc;
@@ -292,7 +294,6 @@
     -fx-pref-height: 20;
     -fx-background-radius: 50%;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 1,0,0,1);
-    -fx-alignment: center;
 }
 
 /* Effetto hover */
@@ -306,11 +307,10 @@
     -fx-border-color: #0078d7;
 }
 
+/* Punto centrale moderno */
 .radio-button:selected .radio .dot {
     -fx-background-color: white;
-    -fx-pref-width: 5;
-    -fx-pref-height: 5;
-    -fx-translate-y: -0.2;
+    -fx-translate-y: -0.7;
 }
 
 /* Testo della radio */

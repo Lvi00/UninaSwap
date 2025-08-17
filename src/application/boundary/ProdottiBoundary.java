@@ -7,9 +7,11 @@ import application.entity.Annuncio;
 import application.entity.Studente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -145,19 +147,24 @@ public class ProdottiBoundary {
         titolo.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
 
         Label prezzo = new Label(String.format("\u20AC %.2f", a.getPrezzo()));
-        prezzo.setStyle("-fx-text-fill: #153464;");
+        prezzo.setStyle("-fx-text-fill: #153464; -fx-font-size: 14;");
 
         Label tipo = new Label(a.getTipologia());
         tipo.setStyle("-fx-text-fill: gray;");
+        
+        Label venditore = new Label("Pubblicata da " + a.getOggetto().getStudente().getUsername());
+        venditore.setStyle("-fx-text-fill: #153464;");
 
-        Label fascia = new Label("Disponibile: " +
-        a.getFasciaOrariaInizio() + " - " +
+        Label disponibilità =  new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
+        + "\ndalle " + a.getFasciaOrariaInizio() + " alle " +
         a.getFasciaOrariaFine());
+        
+        Button btn = new Button("Scopri");
+        btn.getStyleClass().add("tasto-secondario");
+        btn.setPrefWidth(150);
+        VBox.setMargin(btn, new Insets(5, 0, 5, 0));
 
-        Label giorniLabel = new Label("Giorni: " + (a.getGiorni() != null ? a.getGiorni() : "N/D"));
-        giorniLabel.setStyle("-fx-text-fill: #555;");
-
-        box.getChildren().addAll(titolo, prezzo, tipo, fascia, giorniLabel);
+        box.getChildren().addAll(titolo, prezzo, tipo, venditore, disponibilità, btn);
 
         return box;
     }
