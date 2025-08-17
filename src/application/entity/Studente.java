@@ -6,6 +6,7 @@ public class Studente {
 	private String nome;
 	private String cognome;
 	private String username;
+	public String immagineProfilo;
 	
 	public Studente(String matricola, String email, String nome, String cognome, String username) {
 		this.matricola = matricola;
@@ -13,7 +14,6 @@ public class Studente {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.username = username;
-		System.out.println("Studente Creato");
 	}
 	
     public String getMatricola() {
@@ -34,5 +34,13 @@ public class Studente {
 
     public String getUsername() {
         return username;
+    }
+    
+    public String getImmagineProfilo() {
+        return immagineProfilo;
+    }
+    
+    public void setImmagine(String immagineProfilo) {
+        this.immagineProfilo = immagineProfilo;
     }
 }

@@ -161,17 +161,15 @@
 	-fx-label-padding: 0px 15px 0px 0px;
 }
 
-#logout-icon{
-    -fx-scale-x: 1.00;
-    -fx-scale-y: 1.00;
-    -fx-opacity: 1.0;
+#logout{
+    -fx-border-color: black;       /* Colore del bordo */
+    -fx-border-width: 2px;         /* Spessore del bordo */
+    -fx-border-style: solid;       /* Stile del bordo (solid, dashed, dotted...) */
+    -fx-border-radius: 5px;        /* Angoli arrotondati (opzionale) */
+    -fx-padding: 10px;             /* Spazio interno (opzionale) */
 }
 
-#logout-icon:hover{
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
-    -fx-opacity: 0.9;
-}
+
 
 #pannelloScrollabile{
 	-fx-background-color: #F2EFEA;
@@ -218,4 +216,17 @@
 .textarea-rounded .content {
     -fx-background-radius: 20px;
     -fx-padding: 5px;
+}
+
+#immagineProfilo{
+	fx-fit-width: 150px;
+    -fx-fit-height: 150px;
+}
+
+.image-view-circolare {
+    -fx-background-radius: 75px;
+    -fx-border-radius: 75px;
+    -fx-border-color: #2c3e50;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
 }

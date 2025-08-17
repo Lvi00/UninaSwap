@@ -33,7 +33,7 @@ public class ProdottiBoundary {
         this.controller = controller;
     }
 
-    public void setLabel(String s) {
+    public void setUsername(String s) {
         usernameDashboard.setText(s);
     }
     
@@ -54,7 +54,7 @@ public class ProdottiBoundary {
 		    	        Parent root = loader.load();
 		                CreaAnnuncioBoundary creaCtrl = loader.getController();
 		                creaCtrl.setController(this.controller);
-		                creaCtrl.setLabel(this.controller.getStudente().getUsername());
+		                creaCtrl.setUsername(this.controller.getStudente().getUsername());
 		                creaCtrl.setCampiForm();
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
@@ -72,7 +72,31 @@ public class ProdottiBoundary {
 	            break;
 	            
 	            default:
-	            	System.out.println("Selezione non valida: " + testo);
+	            	//Profilo utente
+		            try {
+		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Profilo.fxml"));
+		    	        Parent root = loader.load();
+		                ProfiloBoundary ProfiloCtrl = loader.getController();
+		                ProfiloCtrl.setController(this.controller);
+		                ProfiloCtrl.setUsername(this.controller.getStudente().getUsername());
+		                ProfiloCtrl.setNome(this.controller.getStudente().getNome());
+		                ProfiloCtrl.setCognome(this.controller.getStudente().getCognome());
+		                ProfiloCtrl.setMatricola(this.controller.getStudente().getMatricola());
+		                ProfiloCtrl.setEmail(this.controller.getStudente().getEmail());
+		                ProfiloCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		    	        Scene scene = new Scene(root);
+		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+		    	        stage.setScene(scene);
+		    	        stage.centerOnScreen();
+		    	        stage.setTitle("UninaSwap - Profilo");
+		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+		    	        stage.setResizable(false);
+		    	        stage.show();
+		            }
+		            catch (Exception ex) {
+		                ex.printStackTrace();
+		            }
 	            break;
             }
         }
@@ -149,7 +173,7 @@ public class ProdottiBoundary {
             stage.setScene(scene);
             stage.centerOnScreen();
             stage.setTitle("UninaSwap - Login");
-            stage.getIcons().add(new Image(getClass().getResource("../IMG/logoApp.png").toExternalForm()));
+            stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
             stage.setResizable(false);
             stage.show();
         } catch (Exception ex) {
@@ -157,7 +181,4 @@ public class ProdottiBoundary {
         }
     }
 
-    public void showProfile(MouseEvent e) {
-    	System.out.println("Profilo utente");
-    }
 } 

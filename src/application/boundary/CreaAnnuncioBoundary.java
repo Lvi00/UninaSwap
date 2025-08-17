@@ -84,7 +84,7 @@ public class CreaAnnuncioBoundary {
         this.controller = controller;
     }
     
-    public void setLabel(String s) {
+    public void setUsername(String s) {
         usernameDashboard.setText(s);
     }
     
@@ -104,7 +104,7 @@ public class CreaAnnuncioBoundary {
                         ProdottiBoundary prodottiCtrl = loader.getController();
                         prodottiCtrl.setController(this.controller);
                         prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
-                        prodottiCtrl.setLabel(this.controller.getStudente().getUsername());
+                        prodottiCtrl.setUsername(this.controller.getStudente().getUsername());
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -121,7 +121,31 @@ public class CreaAnnuncioBoundary {
                 break;
                 
                 default:
-                    System.out.println("Selezione non valida: " + testo);
+	            	//Profilo utentes
+                	try {
+		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Profilo.fxml"));
+		    	        Parent root = loader.load();
+		                ProfiloBoundary ProfiloCtrl = loader.getController();
+		                ProfiloCtrl.setController(this.controller);
+		                ProfiloCtrl.setUsername(this.controller.getStudente().getUsername());
+		                ProfiloCtrl.setNome(this.controller.getStudente().getNome());
+		                ProfiloCtrl.setCognome(this.controller.getStudente().getCognome());
+		                ProfiloCtrl.setMatricola(this.controller.getStudente().getMatricola());
+		                ProfiloCtrl.setEmail(this.controller.getStudente().getEmail());
+		                ProfiloCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		    	        Scene scene = new Scene(root);
+		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+		    	        stage.setScene(scene);
+		    	        stage.centerOnScreen();
+		    	        stage.setTitle("UninaSwap - Profilo");
+		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+		    	        stage.setResizable(false);
+		    	        stage.show();
+		            }
+		            catch (Exception ex) {
+		                ex.printStackTrace();
+		            }
                 break;
             }
         }
@@ -145,11 +169,6 @@ public class CreaAnnuncioBoundary {
         catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-    
-    @FXML
-    public void showProfile(MouseEvent e) {
-        System.out.println("Profilo utente");
     }
     
     @FXML
@@ -289,7 +308,7 @@ public class CreaAnnuncioBoundary {
 	        
     	}
     
-        switch(controller.checkDatiAnnuncio(datiAnnuncio, this.fileSelezionato)) {
+        switch(controller.checkDatiAnnuncio(datiAnnuncio, this.fileSelezionato, controller.getStudente())) {
 	        case 0:
 	        	ShowPopupAlert("Annuncio creato con successo!", "Dati inseriti con successo in UninaSwap");
 	        	controller.copiaFileCaricato(this.fileSelezionato);

@@ -90,7 +90,8 @@ public class Controller {
 	public void InserisciStudente(ArrayList<String> credenziali){
 	    // Se arrivi qui, tutti i campi sono validi
 	    StudenteDAO studenteDAO = new StudenteDAO();
-	   	studenteDAO.Save(new Studente(credenziali.get(2), credenziali.get(3), credenziali.get(0), credenziali.get(1), credenziali.get(4)), credenziali.get(5));
+	    studenteDAO.Save(new Studente(credenziali.get(2), credenziali.get(3), credenziali.get(0), credenziali.get(1), credenziali.get(4)), credenziali.get(5));	
+	    
 	}
 	
 	private int isValidEmail(String email) {
@@ -126,8 +127,21 @@ public class Controller {
 		return this.studente;
 	}
 	
-	public Oggetto getOggetto(int idOggetto) {
-		return new OggettoDAO().getOggetto(idOggetto);
+	public Oggetto getOggettoById(int idOggetto) {
+		return new OggettoDAO().getOggettoById(idOggetto);
+	}
+	
+	public int getIdByOggetto(Oggetto oggetto) {
+		return new OggettoDAO().getIdByOggetto(oggetto);
+	}
+	
+	
+	public Sede getSedeById(int idSede) {
+		return new SedeDAO().getSedeById(idSede);
+	}
+	
+	public int getIdBySede(Sede sede) {
+		return new SedeDAO().getIdBySede(sede);
 	}
 	
 	public ArrayList<Annuncio> getInfoAnnunci(String s) {
@@ -138,7 +152,7 @@ public class Controller {
 	    return this.studente;
 	}
 	
-	public int checkDatiAnnuncio(ArrayList<String> datiAnnuncio, File fileSelezionato) {
+	public int checkDatiAnnuncio(ArrayList<String> datiAnnuncio, File fileSelezionato, Studente studente) {
 		
 		String titolo = datiAnnuncio.get(0);
 		if(titolo == "" || titolo.length() > 50) return 1;
@@ -155,11 +169,9 @@ public class Controller {
 		}
 		
 		String giorniDisponibilità = datiAnnuncio.get(4);
-		
 		if(giorniDisponibilità == "") return 4;
 		
 		String descrizione = datiAnnuncio.get(5);
-		
 		if(descrizione == "" || descrizione.length() > 255) return 5;
 		
 		String particellatoponomastica = datiAnnuncio.get(6);
@@ -176,6 +188,8 @@ public class Controller {
 		
 		if(tipologia == "") return 7;
 		
+		//Rimane cosi in caso di Scambio o Regalo
+		double prezzo = 0.0;
 		if(tipologia == "Vendita")
 		{
 			String stringaPrezzo = datiAnnuncio.get(11);
@@ -184,7 +198,7 @@ public class Controller {
 			String prezzoRegex = "^\\d{1,3}(\\.\\d{1,2})?$";
 		    if (!stringaPrezzo.matches(prezzoRegex)) return 8; 
 		    
-			double prezzo = Double.parseDouble(stringaPrezzo);
+			prezzo = Double.parseDouble(stringaPrezzo);
 			System.out.println(prezzo);
 			
 			if(prezzo<=0 || prezzo>=1000) return 8;
@@ -193,9 +207,14 @@ public class Controller {
 		if(fileSelezionato == null || fileSelezionato.getName().isEmpty() || fileSelezionato.getName().startsWith("no_image")) return 9;
 		
 		Sede sede = new Sede(particellatoponomastica, descrizioneIndirizzo, civico, cap);
+		new SedeDAO().SaveSade(sede);
 		
-		new SedeDAO().Save(sede);
+		String percorso = "../IMG/uploads/"+fileSelezionato.getName();
+		Oggetto oggetto = new Oggetto(percorso, categoria, descrizione, studente);
+		new OggettoDAO().SaveOggetto(oggetto);
 		
+		Annuncio annuncio = new Annuncio(titolo, true, inizioOrarioDisponibilità, fineOrarioDisponibilità, prezzo, tipologia, descrizione, oggetto, sede, giorniDisponibilità);
+		new AnnuncioDAO().SaveAnnuncio(annuncio);
 		
 		return 0;
 	}

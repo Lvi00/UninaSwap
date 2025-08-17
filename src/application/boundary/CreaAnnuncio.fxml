@@ -98,7 +98,7 @@
                            <image>
                               <Image url="@../IMG/immaginiProgramma/account.png" />
                            </image></ImageView>
-                        <Label id="label-profilo" fx:id="usernameDashboard" onMouseClicked="#showProfile" textFill="WHITE">
+                        <Label id="label-profilo" fx:id="usernameDashboard" onMouseClicked="#SelezionaPagina" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>

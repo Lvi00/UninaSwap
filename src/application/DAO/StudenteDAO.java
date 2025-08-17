@@ -15,15 +15,19 @@ public class StudenteDAO{
 	
 	public int Save(Studente studente, String password) {
 		try {
-		    Connection conn = ConnessioneDB.getConnection();
-		    String query = "INSERT INTO STUDENTE(matricola,email,nome,cognome,passkey,username) VALUES (?,?,?,?,?,?)";
-		    PreparedStatement statement = conn.prepareStatement(query);
-		    statement.setString(1, studente.getMatricola());
-		    statement.setString(2, studente.getEmail());
-		    statement.setString(3, studente.getNome());
-		    statement.setString(4, studente.getCognome());
-		    statement.setString(5, password);
-		    statement.setString(6, studente.getUsername());
+	        Connection conn = ConnessioneDB.getConnection();
+	        String query = "INSERT INTO STUDENTE(matricola,email,nome,cognome,passkey,username,immagineProfilo) VALUES (?,?,?,?,?,?,?)";
+	        PreparedStatement statement = conn.prepareStatement(query);
+	        statement.setString(1, studente.getMatricola());
+	        statement.setString(2, studente.getEmail());
+	        statement.setString(3, studente.getNome());
+	        statement.setString(4, studente.getCognome());
+	        statement.setString(5, password);
+	        statement.setString(6, studente.getUsername());
+
+	        String defaultImage = "../IMG/immaginiProgramma/account.png"; 
+	        statement.setString(7, defaultImage);
+		    
 		    int rowsInserted = statement.executeUpdate();
 		    statement.close();
 		    
@@ -62,7 +66,9 @@ public class StudenteDAO{
             String Nome = rs.getString(3);
             String Cognome = rs.getString(4);
             String Username = rs.getString(6);
+            String ImmagineProfilo = rs.getString(7);
             studente = new Studente (Matricola, Email, Nome, Cognome, Username);
+            studente.setImmagine(ImmagineProfilo);
             rs.close();
             statement.close();
             
@@ -96,5 +102,36 @@ public class StudenteDAO{
 		}
 		
 		return 0;
+	}
+
+	public Studente getStudenteByMatricola(String matricola) {
+	    Studente studente = null;
+	    
+	    try {
+	        Connection conn = ConnessioneDB.getConnection();
+	        String query = "SELECT * FROM STUDENTE WHERE matricola = ?";
+	        PreparedStatement statement = conn.prepareStatement(query);
+	        statement.setString(1, matricola);
+	        
+	        ResultSet rs = statement.executeQuery();
+	        
+	        if (rs.next()) {
+	            String Email = rs.getString("email");
+	            String Nome = rs.getString("nome");
+	            String Cognome = rs.getString("cognome");
+	            String Username = rs.getString("username");
+	            String ImmagineProfilo = rs.getString("immagineProfilo");
+	            
+	            studente = new Studente(matricola, Email, Nome, Cognome, Username);
+	            studente.setImmagine(ImmagineProfilo);
+	        }
+	        
+	        rs.close();
+	        statement.close();
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	    }
+	    
+	    return studente;
 	}
 }

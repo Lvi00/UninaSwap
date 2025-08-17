@@ -5,22 +5,24 @@ import java.time.LocalTime;
 public class Annuncio {
     private String titoloAnnuncio;
     private boolean statoAnnuncio;
-    private LocalTime fasciaOrariaInizio;
-    private LocalTime fasciaOrariaFine;
+    private String fasciaOrariaInizio;
+    private String fasciaOrariaFine;
     private double prezzo;
     private String tipologia;
     private String descrizioneAnnuncio;
     private Oggetto oggetto;
+    private Sede sede;
     private String giorni; 
 
     public Annuncio(String titoloAnnuncio,
                     boolean statoAnnuncio,
-                    LocalTime fasciaOrariaInizio,
-                    LocalTime fasciaOrariaFine,
+                    String fasciaOrariaInizio,
+                    String fasciaOrariaFine,
                     double prezzo,
                     String tipologia,
                     String descrizioneAnnuncio,
                     Oggetto oggetto,
+                    Sede sede,
                     String giorni) { 
         this.titoloAnnuncio = titoloAnnuncio;
         this.statoAnnuncio = statoAnnuncio;
@@ -30,6 +32,7 @@ public class Annuncio {
         this.tipologia = tipologia;
         this.descrizioneAnnuncio = descrizioneAnnuncio;
         this.oggetto = oggetto;
+        this.sede = sede;
         this.giorni = giorni;
     }
 
@@ -41,11 +44,11 @@ public class Annuncio {
         return statoAnnuncio;
     }
 
-    public LocalTime getFasciaOrariaInizio() {
+    public String getFasciaOrariaInizio() {
         return fasciaOrariaInizio;
     }
 
-    public LocalTime getFasciaOrariaFine() {
+    public String getFasciaOrariaFine() {
         return fasciaOrariaFine;
     }
 
@@ -65,6 +68,10 @@ public class Annuncio {
         return oggetto;
     }
 
+    public Sede getSede() {
+        return sede;
+    }
+    
     public String getGiorni() {
         return giorni;
     }
