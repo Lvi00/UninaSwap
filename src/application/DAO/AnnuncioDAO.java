@@ -4,13 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.ArrayList;
-
 import application.control.Controller;
 import application.entity.Annuncio;
-import application.entity.Oggetto;
-import application.entity.Sede;
 import application.resources.ConnessioneDB;
 
 public class AnnuncioDAO {

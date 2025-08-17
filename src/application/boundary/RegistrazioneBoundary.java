@@ -113,7 +113,7 @@ public class RegistrazioneBoundary {
         credenziali.add(usernameFieldReg.getText().trim());
         credenziali.add(passwordFieldReg.getText().trim());
         
-        switch (controller.checkData(credenziali)) {
+        switch (controller.checkDatiRegistrazione(credenziali)) {
         	case 0:
         		System.out.println("Tutti i campi sono validi");
         		controller.InserisciStudente(credenziali);

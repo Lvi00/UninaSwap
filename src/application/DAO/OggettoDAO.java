@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import application.control.Controller;
 import application.entity.Oggetto;
-import application.entity.Sede;
 import application.entity.Studente;
 import application.resources.ConnessioneDB;
 

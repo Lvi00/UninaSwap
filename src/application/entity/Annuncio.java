@@ -1,8 +1,6 @@
 package application.entity;
 
-import java.time.LocalTime;
-
-public class Annuncio {
+public class Annuncio {	
     private String titoloAnnuncio;
     private boolean statoAnnuncio;
     private String fasciaOrariaInizio;

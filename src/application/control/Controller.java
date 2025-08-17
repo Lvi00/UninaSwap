@@ -30,7 +30,7 @@ public class Controller {
 	
 	private Studente studente;
 	
-	public int checkData(ArrayList<String> credenziali) {
+	public int checkDatiRegistrazione(ArrayList<String> credenziali) {
 		String nome = credenziali.get(0);
 		String cognome = credenziali.get(1);
 		String matricola = credenziali.get(2);
@@ -39,48 +39,40 @@ public class Controller {
 		String password = credenziali.get(5);
 	
 		if(nome == "" || cognome == "" ||  matricola == "" || email == "" || username ==  "" || password ==  "") {
-			System.out.println("Campi vuoti.");
 			return 1;
 		}
 		//Controllo nome
 	    if ((nome.length() > 40 || nome.length() < 2) || isValidNameSurname(nome) == 1) {
-	        System.out.println("Nome non valido.");
 	        return 2;
 	    }
 
 	  //Controllo cognome
 	    if ((cognome.length() > 40 || cognome.length() < 2) || isValidNameSurname(cognome) == 1) {
-	        System.out.println("Cognome non valido.");
 	        return 3;
 	    }
 	    
 	    //Controllo matricola
 	    if (matricola.length() != 9 || matricola.contains(" ") || matricola.contains("\t")) {
-	    	System.out.println("Matricola non valido.");
 	        return 4;
 	    }
 	    
 	    //Controllo email
 	    if(isValidEmail(email) == 1) {
-	    	 System.out.println("Email non valido.");
 	    	 return 5;
 	    } 
 	    
 	    //Controllo username
 	    if (username.length() > 10 || username.contains(" ") || username.contains("\t")) {
-	    	 System.out.println("Username non valido.");
 	        return 6;
 	    }
 	    
 	    //Controllo password
 	    if (password.length() < 8 || password.length() > 20) {
-	    	 System.out.println("Password non valido.");
 	        return 7;
 	    }
 	    
 	    //Controllo se l'utente esiste già
 	    if(new StudenteDAO().CheckStudenteEsistente(matricola, email, username) == 1) {
-	    	System.out.println("Utente già esistente.");
 	    	return 8;
 	    }
 	    
@@ -168,7 +160,8 @@ public class Controller {
 		    return 3; // inizio >= fine, fascia oraria non valida
 		}
 		
-		String giorniDisponibilità = datiAnnuncio.get(4);
+		String giorniDisponibilità = datiAnnuncio.get(4).replaceAll("-$", "");
+		System.out.println(giorniDisponibilità);
 		if(giorniDisponibilità == "") return 4;
 		
 		String descrizione = datiAnnuncio.get(5);
@@ -190,16 +183,15 @@ public class Controller {
 		
 		//Rimane cosi in caso di Scambio o Regalo
 		double prezzo = 0.0;
-		if(tipologia == "Vendita")
-		{
+		
+		if(tipologia == "Vendita"){
 			String stringaPrezzo = datiAnnuncio.get(11);
 			
 			//Evita i caratteri speciali e le lettere, max un punto, max 3 cifre prima e 2 dopo, niente negativi
 			String prezzoRegex = "^\\d{1,3}(\\.\\d{1,2})?$";
-		    if (!stringaPrezzo.matches(prezzoRegex)) return 8; 
+		    if (!stringaPrezzo.matches(prezzoRegex)) return 8;
 		    
 			prezzo = Double.parseDouble(stringaPrezzo);
-			System.out.println(prezzo);
 			
 			if(prezzo<=0 || prezzo>=1000) return 8;
 		}
@@ -209,7 +201,7 @@ public class Controller {
 		Sede sede = new Sede(particellatoponomastica, descrizioneIndirizzo, civico, cap);
 		new SedeDAO().SaveSade(sede);
 		
-		String percorso = "../IMG/uploads/"+fileSelezionato.getName();
+		String percorso = "../IMG/uploads/" + fileSelezionato.getName();
 		Oggetto oggetto = new Oggetto(percorso, categoria, descrizione, studente);
 		new OggettoDAO().SaveOggetto(oggetto);
 		
@@ -226,7 +218,6 @@ public class Controller {
     		File destinationFile = new File(destinationDir, fileSelezionato.getName());
     		//non carica file con lo stesso nome
     		Files.copy(fileSelezionato.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-    		System.out.println("File copiato con successo");
         }
     	catch (IOException ex) {
             System.err.println("Errore durante la copia del file: " + ex.getMessage());
