@@ -1,6 +1,12 @@
 package application.boundary;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
 import application.control.Controller;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -11,12 +17,19 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 public class ProfiloBoundary {
 	
 	private Controller controller;
-
+	private File fileSelezionato = null;
+	
     @FXML private Label usernameDashboard;
     @FXML private Label usernameProfilo;
     @FXML private Label nomeProfilo;
@@ -24,7 +37,8 @@ public class ProfiloBoundary {
     @FXML private Label matricolaProfilo;
     @FXML private Label emailProfilo;
     @FXML private ImageView immagineProfilo;
-
+    @FXML private ImageView immagineNav;
+    
     public void setController(Controller controller) {
         this.controller = controller;
     }
@@ -35,10 +49,12 @@ public class ProfiloBoundary {
     }
     
     public void setNome(String nome) {
+        nome = nome.substring(0, 1).toUpperCase() + nome.substring(1).toLowerCase();
     	nomeProfilo.setText(nome); 
     }
 
     public void setCognome(String cognome) {
+        cognome = cognome.substring(0, 1).toUpperCase() + cognome.substring(1).toLowerCase();
     	cognomeProfilo.setText(cognome); 
     }
 
@@ -51,11 +67,29 @@ public class ProfiloBoundary {
     }
     
     public void setImmagine(String immagineP) {
-        Image image = new Image(getClass().getResource(immagineP).toExternalForm());
-        immagineProfilo.setImage(image);  
-        
-        Circle clip = new Circle(75, 75, 75);  
-        immagineProfilo.setClip(clip);
+        try {
+            File file = new File(immagineP);
+            Image image;
+            if (file.exists()) {
+                // Se esiste come file nel file system, caricalo da file
+                image = new Image(file.toURI().toString());
+            } else {
+                // Altrimenti prova a caricare da risorsa classpath
+                image = new Image(getClass().getResource(immagineP).toExternalForm());
+            }
+            
+            immagineProfilo.setImage(image);
+            immagineNav.setImage(image);
+            
+            Circle clip1 = new Circle(70, 70, 70);
+            immagineProfilo.setClip(clip1);
+            Circle clip2 = new Circle(16.5, 16.5, 16.5);
+            immagineNav.setClip(clip2);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Errore caricando immagine: " + immagineP);
+        }
     }
     
     @FXML
@@ -75,6 +109,7 @@ public class ProfiloBoundary {
                         prodottiCtrl.setController(this.controller);
                         prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
                         prodottiCtrl.setUsername(this.controller.getStudente().getUsername());
+                        prodottiCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -98,6 +133,7 @@ public class ProfiloBoundary {
 		                creaCtrl.setController(this.controller);
 		                creaCtrl.setUsername(this.controller.getStudente().getUsername());
 		                creaCtrl.setCampiForm();
+		                creaCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -120,6 +156,29 @@ public class ProfiloBoundary {
         }
     }
     
+    public void cambiaFoto(MouseEvent e)
+    {
+    	Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Seleziona un'immagine");
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Immagini", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(stage);
+    	
+        if (selectedFile != null) {
+            Image image = new Image(selectedFile.toURI().toString());
+            //Carica sull'imaggine di defoult la nuova immagine
+            this.immagineProfilo.setImage(image);
+            this.immagineNav.setImage(image);
+            this.fileSelezionato = selectedFile;
+            controller.copiaFileCaricato(this.fileSelezionato);
+            controller.caricaFileImmagine(this.fileSelezionato.getName());
+        }
+    }
+	
     @FXML
     public void logout(MouseEvent e) {
         try {

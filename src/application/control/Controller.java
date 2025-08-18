@@ -223,4 +223,14 @@ public class Controller {
             System.err.println("Errore durante la copia del file: " + ex.getMessage());
         }
 	}
+	
+	public void caricaFileImmagine(String file)
+	{
+		StudenteDAO studenteDAO = new StudenteDAO();
+		String uploadsDir = System.getProperty("user.dir") + "/src/application/IMG/uploads/";
+		String percorsoAssoluto = uploadsDir + file;
+		this.studente.setImmagine(percorsoAssoluto);
+		studenteDAO.cambiaFoto(studente.getMatricola(), percorsoAssoluto);
+	}
+	
 }

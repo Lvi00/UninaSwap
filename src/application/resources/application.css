@@ -157,20 +157,11 @@
     -fx-alignment: center;
 }
 
+/*Nome profilo in alto a destra */
 #label-profilo{
 	-fx-font-weight: bold;
 	-fx-label-padding: 0px 15px 0px 0px;
 }
-
-#logout{
-    -fx-border-color: black;       /* Colore del bordo */
-    -fx-border-width: 2px;         /* Spessore del bordo */
-    -fx-border-style: solid;       /* Stile del bordo (solid, dashed, dotted...) */
-    -fx-border-radius: 5px;        /* Angoli arrotondati (opzionale) */
-    -fx-padding: 10px;             /* Spazio interno (opzionale) */
-}
-
-
 
 #pannelloScrollabile{
 	-fx-background-color: #F2EFEA;
@@ -219,19 +210,17 @@
     -fx-padding: 5px;
 }
 
-#immagineProfilo{
-	fx-fit-width: 150px;
-    -fx-fit-height: 150px;
+.ProfileBord{
+    -fx-border-color: black;       /* Colore del bordo */
+    -fx-border-width: 2px;         /* Spessore del bordo */
+    -fx-border-style: solid;       /* Stile del bordo (solid, dashed, dotted...) */
+    -fx-border-radius: 5px;        /* Angoli arrotondati (opzionale) */
+    -fx-padding: 10px;             /* Spazio interno (opzionale) */
 }
 
-.image-view-circolare {
-    -fx-background-radius: 75px;
-    -fx-border-radius: 75px;
-    -fx-border-color: #2c3e50;
-    -fx-border-width: 2;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
+#logout{
+	-fx-border-color: red;
 }
-
 /* Modern CheckBox Style */
 .check-box {
     -fx-cursor: hand;

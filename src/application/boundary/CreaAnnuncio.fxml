@@ -64,21 +64,6 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-
-                        <!-- Logout -->
-                  <ImageView id="logout-icon" fitHeight="33.0" fitWidth="33.0" layoutX="58.0" layoutY="520.0" onMouseClicked="#logout" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../IMG/immaginiProgramma/logout.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </ImageView>
-                  <Label layoutX="51.0" layoutY="553.0" styleClass="label-sidebar" text="Logout" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
                   <Label layoutX="13.0" layoutY="420.0" prefHeight="54.0" prefWidth="128.0" styleClass="label-sidebar" text="Informazioni" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -95,10 +80,7 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" layoutX="719.0" layoutY="20.0" prefHeight="62.0" prefWidth="220.0" spacing="10.0">
                      <children>
-                        <ImageView fx:id="immagineProfilo" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../IMG/immaginiProgramma/account.png" />
-                           </image></ImageView>
+                        <ImageView fx:id="immagineNav" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" />
                         <Label id="label-profilo" fx:id="usernameDashboard" onMouseClicked="#SelezionaPagina" textFill="WHITE">
                            <font>
                               <Font size="16.0" />

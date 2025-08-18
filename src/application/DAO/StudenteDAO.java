@@ -25,7 +25,7 @@ public class StudenteDAO{
 	        statement.setString(5, password);
 	        statement.setString(6, studente.getUsername());
 
-	        String defaultImage = "../IMG/immaginiProgramma/account.png"; 
+	        String defaultImage = "../IMG/immaginiProgramma/account1.png"; 
 	        statement.setString(7, defaultImage);
 		    
 		    int rowsInserted = statement.executeUpdate();
@@ -133,5 +133,24 @@ public class StudenteDAO{
 	    }
 	    
 	    return studente;
+	}
+	
+	public void cambiaFoto(String matricola, String percorsoImmagine) {
+	    try {
+	        Connection conn = ConnessioneDB.getConnection();
+	        String query = "UPDATE STUDENTE SET immagineProfilo = ? WHERE matricola = ?";
+	        PreparedStatement statement = conn.prepareStatement(query);
+	        statement.setString(1, percorsoImmagine);
+	        statement.setString(2, matricola);
+
+	        int rowsUpdated = statement.executeUpdate();
+	        statement.close();
+
+	        if (rowsUpdated == 0) {
+	            System.err.println("Aggiornamento immagine fallito: matricola non trovata.");
+	        }
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	    }
 	}
 }

@@ -1,6 +1,8 @@
 package application.boundary;
 
 import javafx.scene.input.MouseEvent;
+
+import java.io.File;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
@@ -19,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class ProdottiBoundary {
@@ -29,6 +32,7 @@ public class ProdottiBoundary {
     @FXML private GridPane gridProdotti;
     @FXML private TextField searchField;
     @FXML private AnchorPane contentPane;
+    @FXML private ImageView immagineNav;
 
     public void setController(Controller controller) {
         this.controller = controller;
@@ -36,6 +40,29 @@ public class ProdottiBoundary {
 
     public void setUsername(String s) {
         usernameDashboard.setText(s);
+    }
+    
+    public void setImmagine(String immagineP) {
+        try {
+            File file = new File(immagineP);
+            Image image;
+            if (file.exists()) {
+                // Se esiste come file nel file system, caricalo da file
+                image = new Image(file.toURI().toString());
+            } else {
+                // Altrimenti prova a caricare da risorsa classpath
+                image = new Image(getClass().getResource(immagineP).toExternalForm());
+            }
+            
+            immagineNav.setImage(image);
+            
+            Circle clip = new Circle(16.5, 16.5, 16.5);
+            immagineNav.setClip(clip);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Errore caricando immagine: " + immagineP);
+        }
     }
     
     public void SelezionaPagina(MouseEvent e) {
@@ -57,6 +84,7 @@ public class ProdottiBoundary {
 		                creaCtrl.setController(this.controller);
 		                creaCtrl.setUsername(this.controller.getStudente().getUsername());
 		                creaCtrl.setCampiForm();
+		                creaCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -167,24 +195,6 @@ public class ProdottiBoundary {
         box.getChildren().addAll(titolo, prezzo, tipo, venditore, disponibilità, btn);
 
         return box;
-    }
-    
-    public void logout(MouseEvent e) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-            stage.setScene(scene);
-            stage.centerOnScreen();
-            stage.setTitle("UninaSwap - Login");
-            stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-            stage.setResizable(false);
-            stage.show();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
 } 
