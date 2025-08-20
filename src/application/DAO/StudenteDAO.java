@@ -25,7 +25,7 @@ public class StudenteDAO{
 	        statement.setString(5, password);
 	        statement.setString(6, studente.getUsername());
 
-	        String defaultImage = "../IMG/immaginiProgramma/account1.png"; 
+	        String defaultImage = "../IMG/immaginiProfilo/account1.png"; 
 	        statement.setString(7, defaultImage);
 		    
 		    int rowsInserted = statement.executeUpdate();

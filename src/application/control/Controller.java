@@ -201,7 +201,7 @@ public class Controller {
 		Sede sede = new Sede(particellatoponomastica, descrizioneIndirizzo, civico, cap);
 		new SedeDAO().SaveSade(sede);
 		
-		String percorso = "../IMG/uploads/" + fileSelezionato.getName();
+		String percorso = "../IMG/immaginiProfilo/" + fileSelezionato.getName();
 		Oggetto oggetto = new Oggetto(percorso, categoria, descrizione, studente);
 		new OggettoDAO().SaveOggetto(oggetto);
 		
@@ -224,13 +224,25 @@ public class Controller {
         }
 	}
 	
+	public void copiaImmagineProfiloCaricata(File immagineSelezionata) {
+    	try {
+    		File destinationDir = new File(System.getProperty("user.dir"), "src/application/IMG/immaginiProfilo");
+    		if (!destinationDir.exists()) destinationDir.mkdirs();
+    		File destinationFile = new File(destinationDir, immagineSelezionata.getName());
+    		//non carica file con lo stesso nome
+    		Files.copy(immagineSelezionata.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+    	catch (IOException ex) {
+            System.err.println("Errore durante la copia del file: " + ex.getMessage());
+        }
+	}
+	
 	public void caricaFileImmagine(String file)
 	{
 		StudenteDAO studenteDAO = new StudenteDAO();
-		String uploadsDir = System.getProperty("user.dir") + "/src/application/IMG/uploads/";
-		String percorsoAssoluto = uploadsDir + file;
-		this.studente.setImmagine(percorsoAssoluto);
-		studenteDAO.cambiaFoto(studente.getMatricola(), percorsoAssoluto);
+		String path = "../IMG/immaginiProfilo/" + file;
+		this.studente.setImmagine(path);
+		studenteDAO.cambiaFoto(studente.getMatricola(), path);
 	}
 	
 }

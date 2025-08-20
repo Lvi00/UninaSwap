@@ -28,7 +28,7 @@ import javafx.util.Duration;
 public class ProfiloBoundary {
 	
 	private Controller controller;
-	private File fileSelezionato = null;
+	private File immagineSelezionata = null;
 	
     @FXML private Label usernameDashboard;
     @FXML private Label usernameProfilo;
@@ -173,9 +173,9 @@ public class ProfiloBoundary {
             //Carica sull'imaggine di defoult la nuova immagine
             this.immagineProfilo.setImage(image);
             this.immagineNav.setImage(image);
-            this.fileSelezionato = selectedFile;
-            controller.copiaFileCaricato(this.fileSelezionato);
-            controller.caricaFileImmagine(this.fileSelezionato.getName());
+            this.immagineSelezionata = selectedFile;
+            controller.copiaImmagineProfiloCaricata(this.immagineSelezionata);
+            controller.caricaFileImmagine(this.immagineSelezionata.getName());
         }
     }
 	
