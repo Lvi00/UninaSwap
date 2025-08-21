@@ -1,10 +1,10 @@
 package application.DAO;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import application.control.Controller;
 import application.entity.Studente;
 import application.resources.ConnessioneDB;
@@ -134,13 +134,15 @@ public class StudenteDAO{
 	    
 	    return studente;
 	}
-	
+
 	public void cambiaFoto(String matricola, String percorsoImmagine) {
 	    try {
+	        File file = new File(percorsoImmagine);
+	        String percorso = "../IMG/immaginiProfilo/" + file.getName();
 	        Connection conn = ConnessioneDB.getConnection();
 	        String query = "UPDATE STUDENTE SET immagineProfilo = ? WHERE matricola = ?";
 	        PreparedStatement statement = conn.prepareStatement(query);
-	        statement.setString(1, percorsoImmagine);
+	        statement.setString(1, percorso);
 	        statement.setString(2, matricola);
 
 	        int rowsUpdated = statement.executeUpdate();
