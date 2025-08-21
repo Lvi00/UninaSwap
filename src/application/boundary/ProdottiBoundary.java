@@ -74,6 +74,8 @@ public class ProdottiBoundary {
         if (source instanceof Label) {
             Label label = (Label) source;
             String testo = label.getText();
+            
+            System.out.println("Hai cliccato su: " + testo);
        
             switch (testo) {
 	            case "Crea annuncio":
@@ -91,6 +93,30 @@ public class ProdottiBoundary {
 		    	        stage.setScene(scene);
 		    	        stage.centerOnScreen();
 		    	        stage.setTitle("UninaSwap - Crea annuncio");
+		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+		    	        stage.setResizable(false);
+		    	        stage.show();
+		            }
+		            catch (Exception ex) {
+		                ex.printStackTrace();
+		            }
+	            break;
+	            
+	            case "I tuoi annunci":
+		            try {
+		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("AnnunciStudente.fxml"));
+		    	        Parent root = loader.load();
+		                AnnunciStudenteBoundary annunciCtrl = loader.getController();
+		                annunciCtrl.setController(this.controller);
+		                annunciCtrl.CostruisciProdottiUtente(this.controller.getStudente());
+		                annunciCtrl.setUsername(this.controller.getStudente().getUsername());
+		                annunciCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		    	        Scene scene = new Scene(root);
+		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+		    	        stage.setScene(scene);
+		    	        stage.centerOnScreen();
+		    	        stage.setTitle("UninaSwap - I tuoi annunci");
 		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 		    	        stage.setResizable(false);
 		    	        stage.show();

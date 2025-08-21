@@ -140,6 +140,10 @@ public class Controller {
 	    return new AnnuncioDAO().getAnnunci(s);
 	}
 	
+	public ArrayList<Annuncio> getAnnunciStudente(String s) {
+	    return new AnnuncioDAO().getAnnunciStudente(s);
+	}
+	
 	public Studente getStudente() {
 	    return this.studente;
 	}

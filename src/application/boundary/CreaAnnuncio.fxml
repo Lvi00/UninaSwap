@@ -48,7 +48,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="18.0" layoutY="280.0" prefHeight="54.0" prefWidth="112.0" styleClass="label-sidebar" text="Operazioni" textFill="WHITE">
+                  <Label layoutX="18.0" layoutY="280.0" onMouseClicked="#SelezionaPagina" prefHeight="54.0" prefWidth="112.0" styleClass="label-sidebar" text="I tuoi annunci" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -56,7 +56,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="13.0" layoutY="350.0" prefHeight="54.0" prefWidth="128.0" styleClass="label-sidebar" text="Il tuo profilo" textFill="WHITE">
+                  <Label layoutX="13.0" layoutY="350.0" prefHeight="54.0" prefWidth="128.0" styleClass="label-sidebar" text="Le tue offerte" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>

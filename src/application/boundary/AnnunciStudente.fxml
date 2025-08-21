@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="600.0" prefWidth="1100.0" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.ProdottiBoundary">
+<HBox prefHeight="600.0" prefWidth="1100.0" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.AnnunciStudenteBoundary">
    <children>
       <!-- Root AnchorPane -->
       <AnchorPane prefHeight="614.0" prefWidth="1100.0">
@@ -26,7 +24,7 @@
                   </ImageView>
 
                   <!-- Sezioni -->
-                  <Label layoutX="19.0" layoutY="140.0" prefHeight="50.0" prefWidth="112.0" styleClass="label-sidebar" text="Prodotti" textFill="WHITE">
+                  <Label layoutX="19.0" layoutY="140.0" onMouseClicked="#SelezionaPagina" prefHeight="50.0" prefWidth="112.0" styleClass="label-sidebar" text="Prodotti" textFill="WHITE">
                      <cursor><Cursor fx:constant="HAND" /></cursor>
                      <font><Font size="16.0" /></font>
                   </Label>
@@ -75,24 +73,11 @@
                <children>
                   <AnchorPane prefHeight="498.0" prefWidth="949.0">
                      <children>
-
-                        <!-- Barra di ricerca -->
-                        <TextField fx:id="searchField" layoutX="53.0" layoutY="32.0" prefHeight="40.0" prefWidth="255.0" promptText="Cerca annunci per titolo" styleClass="campi">
+                        <Label fx:id="labelAnnunciPubblicati" layoutX="60.0" layoutY="45.0" style="-fx-font-weight: bold;">
                            <font>
-                              <Font size="14.0" />
-                           </font></TextField>
-                        <Button layoutX="315.0" layoutY="32.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="47.0" styleClass="tasto-secondario">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor></Button>
-                        <ImageView fitHeight="25.0" fitWidth="33.0" layoutX="326.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../IMG/immaginiProgramma/search.png" />
-                           </image>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </ImageView>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
 
                         <!-- Scroll con GridPane -->
                         <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="64.0" prefHeight="434.0" prefWidth="952.0">

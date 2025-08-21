@@ -110,4 +110,39 @@ public class AnnuncioDAO {
 
         return annunci;
     }
+    
+    public ArrayList<Annuncio> getAnnunciStudente(String matricola) {
+        ArrayList<Annuncio> annunci = new ArrayList<Annuncio>();
+
+        try {
+            Connection conn = ConnessioneDB.getConnection();
+            String query = "SELECT * FROM ANNUNCIO WHERE matstudente = ? AND statoannuncio = ? LIMIT 100";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setString(1, matricola);
+            statement.setBoolean(2, true);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                annunci.add(new Annuncio(
+                    rs.getString("titoloannuncio"),
+                    rs.getBoolean("statoannuncio"),
+                    rs.getString("fasciaOrariaInizio"),
+                    rs.getString("fasciaOrariaFine"),
+                    rs.getDouble("prezzo"),
+                    rs.getString("tipologia"),
+                    rs.getString("descrizioneAnnuncio"),
+                    controller.getOggettoById(rs.getInt("idoggetto")),
+                    controller.getSedeById(rs.getInt("idSede")),
+                    rs.getString("giorni")
+                ));
+            }
+
+            rs.close();
+            statement.close();
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return annunci;
+    }
 }
