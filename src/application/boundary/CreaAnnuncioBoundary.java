@@ -437,6 +437,6 @@ public class CreaAnnuncioBoundary {
     	campoPrezzoIntero.clear();
     	campoPrezzoDecimale.clear();
     	
-    	immagineCaricata.setImage(new Image(getClass().getResource("..\\IMG\\immagineProgramma\\no_image.png").toExternalForm()));
+    	immagineCaricata.setImage(new Image(getClass().getResource("..\\IMG\\immaginiProgramma\\no_image.png").toExternalForm()));    	
     }
 }

@@ -137,12 +137,10 @@ public class StudenteDAO{
 
 	public void cambiaFoto(String matricola, String percorsoImmagine) {
 	    try {
-	        File file = new File(percorsoImmagine);
-	        String percorso = "../IMG/immaginiProfilo/" + file.getName();
 	        Connection conn = ConnessioneDB.getConnection();
 	        String query = "UPDATE STUDENTE SET immagineProfilo = ? WHERE matricola = ?";
 	        PreparedStatement statement = conn.prepareStatement(query);
-	        statement.setString(1, percorso);
+	        statement.setString(1, percorsoImmagine);
 	        statement.setString(2, matricola);
 
 	        int rowsUpdated = statement.executeUpdate();

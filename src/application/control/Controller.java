@@ -205,7 +205,7 @@ public class Controller {
 		Sede sede = new Sede(particellatoponomastica, descrizioneIndirizzo, civico, cap);
 		new SedeDAO().SaveSade(sede);
 		
-		String percorso = "../IMG/immaginiProfilo/" + fileSelezionato.getName();
+		String percorso = "../IMG/uploads/" + fileSelezionato.getName();
 		Oggetto oggetto = new Oggetto(percorso, categoria, descrizione, studente);
 		new OggettoDAO().SaveOggetto(oggetto);
 		

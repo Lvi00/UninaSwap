@@ -65,6 +65,7 @@ public class ProdottiBoundary {
         }
     }
     
+    
     public void SelezionaPagina(MouseEvent e) {
         
     	//Prende l'oggetto cliccato
@@ -185,12 +186,24 @@ public class ProdottiBoundary {
         box.getStyleClass().add("card-annuncio");
 
         ImageView imageView = new ImageView();
+        
         try {
             String path = a.getOggetto().getImmagineOggetto();
-            Image img = new Image(getClass().getResource(path).toExternalForm(), 230, 150, true, true);
+            Image img;
+            File file = new File(path);
+            
+            if (file.exists()) {
+                // Se il file esiste nel filesystem
+                img = new Image(file.toURI().toString(), 230, 150, true, true);
+            } else {
+                // Altrimenti prova a caricare da risorsa classpath
+                img = new Image(getClass().getResource(path).toExternalForm(), 230, 150, true, true);
+            }
             imageView.setImage(img);
             imageView.getStyleClass().add("immagineCard");
+            
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Immagine non trovata: " + a.getOggetto().getImmagineOggetto());
         }
 
