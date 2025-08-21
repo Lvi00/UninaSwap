@@ -3,6 +3,7 @@ package application.boundary;
 import javafx.scene.input.MouseEvent;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
@@ -235,5 +236,4 @@ public class ProdottiBoundary {
 
         return box;
     }
-
-} 
+}
