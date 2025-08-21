@@ -241,12 +241,12 @@ public class Controller {
         }
 	}
 	
-	public void caricaFileImmagine(String file)
-	{
+	public void caricaFileImmagine(String file){
 		StudenteDAO studenteDAO = new StudenteDAO();
-		String path = "../IMG/immaginiProfilo/" + file;
-		this.studente.setImmagine(path);
-		studenteDAO.cambiaFoto(studente.getMatricola(), path);
+		String uploadsDir = System.getProperty("user.dir") + "/src/application/IMG/immaginiProfilo/";
+		String percorsoAssoluto = uploadsDir + file;
+		this.studente.setImmagine(percorsoAssoluto);
+		studenteDAO.cambiaFoto(studente.getMatricola(), percorsoAssoluto);
 	}
 	
 }
