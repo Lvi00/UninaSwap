@@ -200,6 +200,9 @@ public class ProdottiBoundary {
                 // Altrimenti prova a caricare da risorsa classpath
                 img = new Image(getClass().getResource(path).toExternalForm(), 230, 150, true, true);
             }
+            imageView.setFitWidth(230);
+            imageView.setFitHeight(150);
+            imageView.setPreserveRatio(false);
             imageView.setImage(img);
             imageView.getStyleClass().add("immagineCard");
             
