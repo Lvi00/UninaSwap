@@ -5,9 +5,13 @@ import javafx.scene.input.MouseEvent;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+
+import application.boundary.CreaAnnuncioBoundary.Categorie;
+import application.boundary.CreaAnnuncioBoundary.ParticellaToponomastica;
 import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Studente;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -15,14 +19,17 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ProdottiBoundary {
@@ -31,10 +38,29 @@ public class ProdottiBoundary {
 
     @FXML private Label usernameDashboard;
     @FXML private GridPane gridProdotti;
-    @FXML private TextField searchField;
     @FXML private AnchorPane contentPane;
     @FXML private ImageView immagineNav;
+    @FXML private TextField campoRicerca;    
+    @FXML private ChoiceBox<Categorie> campoCategoriaOggetto;
+    @FXML private ChoiceBox<Tipologia> campoTipologia;
 
+    enum Categorie {
+    	Nessuno,
+        Abbigliamento,
+        Informatica,
+        Elettronica,
+        Cancelleria,
+        Cultura,
+        Musica
+    }
+    
+    enum Tipologia {
+    	Nessuno,
+        Vendita,
+        Regalo,
+        Scambio
+    }
+    
     public void setController(Controller controller) {
         this.controller = controller;
     }
@@ -93,7 +119,6 @@ public class ProdottiBoundary {
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 		    	        stage.setScene(scene);
-		    	        stage.centerOnScreen();
 		    	        stage.setTitle("UninaSwap - Crea annuncio");
 		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 		    	        stage.setResizable(false);
@@ -117,7 +142,6 @@ public class ProdottiBoundary {
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 		    	        stage.setScene(scene);
-		    	        stage.centerOnScreen();
 		    	        stage.setTitle("UninaSwap - I tuoi annunci");
 		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 		    	        stage.setResizable(false);
@@ -145,7 +169,6 @@ public class ProdottiBoundary {
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 		    	        stage.setScene(scene);
-		    	        stage.centerOnScreen();
 		    	        stage.setTitle("UninaSwap - Profilo");
 		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 		    	        stage.setResizable(false);
@@ -220,7 +243,7 @@ public class ProdottiBoundary {
         Label prezzo = new Label(String.format("\u20AC %.2f", a.getPrezzo()));
         prezzo.setStyle("-fx-text-fill: #153464; -fx-font-size: 14;");
 
-        Label tipo = new Label(a.getTipologia());
+        Label tipo = new Label(a.getOggetto().getCategoria() +" - "+ a.getTipologia());
         tipo.setStyle("-fx-text-fill: gray;");
         
         Label venditore = new Label("Pubblicata da " + a.getOggetto().getStudente().getUsername());
@@ -233,10 +256,69 @@ public class ProdottiBoundary {
         Button btn = new Button("Scopri");
         btn.getStyleClass().add("tasto-secondario");
         btn.setPrefWidth(150);
+        btn.setOnMouseClicked(e -> showPopupOfferte(e));
         VBox.setMargin(btn, new Insets(5, 0, 5, 0));
 
         box.getChildren().addAll(titolo, prezzo, tipo, venditore, disponibilità, btn);
 
         return box;
     }
+    
+    public void showPopupOfferte(MouseEvent e)
+    {
+    	try {
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOfferte.fxml"));
+	        Parent root = loader.load();
+	        Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+	        Stage popupStage = new Stage();
+	        popupStage.initOwner(mainStage);                  
+	        popupStage.initModality(Modality.WINDOW_MODAL);  
+	        popupStage.setScene(new Scene(root));
+	        popupStage.getScene().getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+	        popupStage.setTitle("UninaSwap - Offerte");
+	        popupStage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+	        popupStage.setResizable(false);
+
+	        // Applico effetto opacità sulla finestra principale
+	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+	        // Quando il popup viene chiuso, tolgo l’effetto opacità
+	        popupStage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+
+	        popupStage.show();
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    @FXML
+    public void setFiltri() {
+        campoCategoriaOggetto.setItems(FXCollections.observableArrayList(Categorie.values()));
+        campoCategoriaOggetto.getSelectionModel().selectFirst();
+        
+        campoTipologia.setItems(FXCollections.observableArrayList(Tipologia.values()));
+        campoTipologia.getSelectionModel().selectFirst();
+    }
+    
+    @FXML
+    public void getInfoFiltri()
+    { 	
+    	gridProdotti.getChildren().clear();
+    	ArrayList<Annuncio> annunci = controller.getAnnunciByFiltri(campoRicerca.getText(), campoCategoriaOggetto.getValue().name(), campoTipologia.getValue().name());
+        
+    	int column = 0;
+        int row = 0;
+
+        for (Annuncio a : annunci) {
+            VBox card = creaCardAnnuncio(a);
+            gridProdotti.add(card, column, row);
+
+            column++;
+            if (column == 3) {
+                column = 0;
+                row++;
+            }
+        }
+    }
+    
 }

@@ -47,7 +47,6 @@ public class LoginBoundary {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
             stage.setScene(scene);
-            stage.centerOnScreen();
             stage.setTitle("UninaSwap - Registrazione");
             stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
             stage.setResizable(false);
@@ -136,11 +135,11 @@ public class LoginBoundary {
 	                prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
 	                prodottiCtrl.setUsername(this.controller.getStudente().getUsername());
                     prodottiCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
-	                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                    prodottiCtrl.setFiltri();
+                    Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		            Scene scene = new Scene(root);
 		            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 		            stage.setScene(scene);
-		            stage.centerOnScreen();
 		            stage.setTitle("UninaSwap - Prodotti");
 		            stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 		            stage.setResizable(false);
@@ -154,26 +153,31 @@ public class LoginBoundary {
 	}
 	
 	private void ShowPopupError(String title, String message) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
+	    try {
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
 	        Parent root = loader.load();
-			Scene scene = new Scene(root);
-			Stage stage = new Stage();
+	        Stage mainStage = (Stage) PaneLogin.getScene().getWindow();
+	        Stage stage = new Stage();
+	        stage.initOwner(mainStage);
+	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+	        Scene scene = new Scene(root);
+	        stage.setScene(scene);
+	        stage.setTitle("UninaSwap - " + title);
+	        stage.centerOnScreen();
+	        stage.setResizable(false);
+	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+	        
 	        PopupErrorBoundary popupController = loader.getController();
 	        popupController.setLabels(title, message);
-			stage.setTitle("UninaSwap - " + title);
-			stage.setScene(scene);
-			stage.centerOnScreen();
-			stage.setResizable(false);
-			stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);		
-		    stage.show();
-			stage.getIcons().addAll(
-                new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
-            );
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-		}
+	        
+	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+	        
+	        stage.show();
+
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	    }
 	}
 	
 	@FXML

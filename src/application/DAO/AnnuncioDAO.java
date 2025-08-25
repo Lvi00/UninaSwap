@@ -145,4 +145,69 @@ public class AnnuncioDAO {
 
         return annunci;
     }
+    
+    public ArrayList<Annuncio> getAnnunciByFiltri(String matricola, String keyword, String categoria, String tipologia) {
+        ArrayList<Annuncio> annunci = new ArrayList<>();
+
+        try {
+            Connection conn = ConnessioneDB.getConnection();
+            String query1 = "SELECT * FROM ANNUNCIO NATURAL JOIN OGGETTO WHERE matstudente <> ? ";
+            String query2 = "";
+            String query3 = "";
+            String query4 = "";
+
+            if (!keyword.isEmpty()) {
+                query2 = "AND LOWER(titoloannuncio) LIKE LOWER(?) ";
+            }
+            if (!categoria.equals("Nessuno")) {
+                query3 = "AND categoria = ? ";
+            }
+            if (!tipologia.equals("Nessuno")) {
+                query4 = "AND tipologia = ? ";
+            }
+
+            String query = query1 + query2 + query3 + query4 + "LIMIT 100;";
+
+            PreparedStatement statement = conn.prepareStatement(query);
+
+            int index = 1;
+            //index++ ritorna prima il valore corrente, poi incrementa la variabile.
+            statement.setString(index++, matricola);
+
+            if (!query2.isEmpty()) {
+                statement.setString(index++, keyword + "%"); // LIKE con wildcard
+            }
+            if (!query3.isEmpty()) {
+                statement.setString(index++, categoria);
+            }
+            if (!query4.isEmpty()) {
+                statement.setString(index++, tipologia);
+            }
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                annunci.add(new Annuncio(
+                    rs.getString("titoloannuncio"),
+                    rs.getBoolean("statoannuncio"),
+                    rs.getString("fasciaOrariaInizio"),
+                    rs.getString("fasciaOrariaFine"),
+                    rs.getDouble("prezzo"),
+                    rs.getString("tipologia"),
+                    rs.getString("descrizioneAnnuncio"),
+                    controller.getOggettoById(rs.getInt("idoggetto")),
+                    controller.getSedeById(rs.getInt("idSede")),
+                    rs.getString("giorni")
+                ));
+            }
+
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return annunci;
+    }
+    
+   
 }

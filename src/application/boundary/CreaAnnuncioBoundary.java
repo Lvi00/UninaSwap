@@ -19,6 +19,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
@@ -49,7 +50,7 @@ public class CreaAnnuncioBoundary {
     }
       
     private Controller controller;
-
+    @FXML private HBox paneCreaAnnuncio;
     @FXML private Label usernameDashboard;
     @FXML private ChoiceBox<Categorie> campoCategoriaOggetto;
     @FXML private ChoiceBox<ParticellaToponomastica> campoIndirizzo1;
@@ -123,11 +124,11 @@ public class CreaAnnuncioBoundary {
                         prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
                         prodottiCtrl.setUsername(this.controller.getStudente().getUsername());
                         prodottiCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+                        prodottiCtrl.setFiltri();
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
                         stage.setScene(scene);
-                        stage.centerOnScreen();
                         stage.setTitle("UninaSwap - Prodotti");
                         stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
                         stage.setResizable(false);
@@ -151,7 +152,6 @@ public class CreaAnnuncioBoundary {
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 		    	        stage.setScene(scene);
-		    	        stage.centerOnScreen();
 		    	        stage.setTitle("UninaSwap - I tuoi annunci");
 		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 		    	        stage.setResizable(false);
@@ -179,7 +179,6 @@ public class CreaAnnuncioBoundary {
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 		    	        stage.setScene(scene);
-		    	        stage.centerOnScreen();
 		    	        stage.setTitle("UninaSwap - Profilo");
 		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 		    	        stage.setResizable(false);
@@ -252,23 +251,27 @@ public class CreaAnnuncioBoundary {
     
     private void ShowPopupError(String title, String message) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
 	        Parent root = loader.load();
-			Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			
+
+	        Stage mainStage = (Stage) paneCreaAnnuncio.getScene().getWindow();
+	        Stage stage = new Stage();
+	        stage.initOwner(mainStage);
+	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+	        Scene scene = new Scene(root);
+	        stage.setScene(scene);
+	        stage.setTitle("UninaSwap - " + title);
+	        stage.centerOnScreen();
+	        stage.setResizable(false);
+	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+
 	        PopupErrorBoundary popupController = loader.getController();
 	        popupController.setLabels(title, message);
-	        
-			stage.setTitle("UninaSwap - " + title);
-			stage.setScene(scene);
-			stage.centerOnScreen();
-			stage.setResizable(false);
-			stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);		
-		    stage.show();
-			stage.getIcons().addAll(
-                new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
-            );
+	       
+	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+
+	        stage.show();
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
@@ -392,19 +395,25 @@ public class CreaAnnuncioBoundary {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupAlert.fxml"));
 	        Parent root = loader.load();
-			Scene scene = new Scene(root);
-			Stage stage = new Stage();
+
+	        Stage mainStage = (Stage) paneCreaAnnuncio.getScene().getWindow();
+	        Stage stage = new Stage();
+	        stage.initOwner(mainStage);
+	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+	        Scene scene = new Scene(root);
+	        stage.setScene(scene);
+	        stage.setTitle("UninaSwap - " + title);
+	        stage.centerOnScreen();
+	        stage.setResizable(false);
+	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+
 	        PopupErrorBoundary popupController = loader.getController();
 	        popupController.setLabels(title, message);
-			stage.setTitle("UninaSwap - " + title);
-			stage.setScene(scene);
-			stage.centerOnScreen();
-			stage.setResizable(false);
-			stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);		
-		    stage.show();
-			stage.getIcons().addAll(
-                new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
-            );
+	       
+	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+
+	        stage.show();
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();

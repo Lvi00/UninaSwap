@@ -204,6 +204,7 @@ public class Controller {
 		
 		Sede sede = new Sede(particellatoponomastica, descrizioneIndirizzo, civico, cap);
 		new SedeDAO().SaveSade(sede);
+		
 		String percorso = fileSelezionato.getAbsolutePath();
 		Oggetto oggetto = new Oggetto(percorso, categoria, descrizione, studente);
 		new OggettoDAO().SaveOggetto(oggetto);
@@ -246,6 +247,10 @@ public class Controller {
 		String percorsoAssoluto = uploadsDir + file;
 		this.studente.setImmagine(percorsoAssoluto);
 		studenteDAO.cambiaFoto(studente.getMatricola(), percorsoAssoluto);
+	}
+	
+	public ArrayList<Annuncio> getAnnunciByFiltri(String keyword, String categoria, String tipologia) {
+	    return new AnnuncioDAO().getAnnunciByFiltri(this.studente.getMatricola(), keyword, categoria, tipologia);
 	}
 	
 }

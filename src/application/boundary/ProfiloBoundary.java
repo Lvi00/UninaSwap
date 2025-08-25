@@ -110,11 +110,11 @@ public class ProfiloBoundary {
                         prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
                         prodottiCtrl.setUsername(this.controller.getStudente().getUsername());
                         prodottiCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+                        prodottiCtrl.setFiltri();
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
                         stage.setScene(scene);
-                        stage.centerOnScreen();
                         stage.setTitle("UninaSwap - Prodotti");
                         stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
                         stage.setResizable(false);
@@ -138,7 +138,6 @@ public class ProfiloBoundary {
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 		    	        stage.setScene(scene);
-		    	        stage.centerOnScreen();
 		    	        stage.setTitle("UninaSwap - Crea annuncio");
 		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 		    	        stage.setResizable(false);
@@ -162,7 +161,6 @@ public class ProfiloBoundary {
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 		    	        stage.setScene(scene);
-		    	        stage.centerOnScreen();
 		    	        stage.setTitle("UninaSwap - I tuoi annunci");
 		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 		    	        stage.setResizable(false);
@@ -212,7 +210,6 @@ public class ProfiloBoundary {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
             stage.setScene(scene);
-            stage.centerOnScreen();
             stage.setTitle("UninaSwap - Login");
             stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
             stage.setResizable(false);

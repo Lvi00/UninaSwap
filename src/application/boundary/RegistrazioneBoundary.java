@@ -57,7 +57,6 @@ public class RegistrazioneBoundary {
 	        Scene scene = new Scene(root);
 	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 	        stage.setScene(scene);
-	        stage.centerOnScreen();
 	        stage.setTitle("UninaSwap - Login");
 	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 	        stage.setResizable(false);
@@ -174,23 +173,27 @@ public class RegistrazioneBoundary {
 	
 	private void ShowPopupError(String title, String message) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
 	        Parent root = loader.load();
-			Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			
+
+	        Stage mainStage = (Stage) PaneRegistrazione.getScene().getWindow();
+	        Stage stage = new Stage();
+	        stage.initOwner(mainStage);
+	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+	        Scene scene = new Scene(root);
+	        stage.setScene(scene);
+	        stage.setTitle("UninaSwap - " + title);
+	        stage.centerOnScreen();
+	        stage.setResizable(false);
+	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+
 	        PopupErrorBoundary popupController = loader.getController();
 	        popupController.setLabels(title, message);
 	        
-			stage.setTitle("UninaSwap - " + title);
-			stage.setScene(scene);
-			stage.centerOnScreen();
-			stage.setResizable(false);
-			stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);		
-		    stage.show();
-			stage.getIcons().addAll(
-                new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
-            );
+	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+
+	        stage.show();
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();

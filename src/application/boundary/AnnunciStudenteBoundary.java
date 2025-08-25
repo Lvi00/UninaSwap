@@ -86,13 +86,12 @@ public class AnnunciStudenteBoundary {
                         prodottiCtrl.setUsername(this.controller.getStudente().getUsername());
                         prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
                         prodottiCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
-
+                        prodottiCtrl.setFiltri();
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 
                         stage.setScene(scene);
-                        stage.centerOnScreen();
                         stage.setTitle("UninaSwap - Crea annuncio");
                         stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
                         stage.setResizable(false);
@@ -119,7 +118,6 @@ public class AnnunciStudenteBoundary {
                         scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 
                         stage.setScene(scene);
-                        stage.centerOnScreen();
                         stage.setTitle("UninaSwap - Crea annuncio");
                         stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
                         stage.setResizable(false);
@@ -149,7 +147,6 @@ public class AnnunciStudenteBoundary {
                         scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 
                         stage.setScene(scene);
-                        stage.centerOnScreen();
                         stage.setTitle("UninaSwap - Profilo");
                         stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
                         stage.setResizable(false);
@@ -224,22 +221,15 @@ public class AnnunciStudenteBoundary {
         Label prezzo = new Label(String.format("\u20AC %.2f", a.getPrezzo()));
         prezzo.setStyle("-fx-text-fill: #153464; -fx-font-size: 14;");
 
-        Label tipo = new Label(a.getTipologia());
+        Label tipo = new Label(a.getOggetto().getCategoria() +" - "+ a.getTipologia());
         tipo.setStyle("-fx-text-fill: gray;");
         
-        Label venditore = new Label("Pubblicata da " + a.getOggetto().getStudente().getUsername());
-        venditore.setStyle("-fx-text-fill: #153464;");
-
         Label disponibilità =  new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
         + "\ndalle " + a.getFasciaOrariaInizio() + " alle " +
         a.getFasciaOrariaFine());
         
-        Button btn = new Button("Scopri");
-        btn.getStyleClass().add("tasto-secondario");
-        btn.setPrefWidth(150);
-        VBox.setMargin(btn, new Insets(5, 0, 5, 0));
 
-        box.getChildren().addAll(titolo, prezzo, tipo, venditore, disponibilità, btn);
+        box.getChildren().addAll(titolo, prezzo, tipo, disponibilità);
 
         return box;
     }

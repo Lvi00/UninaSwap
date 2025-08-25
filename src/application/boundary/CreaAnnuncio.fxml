@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="600.0" prefWidth="1100.0" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.CreaAnnuncioBoundary">
+<HBox fx:id="paneCreaAnnuncio" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.CreaAnnuncioBoundary">
    <children>
       <!-- Root AnchorPane -->
       <AnchorPane prefHeight="600.0" prefWidth="1100.0">
