@@ -21,7 +21,10 @@
 }
 
 .tasto, .tasto-secondario{
-    -fx-background-color: #2207bb;
+	-fx-background-color: #2207bb;
+}
+
+.tasto, .tasto-secondario, .tasto-terziario{
     -fx-background-radius: 20px;
     -fx-cursor: hand;
     -fx-padding: 10px;
@@ -32,9 +35,15 @@
     -fx-opacity: 1.0;
     -fx-font-size: 14px;
 }
+
 .tasto-secondario{
 	-fx-background-radius: 100px;
 }
+
+.tasto-terziario{
+	-fx-background-color: red;
+}
+
 .tasto:hover {
     -fx-scale-x: 1.02;
     -fx-scale-y: 1.02;

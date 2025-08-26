@@ -1,18 +1,15 @@
 package application.boundary;
 
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Studente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -80,7 +77,6 @@ public class AnnunciStudenteBoundary {
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("Prodotti.fxml"));
                         Parent root = loader.load();
-
                         ProdottiBoundary prodottiCtrl = loader.getController();
                         prodottiCtrl.setController(this.controller);
                         prodottiCtrl.setUsername(this.controller.getStudente().getUsername());
@@ -90,13 +86,11 @@ public class AnnunciStudenteBoundary {
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-
                         stage.setScene(scene);
                         stage.setTitle("UninaSwap - Crea annuncio");
                         stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
                         stage.setResizable(false);
                         stage.show();
-
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -132,7 +126,6 @@ public class AnnunciStudenteBoundary {
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("Profilo.fxml"));
                         Parent root = loader.load();
-
                         ProfiloBoundary ProfiloCtrl = loader.getController();
                         ProfiloCtrl.setController(this.controller);
                         ProfiloCtrl.setUsername(this.controller.getStudente().getUsername());
@@ -141,17 +134,14 @@ public class AnnunciStudenteBoundary {
                         ProfiloCtrl.setMatricola(this.controller.getStudente().getMatricola());
                         ProfiloCtrl.setEmail(this.controller.getStudente().getEmail());
                         ProfiloCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
-
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-
                         stage.setScene(scene);
                         stage.setTitle("UninaSwap - Profilo");
                         stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
                         stage.setResizable(false);
                         stage.show();
-
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -161,9 +151,14 @@ public class AnnunciStudenteBoundary {
     }
 
     public boolean CostruisciProdottiUtente(Studente s) {
-        labelAnnunciPubblicati.setText("Annunci attivi di " + s.getUsername());
-
         ArrayList<Annuncio> annunci = controller.getAnnunciStudente(s.getMatricola());
+        String titolo = "";
+        
+        if(annunci.size() == 0) titolo = "Non ci sono annunci attivi di ";
+        else titolo = "Annunci attivi di ";
+        
+        labelAnnunciPubblicati.setText(titolo + s.getUsername());
+        
         int column = 0;
         int row = 0;
 

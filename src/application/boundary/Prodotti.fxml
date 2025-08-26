@@ -82,20 +82,20 @@
                            <font>
                               <Font size="14.0" />
                            </font></TextField>
-                        <Button layoutX="632.0" layoutY="32.0" mnemonicParsing="false" onMouseClicked="#getInfoFiltri" prefHeight="40.0" prefWidth="47.0" styleClass="tasto-secondario">
+                        <Button layoutX="640.0" layoutY="35.0" mnemonicParsing="false" onMouseClicked="#resetFiltri" prefHeight="30.0" prefWidth="45.0" styleClass="tasto-terziario">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor></Button>
-                        <ImageView fitHeight="25.0" fitWidth="33.0" layoutX="643.0" layoutY="40.0" onMouseClicked="#getInfoFiltri" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="25.0" fitWidth="33.0" layoutX="650.0" layoutY="41.0" onMouseClicked="#resetFiltri" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../IMG/immaginiProgramma/search.png" />
+                              <Image url="@../IMG/immaginiProgramma/clean.png" />
                            </image>
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <ChoiceBox fx:id="campoTipologia" layoutX="475.0" layoutY="36.0" prefHeight="34.0" prefWidth="150.0" />
-                        <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="316.0" layoutY="36.0" prefHeight="34.0" prefWidth="150.0" />
+                        <ChoiceBox fx:id="campoTipologia" layoutX="477.0" layoutY="38.0" prefHeight="34.0" prefWidth="150.0" />
+                        <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="318.0" layoutY="38.0" prefHeight="34.0" prefWidth="150.0" />
 
                         <!-- Scroll con GridPane -->
                         <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="64.0" prefHeight="434.0" prefWidth="952.0">
@@ -109,6 +109,19 @@
                               </AnchorPane>
                            </content>
                         </ScrollPane>
+                        <Button layoutX="700.0" layoutY="35.0" mnemonicParsing="false" onMouseClicked="#getInfoFiltri" prefHeight="30.0" prefWidth="45.0" styleClass="tasto-secondario">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <ImageView fitHeight="25.0" fitWidth="33.0" layoutX="710.0" layoutY="43.0" onMouseClicked="#getInfoFiltri" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../IMG/immaginiProgramma/send.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
 
                      </children>
                   </AnchorPane>

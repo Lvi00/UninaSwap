@@ -3,11 +3,7 @@ package application.boundary;
 import javafx.scene.input.MouseEvent;
 
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
-
-import application.boundary.CreaAnnuncioBoundary.Categorie;
-import application.boundary.CreaAnnuncioBoundary.ParticellaToponomastica;
 import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Studente;
@@ -22,7 +18,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -264,29 +259,26 @@ public class ProdottiBoundary {
         return box;
     }
     
-    public void showPopupOfferte(MouseEvent e)
-    {
-    	try {
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOfferte.fxml"));
-	        Parent root = loader.load();
-	        Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-	        Stage popupStage = new Stage();
-	        popupStage.initOwner(mainStage);                  
-	        popupStage.initModality(Modality.WINDOW_MODAL);  
-	        popupStage.setScene(new Scene(root));
-	        popupStage.getScene().getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-	        popupStage.setTitle("UninaSwap - Offerte");
-	        popupStage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-	        popupStage.setResizable(false);
-
-	        // Applico effetto opacità sulla finestra principale
-	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
-	        // Quando il popup viene chiuso, tolgo l’effetto opacità
-	        popupStage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
-
-	        popupStage.show();
-        }
-        catch (Exception ex) {
+    public void showPopupOfferte(MouseEvent e) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOfferte.fxml"));
+            Parent root = loader.load();
+            Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            Stage popupStage = new Stage();
+            popupStage.initOwner(mainStage);
+            popupStage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+            popupStage.setScene(scene);
+            popupStage.setTitle("UninaSwap - Offerte");
+            popupStage.getIcons().add(
+                new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
+            );
+            popupStage.setResizable(false);
+            mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+            popupStage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+            popupStage.show();
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -301,10 +293,16 @@ public class ProdottiBoundary {
     }
     
     @FXML
-    public void getInfoFiltri()
-    { 	
+    public void getInfoFiltri(){ 	
+    	String keyword = campoRicerca.getText();
+	    String categoria = campoCategoriaOggetto.getValue() != null ? campoCategoriaOggetto.getValue().name() : "";
+	    String tipologia = campoTipologia.getValue() != null ? campoTipologia.getValue().name() : "";
+
+	    if ((keyword == null || keyword.isEmpty()) && categoria.equals("Nessuno") && tipologia.equals("Nessuno")) return;
+    	
     	gridProdotti.getChildren().clear();
-    	ArrayList<Annuncio> annunci = controller.getAnnunciByFiltri(campoRicerca.getText(), campoCategoriaOggetto.getValue().name(), campoTipologia.getValue().name());
+    	
+    	ArrayList<Annuncio> annunci = controller.getAnnunciByFiltri(keyword, categoria, tipologia);
         
     	int column = 0;
         int row = 0;
@@ -321,4 +319,12 @@ public class ProdottiBoundary {
         }
     }
     
+    @FXML
+    public void resetFiltri() {
+		campoRicerca.clear();
+		campoCategoriaOggetto.getSelectionModel().selectFirst();
+		campoTipologia.getSelectionModel().selectFirst();
+		gridProdotti.getChildren().clear();
+		CostruisciCatalogoProdotti(this.controller.getStudente());
+	}
 }

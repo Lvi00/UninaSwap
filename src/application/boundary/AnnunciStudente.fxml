@@ -84,7 +84,7 @@
                            <content>
                               <AnchorPane id="pannelloScrollabile" prefWidth="922.0">
                                  <children>
-                                    <GridPane fx:id="gridProdotti" alignment="CENTER" hgap="50" layoutX="40" layoutY="40" vgap="40">
+                                    <GridPane fx:id="gridProdotti" alignment="CENTER" hgap="50" layoutX="48" layoutY="40" vgap="40">
                                        <!-- I prodotti verranno aggiunti dinamicamente -->
                                     </GridPane>
                                  </children>
