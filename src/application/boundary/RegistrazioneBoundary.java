@@ -194,6 +194,9 @@ public class RegistrazioneBoundary {
 	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
 
 	        stage.show();
+	        
+	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
+	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();

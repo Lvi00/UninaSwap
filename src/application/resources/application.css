@@ -411,3 +411,15 @@
 .text-area .text {
     -fx-text-fill: #333333;
 }
+
+#descrizioneOfferta{
+	-fx-background-color: white;
+    -fx-background-radius: 6;
+    -fx-border-color: #d3d3d3;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-padding: 8;
+    -fx-font-size: 13px;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.1) , 4, 0, 0, 1 );
+}

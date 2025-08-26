@@ -251,7 +251,7 @@ public class ProdottiBoundary {
         Button btn = new Button("Scopri");
         btn.getStyleClass().add("tasto-secondario");
         btn.setPrefWidth(150);
-        btn.setOnMouseClicked(e -> showPopupOfferte(e));
+        btn.setOnMouseClicked(e -> showPopupOfferte(e, a));
         VBox.setMargin(btn, new Insets(5, 0, 5, 0));
 
         box.getChildren().addAll(titolo, prezzo, tipo, venditore, disponibilità, btn);
@@ -259,10 +259,15 @@ public class ProdottiBoundary {
         return box;
     }
     
-    public void showPopupOfferte(MouseEvent e) {
+    public void showPopupOfferte(MouseEvent e, Annuncio a) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOfferte.fxml"));
             Parent root = loader.load();
+
+            PopupOfferteBoundary popupCtrl = loader.getController();
+            popupCtrl.setController(this.controller);   
+            popupCtrl.setAnnuncio(a);                   
+
             Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             Stage popupStage = new Stage();
             popupStage.initOwner(mainStage);
@@ -277,11 +282,17 @@ public class ProdottiBoundary {
             popupStage.setResizable(false);
             mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
             popupStage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+
             popupStage.show();
+
+            popupStage.setX(mainStage.getX() + (mainStage.getWidth() - popupStage.getWidth()) / 2);
+            popupStage.setY(mainStage.getY() + (mainStage.getHeight() - popupStage.getHeight()) / 2 - 50);
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
     
     @FXML
     public void setFiltri() {

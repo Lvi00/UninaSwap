@@ -261,7 +261,6 @@ public class CreaAnnuncioBoundary {
 	        Scene scene = new Scene(root);
 	        stage.setScene(scene);
 	        stage.setTitle("UninaSwap - " + title);
-	        stage.centerOnScreen();
 	        stage.setResizable(false);
 	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 
@@ -272,6 +271,9 @@ public class CreaAnnuncioBoundary {
 	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
 
 	        stage.show();
+	        
+	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
+	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
@@ -403,7 +405,6 @@ public class CreaAnnuncioBoundary {
 	        Scene scene = new Scene(root);
 	        stage.setScene(scene);
 	        stage.setTitle("UninaSwap - " + title);
-	        stage.centerOnScreen();
 	        stage.setResizable(false);
 	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 
@@ -414,6 +415,9 @@ public class CreaAnnuncioBoundary {
 	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
 
 	        stage.show();
+	        
+	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
+	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
