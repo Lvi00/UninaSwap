@@ -77,9 +77,12 @@ public class ProdottiBoundary {
             }
             
             immagineNav.setImage(image);
-            
             Circle clip = new Circle(16.5, 16.5, 16.5);
             immagineNav.setClip(clip);
+            immagineNav.setImage(image);
+            immagineNav.setFitWidth(33);
+            immagineNav.setFitHeight(33);  
+            immagineNav.setPreserveRatio(false);
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,6 +125,10 @@ public class ProdottiBoundary {
 		            catch (Exception ex) {
 		                ex.printStackTrace();
 		            }
+	            break;
+	            
+	            case "Prodotti":
+	            	System.out.println("Sei già nella pagina Prodotti.");
 	            break;
 	            
 	            case "I tuoi annunci":

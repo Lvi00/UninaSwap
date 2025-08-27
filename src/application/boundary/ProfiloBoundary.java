@@ -62,21 +62,25 @@ public class ProfiloBoundary {
             File file = new File(immagineP);
             Image image;
             if (file.exists()) {
-                // Se esiste come file nel file system, caricalo da file
                 image = new Image(file.toURI().toString());
             } else {
-                // Altrimenti prova a caricare da risorsa classpath
                 image = new Image(getClass().getResource(immagineP).toExternalForm());
             }
-            
+
             immagineProfilo.setImage(image);
-            immagineNav.setImage(image);
-            
+            immagineProfilo.setFitWidth(140);
+            immagineProfilo.setFitHeight(140);  
+            immagineProfilo.setPreserveRatio(false); 
             Circle clip1 = new Circle(70, 70, 70);
             immagineProfilo.setClip(clip1);
+
+            immagineNav.setImage(image);
+            immagineNav.setFitWidth(33);
+            immagineNav.setFitHeight(33);  
+            immagineNav.setPreserveRatio(false);
             Circle clip2 = new Circle(16.5, 16.5, 16.5);
             immagineNav.setClip(clip2);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Errore caricando immagine: " + immagineP);

@@ -56,6 +56,10 @@ public class AnnunciStudenteBoundary {
             immagineNav.setImage(image);
             Circle clip = new Circle(16.5, 16.5, 16.5);
             immagineNav.setClip(clip);
+            immagineNav.setImage(image);
+            immagineNav.setFitWidth(33);
+            immagineNav.setFitHeight(33);  
+            immagineNav.setPreserveRatio(false);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,6 +75,8 @@ public class AnnunciStudenteBoundary {
         if (source instanceof Label) {
             Label label = (Label) source;
             String testo = label.getText();
+            
+            System.out.println("Navigazione a: " + testo);
 
             switch (testo) {
                 case "Prodotti":
@@ -121,8 +127,13 @@ public class AnnunciStudenteBoundary {
                         ex.printStackTrace();
                     }
                     break;
+                    
+	            case "I tuoi annunci":
+	            	System.out.println("Sei già nella pagina I tuoi annunci.");
+	            break;
 
-                default: // Profilo utente
+                default:
+                	// Profilo utente
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("Profilo.fxml"));
                         Parent root = loader.load();
@@ -145,7 +156,7 @@ public class AnnunciStudenteBoundary {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                    break;
+                break;
             }
         }
     }

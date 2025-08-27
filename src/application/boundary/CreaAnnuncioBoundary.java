@@ -96,9 +96,12 @@ public class CreaAnnuncioBoundary {
             }
             
             immagineNav.setImage(image);
-            
             Circle clip = new Circle(16.5, 16.5, 16.5);
             immagineNav.setClip(clip);
+            immagineNav.setImage(image);
+            immagineNav.setFitWidth(33);
+            immagineNav.setFitHeight(33);  
+            immagineNav.setPreserveRatio(false);
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -160,6 +163,10 @@ public class CreaAnnuncioBoundary {
 		            catch (Exception ex) {
 		                ex.printStackTrace();
 		            }
+	            break;
+	            
+	            case "Crea annuncio":
+	            	System.out.println("Sei già nella pagina Crea annuncio.");
 	            break;
                 
                 default:

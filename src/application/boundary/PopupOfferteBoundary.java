@@ -38,15 +38,20 @@ public class PopupOfferteBoundary {
 
     private void costruisciPopup() {
         if (annuncio != null) {
-        	titoloAnnuncio.setText(annuncio.getTitoloAnnuncio());
-        	descrizioneAnnuncio.setText(annuncio.getDescrizioneAnnuncio());
-        	if(annuncio.getTipologia().equals("Vendita")) 
-        		prezzoAnnuncio.setText(String.format("€ %.2f", annuncio.getPrezzo()));
-        	tipoAnnuncio.setText(annuncio.getTipologia());
-        	categoriaAnnuncio.setText(annuncio.getOggetto().getCategoria());
-        	usernameAnnuncio.setText(annuncio.getOggetto().getStudente().getUsername());
-        	disponibilitàAnnuncio.setText(annuncio.getGiorni() + " dalle " + annuncio.getFasciaOrariaInizio() + " alle " + annuncio.getFasciaOrariaFine());
-        	
+            titoloAnnuncio.setText(annuncio.getTitoloAnnuncio());
+            descrizioneAnnuncio.setText(annuncio.getDescrizioneAnnuncio());
+
+            if (annuncio.getTipologia().equals("Vendita")) {
+                prezzoAnnuncio.setText(String.format("€ %.2f", annuncio.getPrezzo()));
+            }
+
+            tipoAnnuncio.setText(annuncio.getTipologia());
+            categoriaAnnuncio.setText(annuncio.getOggetto().getCategoria());
+            usernameAnnuncio.setText(annuncio.getOggetto().getStudente().getUsername());
+            disponibilitàAnnuncio.setText(
+                annuncio.getGiorni() + " dalle " + annuncio.getFasciaOrariaInizio() + " alle " + annuncio.getFasciaOrariaFine()
+            );
+
             try {
                 String path = annuncio.getOggetto().getImmagineOggetto();
                 File file = new File(path);
@@ -57,11 +62,10 @@ public class PopupOfferteBoundary {
                     img = new Image(getClass().getResource(path).toExternalForm());
                 }
                 immagineAnnuncio.setImage(img);
-  
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
             try {
                 String path = annuncio.getOggetto().getStudente().getImmagineProfilo();
                 File file = new File(path);
@@ -71,9 +75,15 @@ public class PopupOfferteBoundary {
                 } else {
                     img = new Image(getClass().getResource(path).toExternalForm());
                 }
+
                 immagineProfilo.setImage(img);
+                immagineProfilo.setFitWidth(140);
+                immagineProfilo.setFitHeight(140);
+                immagineProfilo.setPreserveRatio(false);
+
                 Circle clip1 = new Circle(70, 70, 70);
                 immagineProfilo.setClip(clip1);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

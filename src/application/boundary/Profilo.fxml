@@ -89,7 +89,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
 						</Pane>
-                        <Label fx:id="usernameProfilo" layoutX="179.0" layoutY="89.0" prefHeight="17.0">
+                        <Label fx:id="usernameProfilo" layoutX="200.0" layoutY="89.0" prefHeight="17.0">
                            <font>
                               <Font size="25.0" />
                            </font></Label>
@@ -135,9 +135,9 @@
                                  </font></Label>
                            </children>
                         </Pane>
-                        <Pane id="logout" layoutX="23.0" layoutY="404.0" onMouseClicked="#logout" prefHeight="79.0" prefWidth="280.0" styleClass="ProfileBord">
+                        <Pane id="logout" layoutX="23.0" layoutY="404.0" onMouseClicked="#logout" prefHeight="79.0" prefWidth="288.0" styleClass="ProfileBord">
                            <children>
-                              <Label layoutX="71.0" layoutY="27.0" style="-fx-font-weight: bold;" text="Esci dal tuo profilo utente" textFill="RED">
+                              <Label layoutX="79.0" layoutY="27.0" style="-fx-font-weight: bold;" text="Esci dal tuo profilo utente" textFill="RED">
                                  <font>
                                     <Font size="16.0" />
                                  </font></Label>
