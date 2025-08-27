@@ -282,7 +282,7 @@ public class ProdottiBoundary {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
             popupStage.setScene(scene);
-            popupStage.setTitle("UninaSwap - Offerte");
+            popupStage.setTitle("UninaSwap - Offerta");
             popupStage.getIcons().add(
                 new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
             );

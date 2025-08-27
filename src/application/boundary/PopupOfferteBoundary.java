@@ -3,6 +3,7 @@ package application.boundary;
 import application.control.Controller;
 import application.entity.Annuncio;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,12 +18,12 @@ public class PopupOfferteBoundary {
     @FXML private Label titoloAnnuncio;
     @FXML private Label descrizioneAnnuncio;
     @FXML private Label prezzoAnnuncio;
-    @FXML private Label tipoAnnuncio;
     @FXML private Label usernameAnnuncio;
     @FXML private Label disponibilitàAnnuncio;
     @FXML private Label categoriaAnnuncio;
     @FXML private ImageView immagineAnnuncio;
     @FXML private ImageView immagineProfilo;
+    @FXML private Button buttonOfferta;
 
     private Annuncio annuncio;
 
@@ -45,7 +46,6 @@ public class PopupOfferteBoundary {
                 prezzoAnnuncio.setText(String.format("€ %.2f", annuncio.getPrezzo()));
             }
 
-            tipoAnnuncio.setText(annuncio.getTipologia());
             categoriaAnnuncio.setText(annuncio.getOggetto().getCategoria());
             usernameAnnuncio.setText(annuncio.getOggetto().getStudente().getUsername());
             disponibilitàAnnuncio.setText(
@@ -77,12 +77,25 @@ public class PopupOfferteBoundary {
                 }
 
                 immagineProfilo.setImage(img);
-                immagineProfilo.setFitWidth(140);
-                immagineProfilo.setFitHeight(140);
+                immagineProfilo.setFitWidth(94);
+                immagineProfilo.setFitHeight(94);
                 immagineProfilo.setPreserveRatio(false);
-
-                Circle clip1 = new Circle(70, 70, 70);
-                immagineProfilo.setClip(clip1);
+                Circle clip = new Circle(47, 47, 47);
+                immagineProfilo.setClip(clip);
+                
+                switch(this.annuncio.getTipologia()) {
+	                case "Scambio":
+	                	buttonOfferta.setText("Proponi scambio");
+	                break;
+	                
+	                case "Vendita":
+						buttonOfferta.setText("Acquista");
+					break;
+					
+					case "Regalo":
+						buttonOfferta.setText("Richiedi");
+					break;
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
