@@ -208,6 +208,38 @@ public class AnnuncioDAO {
 
         return annunci;
     }
-    
    
+   public void cambiaStatoAnnuncio(Annuncio annuncio) {
+	    try {
+	        String matStudente = annuncio.getOggetto().getStudente().getMatricola();
+	        int idOggetto = controller.getIdByOggetto(annuncio.getOggetto());
+	        int idSede = controller.getIdBySede(annuncio.getSede());
+
+	        Connection conn = ConnessioneDB.getConnection();
+		    String query = "UPDATE ANNUNCIO SET statoannuncio = false WHERE titoloannuncio = ? AND statoannuncio = ? AND fasciaorariainizio = ? AND fasciaorariafine = ? "
+		    		+ "AND prezzo = ? AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? AND idoggetto = ? AND idsede = ? AND giorni = ?";
+	        PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, annuncio.getTitoloAnnuncio());
+            ps.setBoolean(2, annuncio.isStatoAnnuncio());
+            ps.setString(3, annuncio.getFasciaOrariaInizio());
+            ps.setString(4, annuncio.getFasciaOrariaFine());
+            ps.setDouble(5, annuncio.getPrezzo());
+            ps.setString(6, annuncio.getTipologia());
+            ps.setString(7, annuncio.getDescrizioneAnnuncio());
+            ps.setString(8, matStudente);
+            ps.setInt(9, idOggetto);
+            ps.setInt(10, idSede);
+            ps.setString(11, annuncio.getGiorni());
+
+            int updatedRows = ps.executeUpdate();
+            if (updatedRows > 0) {
+                System.out.println("Annuncio aggiornato con successo.");
+            } else {
+                System.out.println("Nessun annuncio trovato da aggiornare.");
+            }
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
 }

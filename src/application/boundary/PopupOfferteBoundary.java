@@ -3,18 +3,23 @@ package application.boundary;
 import application.control.Controller;
 import application.entity.Annuncio;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 import java.io.File;
 
 public class PopupOfferteBoundary {
 
     private Controller controller;
+    private ProdottiBoundary prodottiBoundary;
     @FXML private Label titoloAnnuncio;
     @FXML private Label descrizioneAnnuncio;
     @FXML private Label prezzoAnnuncio;
@@ -24,13 +29,22 @@ public class PopupOfferteBoundary {
     @FXML private ImageView immagineAnnuncio;
     @FXML private ImageView immagineProfilo;
     @FXML private Button buttonOfferta;
-
+    @FXML private Button sendButton;
+    @FXML private ImageView sendImage;
+    @FXML private AnchorPane PaneControfferta;
+    @FXML private Button controffertaButton;
+    @FXML private ImageView backImage;
+    @FXML private Button backButton;
+    
     private Annuncio annuncio;
 
     public void setController(Controller controller) {
         this.controller = controller;
     }
     
+    public void setProdottiBoundary(ProdottiBoundary prodottiBoundary) {
+        this.prodottiBoundary = prodottiBoundary;
+    }
     
     public void setAnnuncio(Annuncio annuncio) {
         this.annuncio = annuncio;
@@ -85,7 +99,7 @@ public class PopupOfferteBoundary {
                 
                 switch(this.annuncio.getTipologia()) {
 	                case "Scambio":
-	                	buttonOfferta.setText("Proponi scambio");
+	                	buttonOfferta.setText("Scambio");
 	                break;
 	                
 	                case "Vendita":
@@ -102,4 +116,45 @@ public class PopupOfferteBoundary {
             }
         }
     }
+    
+    @FXML
+    public void AcquistaOggetto(MouseEvent e) {
+        controller.AcquistaOggetto(this.annuncio);
+
+        if (prodottiBoundary != null) {
+            prodottiBoundary.CostruisciCatalogoProdotti(this.controller.getStudente());
+            prodottiBoundary.setFiltri();
+        }
+
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        stage.close();
+    }
+    
+    @FXML
+    public void MostraControfferta()
+    {
+    	if(!PaneControfferta.isVisible())
+    	{	
+    		PaneControfferta.setVisible(true);
+    		backImage.setVisible(true);
+    	    backButton.setVisible(true);
+    	    controffertaButton.setVisible(false);
+
+    	    buttonOfferta.setVisible(false);
+    	    sendButton.setVisible(true);
+    	    sendImage.setVisible(true);
+    	}
+    	else 
+    	{
+    		PaneControfferta.setVisible(false);
+    		backImage.setVisible(false);
+    	    backButton.setVisible(false);
+    	    controffertaButton.setVisible(true);
+    	    
+    	    buttonOfferta.setVisible(true);
+    	    sendButton.setVisible(false);
+    	    sendImage.setVisible(false);
+    	}
+    }    
+   
 }

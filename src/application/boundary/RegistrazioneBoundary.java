@@ -67,6 +67,7 @@ public class RegistrazioneBoundary {
 	    }
 	}
 	
+	//.isVisible() da mofigicare
 	@FXML
 	public void MostraInfoRegistrazione (MouseEvent e) {
 		PaneRegistrazione.setVisible(false);

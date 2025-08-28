@@ -272,7 +272,8 @@ public class ProdottiBoundary {
             Parent root = loader.load();
 
             PopupOfferteBoundary popupCtrl = loader.getController();
-            popupCtrl.setController(this.controller);   
+            popupCtrl.setController(this.controller);
+            popupCtrl.setProdottiBoundary(this);
             popupCtrl.setAnnuncio(a);                   
 
             Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -282,7 +283,7 @@ public class ProdottiBoundary {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
             popupStage.setScene(scene);
-            popupStage.setTitle("UninaSwap - Offerta");
+            popupStage.setTitle("UninaSwap - " +a.getTipologia());
             popupStage.getIcons().add(
                 new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
             );

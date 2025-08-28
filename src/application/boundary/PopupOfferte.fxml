@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -17,45 +21,98 @@
                 <ImageView fx:id="immagineAnnuncio" fitHeight="150.0" fitWidth="240.0" layoutX="35.0" layoutY="20.0" smooth="false" />
 
                 <Label fx:id="categoriaAnnuncio" layoutX="35.0" layoutY="180.0" />
+            <Pane layoutX="35.0" layoutY="198.0" prefHeight="40.0" prefWidth="240.0">
+               <children>
+      
+					<Label fx:id="titoloAnnuncio" alignment="TOP_LEFT" prefWidth="240.0" style="-fx-font-weight: bold; -fx-line-spacing: -5;" wrapText="true">
+					    <font>
+					        <Font size="16.0" />
+					    </font>
+					</Label>
+               </children>
+            </Pane>
 
-                <Label fx:id="titoloAnnuncio" layoutX="35.0" layoutY="195.0" style="-fx-font-weight: bold;" wrapText="true">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Label>
-
-                <Label fx:id="prezzoAnnuncio" layoutX="35.0" layoutY="220.0">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Label>
+                <Label fx:id="prezzoAnnuncio" layoutX="120.0" layoutY="180.0" />
 
                 <Pane id="descrizioneOfferta" layoutX="35.0" layoutY="246.0" prefHeight="108.0" prefWidth="240.0">
                     <children>
-                        <Label fx:id="descrizioneAnnuncio" layoutX="6.0" layoutY="5.0" prefWidth="255.0" wrapText="true" />
+                        <Label fx:id="descrizioneAnnuncio" alignment="TOP_LEFT" layoutX="6.0" layoutY="5.0" prefHeight="100.0" prefWidth="228.0" wrapText="true" />
                     </children>
                 </Pane>
 
-                <VBox alignment="CENTER" layoutX="401.0" layoutY="36.0" prefWidth="100.0" spacing="8">
-                    <children>
-                        <Pane prefHeight="100.0" prefWidth="100.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-border-color: black; -fx-border-width: 3;">
-                            <children>
-                                <ImageView fx:id="immagineProfilo" fitHeight="94.0" fitWidth="94.0" layoutX="3.0" layoutY="3.0" preserveRatio="true" />
-                            </children>
-                        </Pane>
-
-                        <Label fx:id="usernameAnnuncio" style="-fx-font-weight: bold;">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Label>
-                    </children>
-                </VBox>
+				<VBox alignment="TOP_CENTER" layoutX="473.0" layoutY="22.0" prefHeight="364.0" prefWidth="100.0" spacing="8">
+				
+				    <children>
+				        <Pane prefHeight="100.0" prefWidth="100.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-border-color: black; -fx-border-width: 3;">
+				            <children>
+				                <ImageView fx:id="immagineProfilo" fitHeight="94.0" fitWidth="94.0" layoutX="3.0" layoutY="3.0" preserveRatio="true" />
+				            </children>
+				        </Pane>
+				
+				        <Label fx:id="usernameAnnuncio" style="-fx-font-weight: bold;">
+				            <font>
+				                <Font size="16.0" />
+				            </font>
+				        </Label>
+				
+				        <Region VBox.vgrow="ALWAYS" />
+				
+      				        <Button fx:id="buttonOfferta" mnemonicParsing="false" onMouseClicked="#AcquistaOggetto" styleClass="tasto-secondario" />
+				    </children>
+				</VBox>
 
                 <Label layoutX="35.0" layoutY="365.0" text="Disponibilità:" />
                 <Label fx:id="disponibilitàAnnuncio" layoutX="110.0" layoutY="365.0" />
-
-                <Button fx:id="buttonOfferta" layoutX="481.0" layoutY="334.0" mnemonicParsing="false" styleClass="tasto-secondario" />
+            
+            
+            
+				<AnchorPane fx:id="PaneControfferta" layoutX="349.0" layoutY="157.0" prefHeight="175.0" prefWidth="240.0" visible="false">
+			    <!-- Label prezzo centrata un po' in alto -->
+			    <Label alignment="CENTER" layoutY="50.0" styleClass="label-login-registrazione" text="Prezzo" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+			        <font>
+			            <Font size="14.0" />
+			        </font>
+			    </Label>
+			
+			    <!-- Riga con simbolo €, campo intero, punto, campo decimale -->
+			    <HBox alignment="CENTER" layoutY="95.0" spacing="5" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+			        <children>
+			            <Label style="-fx-alignment: center; -fx-font-weight: bold;" text="€">
+			                <font>
+			                    <Font size="18.0" />
+			                </font>
+			            </Label>
+			
+			            <TextField fx:id="campoPrezzoIntero" prefHeight="36.0" prefWidth="76.0" styleClass="campi" />
+			
+			            <Label style="-fx-alignment: center; -fx-font-weight: bold;" text=".">
+			                <font>
+			                    <Font size="20.0" />
+			                </font>
+			            </Label>
+			
+			            <TextField fx:id="campoPrezzoDecimale" prefHeight="36.0" prefWidth="76.0" styleClass="campi" />
+			        </children>
+			    </HBox>
+			</AnchorPane>
+            
+            
+            <Button fx:id="controffertaButton" layoutX="370.0" layoutY="345.0" mnemonicParsing="false" onMouseClicked="#MostraControfferta" style="-fx-background-color: CA0F0F;" styleClass="tasto-terziario" text="Controfferta" />
+            <Button fx:id="backButton" layoutX="427.0" layoutY="345.0" mnemonicParsing="false" onMouseClicked="#MostraControfferta" prefHeight="40.0" prefWidth="46.0" style="-fx-background-color: CA0F0F;" styleClass="tasto-terziario" visible="false" />
+            <ImageView fx:id="backImage" fitHeight="36.0" fitWidth="30.0" layoutX="435.0" layoutY="350.0" onMouseClicked="#MostraControfferta" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../IMG/immaginiProgramma/back.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <Button fx:id="sendButton" layoutX="500.0" layoutY="345.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="54.0" styleClass="tasto-secondario" visible="false" />
+            <ImageView fx:id="sendImage" fitHeight="30.0" fitWidth="30.0" layoutX="513.0" layoutY="350.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../IMG/immaginiProgramma/send.png" />
+               </image>
+            </ImageView>
             </children>
         </AnchorPane>
     </children>

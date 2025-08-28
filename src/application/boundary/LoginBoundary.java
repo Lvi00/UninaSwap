@@ -57,6 +57,7 @@ public class LoginBoundary {
 		}
 	}
 
+	//.isVisible() da mofigicare
 	@FXML
 	public void MostraInfoLogin (MouseEvent e) {
 		PaneLogin.setVisible(false);

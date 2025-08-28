@@ -253,4 +253,9 @@ public class Controller {
 	    return new AnnuncioDAO().getAnnunciByFiltri(this.studente.getMatricola(), keyword, categoria, tipologia);
 	}
 	
+	public void AcquistaOggetto(Annuncio a)
+	{
+		new AnnuncioDAO().cambiaStatoAnnuncio(a);
+		
+	}
 }
