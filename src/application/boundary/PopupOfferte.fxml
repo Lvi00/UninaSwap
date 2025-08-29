@@ -68,14 +68,14 @@
             
 				<AnchorPane fx:id="PaneControfferta" layoutX="349.0" layoutY="157.0" prefHeight="175.0" prefWidth="240.0" visible="false">
 			    <!-- Label prezzo centrata un po' in alto -->
-			    <Label alignment="CENTER" layoutY="50.0" styleClass="label-login-registrazione" text="Prezzo" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+			    <Label alignment="CENTER" layoutX="63.0" layoutY="88.0" prefHeight="20.0" prefWidth="115.0" styleClass="label-login-registrazione" text="Prezzo" AnchorPane.leftAnchor="63.0" AnchorPane.rightAnchor="62.333333333333314">
 			        <font>
 			            <Font size="14.0" />
 			        </font>
 			    </Label>
 			
 			    <!-- Riga con simbolo €, campo intero, punto, campo decimale -->
-			    <HBox alignment="CENTER" layoutY="95.0" spacing="5" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+			    <HBox alignment="CENTER" layoutX="15.0" layoutY="125.0" prefHeight="36.0" prefWidth="210.0" spacing="5" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.666666666666686">
 			        <children>
 			            <Label style="-fx-alignment: center; -fx-font-weight: bold;" text="€">
 			                <font>
@@ -98,8 +98,8 @@
             
             
             <Button fx:id="controffertaButton" layoutX="370.0" layoutY="345.0" mnemonicParsing="false" onMouseClicked="#MostraControfferta" style="-fx-background-color: CA0F0F;" styleClass="tasto-terziario" text="Controfferta" />
-            <Button fx:id="backButton" layoutX="427.0" layoutY="345.0" mnemonicParsing="false" onMouseClicked="#MostraControfferta" prefHeight="40.0" prefWidth="46.0" style="-fx-background-color: CA0F0F;" styleClass="tasto-terziario" visible="false" />
-            <ImageView fx:id="backImage" fitHeight="36.0" fitWidth="30.0" layoutX="435.0" layoutY="350.0" onMouseClicked="#MostraControfferta" pickOnBounds="true" preserveRatio="true" visible="false">
+            <Button fx:id="backButton" layoutX="407.0" layoutY="345.0" mnemonicParsing="false" onMouseClicked="#MostraControfferta" prefHeight="40.0" prefWidth="46.0" style="-fx-background-color: CA0F0F;" styleClass="tasto-terziario" visible="false" />
+            <ImageView fx:id="backImage" fitHeight="36.0" fitWidth="30.0" layoutX="414.0" layoutY="350.0" onMouseClicked="#MostraControfferta" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../IMG/immaginiProgramma/back.png" />
                </image>
@@ -107,11 +107,14 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <Button fx:id="sendButton" layoutX="500.0" layoutY="345.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="54.0" styleClass="tasto-secondario" visible="false" />
-            <ImageView fx:id="sendImage" fitHeight="30.0" fitWidth="30.0" layoutX="513.0" layoutY="350.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <Button fx:id="sendButton" layoutX="494.0" layoutY="345.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="46.0" styleClass="tasto-secondario" visible="false" />
+            <ImageView fx:id="sendImage" fitHeight="30.0" fitWidth="30.0" layoutX="502.0" layoutY="350.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../IMG/immaginiProgramma/send.png" />
                </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ImageView>
             </children>
         </AnchorPane>

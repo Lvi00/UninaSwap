@@ -151,7 +151,7 @@ public class AnnuncioDAO {
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query1 = "SELECT * FROM ANNUNCIO NATURAL JOIN OGGETTO WHERE matstudente <> ? ";
+            String query1 = "SELECT * FROM ANNUNCIO NATURAL JOIN OGGETTO WHERE statoannuncio = ? AND matstudente <> ? ";
             String query2 = "";
             String query3 = "";
             String query4 = "";
@@ -172,6 +172,7 @@ public class AnnuncioDAO {
 
             int index = 1;
             //index++ ritorna prima il valore corrente, poi incrementa la variabile.
+            statement.setBoolean(index++, true);
             statement.setString(index++, matricola);
 
             if (!query2.isEmpty()) {
