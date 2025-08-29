@@ -188,6 +188,8 @@ public class ProdottiBoundary {
 
         ArrayList<Annuncio> annunci = controller.getInfoAnnunci(s.getMatricola());
 
+        pulisciCatalogo();
+        
         int column = 0;
         int row = 0;
 
@@ -311,6 +313,10 @@ public class ProdottiBoundary {
         campoTipologia.getSelectionModel().selectFirst();
     }
     
+    public void pulisciCatalogo() {
+		gridProdotti.getChildren().clear();
+	}
+    
     @FXML
     public void getInfoFiltri(){ 	
     	String keyword = campoRicerca.getText();
@@ -319,7 +325,7 @@ public class ProdottiBoundary {
 
 	    if ((keyword == null || keyword.isEmpty()) && categoria.equals("Nessuno") && tipologia.equals("Nessuno")) return;
     	
-    	gridProdotti.getChildren().clear();
+    	pulisciCatalogo();
     	
     	ArrayList<Annuncio> annunci = controller.getAnnunciByFiltri(keyword, categoria, tipologia);
         

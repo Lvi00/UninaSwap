@@ -36,7 +36,6 @@ public class LoginBoundary {
 	@FXML private ImageView TastoShowPassword;
 	@FXML private ImageView TastoHidePassword;
 	@FXML private TextField VisualizzaPasswordLogin;
-	private boolean visibilitaPassword = false;
 	
 	@FXML
 	public void MostraRegistrazione(MouseEvent e) {
@@ -115,7 +114,7 @@ public class LoginBoundary {
 	
 	@FXML
 	public void invioDatiLogin(MouseEvent e) {
-		if(visibilitaPassword) VisibilitàPassword(e);
+		if(VisualizzaPasswordLogin.isVisible()) VisibilitàPassword(e);
 		
 		if(UsernameLogin.getText().trim().isEmpty() || PasswordLogin.getText().trim().isEmpty()){
 			ShowPopupError("Campi Vuoti", "I campi Username e Password non possono essere vuoti!");
@@ -185,13 +184,12 @@ public class LoginBoundary {
 	
 	@FXML
 	public void VisibilitàPassword(MouseEvent e) {
-		if(!visibilitaPassword) {
+		if(!VisualizzaPasswordLogin.isVisible()) {
 			PasswordLogin.setVisible(false);
 			VisualizzaPasswordLogin.setVisible(true);
 			VisualizzaPasswordLogin.setText(PasswordLogin.getText());
 			TastoShowPassword.setVisible(false);
 			TastoHidePassword.setVisible(true);
-			visibilitaPassword = true;
 		}
 		else {
 			VisualizzaPasswordLogin.setVisible(false);
@@ -199,7 +197,6 @@ public class LoginBoundary {
 			PasswordLogin.setText(VisualizzaPasswordLogin.getText());
 			TastoShowPassword.setVisible(true);
 			TastoHidePassword.setVisible(false);
-			visibilitaPassword = false;
 		}
 	}
 }

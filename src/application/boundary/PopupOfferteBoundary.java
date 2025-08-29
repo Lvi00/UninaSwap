@@ -3,7 +3,10 @@ package application.boundary;
 import application.control.Controller;
 import application.entity.Annuncio;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -120,41 +123,35 @@ public class PopupOfferteBoundary {
     @FXML
     public void AcquistaOggetto(MouseEvent e) {
         controller.AcquistaOggetto(this.annuncio);
-
+        
         if (prodottiBoundary != null) {
-            prodottiBoundary.CostruisciCatalogoProdotti(this.controller.getStudente());
-            prodottiBoundary.setFiltri();
+            prodottiBoundary.CostruisciCatalogoProdotti(controller.getStudente());
         }
 
-        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-        stage.close();
+        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        currentStage.close();
     }
+
     
     @FXML
-    public void MostraControfferta()
-    {
-    	if(!PaneControfferta.isVisible())
-    	{	
+    public void MostraControfferta(){
+    	if(!PaneControfferta.isVisible()){	
     		PaneControfferta.setVisible(true);
     		backImage.setVisible(true);
     	    backButton.setVisible(true);
     	    controffertaButton.setVisible(false);
-
     	    buttonOfferta.setVisible(false);
     	    sendButton.setVisible(true);
     	    sendImage.setVisible(true);
     	}
-    	else 
-    	{
+    	else{
     		PaneControfferta.setVisible(false);
     		backImage.setVisible(false);
     	    backButton.setVisible(false);
-    	    controffertaButton.setVisible(true);
-    	    
+    	    controffertaButton.setVisible(true);   
     	    buttonOfferta.setVisible(true);
     	    sendButton.setVisible(false);
     	    sendImage.setVisible(false);
     	}
     }    
-   
 }

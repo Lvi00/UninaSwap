@@ -33,20 +33,15 @@ public class RegistrazioneBoundary {
 	@FXML private Button ButtonReturnRegistrazione;
 	@FXML private Pane PaneLabelInfoReg;
 	@FXML private Pane LinkFooterRegistrazione;
-	
-	//Campi di Registrazione
 	@FXML private TextField  nomeFieldReg;
 	@FXML private TextField  cognomeFieldReg;
 	@FXML private TextField  matricolaFieldReg;
 	@FXML private TextField  emailFieldReg;
 	@FXML private TextField  usernameFieldReg;
 	@FXML private PasswordField   passwordFieldReg;
-	
-	//Visibilità Password
 	@FXML private ImageView TastoShowPassword;
 	@FXML private ImageView TastoHidePassword;
 	@FXML private TextField VisualizzaPasswordReg;
-	boolean visibilitaPassword = false;
 	
 	@FXML
 	public void MostraLogin(MouseEvent e) {
@@ -102,7 +97,7 @@ public class RegistrazioneBoundary {
 	
 	@FXML	
 	public void PrelevaDati(MouseEvent e) {
-		if(visibilitaPassword) VisibilitàPassword(e);
+		if(VisualizzaPasswordReg.isVisible()) VisibilitàPassword(e);
 							
 		ArrayList<String> credenziali = new ArrayList<String>();
 		
@@ -232,13 +227,12 @@ public class RegistrazioneBoundary {
 	
 	@FXML
 	public void VisibilitàPassword(MouseEvent e) {
-		if(!visibilitaPassword) {
+		if(!VisualizzaPasswordReg.isVisible()) {
 			passwordFieldReg.setVisible(false);
 			VisualizzaPasswordReg.setVisible(true);
 			VisualizzaPasswordReg.setText(passwordFieldReg.getText());
 			TastoShowPassword.setVisible(false);
 			TastoHidePassword.setVisible(true);
-			visibilitaPassword = true;
 		}
 		else {
 			passwordFieldReg.setText(VisualizzaPasswordReg.getText());
@@ -246,7 +240,6 @@ public class RegistrazioneBoundary {
 			passwordFieldReg.setVisible(true);
 			TastoShowPassword.setVisible(true);
 			TastoHidePassword.setVisible(false);
-			visibilitaPassword = false;
 		}
 	}
 }
