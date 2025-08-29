@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
@@ -31,6 +33,7 @@ public class ProdottiBoundary {
 
     private Controller controller;
 
+    @FXML private HBox containerCatalogoProdotti;
     @FXML private Label usernameDashboard;
     @FXML private GridPane gridProdotti;
     @FXML private AnchorPane contentPane;
@@ -38,6 +41,10 @@ public class ProdottiBoundary {
     @FXML private TextField campoRicerca;    
     @FXML private ChoiceBox<Categorie> campoCategoriaOggetto;
     @FXML private ChoiceBox<Tipologia> campoTipologia;
+    
+    private String keyword = null;
+    private String categoria = null;
+    private String tipologia = null;
 
     enum Categorie {
     	Nessuno,
@@ -243,6 +250,9 @@ public class ProdottiBoundary {
 
         Label titolo = new Label(a.getTitoloAnnuncio());
         titolo.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+        titolo.setWrapText(true);
+        titolo.setMaxWidth(200);
+        titolo.setAlignment(Pos.CENTER);
 
         Label prezzo = new Label(String.format("\u20AC %.2f", a.getPrezzo()));
         prezzo.setStyle("-fx-text-fill: #153464; -fx-font-size: 14;");
@@ -250,7 +260,7 @@ public class ProdottiBoundary {
         Label tipo = new Label(a.getOggetto().getCategoria() +" - "+ a.getTipologia());
         tipo.setStyle("-fx-text-fill: gray;");
         
-        Label venditore = new Label("Pubblicata da " + a.getOggetto().getStudente().getUsername());
+        Label venditore = new Label("Pubblicato da " + a.getOggetto().getStudente().getUsername());
         venditore.setStyle("-fx-text-fill: #153464;");
 
         Label disponibilità =  new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
@@ -318,18 +328,33 @@ public class ProdottiBoundary {
 	}
     
     @FXML
-    public void getInfoFiltri(){ 	
-    	String keyword = campoRicerca.getText();
-	    String categoria = campoCategoriaOggetto.getValue() != null ? campoCategoriaOggetto.getValue().name() : "";
-	    String tipologia = campoTipologia.getValue() != null ? campoTipologia.getValue().name() : "";
+    public void getInfoFiltri() {
+        String newKeyword = campoRicerca.getText();
+        String newCategoria = campoCategoriaOggetto.getValue() != null ? campoCategoriaOggetto.getValue().name() : "Nessuno";
+        String newTipologia = campoTipologia.getValue() != null ? campoTipologia.getValue().name() : "Nessuno";
 
-	    if ((keyword == null || keyword.isEmpty()) && categoria.equals("Nessuno") && tipologia.equals("Nessuno")) return;
-    	
-    	pulisciCatalogo();
-    	
-    	ArrayList<Annuncio> annunci = controller.getAnnunciByFiltri(keyword, categoria, tipologia);
-        
-    	int column = 0;
+        // Controllo campi vuoti
+        if ((newKeyword == null || newKeyword.isEmpty()) && newCategoria.equals("Nessuno") && newTipologia.equals("Nessuno")) {
+            ShowPopupError("Filtri non validi", "Per applicare i filtri, inserisci almeno una parola chiave o seleziona una categoria o tipologia diversa da 'Nessuno'.");
+            return;
+        }
+
+        // Controllo se i filtri sono uguali ai precedenti
+        if (newKeyword.equals(this.keyword) && newCategoria.equals(this.categoria) && newTipologia.equals(this.tipologia)) {
+            ShowPopupError("Filtri già applicati", "I filtri selezionati corrispondono a quelli già applicati.");
+            return;
+        }
+
+        // Salvo i nuovi filtri
+        this.keyword = newKeyword;
+        this.categoria = newCategoria;
+        this.tipologia = newTipologia;
+
+        pulisciCatalogo();
+
+        ArrayList<Annuncio> annunci = controller.getAnnunciByFiltri(keyword, categoria, tipologia);
+
+        int column = 0;
         int row = 0;
 
         for (Annuncio a : annunci) {
@@ -342,14 +367,97 @@ public class ProdottiBoundary {
                 row++;
             }
         }
+
+        ShowPopupAlert("Filtri applicati", "Sono stati trovati " + annunci.size() + " annunci corrispondenti ai filtri selezionati.");
     }
     
     @FXML
-    public void resetFiltri() {
-		campoRicerca.clear();
-		campoCategoriaOggetto.getSelectionModel().selectFirst();
-		campoTipologia.getSelectionModel().selectFirst();
-		gridProdotti.getChildren().clear();
-		CostruisciCatalogoProdotti(this.controller.getStudente());
+    public void resetFiltri() {    	
+        // Controllo se i filtri sono già allo stato di default
+        String categoriaCorrente = this.categoria != null ? this.categoria : "Nessuno";
+        String tipologiaCorrente = this.tipologia != null ? this.tipologia : "Nessuno";
+
+        if ((this.keyword == null || this.keyword.isEmpty()) && categoriaCorrente.equals("Nessuno") && tipologiaCorrente.equals("Nessuno")) {
+            ShowPopupError("Filtri già resettati", "I filtri sono già allo stato di default.");
+            return;
+        }
+
+        // Reset dei campi UI
+        campoRicerca.clear();
+        campoCategoriaOggetto.getSelectionModel().selectFirst();
+        campoTipologia.getSelectionModel().selectFirst();
+
+        // Reset dei valori interni
+        this.keyword = "";
+        this.categoria = "Nessuno";
+        this.tipologia = "Nessuno";
+
+        // Ripristino catalogo completo
+        gridProdotti.getChildren().clear();
+        CostruisciCatalogoProdotti(this.controller.getStudente());
+
+        ShowPopupAlert("Filtri resettati", "Tutti i filtri sono stati resettati.");
+    }
+    
+    private void ShowPopupAlert(String title, String message) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupAlert.fxml"));
+	        Parent root = loader.load();
+
+	        Stage mainStage = (Stage) containerCatalogoProdotti.getScene().getWindow();
+	        Stage stage = new Stage();
+	        stage.initOwner(mainStage);
+	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+	        Scene scene = new Scene(root);
+	        stage.setScene(scene);
+	        stage.setTitle("UninaSwap - " + title);
+	        stage.setResizable(false);
+	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+
+	        PopupErrorBoundary popupController = loader.getController();
+	        popupController.setLabels(title, message);
+	       
+	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+
+	        stage.show();
+	        
+	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
+	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+    
+    private void ShowPopupError(String title, String message) {
+		try {
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
+	        Parent root = loader.load();
+
+	        Stage mainStage = (Stage) containerCatalogoProdotti.getScene().getWindow();
+	        Stage stage = new Stage();
+	        stage.initOwner(mainStage);
+	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+	        Scene scene = new Scene(root);
+	        stage.setScene(scene);
+	        stage.setTitle("UninaSwap - " + title);
+	        stage.setResizable(false);
+	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+
+	        PopupErrorBoundary popupController = loader.getController();
+	        popupController.setLabels(title, message);
+	       
+	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+
+	        stage.show();
+	        
+	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
+	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 }

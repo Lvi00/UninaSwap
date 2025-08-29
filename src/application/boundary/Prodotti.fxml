@@ -72,7 +72,7 @@
             </AnchorPane>
 
             <!-- Contenuto principale -->
-            <HBox layoutX="149.0" layoutY="102.0" prefHeight="498.0" prefWidth="949.0" style="-fx-background-color: #F2EFEA;">
+            <HBox fx:id="containerCatalogoProdotti" layoutX="149.0" layoutY="102.0" prefHeight="498.0" prefWidth="949.0" style="-fx-background-color: #F2EFEA;">
                <children>
                   <AnchorPane prefHeight="498.0" prefWidth="949.0">
                      <children>
