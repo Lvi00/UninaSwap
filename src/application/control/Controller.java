@@ -258,4 +258,16 @@ public class Controller {
 		new AnnuncioDAO().cambiaStatoAnnuncio(a);
 		
 	}
+	
+	public int checkControfferta(Annuncio a, String stringaPrezzo) {
+		//Evita i caratteri speciali e le lettere, max un punto, max 3 cifre prima e 2 dopo, niente negativi
+		String prezzoRegex = "^\\d{1,3}(\\.\\d{1,2})?$";
+	    if (!stringaPrezzo.matches(prezzoRegex)) return 1;
+	    
+		double prezzo = Double.parseDouble(stringaPrezzo);
+		
+		if(prezzo <= 0 || prezzo >= a.getPrezzo()) return 1;
+		
+		return 0;
+	}
 }

@@ -107,8 +107,8 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <Button fx:id="sendButton" layoutX="494.0" layoutY="345.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="46.0" styleClass="tasto-secondario" visible="false" />
-            <ImageView fx:id="sendImage" fitHeight="30.0" fitWidth="30.0" layoutX="502.0" layoutY="350.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <Button fx:id="sendButton" layoutX="494.0" layoutY="345.0" mnemonicParsing="false" onMouseClicked="#checkControfferta" prefHeight="40.0" prefWidth="46.0" styleClass="tasto-secondario" visible="false" />
+            <ImageView fx:id="sendImage" fitHeight="30.0" fitWidth="30.0" layoutX="502.0" layoutY="350.0" onMouseClicked="#checkControfferta" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../IMG/immaginiProgramma/send.png" />
                </image>

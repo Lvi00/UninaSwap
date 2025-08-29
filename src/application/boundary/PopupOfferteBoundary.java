@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -39,6 +40,8 @@ public class PopupOfferteBoundary {
     @FXML private Button controffertaButton;
     @FXML private ImageView backImage;
     @FXML private Button backButton;
+    @FXML private TextField campoPrezzoIntero;
+    @FXML private TextField campoPrezzoDecimale;
     
     private Annuncio annuncio;
 
@@ -132,12 +135,43 @@ public class PopupOfferteBoundary {
         Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         currentStage.close();
         
-        ShowPopupAlert("Operazione completata!", "L'acquisto è stato completato con successo.");
+        ShowPopupAlert("Acquisto effettuato!", "Il prodotto è stato acquistato con successo.");
     }
     
     private void ShowPopupAlert(String title, String message) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupAlert.fxml"));
+	        Parent root = loader.load();
+
+	        Stage mainStage = (Stage) containerOfferte.getScene().getWindow();
+	        Stage stage = new Stage();
+	        stage.initOwner(mainStage);
+	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+	        Scene scene = new Scene(root);
+	        stage.setScene(scene);
+	        stage.setTitle("UninaSwap - " + title);
+	        stage.setResizable(false);
+	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+
+	        PopupErrorBoundary popupController = loader.getController();
+	        popupController.setLabels(title, message);
+	       
+	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+
+	        stage.show();
+	        
+	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
+	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+    
+    private void ShowPopupError(String title, String message) {
+		try {
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
 	        Parent root = loader.load();
 
 	        Stage mainStage = (Stage) containerOfferte.getScene().getWindow();
@@ -187,5 +221,35 @@ public class PopupOfferteBoundary {
     	    sendButton.setVisible(false);
     	    sendImage.setVisible(false);
     	}
-    }    
+    }
+    
+    @FXML
+    public void checkControfferta(MouseEvent e) {
+    	String intero = campoPrezzoIntero.getText();
+        String decimale = campoPrezzoDecimale.getText();
+
+        // Se intero è vuoto, aggiungi "0"
+        if (intero.isEmpty()) {
+        	intero = "0";
+        }
+        // Se decimale è vuoto, aggiungi "00"
+        if (decimale.isEmpty()) {
+            decimale = "00";
+        }
+
+        // Costruisci il prezzo finale
+        String stringaPrezzo = intero + "." + decimale;
+        
+        if(controller.checkControfferta(this.annuncio, stringaPrezzo) == 0){
+            Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            currentStage.close();
+            ShowPopupAlert("Controfferta inviata!", "La controfferta è stato inviata con successo.");
+        }
+        
+        else {
+            Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            currentStage.close();
+            ShowPopupError("Controfferta non valida!", "La controfferta deve avere max 3 cifre per la parte intera e max 2 cifre per quella decimale e (0 < controfferta < prezzo).");
+        }
+    }
 }
