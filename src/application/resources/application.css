@@ -423,3 +423,19 @@
     -fx-text-fill: #333333;
     -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.1) , 4, 0, 0, 1 );
 }
+
+.label-attivo {
+    -fx-background-color: #90EE90;
+    -fx-text-fill: #153464;
+    -fx-padding: 2 8 2 8;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+}
+
+.label-non-attivo {
+    -fx-background-color: #FF6B6B;
+    -fx-text-fill: white;
+    -fx-padding: 2 8 2 8;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+}

@@ -7,6 +7,8 @@ import application.entity.Annuncio;
 import application.entity.Studente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -223,19 +226,29 @@ public class AnnunciStudenteBoundary {
 
         Label titolo = new Label(a.getTitoloAnnuncio());
         titolo.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+        titolo.setWrapText(true);
+        titolo.setMaxWidth(200);
+        titolo.setAlignment(Pos.CENTER);
+
+        Label stato = new Label(a.isStatoAnnuncio() ? "Attivo" : "Non attivo");
+        stato.getStyleClass().add(a.isStatoAnnuncio() ? "label-attivo" : "label-non-attivo");
+        VBox.setMargin(stato, new Insets(4, 0, 4, 0));
 
         Label prezzo = new Label(String.format("\u20AC %.2f", a.getPrezzo()));
-        prezzo.setStyle("-fx-text-fill: #153464; -fx-font-size: 14;");
+        prezzo.setStyle("-fx-text-fill: #153464; -fx-font-size: 12;");
 
-        Label tipo = new Label(a.getOggetto().getCategoria() +" - "+ a.getTipologia());
+        Label tipo = new Label(a.getOggetto().getCategoria() + " - " + a.getTipologia());
         tipo.setStyle("-fx-text-fill: gray;");
-        
-        Label disponibilità =  new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
-        + "\ndalle " + a.getFasciaOrariaInizio() + " alle " +
-        a.getFasciaOrariaFine());
-        
 
-        box.getChildren().addAll(titolo, prezzo, tipo, disponibilità);
+        Label disponibilità = new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
+                + "\ndalle " + a.getFasciaOrariaInizio() + " alle " + a.getFasciaOrariaFine());
+
+        VBox boxPrezzo = new VBox();
+        boxPrezzo.setAlignment(Pos.CENTER);
+        boxPrezzo.setSpacing(4);
+        boxPrezzo.getChildren().addAll(stato, prezzo);
+
+        box.getChildren().addAll(titolo, boxPrezzo, tipo, disponibilità);
 
         return box;
     }

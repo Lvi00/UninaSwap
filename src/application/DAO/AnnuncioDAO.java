@@ -116,10 +116,9 @@ public class AnnuncioDAO {
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM ANNUNCIO WHERE matstudente = ? AND statoannuncio = ? LIMIT 100";
+            String query = "SELECT * FROM ANNUNCIO WHERE matstudente = ? ORDER BY statoannuncio DESC LIMIT 100";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, matricola);
-            statement.setBoolean(2, true);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 annunci.add(new Annuncio(
