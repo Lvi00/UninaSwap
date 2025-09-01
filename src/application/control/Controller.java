@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import application.DAO.AnnuncioDAO;
+import application.DAO.OffertaDAO;
 import application.DAO.OggettoDAO;
 import application.DAO.SedeDAO;
 import application.DAO.StudenteDAO;
@@ -17,6 +18,7 @@ import application.boundary.CreaAnnuncioBoundary;
 import application.boundary.PopupErrorBoundary;
 import application.boundary.ProdottiBoundary;
 import application.entity.Annuncio;
+import application.entity.Offerta;
 import application.entity.Oggetto;
 import application.entity.Sede;
 import application.entity.Studente;
@@ -268,6 +270,11 @@ public class Controller {
 		
 		if(prezzo <= 0 || prezzo >= a.getPrezzo()) return 1;
 		
+		Offerta offerta = new Offerta(a.getTipologia());
+		offerta.setPrezzoOfferta(prezzo);
+		
+		OffertaDAO offertaDao = new OffertaDAO();
+		offertaDao.SaveOfferta(a, offerta, this.studente.getMatricola());
 		return 0;
 	}
 }

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
+import application.entity.Oggetto;
 import application.resources.ConnessioneDB;
 
 public class AnnuncioDAO {
@@ -241,5 +242,44 @@ public class AnnuncioDAO {
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
+	}
+   
+   public int getIdByAnnuncio(Annuncio annuncio) {
+	   
+	   int id = 0;
+	   try {
+		    String matStudente = annuncio.getOggetto().getStudente().getMatricola();
+		    int idOggetto = controller.getIdByOggetto(annuncio.getOggetto());
+		    int idSede = controller.getIdBySede(annuncio.getSede());
+	
+		    String query = "SELECT idannuncio FROM ANNUNCIO WHERE titoloannuncio = ? AND statoannuncio = ? "
+		            + "AND fasciaorariainizio = ? AND fasciaorariafine = ? AND prezzo = ? "
+		            + "AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? "
+		            + "AND idoggetto = ? AND idsede = ? AND giorni = ?";
+	
+	    	Connection conn = ConnessioneDB.getConnection();
+	        PreparedStatement statement = conn.prepareStatement(query);
+	
+	        statement.setString(1, annuncio.getTitoloAnnuncio());
+	        statement.setBoolean(2, annuncio.isStatoAnnuncio());
+	        statement.setString(3, annuncio.getFasciaOrariaInizio());
+	        statement.setString(4, annuncio.getFasciaOrariaFine());
+	        statement.setDouble(5, annuncio.getPrezzo());
+	        statement.setString(6, annuncio.getTipologia());
+	        statement.setString(7, annuncio.getDescrizioneAnnuncio());
+	        statement.setString(8, matStudente);
+	        statement.setInt(9, idOggetto);
+	        statement.setInt(10, idSede);
+	        statement.setString(11, annuncio.getGiorni());
+	
+	        ResultSet rs = statement.executeQuery();
+	        if (rs.next()) {
+	            id = rs.getInt("idannuncio");
+	        }
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	    }
+
+	    return id;
 	}
 }

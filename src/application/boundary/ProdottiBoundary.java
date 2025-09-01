@@ -335,13 +335,11 @@ public class ProdottiBoundary {
 
         // Controllo campi vuoti
         if ((newKeyword == null || newKeyword.isEmpty()) && newCategoria.equals("Nessuno") && newTipologia.equals("Nessuno")) {
-            ShowPopupError("Filtri non validi", "Per applicare i filtri, inserisci almeno una parola chiave o seleziona una categoria o tipologia diversa da 'Nessuno'.");
             return;
         }
 
         // Controllo se i filtri sono uguali ai precedenti
         if (newKeyword.equals(this.keyword) && newCategoria.equals(this.categoria) && newTipologia.equals(this.tipologia)) {
-            ShowPopupError("Filtri già applicati", "I filtri selezionati corrispondono a quelli già applicati.");
             return;
         }
 
@@ -368,7 +366,6 @@ public class ProdottiBoundary {
             }
         }
 
-        ShowPopupAlert("Filtri applicati", "Sono stati trovati " + annunci.size() + " annunci corrispondenti ai filtri selezionati.");
     }
     
     @FXML
@@ -378,7 +375,6 @@ public class ProdottiBoundary {
         String tipologiaCorrente = this.tipologia != null ? this.tipologia : "Nessuno";
 
         if ((this.keyword == null || this.keyword.isEmpty()) && categoriaCorrente.equals("Nessuno") && tipologiaCorrente.equals("Nessuno")) {
-            ShowPopupError("Filtri già resettati", "I filtri sono già allo stato di default.");
             return;
         }
 
@@ -396,68 +392,6 @@ public class ProdottiBoundary {
         gridProdotti.getChildren().clear();
         CostruisciCatalogoProdotti(this.controller.getStudente());
 
-        ShowPopupAlert("Filtri resettati", "Tutti i filtri sono stati resettati.");
     }
-    
-    private void ShowPopupAlert(String title, String message) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupAlert.fxml"));
-	        Parent root = loader.load();
 
-	        Stage mainStage = (Stage) containerCatalogoProdotti.getScene().getWindow();
-	        Stage stage = new Stage();
-	        stage.initOwner(mainStage);
-	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
-	        Scene scene = new Scene(root);
-	        stage.setScene(scene);
-	        stage.setTitle("UninaSwap - " + title);
-	        stage.setResizable(false);
-	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-
-	        PopupErrorBoundary popupController = loader.getController();
-	        popupController.setLabels(title, message);
-	       
-	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
-	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
-
-	        stage.show();
-	        
-	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
-	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-    
-    private void ShowPopupError(String title, String message) {
-		try {
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
-	        Parent root = loader.load();
-
-	        Stage mainStage = (Stage) containerCatalogoProdotti.getScene().getWindow();
-	        Stage stage = new Stage();
-	        stage.initOwner(mainStage);
-	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
-	        Scene scene = new Scene(root);
-	        stage.setScene(scene);
-	        stage.setTitle("UninaSwap - " + title);
-	        stage.setResizable(false);
-	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-
-	        PopupErrorBoundary popupController = loader.getController();
-	        popupController.setLabels(title, message);
-	       
-	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
-	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
-
-	        stage.show();
-	        
-	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
-	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-		}
-	}
 }

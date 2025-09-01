@@ -15,7 +15,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -33,15 +35,25 @@ public class PopupOfferteBoundary {
     @FXML private Label categoriaAnnuncio;
     @FXML private ImageView immagineAnnuncio;
     @FXML private ImageView immagineProfilo;
+    @FXML private AnchorPane PaneOfferteVendita;
+    @FXML private AnchorPane PaneOfferteScambio;
+    @FXML private AnchorPane PaneOfferteRegalo;
+    //Vendita
     @FXML private Button buttonOfferta;
     @FXML private Button sendButton;
     @FXML private ImageView sendImage;
-    @FXML private AnchorPane PaneControfferta;
     @FXML private Button controffertaButton;
     @FXML private ImageView backImage;
     @FXML private Button backButton;
     @FXML private TextField campoPrezzoIntero;
     @FXML private TextField campoPrezzoDecimale;
+    //Scambio
+    @FXML private ImageView imageScambioButtonImage;
+    @FXML private Button imageScambioButton;
+    @FXML private StackPane imageScambio;
+    @FXML private ImageView immagineCaricata;
+	private File fileSelezionato = null;
+
     
     private Annuncio annuncio;
 
@@ -107,6 +119,8 @@ public class PopupOfferteBoundary {
                 switch(this.annuncio.getTipologia()) {
 	                case "Scambio":
 	                	buttonOfferta.setText("Scambio");
+	                	controffertaButton.setVisible(false);
+	                	PaneOfferteScambio.setVisible(true);
 	                break;
 	                
 	                case "Vendita":
@@ -115,6 +129,8 @@ public class PopupOfferteBoundary {
 					
 					case "Regalo":
 						buttonOfferta.setText("Richiedi");
+	                	controffertaButton.setVisible(false);
+	                	PaneOfferteRegalo.setVisible(true);
 					break;
                 }
 
@@ -136,6 +152,78 @@ public class PopupOfferteBoundary {
         currentStage.close();
         
         ShowPopupAlert("Acquisto effettuato!", "Il prodotto è stato acquistato con successo.");
+    }
+    
+    @FXML
+    public void MostraControfferta(){
+    	if(!PaneOfferteVendita.isVisible()){	
+    		PaneOfferteVendita.setVisible(true);
+    		backImage.setVisible(true);
+    	    backButton.setVisible(true);
+    	    controffertaButton.setVisible(false);
+    	    buttonOfferta.setVisible(false);
+    	    sendButton.setVisible(true);
+    	    sendImage.setVisible(true);
+    	}
+    	else{
+    		PaneOfferteVendita.setVisible(false);
+    		backImage.setVisible(false);
+    	    backButton.setVisible(false);
+    	    controffertaButton.setVisible(true);   
+    	    buttonOfferta.setVisible(true);
+    	    sendButton.setVisible(false);
+    	    sendImage.setVisible(false);
+    	}
+    }
+    
+    @FXML
+    public void checkControfferta(MouseEvent e) {
+    	String intero = campoPrezzoIntero.getText();
+        String decimale = campoPrezzoDecimale.getText();
+
+        // Se intero è vuoto, aggiungi "0"
+        if (intero.isEmpty()) {
+        	intero = "0";
+        }
+        // Se decimale è vuoto, aggiungi "00"
+        if (decimale.isEmpty()) {
+            decimale = "00";
+        }
+
+        // Costruisci il prezzo finale
+        String stringaPrezzo = intero + "." + decimale;
+        
+        if(controller.checkControfferta(this.annuncio, stringaPrezzo) == 0){
+            Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            currentStage.close();
+            ShowPopupAlert("Controfferta inviata!", "La controfferta è stato inviata con successo.");
+        }
+        
+        else {
+	    	  campoPrezzoIntero.clear();
+	          campoPrezzoDecimale.clear();
+	          ShowPopupError("Controfferta non valida!", "La controfferta deve avere max 3 cifre per la parte intera e max 2 cifre per quella decimale e (0 < controfferta < prezzo).");
+	    }
+    }
+    
+    @FXML
+    public void showFileChooser(MouseEvent e) {
+    	Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Seleziona un'immagine");
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Immagini", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(stage);
+    	
+        if (selectedFile != null) {
+            Image image = new Image(selectedFile.toURI().toString());
+            //Carica sull'imaggine di defoult la nuova immagine
+            immagineCaricata.setImage(image);
+            this.fileSelezionato = selectedFile;
+        }
     }
     
     private void ShowPopupAlert(String title, String message) {
@@ -199,57 +287,4 @@ public class PopupOfferteBoundary {
 			ex.printStackTrace();
 		}
 	}
-
-    
-    @FXML
-    public void MostraControfferta(){
-    	if(!PaneControfferta.isVisible()){	
-    		PaneControfferta.setVisible(true);
-    		backImage.setVisible(true);
-    	    backButton.setVisible(true);
-    	    controffertaButton.setVisible(false);
-    	    buttonOfferta.setVisible(false);
-    	    sendButton.setVisible(true);
-    	    sendImage.setVisible(true);
-    	}
-    	else{
-    		PaneControfferta.setVisible(false);
-    		backImage.setVisible(false);
-    	    backButton.setVisible(false);
-    	    controffertaButton.setVisible(true);   
-    	    buttonOfferta.setVisible(true);
-    	    sendButton.setVisible(false);
-    	    sendImage.setVisible(false);
-    	}
-    }
-    
-    @FXML
-    public void checkControfferta(MouseEvent e) {
-    	String intero = campoPrezzoIntero.getText();
-        String decimale = campoPrezzoDecimale.getText();
-
-        // Se intero è vuoto, aggiungi "0"
-        if (intero.isEmpty()) {
-        	intero = "0";
-        }
-        // Se decimale è vuoto, aggiungi "00"
-        if (decimale.isEmpty()) {
-            decimale = "00";
-        }
-
-        // Costruisci il prezzo finale
-        String stringaPrezzo = intero + "." + decimale;
-        
-        if(controller.checkControfferta(this.annuncio, stringaPrezzo) == 0){
-            Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            currentStage.close();
-            ShowPopupAlert("Controfferta inviata!", "La controfferta è stato inviata con successo.");
-        }
-        
-        else {
-            Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            currentStage.close();
-            ShowPopupError("Controfferta non valida!", "La controfferta deve avere max 3 cifre per la parte intera e max 2 cifre per quella decimale e (0 < controfferta < prezzo).");
-        }
-    }
 }
