@@ -2,12 +2,15 @@ package application.boundary;
 
 import application.control.Controller;
 import application.entity.Annuncio;
+import application.entity.Oggetto;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -21,8 +24,18 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class PopupOfferteBoundary {
+	
+    enum Categorie {
+        Abbigliamento,
+        Informatica,
+        Elettronica,
+        Cancelleria,
+        Cultura,
+        Musica
+    }
 
     private Controller controller;
     private ProdottiBoundary prodottiBoundary;
@@ -40,6 +53,7 @@ public class PopupOfferteBoundary {
     @FXML private AnchorPane PaneOfferteRegalo;
     //Vendita
     @FXML private Button buttonOfferta;
+    @FXML private Button aggiungiOggetto;
     @FXML private Button sendButton;
     @FXML private ImageView sendImage;
     @FXML private Button controffertaButton;
@@ -52,8 +66,9 @@ public class PopupOfferteBoundary {
     @FXML private Button imageScambioButton;
     @FXML private StackPane imageScambio;
     @FXML private ImageView immagineCaricata;
-	private File fileSelezionato = null;
-
+    @FXML private ChoiceBox<Categorie> campoCategoriaOggetto;
+    private File fileSelezionato = null;
+	private ArrayList<Oggetto> listaOggettiOfferti = new ArrayList<Oggetto>();
     
     private Annuncio annuncio;
 
@@ -62,6 +77,8 @@ public class PopupOfferteBoundary {
     }
     
     public void setProdottiBoundary(ProdottiBoundary prodottiBoundary) {
+        campoCategoriaOggetto.setItems(FXCollections.observableArrayList(Categorie.values()));
+        campoCategoriaOggetto.getSelectionModel().selectFirst();
         this.prodottiBoundary = prodottiBoundary;
     }
     
@@ -120,17 +137,24 @@ public class PopupOfferteBoundary {
 	                case "Scambio":
 	                	buttonOfferta.setText("Scambio");
 	                	controffertaButton.setVisible(false);
+	                	aggiungiOggetto.setVisible(true);
 	                	PaneOfferteScambio.setVisible(true);
+	                	buttonOfferta.onMouseClickedProperty().set(e -> inviaOfferta(e));
 	                break;
 	                
 	                case "Vendita":
 						buttonOfferta.setText("Acquista");
+						controffertaButton.setVisible(true);
+	                	aggiungiOggetto.setVisible(false);
+	                	buttonOfferta.onMouseClickedProperty().set(e -> AcquistaOggetto(e));
 					break;
 					
 					case "Regalo":
 						buttonOfferta.setText("Richiedi");
 	                	controffertaButton.setVisible(false);
 	                	PaneOfferteRegalo.setVisible(true);
+	                	aggiungiOggetto.setVisible(false);
+	                	buttonOfferta.onMouseClickedProperty().set(e -> inviaOfferta(e));
 					break;
                 }
 
@@ -178,6 +202,7 @@ public class PopupOfferteBoundary {
     
     @FXML
     public void checkControfferta(MouseEvent e) {
+    	Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
     	String intero = campoPrezzoIntero.getText();
         String decimale = campoPrezzoDecimale.getText();
 
@@ -194,7 +219,6 @@ public class PopupOfferteBoundary {
         String stringaPrezzo = intero + "." + decimale;
         
         if(controller.checkControfferta(this.annuncio, stringaPrezzo) == 0){
-            Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             currentStage.close();
             ShowPopupAlert("Controfferta inviata!", "La controfferta è stato inviata con successo.");
         }
@@ -204,6 +228,19 @@ public class PopupOfferteBoundary {
 	          campoPrezzoDecimale.clear();
 	          ShowPopupError("Controfferta non valida!", "La controfferta deve avere max 3 cifre per la parte intera e max 2 cifre per quella decimale e (0 < controfferta < prezzo).");
 	    }
+    }
+    
+    @FXML
+    public void aggiungiOggettoDaScambiare(MouseEvent e) {
+    	System.out.println("Oggetto aggiunto");
+    }
+    
+    public void inviaOfferta(MouseEvent e) {   	
+        if (controller.inviaOfferta(annuncio) == 1) {
+            ShowPopupError("Errore nella richiesta", "La richiesta di " + annuncio.getTipologia() + " non è stata inviata a causa di un errore nei dati inseriti.");
+        } else {
+            ShowPopupAlert("Richiesta inviata!", "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
+        }
     }
     
     @FXML
@@ -220,7 +257,7 @@ public class PopupOfferteBoundary {
     	
         if (selectedFile != null) {
             Image image = new Image(selectedFile.toURI().toString());
-            //Carica sull'imaggine di defoult la nuova immagine
+            //Carica sull'imaggine di default la nuova immagine
             immagineCaricata.setImage(image);
             this.fileSelezionato = selectedFile;
         }

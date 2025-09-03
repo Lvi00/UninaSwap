@@ -78,7 +78,7 @@
                      <children>
 
                         <!-- Barra di ricerca -->
-                        <TextField fx:id="campoRicerca" layoutX="51.0" layoutY="36.0" prefHeight="34.0" prefWidth="255.0" promptText="Cerca annunci per titolo" styleClass="campi">
+                        <TextField fx:id="campoRicerca" layoutX="51.0" layoutY="37.0" prefHeight="34.0" prefWidth="255.0" promptText="Cerca annunci per titolo" styleClass="campi">
                            <font>
                               <Font size="14.0" />
                            </font></TextField>
@@ -95,7 +95,7 @@
                            </cursor>
                         </ImageView>
                         <ChoiceBox fx:id="campoTipologia" layoutX="477.0" layoutY="38.0" prefHeight="34.0" prefWidth="150.0" />
-                        <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="318.0" layoutY="38.0" prefHeight="34.0" prefWidth="150.0" />
+                        <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="318.0" layoutY="37.0" prefHeight="34.0" prefWidth="150.0" />
 
                         <!-- Scroll con GridPane -->
                         <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="81.0" prefHeight="417.0" prefWidth="952.0">

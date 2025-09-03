@@ -14,7 +14,7 @@ public class OffertaDAO {
 
 	private Controller controller = new Controller();
 
-	public void SaveOfferta(Annuncio annuncio, Offerta offerta, String matricola) {
+	public int SaveOfferta(Annuncio annuncio, Offerta offerta, String matricola) {
 	    try {
 	        String matStudente = matricola;
 	        int idannuncio = new AnnuncioDAO().getIdByAnnuncio(annuncio);
@@ -35,6 +35,7 @@ public class OffertaDAO {
 	            System.out.println("Offerta già esistente.");
 	            resultSet.close();
 	            checkStatement.close();
+	            return 1;
 	        } else {
 	            String insert = "INSERT INTO OFFERTA(statoofferta, prezzoofferta, tipologia, matstudente, idannuncio) "
 	                    + "VALUES (?, ?, ?, ?, ?)";
@@ -54,7 +55,10 @@ public class OffertaDAO {
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
+	        return 1;
 	    }
+	    
+        return 0;
 	}
 
 }

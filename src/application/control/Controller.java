@@ -255,10 +255,13 @@ public class Controller {
 	    return new AnnuncioDAO().getAnnunciByFiltri(this.studente.getMatricola(), keyword, categoria, tipologia);
 	}
 	
-	public void AcquistaOggetto(Annuncio a)
-	{
+	public void AcquistaOggetto(Annuncio a){
 		new AnnuncioDAO().cambiaStatoAnnuncio(a);
-		
+	}
+	
+	public int inviaOfferta(Annuncio a){
+		Offerta offerta = new Offerta(a.getTipologia());
+		return new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola());
 	}
 	
 	public int checkControfferta(Annuncio a, String stringaPrezzo) {
@@ -273,8 +276,8 @@ public class Controller {
 		Offerta offerta = new Offerta(a.getTipologia());
 		offerta.setPrezzoOfferta(prezzo);
 		
-		OffertaDAO offertaDao = new OffertaDAO();
-		offertaDao.SaveOfferta(a, offerta, this.studente.getMatricola());
+		new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola());
+		
 		return 0;
 	}
 }

@@ -312,7 +312,6 @@ public class ProdottiBoundary {
             ex.printStackTrace();
         }
     }
-
     
     @FXML
     public void setFiltri() {
