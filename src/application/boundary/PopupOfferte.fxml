@@ -101,7 +101,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="campoDescrizioneAnnuncio" layoutX="293.0" layoutY="149.0" prefHeight="64.0" prefWidth="209.0" promptText="Inserire la descrizione" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
+                  <TextArea fx:id="campoDescrizioneAnnuncioScambio" layoutX="293.0" layoutY="149.0" prefHeight="64.0" prefWidth="209.0" promptText="Inserire la descrizione" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -156,7 +156,7 @@
                      <font>
                         <Font size="14.0" />
                      </font></Label>
-                  <TextArea fx:id="campoDescrizioneAnnuncio1" layoutX="16.0" layoutY="84.0" prefHeight="108.0" prefWidth="323.0" promptText="Inserire la descrizione" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
+                  <TextArea fx:id="campoDescrizioneAnnuncioRegalo" layoutX="16.0" layoutY="84.0" prefHeight="108.0" prefWidth="323.0" promptText="Inserire la motivazione" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>

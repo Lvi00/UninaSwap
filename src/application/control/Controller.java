@@ -259,9 +259,9 @@ public class Controller {
 		new AnnuncioDAO().cambiaStatoAnnuncio(a);
 	}
 	
-	public int inviaOfferta(Annuncio a){
+	public int inviaOfferta(Annuncio a, String Motivazione){
 		Offerta offerta = new Offerta(a.getTipologia());
-		return new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola());
+		return new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(),Motivazione);
 	}
 	
 	public int checkControfferta(Annuncio a, String stringaPrezzo) {
@@ -276,8 +276,8 @@ public class Controller {
 		Offerta offerta = new Offerta(a.getTipologia());
 		offerta.setPrezzoOfferta(prezzo);
 		
-		new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola());
+		int appoggio = new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(),"");
 		
-		return 0;
+		return appoggio;
 	}
 }

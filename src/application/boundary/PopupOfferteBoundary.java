@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -67,6 +68,10 @@ public class PopupOfferteBoundary {
     @FXML private StackPane imageScambio;
     @FXML private ImageView immagineCaricata;
     @FXML private ChoiceBox<Categorie> campoCategoriaOggetto;
+    @FXML private TextArea campoDescrizioneAnnuncioScambio;
+    //Regalo
+    @FXML private TextArea campoDescrizioneAnnuncioRegalo;
+    
     private File fileSelezionato = null;
 	private ArrayList<Oggetto> listaOggettiOfferti = new ArrayList<Oggetto>();
     
@@ -137,8 +142,8 @@ public class PopupOfferteBoundary {
 	                case "Scambio":
 	                	buttonOfferta.setText("Scambio");
 	                	controffertaButton.setVisible(false);
-	                	aggiungiOggetto.setVisible(true);
 	                	PaneOfferteScambio.setVisible(true);
+	                	aggiungiOggetto.setVisible(true);
 	                	buttonOfferta.onMouseClickedProperty().set(e -> inviaOfferta(e));
 	                break;
 	                
@@ -146,6 +151,7 @@ public class PopupOfferteBoundary {
 						buttonOfferta.setText("Acquista");
 						controffertaButton.setVisible(true);
 	                	aggiungiOggetto.setVisible(false);
+	                	//Manca PaneOfferteVendita.setVisible(true); perche non serve in quanto abbiamo MostraControfferta
 	                	buttonOfferta.onMouseClickedProperty().set(e -> AcquistaOggetto(e));
 					break;
 					
@@ -179,24 +185,82 @@ public class PopupOfferteBoundary {
     }
     
     @FXML
-    public void MostraControfferta(){
-    	if(!PaneOfferteVendita.isVisible()){	
-    		PaneOfferteVendita.setVisible(true);
-    		backImage.setVisible(true);
-    	    backButton.setVisible(true);
-    	    controffertaButton.setVisible(false);
-    	    buttonOfferta.setVisible(false);
-    	    sendButton.setVisible(true);
-    	    sendImage.setVisible(true);
-    	}
-    	else{
-    		PaneOfferteVendita.setVisible(false);
-    		backImage.setVisible(false);
-    	    backButton.setVisible(false);
-    	    controffertaButton.setVisible(true);   
-    	    buttonOfferta.setVisible(true);
-    	    sendButton.setVisible(false);
-    	    sendImage.setVisible(false);
+    public void aggiungiOggettoDaScambiare(MouseEvent e) {
+    	
+        String descrizione = campoDescrizioneAnnuncioScambio.getText();
+        if (descrizione == null || descrizione.trim().isEmpty()) {
+            descrizione = "Assente";
+        } else {
+            descrizione = descrizione.trim();
+        }
+
+        // Categoria selezionata
+        Categorie categoriaSelezionata = campoCategoriaOggetto.getValue();
+
+        // Percorso immagine selezionata
+        String percorsoImmagine = null;
+        if (fileSelezionato != null) {
+            percorsoImmagine = fileSelezionato.getAbsolutePath();
+        }
+
+        // Creo nuovo oggetto
+        Oggetto nuovoOggetto = new Oggetto(percorsoImmagine, categoriaSelezionata.toString(), descrizione, controller.getStudente());
+
+        // Aggiungo l'oggetto all'arraylist
+        this.listaOggettiOfferti.add(nuovoOggetto);
+
+        // Pulisco i campi del form
+        campoDescrizioneAnnuncioScambio.clear();
+        campoCategoriaOggetto.getSelectionModel().selectFirst();
+        immagineCaricata.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/no_image.png").toExternalForm()));
+        fileSelezionato = null;
+
+        // Stampa della lista aggiornata per controllo
+        System.out.println("Lista oggetti attuali:");
+        for (Oggetto obj : listaOggettiOfferti) {
+            System.out.println("Categoria: " + obj.getCategoria() +
+                               ", Descrizione: " + obj.getDescrizione() +
+                               ", Immagine: " + obj.getImmagineOggetto());
+        }
+        
+        // Messaggio di conferma
+        ShowPopupAlert("Oggetto aggiunto!", "L'oggetto è stato aggiunto alla lista degli oggetti da offrire.");
+    }
+    
+    public void inviaOfferta(MouseEvent e) { 
+    	Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+    	
+    	if(this.annuncio.getTipologia().equals("Regalo")) {
+    	    String motivazione = campoDescrizioneAnnuncioRegalo.getText();
+
+    	    // Se null o solo spazi assegna "Assente"
+    	    if (motivazione == null || motivazione.trim().isEmpty()) 
+    	    {
+    	        motivazione = "Assente";
+    	    } 
+    	    else 
+    	    {
+    	        // Rimuove spazi iniziali e finali
+    	        motivazione = motivazione.trim();
+    	    }
+
+    	    System.out.println(motivazione);
+
+    	    switch(controller.inviaOfferta(annuncio, motivazione)) {
+    	        case 0: // offerta inviata correttamente
+                    currentStage.close();
+    	            ShowPopupAlert("Richiesta inviata!",  "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
+    	        break;
+
+    	        case 1: // errore generico
+    	            ShowPopupError("Errore nella richiesta", "La richiesta di " + annuncio.getTipologia() + " non è stata inviata a causa di un errore nei dati inseriti.");
+    	        break;
+
+    	        case 2: // offerta duplicata
+    	            ShowPopupError("Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
+    	        break;
+
+    	    }
     	}
     }
     
@@ -218,29 +282,49 @@ public class PopupOfferteBoundary {
         // Costruisci il prezzo finale
         String stringaPrezzo = intero + "." + decimale;
         
-        if(controller.checkControfferta(this.annuncio, stringaPrezzo) == 0){
-            currentStage.close();
-            ShowPopupAlert("Controfferta inviata!", "La controfferta è stato inviata con successo.");
+        switch(controller.checkControfferta(this.annuncio, stringaPrezzo)) {
+            case 0: // tutto ok
+                currentStage.close();
+                ShowPopupAlert("Controfferta inviata!", "La controfferta è stata inviata con successo.");
+            break;
+
+            case 1: // errore di prezzo/validazione
+                campoPrezzoIntero.clear();
+                campoPrezzoDecimale.clear();
+                ShowPopupError("Controfferta non valida!", "La controfferta deve avere max 3 cifre per la parte intera e max 2 cifre per quella decimale e (0 < controfferta < prezzo).");
+            break;
+
+            case 2: // offerta duplicata
+                ShowPopupError("Offerta già esistente!","Hai già effettuato un'offerta per questo annuncio.");
+            break;
+
+            default:
+                ShowPopupError("Errore sconosciuto", "Si è verificato un errore imprevisto. Riprova.");
+            break;
         }
-        
-        else {
-	    	  campoPrezzoIntero.clear();
-	          campoPrezzoDecimale.clear();
-	          ShowPopupError("Controfferta non valida!", "La controfferta deve avere max 3 cifre per la parte intera e max 2 cifre per quella decimale e (0 < controfferta < prezzo).");
-	    }
     }
+
     
     @FXML
-    public void aggiungiOggettoDaScambiare(MouseEvent e) {
-    	System.out.println("Oggetto aggiunto");
-    }
-    
-    public void inviaOfferta(MouseEvent e) {   	
-        if (controller.inviaOfferta(annuncio) == 1) {
-            ShowPopupError("Errore nella richiesta", "La richiesta di " + annuncio.getTipologia() + " non è stata inviata a causa di un errore nei dati inseriti.");
-        } else {
-            ShowPopupAlert("Richiesta inviata!", "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
-        }
+    public void MostraControfferta(){
+    	if(!PaneOfferteVendita.isVisible()){	
+    		PaneOfferteVendita.setVisible(true);
+    		backImage.setVisible(true);
+    	    backButton.setVisible(true);
+    	    controffertaButton.setVisible(false);
+    	    buttonOfferta.setVisible(false);
+    	    sendButton.setVisible(true);
+    	    sendImage.setVisible(true);
+    	}
+    	else{
+    		PaneOfferteVendita.setVisible(false);
+    		backImage.setVisible(false);
+    	    backButton.setVisible(false);
+    	    controffertaButton.setVisible(true);   
+    	    buttonOfferta.setVisible(true);
+    	    sendButton.setVisible(false);
+    	    sendImage.setVisible(false);
+    	}
     }
     
     @FXML

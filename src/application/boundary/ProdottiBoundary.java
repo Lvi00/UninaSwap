@@ -278,7 +278,7 @@ public class ProdottiBoundary {
         return box;
     }
     
-    public void showPopupOfferte(MouseEvent e, Annuncio a) {
+    public void showPopupOfferte(MouseEvent e, Annuncio annuncio) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOfferte.fxml"));
             Parent root = loader.load();
@@ -286,7 +286,7 @@ public class ProdottiBoundary {
             PopupOfferteBoundary popupCtrl = loader.getController();
             popupCtrl.setController(this.controller);
             popupCtrl.setProdottiBoundary(this);
-            popupCtrl.setAnnuncio(a);                   
+            popupCtrl.setAnnuncio(annuncio);                   
 
             Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             Stage popupStage = new Stage();
@@ -295,7 +295,7 @@ public class ProdottiBoundary {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
             popupStage.setScene(scene);
-            popupStage.setTitle("UninaSwap - " +a.getTipologia());
+            popupStage.setTitle("UninaSwap - " +annuncio.getTipologia());
             popupStage.getIcons().add(
                 new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
             );
