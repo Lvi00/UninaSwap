@@ -3,6 +3,8 @@ package application.boundary;
 import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Oggetto;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +14,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -19,7 +24,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -41,6 +48,8 @@ public class PopupOfferteBoundary {
     private Controller controller;
     private ProdottiBoundary prodottiBoundary;
     @FXML private HBox containerOfferte;
+    @FXML private AnchorPane paneOfferta;
+    @FXML private AnchorPane paneOggettiOfferti;
     @FXML private Label titoloAnnuncio;
     @FXML private Label descrizioneAnnuncio;
     @FXML private Label prezzoAnnuncio;
@@ -52,9 +61,10 @@ public class PopupOfferteBoundary {
     @FXML private AnchorPane PaneOfferteVendita;
     @FXML private AnchorPane PaneOfferteScambio;
     @FXML private AnchorPane PaneOfferteRegalo;
-    //Vendita
     @FXML private Button buttonOfferta;
     @FXML private Button aggiungiOggetto;
+    @FXML private Button mostraOfferta;
+    @FXML private Button oggettiOffertiButton;
     @FXML private Button sendButton;
     @FXML private ImageView sendImage;
     @FXML private Button controffertaButton;
@@ -62,19 +72,23 @@ public class PopupOfferteBoundary {
     @FXML private Button backButton;
     @FXML private TextField campoPrezzoIntero;
     @FXML private TextField campoPrezzoDecimale;
-    //Scambio
     @FXML private ImageView imageScambioButtonImage;
     @FXML private Button imageScambioButton;
     @FXML private StackPane imageScambio;
     @FXML private ImageView immagineCaricata;
     @FXML private ChoiceBox<Categorie> campoCategoriaOggetto;
+    @FXML private TextField campoTitoloAnnuncioScambio;
     @FXML private TextArea campoDescrizioneAnnuncioScambio;
-    //Regalo
     @FXML private TextArea campoDescrizioneAnnuncioRegalo;
+    @FXML private TableView<Oggetto> tabellaOggetti;
+    @FXML private TableColumn<Oggetto, String> colId;
+    @FXML private TableColumn<Oggetto, String> colProprietario;
+    @FXML private TableColumn<Oggetto, String> colDescrizione;
+    @FXML private TableColumn<Oggetto, String> colPercorsoImmagine;
+    @FXML private TableColumn<Oggetto, String> colAzioni;
     
     private File fileSelezionato = null;
 	private ArrayList<Oggetto> listaOggettiOfferti = new ArrayList<Oggetto>();
-    
     private Annuncio annuncio;
 
     public void setController(Controller controller) {
@@ -92,8 +106,14 @@ public class PopupOfferteBoundary {
         costruisciPopup();
     }
 
+    @FXML
     private void costruisciPopup() {
-        if (annuncio != null) {
+    	if(this.paneOggettiOfferti.isVisible()) {
+    		paneOggettiOfferti.setVisible(false);
+    		paneOfferta.setVisible(true);
+    	}
+    	
+        if (this.annuncio != null) {
             titoloAnnuncio.setText(annuncio.getTitoloAnnuncio());
             descrizioneAnnuncio.setText(annuncio.getDescrizioneAnnuncio());
 
@@ -144,6 +164,7 @@ public class PopupOfferteBoundary {
 	                	controffertaButton.setVisible(false);
 	                	PaneOfferteScambio.setVisible(true);
 	                	aggiungiOggetto.setVisible(true);
+	                	oggettiOffertiButton.setVisible(true);
 	                	buttonOfferta.onMouseClickedProperty().set(e -> inviaOfferta(e));
 	                break;
 	                
@@ -151,6 +172,7 @@ public class PopupOfferteBoundary {
 						buttonOfferta.setText("Acquista");
 						controffertaButton.setVisible(true);
 	                	aggiungiOggetto.setVisible(false);
+	                	oggettiOffertiButton.setVisible(false);
 	                	//Manca PaneOfferteVendita.setVisible(true); perche non serve in quanto abbiamo MostraControfferta
 	                	buttonOfferta.onMouseClickedProperty().set(e -> AcquistaOggetto(e));
 					break;
@@ -160,6 +182,7 @@ public class PopupOfferteBoundary {
 	                	controffertaButton.setVisible(false);
 	                	PaneOfferteRegalo.setVisible(true);
 	                	aggiungiOggetto.setVisible(false);
+	                	oggettiOffertiButton.setVisible(false);
 	                	buttonOfferta.onMouseClickedProperty().set(e -> inviaOfferta(e));
 					break;
                 }
@@ -186,67 +209,105 @@ public class PopupOfferteBoundary {
     
     @FXML
     public void aggiungiOggettoDaScambiare(MouseEvent e) {
-    	
-        String descrizione = campoDescrizioneAnnuncioScambio.getText();
-        if (descrizione == null || descrizione.trim().isEmpty()) {
-            descrizione = "Assente";
-        } else {
-            descrizione = descrizione.trim();
-        }
-
-        // Categoria selezionata
-        Categorie categoriaSelezionata = campoCategoriaOggetto.getValue();
-
-        // Percorso immagine selezionata
-        String percorsoImmagine = null;
-        if (fileSelezionato != null) {
-            percorsoImmagine = fileSelezionato.getAbsolutePath();
-        }
-
-        // Creo nuovo oggetto
-        Oggetto nuovoOggetto = new Oggetto(percorsoImmagine, categoriaSelezionata.toString(), descrizione, controller.getStudente());
-
-        // Aggiungo l'oggetto all'arraylist
-        this.listaOggettiOfferti.add(nuovoOggetto);
-
-        // Pulisco i campi del form
-        campoDescrizioneAnnuncioScambio.clear();
-        campoCategoriaOggetto.getSelectionModel().selectFirst();
-        immagineCaricata.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/no_image.png").toExternalForm()));
-        fileSelezionato = null;
-
-        // Stampa della lista aggiornata per controllo
-        System.out.println("Lista oggetti attuali:");
-        for (Oggetto obj : listaOggettiOfferti) {
-            System.out.println("Categoria: " + obj.getCategoria() +
-                               ", Descrizione: " + obj.getDescrizione() +
-                               ", Immagine: " + obj.getImmagineOggetto());
-        }
-        
-        // Messaggio di conferma
-        ShowPopupAlert("Oggetto aggiunto!", "L'oggetto è stato aggiunto alla lista degli oggetti da offrire.");
+		String titolo = campoTitoloAnnuncioScambio.getText();
+	    String descrizione = campoDescrizioneAnnuncioScambio.getText();
+	    String categoriaSelezionata = campoCategoriaOggetto.getValue().toString();
+	    String percorsoImmagine = null;
+	    
+	    if (fileSelezionato != null) {
+	        percorsoImmagine = fileSelezionato.getAbsolutePath();
+	    }
+	    
+	    switch(controller.controllaCampiOggettoScambio(titolo, descrizione, categoriaSelezionata, percorsoImmagine)) {
+			case 0:
+			   Oggetto nuovoOggetto = new Oggetto(percorsoImmagine, categoriaSelezionata.toString(), descrizione, controller.getStudente());
+			   
+			   // Aggiungo l'oggetto all'arraylist
+			   this.listaOggettiOfferti.add(nuovoOggetto);
+			   
+			   // Pulisco i campi del form
+			   campoTitoloAnnuncioScambio.clear();
+			   campoDescrizioneAnnuncioScambio.clear();
+			   campoCategoriaOggetto.getSelectionModel().selectFirst();
+			   immagineCaricata.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/no_image.png").toExternalForm()));
+			   fileSelezionato = null;
+			   
+			   ShowPopupAlert("Oggetto aggiunto!", "L'oggetto è stato aggiunto alla lista degli oggetti da offrire.");
+			break;
+	     
+			case 1:
+				ShowPopupError("Errore nel titolo", "Il titolo deve essere compreso tra 1 e 50 caratteri.");
+			break;
+			
+			case 2:
+				ShowPopupError("Errore nella categoria", "Seleziona una categoria valida.");
+			break;
+			
+			case 3:
+				ShowPopupError("Errore nella descrizione", "La descrizione deve essere compresa tra 1 e 255 caratteri.");
+			break;
+			
+			case 4:
+				ShowPopupError("Errore nell'immagine", "Carica un'immagine valida.");
+			break;
+    	}
     }
     
+    @FXML
+    public void mostraOggettiOfferti(MouseEvent e) {
+        if (this.listaOggettiOfferti.isEmpty()) {
+            ShowPopupError("Nessun oggetto aggiunto", "Non hai ancora aggiunto oggetti da offrire per lo scambio.");
+            return;
+        }
+
+        paneOfferta.setVisible(false);
+        paneOggettiOfferti.setVisible(true);
+
+        // Pulisce eventuali dati precedenti e popola la TableView
+        tabellaOggetti.getItems().setAll(listaOggettiOfferti);
+    }
+
+    @FXML
+    public void initialize() {
+        // Inizializza le colonne
+        colId.setCellValueFactory(data -> {
+            int index = tabellaOggetti.getItems().indexOf(data.getValue()) + 1; // parte da 1
+            return new SimpleStringProperty(String.valueOf(index));
+        });
+
+        colProprietario.setCellValueFactory(data ->
+            new SimpleStringProperty(data.getValue().getStudente().getUsername())
+        );
+
+        colDescrizione.setCellValueFactory(data ->
+            new SimpleStringProperty(data.getValue().getDescrizione())
+        );
+
+        colPercorsoImmagine.setCellValueFactory(data ->
+            new SimpleStringProperty(data.getValue().getImmagineOggetto())
+        );
+
+        colAzioni.setCellValueFactory(data ->
+            new SimpleStringProperty("") // placeholder per eventuali bottoni
+        );
+    }
+    
+    @FXML
     public void inviaOfferta(MouseEvent e) { 
     	Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
     	
     	if(this.annuncio.getTipologia().equals("Regalo")) {
-    	    String motivazione = campoDescrizioneAnnuncioRegalo.getText();
-
-    	    // Se null o solo spazi assegna "Assente"
-    	    if (motivazione == null || motivazione.trim().isEmpty()) 
+    	    String messaggioMotivazionale = campoDescrizioneAnnuncioRegalo.getText();
+    	    if (messaggioMotivazionale == null || messaggioMotivazionale.trim().isEmpty()) 
     	    {
-    	        motivazione = "Assente";
+    	    	messaggioMotivazionale = "Assente";
     	    } 
     	    else 
     	    {
-    	        // Rimuove spazi iniziali e finali
-    	        motivazione = motivazione.trim();
+    	    	messaggioMotivazionale = messaggioMotivazionale.trim();
     	    }
 
-    	    System.out.println(motivazione);
-
-    	    switch(controller.inviaOfferta(annuncio, motivazione)) {
+    	    switch(controller.inviaOfferta(annuncio, messaggioMotivazionale)) {
     	        case 0: // offerta inviata correttamente
                     currentStage.close();
     	            ShowPopupAlert("Richiesta inviata!",  "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
@@ -259,7 +320,6 @@ public class PopupOfferteBoundary {
     	        case 2: // offerta duplicata
     	            ShowPopupError("Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
     	        break;
-
     	    }
     	}
     }
@@ -283,18 +343,18 @@ public class PopupOfferteBoundary {
         String stringaPrezzo = intero + "." + decimale;
         
         switch(controller.checkControfferta(this.annuncio, stringaPrezzo)) {
-            case 0: // tutto ok
+            case 0:
                 currentStage.close();
                 ShowPopupAlert("Controfferta inviata!", "La controfferta è stata inviata con successo.");
             break;
 
-            case 1: // errore di prezzo/validazione
+            case 1:
                 campoPrezzoIntero.clear();
                 campoPrezzoDecimale.clear();
                 ShowPopupError("Controfferta non valida!", "La controfferta deve avere max 3 cifre per la parte intera e max 2 cifre per quella decimale e (0 < controfferta < prezzo).");
             break;
 
-            case 2: // offerta duplicata
+            case 2:
                 ShowPopupError("Offerta già esistente!","Hai già effettuato un'offerta per questo annuncio.");
             break;
 
@@ -303,7 +363,6 @@ public class PopupOfferteBoundary {
             break;
         }
     }
-
     
     @FXML
     public void MostraControfferta(){

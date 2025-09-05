@@ -29,7 +29,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Controller {
-	
 	private Studente studente;
 	
 	public int checkDatiRegistrazione(ArrayList<String> credenziali) {
@@ -279,5 +278,17 @@ public class Controller {
 		int appoggio = new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(),"");
 		
 		return appoggio;
+	}
+	
+	public int controllaCampiOggettoScambio(String titolo, String descrizione, String categoriaSelezionata, String percorsoImmagine) {
+		if(titolo == "" || titolo.length() > 50) return 1;
+		
+		if(categoriaSelezionata == "") return 2;
+		
+		if(descrizione == "" || descrizione.length() > 255) return 3;
+		
+		if(percorsoImmagine == null || percorsoImmagine.isEmpty() || percorsoImmagine.startsWith("no_image")) return 4;
+		
+		return 0;
 	}
 }
