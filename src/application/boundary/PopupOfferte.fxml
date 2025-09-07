@@ -41,9 +41,9 @@
       
                       <Label fx:id="prezzoAnnuncio" layoutX="120.0" layoutY="180.0" />
       
-                      <Pane id="descrizioneOfferta" layoutX="35.0" layoutY="234.0" prefHeight="159.0" prefWidth="240.0">
+                      <Pane id="descrizioneOfferta" layoutX="35.0" layoutY="254.0" prefHeight="139.0" prefWidth="240.0">
                           <children>
-                              <Label fx:id="descrizioneAnnuncio" alignment="TOP_LEFT" layoutX="6.0" layoutY="5.0" prefHeight="147.0" prefWidth="227.0" wrapText="true" />
+                              <Label fx:id="descrizioneAnnuncio" alignment="TOP_LEFT" layoutX="7.0" layoutY="5.0" prefHeight="129.0" prefWidth="227.0" wrapText="true" />
                           </children>
                       </Pane>
       
@@ -76,37 +76,27 @@
                       <Label fx:id="disponibilitàAnnuncio" layoutX="111.0" layoutY="407.0" />
                   <AnchorPane fx:id="PaneOfferteScambio" layoutX="287.0" layoutY="146.0" prefHeight="249.0" prefWidth="503.0" visible="false">
                      <children>
-                        <StackPane fx:id="imageScambio" layoutX="33.0" layoutY="29.0" prefHeight="147.0" prefWidth="191.0">
+                        <StackPane fx:id="imageScambio" layoutX="47.0" layoutY="14.0" prefHeight="147.0" prefWidth="192.0">
                            <children>
-                              <ImageView fx:id="immagineCaricata" fitHeight="160.0" fitWidth="220.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="immagineCaricata" fitHeight="147.0" fitWidth="195.0" pickOnBounds="true">
                                  <image>
                                     <Image url="@../IMG/immaginiProgramma/no_image.png" />
                                  </image>
                               </ImageView>
                            </children>
                         </StackPane>
-                        <Label layoutX="282.0" layoutY="14.0" prefHeight="25.0" prefWidth="128.0" styleClass="label-login-registrazione" text="Titolo annuncio">
+                        <Label layoutX="269.0" layoutY="35.0" prefHeight="30.0" prefWidth="144.0" styleClass="label-login-registrazione" text="Categoria oggetto">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="campoTitoloAnnuncioScambio" layoutX="279.0" layoutY="39.0" prefHeight="36.0" prefWidth="209.0" promptText="Inserire il titolo" styleClass="campi">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                        <Label layoutX="279.0" layoutY="73.0" prefHeight="30.0" prefWidth="144.0" styleClass="label-login-registrazione" text="Categoria oggetto">
+                        <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="269.0" layoutY="63.0" prefHeight="34.0" prefWidth="209.0" />
+                        <Label layoutX="269.0" layoutY="100.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Descrizione annuncio">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="279.0" layoutY="101.0" prefHeight="34.0" prefWidth="209.0" />
-                        <Label layoutX="279.0" layoutY="138.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Descrizione annuncio">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <TextArea fx:id="campoDescrizioneAnnuncioScambio" layoutX="279.0" layoutY="163.0" prefHeight="64.0" prefWidth="209.0" promptText="Inserire la descrizione" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
+                        <TextArea fx:id="campoDescrizioneAnnuncioScambio" layoutX="269.0" layoutY="125.0" prefHeight="94.0" prefWidth="209.0" promptText="Inserire la descrizione" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -194,7 +184,7 @@
                   <Button fx:id="oggettiOffertiButton" layoutX="409.0" layoutY="396.0" mnemonicParsing="false" onMouseClicked="#mostraOggettiOfferti" styleClass="tasto-terziario" text="Oggetti offerti" visible="false" />
                   </children>
               </AnchorPane>
-            <AnchorPane fx:id="paneOggettiOfferti" prefHeight="450.0" prefWidth="814.0" visible="false">
+            <AnchorPane fx:id="paneOggettiOfferti" prefHeight="438.0" prefWidth="815.0" visible="false">
                <children>
                   <Button fx:id="mostraOffertaButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#costruisciPopup" prefHeight="40.0" prefWidth="43.0" styleClass="tasto-terziario" />
                   <ImageView fx:id="mostraOffertaImage" fitHeight="30.0" fitWidth="30.0" layoutX="21.0" layoutY="19.0" onMouseClicked="#costruisciPopup" pickOnBounds="true" preserveRatio="true">
@@ -205,15 +195,15 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <TableView fx:id="tabellaOggetti" layoutY="88.0" prefHeight="365.0" prefWidth="815.0">
-				    <columns>
-				        <TableColumn fx:id="colId" text="id" prefWidth="57.0" resizable="false" sortable="false" />
-				        <TableColumn fx:id="colProprietario" text="Proprietario" prefWidth="154.0" resizable="false" sortable="false" />
-				        <TableColumn fx:id="colDescrizione" text="Descrizione" prefWidth="279.0" resizable="false" sortable="false" />
-				        <TableColumn fx:id="colPercorsoImmagine" text="Percorso immagine" prefWidth="207.0" resizable="false" sortable="false" />
-				        <TableColumn fx:id="colAzioni" text="Azioni" prefWidth="117.0" resizable="false" sortable="false" />
-				    </columns>
-				</TableView>
+				  <TableView fx:id="tabellaOggetti" fixedCellSize="38" layoutY="88.0" prefHeight="352.0" prefWidth="815.0">
+                    <columns>
+                        <TableColumn fx:id="colId" prefWidth="57" text="id" />
+                        <TableColumn fx:id="colCategoria" prefWidth="154" text="Categoria" />
+                        <TableColumn fx:id="colDescrizione" prefWidth="279" text="Descrizione" />
+                        <TableColumn fx:id="colPercorsoImmagine" prefWidth="207" text="Percorso immagine" />
+                        <TableColumn fx:id="colAzioni" prefWidth="117" text="Azioni" />
+                    </columns>
+                </TableView>
                </children>
             </AnchorPane>
          </children>

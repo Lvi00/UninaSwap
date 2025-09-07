@@ -6,6 +6,7 @@ import application.entity.Oggetto;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -19,6 +20,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -77,12 +79,11 @@ public class PopupOfferteBoundary {
     @FXML private StackPane imageScambio;
     @FXML private ImageView immagineCaricata;
     @FXML private ChoiceBox<Categorie> campoCategoriaOggetto;
-    @FXML private TextField campoTitoloAnnuncioScambio;
     @FXML private TextArea campoDescrizioneAnnuncioScambio;
     @FXML private TextArea campoDescrizioneAnnuncioRegalo;
     @FXML private TableView<Oggetto> tabellaOggetti;
     @FXML private TableColumn<Oggetto, String> colId;
-    @FXML private TableColumn<Oggetto, String> colProprietario;
+    @FXML private TableColumn<Oggetto, String> colCategoria;
     @FXML private TableColumn<Oggetto, String> colDescrizione;
     @FXML private TableColumn<Oggetto, String> colPercorsoImmagine;
     @FXML private TableColumn<Oggetto, String> colAzioni;
@@ -209,7 +210,6 @@ public class PopupOfferteBoundary {
     
     @FXML
     public void aggiungiOggettoDaScambiare(MouseEvent e) {
-		String titolo = campoTitoloAnnuncioScambio.getText();
 	    String descrizione = campoDescrizioneAnnuncioScambio.getText();
 	    String categoriaSelezionata = campoCategoriaOggetto.getValue().toString();
 	    String percorsoImmagine = null;
@@ -218,36 +218,36 @@ public class PopupOfferteBoundary {
 	        percorsoImmagine = fileSelezionato.getAbsolutePath();
 	    }
 	    
-	    switch(controller.controllaCampiOggettoScambio(titolo, descrizione, categoriaSelezionata, percorsoImmagine)) {
+	    switch(controller.controllaCampiOggettoScambio(descrizione, categoriaSelezionata, percorsoImmagine)) {
 			case 0:
 			   Oggetto nuovoOggetto = new Oggetto(percorsoImmagine, categoriaSelezionata.toString(), descrizione, controller.getStudente());
 			   
-			   // Aggiungo l'oggetto all'arraylist
-			   this.listaOggettiOfferti.add(nuovoOggetto);
-			   
+			   if(this.listaOggettiOfferti.size()<5)
+			   {
+				    //Aggiungo l'oggetto all'arraylist
+				   	this.listaOggettiOfferti.add(nuovoOggetto);
+			   		ShowPopupAlert("Oggetto aggiunto!", "L'oggetto è stato aggiunto alla lista degli oggetti da offrire.");
+	    	   }
+			   else 
+			   {
+				   	ShowPopupError("Troppi oggetti!", "Hai inserito il limite massimo di 5 oggetti scambiabili.");
+			   }
 			   // Pulisco i campi del form
-			   campoTitoloAnnuncioScambio.clear();
 			   campoDescrizioneAnnuncioScambio.clear();
 			   campoCategoriaOggetto.getSelectionModel().selectFirst();
 			   immagineCaricata.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/no_image.png").toExternalForm()));
 			   fileSelezionato = null;
-			   
-			   ShowPopupAlert("Oggetto aggiunto!", "L'oggetto è stato aggiunto alla lista degli oggetti da offrire.");
-			break;
-	     
-			case 1:
-				ShowPopupError("Errore nel titolo", "Il titolo deve essere compreso tra 1 e 50 caratteri.");
 			break;
 			
-			case 2:
+			case 1:
 				ShowPopupError("Errore nella categoria", "Seleziona una categoria valida.");
 			break;
 			
-			case 3:
+			case 2:
 				ShowPopupError("Errore nella descrizione", "La descrizione deve essere compresa tra 1 e 255 caratteri.");
 			break;
 			
-			case 4:
+			case 3:
 				ShowPopupError("Errore nell'immagine", "Carica un'immagine valida.");
 			break;
     	}
@@ -267,29 +267,95 @@ public class PopupOfferteBoundary {
         tabellaOggetti.getItems().setAll(listaOggettiOfferti);
     }
 
+    //Chiamato automaticamente da JavaFX dopo il caricamento dell'FXML
     @FXML
-    public void initialize() {
+    public void initialize() 
+    {
         // Inizializza le colonne
-        colId.setCellValueFactory(data -> {
-            int index = tabellaOggetti.getItems().indexOf(data.getValue()) + 1; // parte da 1
-            return new SimpleStringProperty(String.valueOf(index));
+        colId.setCellValueFactory(data -> 
+            new SimpleStringProperty(String.valueOf(tabellaOggetti.getItems().indexOf(data.getValue()) + 1))
+        );
+        colCategoria.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategoria()));
+        colDescrizione.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDescrizione()));
+        colPercorsoImmagine.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getImmagineOggetto()));
+
+        // Aggiungi tooltip alle colonne
+        addTooltipToColumn(colCategoria);
+        addTooltipToColumn(colDescrizione);
+        addTooltipToColumn(colPercorsoImmagine);
+
+        // Colonna Azioni con bottone "rimuovi"
+        colAzioni.setCellFactory(col -> new TableCell<Oggetto, String>() {
+            private final Button removeButton = new Button();
+            {
+                ImageView imageView = new ImageView(
+                    new Image(getClass().getResourceAsStream("../IMG/immaginiProgramma/Delete.png"))
+                );
+                imageView.setFitWidth(25);
+                imageView.setFitHeight(25);
+                removeButton.setGraphic(imageView);
+                removeButton.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-cursor: hand;");
+                removeButton.setOnAction(e -> {
+                    Oggetto oggetto = getTableView().getItems().get(getIndex());
+                    tabellaOggetti.getItems().remove(oggetto);
+                    listaOggettiOfferti.remove(oggetto);
+                });
+            }
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : new StackPane(removeButton));
+            }
         });
 
-        colProprietario.setCellValueFactory(data ->
-            new SimpleStringProperty(data.getValue().getStudente().getUsername())
-        );
+        // --- Imposta policy di resize colonne ---
+        tabellaOggetti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        colDescrizione.setCellValueFactory(data ->
-            new SimpleStringProperty(data.getValue().getDescrizione())
-        );
+        // Imposta altezza fissa delle righe
+        tabellaOggetti.setFixedCellSize(38);
 
-        colPercorsoImmagine.setCellValueFactory(data ->
-            new SimpleStringProperty(data.getValue().getImmagineOggetto())
-        );
+        // Aggiorna altezza dinamica quando cambia il numero di righe
+        tabellaOggetti.getItems().addListener((ListChangeListener<Oggetto>) change -> aggiornaAltezzaTabella());
+    }
 
-        colAzioni.setCellValueFactory(data ->
-            new SimpleStringProperty("") // placeholder per eventuali bottoni
-        );
+   // Aggiorna altezza dinamica
+    private void aggiornaAltezzaTabella() {
+        int numeroRighe = tabellaOggetti.getItems().size();
+        double altezzaHeader = 28;
+        double altezzaRighe = numeroRighe * tabellaOggetti.getFixedCellSize();
+
+        double altezzaTotale;
+
+        if(numeroRighe == 0) {
+            altezzaTotale = paneOggettiOfferti.getHeight() - tabellaOggetti.getLayoutY(); 
+            
+        } else {
+            altezzaTotale = altezzaHeader + altezzaRighe;
+        }
+
+        tabellaOggetti.setPrefHeight(altezzaTotale);
+        tabellaOggetti.setMinHeight(altezzaTotale);
+        tabellaOggetti.setMaxHeight(altezzaTotale);
+    }
+
+    // Metodo di utilità per tooltip
+    private void addTooltipToColumn(TableColumn<Oggetto, String> column) {
+        column.setCellFactory(col -> new TableCell<Oggetto, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setTooltip(null);
+                } else {
+                    setText(item);
+                    Tooltip tooltip = new Tooltip(item);
+                    tooltip.setWrapText(true);
+                    tooltip.setMaxWidth(200);
+                    setTooltip(tooltip);
+                }
+            }
+        });
     }
     
     @FXML
@@ -307,7 +373,7 @@ public class PopupOfferteBoundary {
     	    	messaggioMotivazionale = messaggioMotivazionale.trim();
     	    }
 
-    	    switch(controller.inviaOfferta(annuncio, messaggioMotivazionale)) {
+    	    switch(controller.inviaOffertaRegalo(annuncio, messaggioMotivazionale)) {
     	        case 0: // offerta inviata correttamente
                     currentStage.close();
     	            ShowPopupAlert("Richiesta inviata!",  "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
@@ -320,6 +386,20 @@ public class PopupOfferteBoundary {
     	        case 2: // offerta duplicata
     	            ShowPopupError("Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
     	        break;
+    	    }
+    	}
+    	else if(this.annuncio.getTipologia().equals("Scambio"))
+    	{
+
+    	    switch(controller.inviaOffertaScambio(this.annuncio, this.listaOggettiOfferti)) {
+	        case 0: // offerta inviata correttamente
+                currentStage.close();
+	            ShowPopupAlert("Richiesta inviata!",  "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
+	        break;
+
+	        case 1: // errore generico
+    			ShowPopupError("Nessun oggetto aggiunto", "Non hai ancora aggiunto oggetti da offrire per lo scambio.");
+	        break;
     	    }
     	}
     }

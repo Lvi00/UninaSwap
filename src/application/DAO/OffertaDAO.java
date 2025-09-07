@@ -15,7 +15,8 @@ public class OffertaDAO {
     private Controller controller = new Controller();
 
     public int SaveOfferta(Annuncio annuncio, Offerta offerta, String matricola, String motivazione) {
-        try {
+        int returnValue = 0;
+    	try {
             String matStudente = matricola;
             int idannuncio = new AnnuncioDAO().getIdByAnnuncio(annuncio);
 
@@ -46,6 +47,14 @@ public class OffertaDAO {
             String insert = "INSERT INTO OFFERTA(statoofferta, prezzoofferta, tipologia, matstudente, idannuncio, motivazione) "
                     + "VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(insert);
+            
+            if ("Scambio".equalsIgnoreCase(offerta.getTipologia())) {
+                // per Scambio, abilita il ritorno dell'ID generato
+                statement = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS);
+            } else {
+                statement = conn.prepareStatement(insert);
+            }
+            
             statement.setString(1, offerta.getStatoOfferta());
             statement.setDouble(2, offerta.getPrezzoOfferta());
             statement.setString(3, offerta.getTipologia());
@@ -54,6 +63,15 @@ public class OffertaDAO {
             statement.setString(6, motivazione);
 
             int rowsInserted = statement.executeUpdate();
+
+            if ("Scambio".equalsIgnoreCase(offerta.getTipologia())) {
+                ResultSet generatedKeys = statement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    returnValue = generatedKeys.getInt(1);
+                }
+                generatedKeys.close();
+            }
+            
             statement.close();
 
             if (rowsInserted == 0) {
@@ -65,7 +83,11 @@ public class OffertaDAO {
             e.printStackTrace();
             return 1;
         }
-
-        return 0;
+        
+        if ("Scambio".equalsIgnoreCase(offerta.getTipologia())) {
+            return returnValue;
+        } else {
+            return 0;
+        }
     }
 }

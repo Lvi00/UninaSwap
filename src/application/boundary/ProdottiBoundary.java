@@ -306,7 +306,7 @@ public class ProdottiBoundary {
             popupStage.show();
 
             popupStage.setX(mainStage.getX() + (mainStage.getWidth() - popupStage.getWidth()) / 2);
-            popupStage.setY(mainStage.getY() + (mainStage.getHeight() - popupStage.getHeight()) / 2 - 50);
+            popupStage.setY(mainStage.getY() + (mainStage.getHeight() - popupStage.getHeight()) / 2 - 40);
 
         } catch (Exception ex) {
             ex.printStackTrace();

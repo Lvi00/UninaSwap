@@ -258,7 +258,7 @@ public class Controller {
 		new AnnuncioDAO().cambiaStatoAnnuncio(a);
 	}
 	
-	public int inviaOfferta(Annuncio a, String Motivazione){
+	public int inviaOffertaRegalo(Annuncio a, String Motivazione){
 		Offerta offerta = new Offerta(a.getTipologia());
 		return new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(),Motivazione);
 	}
@@ -280,15 +280,33 @@ public class Controller {
 		return appoggio;
 	}
 	
-	public int controllaCampiOggettoScambio(String titolo, String descrizione, String categoriaSelezionata, String percorsoImmagine) {
-		if(titolo == "" || titolo.length() > 50) return 1;
+	public int controllaCampiOggettoScambio(String descrizione, String categoriaSelezionata, String percorsoImmagine) {
 		
-		if(categoriaSelezionata == "") return 2;
+		if(categoriaSelezionata == "") return 1;
 		
-		if(descrizione == "" || descrizione.length() > 255) return 3;
+		if(descrizione == "" || descrizione.length() > 255) return 2;
 		
-		if(percorsoImmagine == null || percorsoImmagine.isEmpty() || percorsoImmagine.startsWith("no_image")) return 4;
+		if(percorsoImmagine == null || percorsoImmagine.isEmpty() || percorsoImmagine.startsWith("no_image")) return 3;
 		
+		return 0;
+	}
+	
+	public int inviaOffertaScambio(Annuncio a, ArrayList<Oggetto> listaOggettiOfferti)
+	{
+        if (listaOggettiOfferti.isEmpty()) {
+        	return 1;
+        }
+        
+        OggettoDAO oggettoDao = new OggettoDAO();
+        OffertaDAO offertaDao = new OffertaDAO();
+		Offerta offerta = new Offerta(a.getTipologia());
+        offertaDao.SaveOfferta(a, offerta, this.studente.getMatricola(), "");
+       // OggettiOffertiDAO oggettiOfferti = new OggettiOffertiDAO(,);
+        
+        for(Oggetto o : listaOggettiOfferti)
+        {
+        	oggettoDao.SaveOggetto(o);
+        }
 		return 0;
 	}
 }
