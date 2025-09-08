@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import application.DAO.OggettiOffertiDAO;
 import application.DAO.AnnuncioDAO;
 import application.DAO.OffertaDAO;
 import application.DAO.OggettoDAO;
@@ -299,14 +300,21 @@ public class Controller {
         
         OggettoDAO oggettoDao = new OggettoDAO();
         OffertaDAO offertaDao = new OffertaDAO();
+        OggettiOffertiDAO oggettiOffertiDao = new OggettiOffertiDAO();
 		Offerta offerta = new Offerta(a.getTipologia());
-        offertaDao.SaveOfferta(a, offerta, this.studente.getMatricola(), "");
-       // OggettiOffertiDAO oggettiOfferti = new OggettiOffertiDAO(,);
+		
+		int idOffertaInserita = 0;
+		int idOggettoInserito = 0;
+		
+        idOffertaInserita = offertaDao.SaveOfferta(a, offerta, this.studente.getMatricola(), "");
         
         for(Oggetto o : listaOggettiOfferti)
         {
-        	oggettoDao.SaveOggetto(o);
+        	idOggettoInserito = oggettoDao.SaveOggetto(o);
+        	System.out.println("idOggetto: " + idOggettoInserito + " idOfferta: " + idOffertaInserita);
+        	oggettiOffertiDao.SaveOggettoOfferto(idOffertaInserita, idOggettoInserito);
         }
+        
 		return 0;
 	}
 }

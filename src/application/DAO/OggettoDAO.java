@@ -11,47 +11,55 @@ import application.resources.ConnessioneDB;
 
 public class OggettoDAO {
 	private Controller controller = new Controller();
-
 	
-	public void SaveOggetto(Oggetto oggetto) {
-		try {
-		    Connection conn = ConnessioneDB.getConnection();
-		    String matStudente = oggetto.getStudente().getMatricola();
-		    
-		    String queryCheck = "SELECT * FROM OGGETTO WHERE immagineoggetto = ? AND categoria = ? AND descrizione = ? AND matstudente = ?";
-		    PreparedStatement checkStatement = conn.prepareStatement(queryCheck);
-		    checkStatement.setString(1, oggetto.getImmagineOggetto());
-		    checkStatement.setString(2, oggetto.getCategoria());
-		    checkStatement.setString(3, oggetto.getDescrizione());
-		    checkStatement.setString(4, matStudente);
-		    
-		    
-		    ResultSet resultSet = checkStatement.executeQuery();
-		    
-		    if (resultSet.next()) {
-		        System.out.println("Oggetto già esistente.");
-		        resultSet.close();
-		        checkStatement.close();
-		    }
-		    
-		    else {
-			    String query = "INSERT INTO OGGETTO(immagineoggetto,categoria,descrizione,matstudente) VALUES (?,?,?,?)";
-			    PreparedStatement statement = conn.prepareStatement(query);
-			    statement.setString(1, oggetto.getImmagineOggetto());
-			    statement.setString(2, oggetto.getCategoria());
-			    statement.setString(3, oggetto.getDescrizione());
-			    statement.setString(4, matStudente);
-			    int rowsInserted = statement.executeUpdate();
-			    statement.close();
-			    
+	public int SaveOggetto(Oggetto oggetto) {
+	    int idOggettoInserito = 0;
+
+	    try {
+	        Connection conn = ConnessioneDB.getConnection();
+	        String matStudente = oggetto.getStudente().getMatricola();
+	        String queryCheck = "SELECT * FROM OGGETTO WHERE immagineoggetto = ? AND categoria = ? AND descrizione = ? AND matstudente = ?";
+	        PreparedStatement checkStatement = conn.prepareStatement(queryCheck);
+	        checkStatement.setString(1, oggetto.getImmagineOggetto());
+	        checkStatement.setString(2, oggetto.getCategoria());
+	        checkStatement.setString(3, oggetto.getDescrizione());
+	        checkStatement.setString(4, matStudente);
+
+	        ResultSet resultSet = checkStatement.executeQuery();
+
+	        if (resultSet.next()) {
+	            System.out.println("Oggetto già esistente.");
+	            idOggettoInserito = resultSet.getInt("idoggetto");
+	        } else {
+	            String query = "INSERT INTO OGGETTO(immagineoggetto,categoria,descrizione,matstudente) VALUES (?,?,?,?)";
+	            PreparedStatement statement = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+	            statement.setString(1, oggetto.getImmagineOggetto());
+	            statement.setString(2, oggetto.getCategoria());
+	            statement.setString(3, oggetto.getDescrizione());
+	            statement.setString(4, matStudente);
+
+	            int rowsInserted = statement.executeUpdate();
+
 	            if (rowsInserted == 0) {
 	                System.out.println("Errore: inserimento fallito.");
+	            } else {
+	                ResultSet generatedKeys = statement.getGeneratedKeys();
+	                if (generatedKeys.next()) {
+	                    idOggettoInserito = generatedKeys.getInt(1);
+	                }
+	                generatedKeys.close();
 	            }
-		    }
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
+	            statement.close();
+	        }
+
+	        resultSet.close();
+	        checkStatement.close();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return idOggettoInserito;
 	}
 	
     public Oggetto getOggettoById(int idOggetto) {
@@ -113,6 +121,4 @@ public class OggettoDAO {
 
         return id;
     }
-    
-   
 }

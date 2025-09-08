@@ -12,8 +12,6 @@ import application.resources.ConnessioneDB;
 
 public class OffertaDAO {
 
-    private Controller controller = new Controller();
-
     public int SaveOfferta(Annuncio annuncio, Offerta offerta, String matricola, String motivazione) {
         int returnValue = 0;
     	try {
@@ -33,7 +31,7 @@ public class OffertaDAO {
                 System.out.println("Offerta già esistente per questo annuncio.");
                 dupResult.close();
                 dupStatement.close();
-                return 2; // blocca l'invio
+                return 1;
             }
             dupResult.close();
             dupStatement.close();
@@ -86,7 +84,8 @@ public class OffertaDAO {
         
         if ("Scambio".equalsIgnoreCase(offerta.getTipologia())) {
             return returnValue;
-        } else {
+        }
+        else {
             return 0;
         }
     }
