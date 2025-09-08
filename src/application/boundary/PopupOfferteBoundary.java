@@ -3,7 +3,6 @@ package application.boundary;
 import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Oggetto;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -26,9 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -490,7 +487,6 @@ public class PopupOfferteBoundary {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupAlert.fxml"));
 	        Parent root = loader.load();
-
 	        Stage mainStage = (Stage) containerOfferte.getScene().getWindow();
 	        Stage stage = new Stage();
 	        stage.initOwner(mainStage);

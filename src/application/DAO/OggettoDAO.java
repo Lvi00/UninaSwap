@@ -121,4 +121,20 @@ public class OggettoDAO {
 
         return id;
     }
+    
+    public int rimuoviOggettoByIdOggetto(int idOggetto) {
+        try {
+        	Connection conn = ConnessioneDB.getConnection();
+            String deleteOfferte = "DELETE FROM OGGETTO WHERE idoggetto = ?";
+            PreparedStatement deleteOfferteStmt = conn.prepareStatement(deleteOfferte);
+			deleteOfferteStmt.setInt(1, idOggetto);
+	        deleteOfferteStmt.executeUpdate();
+	        deleteOfferteStmt.close();
+		}
+        catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+        return 0;
+    }
 }

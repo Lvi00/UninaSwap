@@ -138,6 +138,15 @@
 	);
 }
 
+#popupWarning{
+    -fx-background-color: linear-gradient(
+        from 0% 0%
+        to 100% 0%,
+        #CC6600 10%,
+        #FFB84D 100%
+    );
+}
+
 .popupLabel{
 	-fx-font-weight: bold;
 }

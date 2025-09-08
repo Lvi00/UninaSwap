@@ -62,7 +62,7 @@
       				            </font>
       				        </Label>
       				
-      				        <Region VBox.vgrow="ALWAYS" />
+      				        <Region prefWidth="100.0" VBox.vgrow="ALWAYS" />
       				
             				        <Button fx:id="buttonOfferta" mnemonicParsing="false" prefHeight="31.0" styleClass="tasto-secondario">
                            <cursor>
@@ -74,29 +74,29 @@
       
                       <Label layoutX="35.0" layoutY="407.0" text="Disponibilità:" />
                       <Label fx:id="disponibilitàAnnuncio" layoutX="111.0" layoutY="407.0" />
-                  <AnchorPane fx:id="PaneOfferteScambio" layoutX="287.0" layoutY="146.0" prefHeight="249.0" prefWidth="503.0" visible="false">
+                  <AnchorPane fx:id="PaneOfferteScambio" layoutX="296.0" layoutY="146.0" prefHeight="249.0" prefWidth="503.0" visible="false">
                      <children>
-                        <StackPane fx:id="imageScambio" layoutX="47.0" layoutY="14.0" prefHeight="147.0" prefWidth="192.0">
+                        <StackPane fx:id="imageScambio" layoutX="55.0" layoutY="41.0" prefHeight="108.0" prefWidth="138.0">
                            <children>
-                              <ImageView fx:id="immagineCaricata" fitHeight="147.0" fitWidth="195.0" pickOnBounds="true">
+                              <ImageView fx:id="immagineCaricata" fitHeight="118.0" fitWidth="176.0" pickOnBounds="true">
                                  <image>
                                     <Image url="@../IMG/immaginiProgramma/no_image.png" />
                                  </image>
                               </ImageView>
                            </children>
                         </StackPane>
-                        <Label layoutX="269.0" layoutY="35.0" prefHeight="30.0" prefWidth="144.0" styleClass="label-login-registrazione" text="Categoria oggetto">
+                        <Label layoutX="252.0" layoutY="41.0" prefHeight="30.0" prefWidth="144.0" styleClass="label-login-registrazione" text="Categoria oggetto">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="269.0" layoutY="63.0" prefHeight="34.0" prefWidth="209.0" />
-                        <Label layoutX="269.0" layoutY="100.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Descrizione annuncio">
+                        <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="252.0" layoutY="69.0" prefHeight="34.0" prefWidth="209.0" />
+                        <Label layoutX="252.0" layoutY="106.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Descrizione annuncio">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <TextArea fx:id="campoDescrizioneAnnuncioScambio" layoutX="269.0" layoutY="125.0" prefHeight="94.0" prefWidth="209.0" promptText="Inserire la descrizione" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
+                        <TextArea fx:id="campoDescrizioneAnnuncioScambio" layoutX="252.0" layoutY="131.0" prefHeight="94.0" prefWidth="209.0" promptText="Inserire la descrizione" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -161,7 +161,7 @@
                   </AnchorPane>
                   
                   
-                  <Button fx:id="controffertaButton" layoutX="577.0" layoutY="396.0" mnemonicParsing="false" onMouseClicked="#MostraControfferta" style="-fx-background-color: CA0F0F;" styleClass="tasto-terziario" text="Controfferta" visible="false" />
+                  <Button fx:id="controffertaButton" layoutX="577.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#MostraControfferta" style="-fx-background-color: CA0F0F;" styleClass="tasto-terziario" text="Controfferta" visible="false" />
                   <Button fx:id="backButton" layoutX="589.0" layoutY="376.0" mnemonicParsing="false" onMouseClicked="#MostraControfferta" prefHeight="40.0" prefWidth="46.0" style="-fx-background-color: CA0F0F;" styleClass="tasto-terziario" visible="false" />
                   <ImageView fx:id="backImage" fitHeight="36.0" fitWidth="30.0" layoutX="596.0" layoutY="381.0" onMouseClicked="#MostraControfferta" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
@@ -180,14 +180,14 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <Button fx:id="aggiungiOggetto" layoutX="540.0" layoutY="396.0" mnemonicParsing="false" onMouseClicked="#aggiungiOggettoDaScambiare" styleClass="tasto-secondario" text="Aggiungi oggetto" visible="false" />
-                  <Button fx:id="oggettiOffertiButton" layoutX="409.0" layoutY="396.0" mnemonicParsing="false" onMouseClicked="#mostraOggettiOfferti" styleClass="tasto-terziario" text="Oggetti offerti" visible="false" />
+                  <Button fx:id="aggiungiOggetto" layoutX="540.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#aggiungiOggettoDaScambiare" styleClass="tasto-secondario" text="Aggiungi oggetto" visible="false" />
+                  <Button fx:id="oggettiOffertiButton" layoutX="409.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#mostraOggettiOfferti" styleClass="tasto-terziario" text="Oggetti offerti" visible="false" />
                   </children>
               </AnchorPane>
             <AnchorPane fx:id="paneOggettiOfferti" prefHeight="438.0" prefWidth="815.0" visible="false">
                <children>
-                  <Button fx:id="mostraOffertaButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#costruisciPopup" prefHeight="40.0" prefWidth="43.0" styleClass="tasto-terziario" />
-                  <ImageView fx:id="mostraOffertaImage" fitHeight="30.0" fitWidth="30.0" layoutX="21.0" layoutY="19.0" onMouseClicked="#costruisciPopup" pickOnBounds="true" preserveRatio="true">
+                  <Button fx:id="mostraOffertaButton" layoutX="30.0" layoutY="29.0" mnemonicParsing="false" onMouseClicked="#costruisciPopup" prefHeight="40.0" prefWidth="43.0" styleClass="tasto-terziario" />
+                  <ImageView fx:id="mostraOffertaImage" fitHeight="30.0" fitWidth="30.0" layoutX="37.0" layoutY="34.0" onMouseClicked="#costruisciPopup" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../IMG/immaginiProgramma/back.png" />
                      </image>
@@ -204,6 +204,11 @@
                         <TableColumn fx:id="colAzioni" prefWidth="117" text="Azioni" />
                     </columns>
                 </TableView>
+                  <Label layoutX="225.0" layoutY="36.0" text="Qui sono riportati gli oggetti che vuoi scambiare">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children>

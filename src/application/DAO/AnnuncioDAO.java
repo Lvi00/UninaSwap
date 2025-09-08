@@ -282,4 +282,63 @@ public class AnnuncioDAO {
 
 	    return id;
 	}
+   
+   public int rimuoviAnnuncio(Annuncio annuncio) {
+	    try {
+	        String matStudente = annuncio.getOggetto().getStudente().getMatricola();
+	        int idOggetto = controller.getIdByOggetto(annuncio.getOggetto());
+	        int idSede = controller.getIdBySede(annuncio.getSede());
+
+	        Connection conn = ConnessioneDB.getConnection();
+
+	        // Trova l'id dell'annuncio
+	        String queryCheck = "SELECT idannuncio FROM ANNUNCIO WHERE titoloannuncio = ? AND statoannuncio = ? AND fasciaorariainizio = ? AND fasciaorariafine = ? "
+	                + "AND prezzo = ? AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? AND idoggetto = ? AND idsede = ? AND giorni = ?";
+	        PreparedStatement checkStatement = conn.prepareStatement(queryCheck);
+	        checkStatement.setString(1, annuncio.getTitoloAnnuncio());
+	        checkStatement.setBoolean(2, annuncio.isStatoAnnuncio());
+	        checkStatement.setString(3, annuncio.getFasciaOrariaInizio());
+	        checkStatement.setString(4, annuncio.getFasciaOrariaFine());
+	        checkStatement.setDouble(5, annuncio.getPrezzo());
+	        checkStatement.setString(6, annuncio.getTipologia());
+	        checkStatement.setString(7, annuncio.getDescrizioneAnnuncio());
+	        checkStatement.setString(8, matStudente);
+	        checkStatement.setInt(9, idOggetto);
+	        checkStatement.setInt(10, idSede);
+	        checkStatement.setString(11, annuncio.getGiorni());
+
+	        ResultSet resultSet = checkStatement.executeQuery();
+
+	        if (!resultSet.next()) {
+	            System.out.println("Errore: annuncio non trovato.");
+	            resultSet.close();
+	            checkStatement.close();
+	            return 1;
+	        }
+
+	        int idAnnuncio = resultSet.getInt("idannuncio");
+	        resultSet.close();
+	        checkStatement.close();
+	        
+	        if(controller.rimuoviOfferte(idAnnuncio) == 1) return 1;
+	        
+	        if(controller.rimuoviOggetto(idAnnuncio) == 1) return 1;
+	        
+	        String deleteAnnuncio = "DELETE FROM ANNUNCIO WHERE idAnnuncio = ?";
+	        PreparedStatement deleteAnnuncioStmt = conn.prepareStatement(deleteAnnuncio);
+	        deleteAnnuncioStmt.setInt(1, idAnnuncio);
+	        int deletedRows = deleteAnnuncioStmt.executeUpdate();
+	        deleteAnnuncioStmt.close();
+
+	        if (deletedRows == 0) {
+	            System.out.println("Errore: eliminazione annuncio fallita.");
+	            return 1;
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return 0;
+	}
 }

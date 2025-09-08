@@ -317,4 +317,16 @@ public class Controller {
         
 		return 0;
 	}
+	
+	public int rimuoviAnnuncio(Annuncio a) {
+		return new AnnuncioDAO().rimuoviAnnuncio(a);
+	}
+	
+	public int rimuoviOfferte(int idAnnuncio) {
+		return new OffertaDAO().rimuoviOfferteByIdAnnuncio(idAnnuncio);
+	}
+	
+	public int rimuoviOggetto(int idOggetto) {
+		return new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
+	}
 }

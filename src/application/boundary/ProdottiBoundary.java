@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -218,34 +219,36 @@ public class ProdottiBoundary {
         VBox box = new VBox();
         box.setSpacing(8);
         box.setPrefWidth(230);
+        box.setPrefHeight(300);
+        box.setAlignment(Pos.TOP_CENTER);
         box.getStyleClass().add("card-annuncio");
 
         ImageView imageView = new ImageView();
-        
         try {
             String path = a.getOggetto().getImmagineOggetto();
             Image img;
             File file = new File(path);
-            
+
             if (file.exists()) {
-                // Se il file esiste nel filesystem
-                img = new Image(file.toURI().toString(), 230, 150, true, true);
+                img = new Image(file.toURI().toString());
             } else {
-                // Altrimenti prova a caricare da risorsa classpath
-                img = new Image(getClass().getResource(path).toExternalForm(), 230, 150, true, true);
+                img = new Image(getClass().getResource(path).toExternalForm());
             }
+
             imageView.setFitWidth(230);
             imageView.setFitHeight(150);
             imageView.setPreserveRatio(false);
+            imageView.setSmooth(true);
+            imageView.setCache(true);
             imageView.setImage(img);
+            imageView.setViewport(new Rectangle2D(0, 0, img.getWidth(), img.getHeight()));
             imageView.getStyleClass().add("immagineCard");
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Immagine non trovata: " + a.getOggetto().getImmagineOggetto());
         }
 
-        // Aggiungi l'immagine al VBox
         box.getChildren().add(imageView);
 
         Label titolo = new Label(a.getTitoloAnnuncio());
@@ -259,14 +262,13 @@ public class ProdottiBoundary {
 
         Label tipo = new Label(a.getOggetto().getCategoria() +" - "+ a.getTipologia());
         tipo.setStyle("-fx-text-fill: gray;");
-        
+
         Label venditore = new Label("Pubblicato da " + a.getOggetto().getStudente().getUsername());
         venditore.setStyle("-fx-text-fill: #153464;");
 
         Label disponibilità =  new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
-        + "\ndalle " + a.getFasciaOrariaInizio() + " alle " +
-        a.getFasciaOrariaFine());
-        
+        + "\ndalle " + a.getFasciaOrariaInizio() + " alle " + a.getFasciaOrariaFine());
+
         Button btn = new Button("Scopri");
         btn.getStyleClass().add("tasto-secondario");
         btn.setPrefWidth(150);
@@ -392,5 +394,4 @@ public class ProdottiBoundary {
         CostruisciCatalogoProdotti(this.controller.getStudente());
 
     }
-
 }

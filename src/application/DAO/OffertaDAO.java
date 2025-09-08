@@ -89,4 +89,20 @@ public class OffertaDAO {
             return 0;
         }
     }
+    
+    public int rimuoviOfferteByIdAnnuncio(int idAnnuncio) {
+        try {
+        	Connection conn = ConnessioneDB.getConnection();
+            String deleteOfferte = "DELETE FROM OFFERTA WHERE idAnnuncio = ?";
+            PreparedStatement deleteOfferteStmt = conn.prepareStatement(deleteOfferte);
+			deleteOfferteStmt.setInt(1, idAnnuncio);
+	        deleteOfferteStmt.executeUpdate();
+	        deleteOfferteStmt.close();
+		}
+        catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+        return 0;
+    }
 }

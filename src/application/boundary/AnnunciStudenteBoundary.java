@@ -12,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -28,6 +29,7 @@ public class AnnunciStudenteBoundary {
 
     private Controller controller;
 
+    @FXML private HBox containerAnnunciStudente;
     @FXML private Label usernameDashboard;
     @FXML private GridPane gridProdotti;
     @FXML private TextField searchField;
@@ -194,35 +196,63 @@ public class AnnunciStudenteBoundary {
         VBox box = new VBox();
         box.setSpacing(8);
         box.setPrefWidth(230);
+        box.setPrefHeight(300);
+        box.setAlignment(Pos.TOP_CENTER);
         box.getStyleClass().add("card-annuncio");
 
+        // Wrapper per immagine + button
+        AnchorPane imagePane = new AnchorPane();
+        imagePane.setPrefWidth(230);
+        imagePane.setPrefHeight(150);
+
         ImageView imageView = new ImageView();
-        
         try {
             String path = a.getOggetto().getImmagineOggetto();
             Image img;
             File file = new File(path);
-            
+
             if (file.exists()) {
-                // Se il file esiste nel filesystem
-                img = new Image(file.toURI().toString(), 230, 150, true, true);
+                img = new Image(file.toURI().toString());
             } else {
-                // Altrimenti prova a caricare da risorsa classpath
-                img = new Image(getClass().getResource(path).toExternalForm(), 230, 150, true, true);
+                img = new Image(getClass().getResource(path).toExternalForm());
             }
+
             imageView.setFitWidth(230);
             imageView.setFitHeight(150);
             imageView.setPreserveRatio(false);
+            imageView.setSmooth(true);
+            imageView.setCache(true);
             imageView.setImage(img);
-            imageView.getStyleClass().add("immagineCard");
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Immagine non trovata: " + a.getOggetto().getImmagineOggetto());
         }
 
-        // Aggiungi l'immagine al VBox
-        box.getChildren().add(imageView);
+        Button button = new Button();
+        button.getStyleClass().add("tasto-terziario");
+        button.setPrefSize(24, 24);
+        button.setStyle("-fx-cursor: hand;");
+        button.setOnMouseClicked(event -> rimuoviAnnuncio(a));
+        AnchorPane.setTopAnchor(button, 5.0);
+        AnchorPane.setRightAnchor(button, 5.0);
+        
+        ImageView icon = new ImageView();
+        try {
+            String iconPath = "../IMG/immaginiProgramma/delete_card.png";
+            Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
+            icon.setImage(imgIcon);
+            icon.setFitWidth(22);
+            icon.setFitHeight(22);
+            icon.setPreserveRatio(true);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        button.setGraphic(icon);
+
+        imagePane.getChildren().addAll(imageView, button);
 
         Label titolo = new Label(a.getTitoloAnnuncio());
         titolo.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
@@ -248,8 +278,51 @@ public class AnnunciStudenteBoundary {
         boxPrezzo.setSpacing(4);
         boxPrezzo.getChildren().addAll(stato, prezzo);
 
-        box.getChildren().addAll(titolo, boxPrezzo, tipo, disponibilità);
+        // Aggiungi tutto alla card
+        box.getChildren().addAll(imagePane, titolo, boxPrezzo, tipo, disponibilità);
 
         return box;
     }
+    
+    private void rimuoviAnnuncio(Annuncio a) {
+        if(controller.rimuoviAnnuncio(a) == 0) {
+            gridProdotti.getChildren().clear();
+            CostruisciProdottiUtente(controller.getStudente());
+            ShowPopupAlert("Rimozione avvenuta", "L'annuncio è stato rimosso con successo.");
+        }
+        
+        else {
+        	System.out.println("Errore nella rimozione dell'annuncio.");
+        }
+    }
+    
+    private void ShowPopupAlert(String title, String message) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupAlert.fxml"));
+	        Parent root = loader.load();
+	        Stage mainStage = (Stage) containerAnnunciStudente.getScene().getWindow();
+	        Stage stage = new Stage();
+	        stage.initOwner(mainStage);
+	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+	        Scene scene = new Scene(root);
+	        stage.setScene(scene);
+	        stage.setTitle("UninaSwap - " + title);
+	        stage.setResizable(false);
+	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+
+	        PopupErrorBoundary popupController = loader.getController();
+	        popupController.setLabels(title, message);
+	       
+	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+
+	        stage.show();
+	        
+	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
+	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }
