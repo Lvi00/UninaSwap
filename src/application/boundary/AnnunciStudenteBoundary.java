@@ -106,6 +106,28 @@ public class AnnunciStudenteBoundary {
                         ex.printStackTrace();
                     }
                     break;
+                    
+                case "Offerte":
+		            try {
+		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Offerte.fxml"));
+		    	        Parent root = loader.load();
+		                OfferteBoundary offerteCtrl = loader.getController();
+		                offerteCtrl.setController(this.controller);
+		                offerteCtrl.setUsername(this.controller.getStudente().getUsername());
+		                offerteCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		    	        Scene scene = new Scene(root);
+		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+		    	        stage.setScene(scene);
+		    	        stage.setTitle("UninaSwap - Offerte");
+		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+		    	        stage.setResizable(false);
+		    	        stage.show();
+		            }
+		            catch (Exception ex) {
+		                ex.printStackTrace();
+		            }
+	            break;
 
                 case "Crea annuncio":
                     try {
