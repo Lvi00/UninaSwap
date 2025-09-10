@@ -12,10 +12,18 @@ import application.entity.Offerta;
 import application.resources.ConnessioneDB;
 
 public class OffertaDAO {
+	
 	private Controller controller = new Controller();
 
     public int SaveOfferta(Annuncio annuncio, Offerta offerta, String matricola, String motivazione) {
+    	
+    	//Codici di ritorno:
+    	//-1: errore generico
+    	//0: tutto ok nel caso di offerta di tipo Regalo o Vendita
+    	//idOfferta: offerta di tipo Scambio inserita con successo
+    	
         int returnValue = 0;
+        
     	try {
             String matStudente = matricola;
             int idannuncio = new AnnuncioDAO().getIdByAnnuncio(annuncio);
@@ -40,7 +48,7 @@ public class OffertaDAO {
 
             // Imposta motivazione
             if (!"Regalo".equalsIgnoreCase(offerta.getTipologia())) {
-                motivazione = "Non Necessaria";
+                motivazione = "Nessuna";
             }
 
             // Inserimento offerta
@@ -76,28 +84,23 @@ public class OffertaDAO {
 
             if (rowsInserted == 0) {
                 System.out.println("Errore: inserimento fallito.");
-                return 1;
+                return -1;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return 1;
+            return -1;
         }
         
-        if ("Scambio".equalsIgnoreCase(offerta.getTipologia())) {
-            return returnValue;
-        }
-        else {
-            return 0;
-        }
+        if ("Scambio".equalsIgnoreCase(offerta.getTipologia())) return returnValue;
+        
+        return 0;
     }
     
-    public int rimuoviOfferteByIdAnnuncio(int idAnnuncio) { 
-
+    public int rimuoviOfferteByIdAnnuncio(int idAnnuncio) {
         try {
             Connection conn = ConnessioneDB.getConnection();
-
-            // 1. Recupera gli id delle offerte da eliminare
+            
             String selectOfferte = "SELECT idOfferta FROM OFFERTA WHERE idAnnuncio = ?";
             PreparedStatement selectStmt = conn.prepareStatement(selectOfferte);
             selectStmt.setInt(1, idAnnuncio);
@@ -108,7 +111,6 @@ public class OffertaDAO {
             rs.close();
             selectStmt.close();
             
-            // 2. Elimina le offerte
             String deleteOfferte = "DELETE FROM OFFERTA WHERE idAnnuncio = ?";
             PreparedStatement deleteOfferteStmt = conn.prepareStatement(deleteOfferte);
             deleteOfferteStmt.setInt(1, idAnnuncio);
@@ -119,7 +121,6 @@ public class OffertaDAO {
             e.printStackTrace();
         }
 
-        // 3. Ritorna gli id delle offerte eliminate
         return 0;
     }
 }

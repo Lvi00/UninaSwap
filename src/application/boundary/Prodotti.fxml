@@ -76,57 +76,63 @@
                <children>
                   <AnchorPane prefHeight="498.0" prefWidth="949.0">
                      <children>
-
-                        <!-- Barra di ricerca -->
-                        <TextField fx:id="campoRicerca" layoutX="51.0" layoutY="37.0" prefHeight="34.0" prefWidth="255.0" promptText="Cerca annunci per titolo" styleClass="campi">
-                           <font>
-                              <Font size="14.0" />
-                           </font></TextField>
-                        <Button layoutX="701.0" layoutY="35.0" mnemonicParsing="false" onMouseClicked="#resetFiltri" prefHeight="30.0" prefWidth="45.0" styleClass="tasto-terziario">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor></Button>
-                        <ImageView fitHeight="25.0" fitWidth="33.0" layoutX="711.0" layoutY="41.0" onMouseClicked="#resetFiltri" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../IMG/immaginiProgramma/clean.png" />
-                           </image>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </ImageView>
-                        <ChoiceBox fx:id="campoTipologia" layoutX="477.0" layoutY="37.0" prefHeight="34.0" prefWidth="150.0" />
-                        <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="317.0" layoutY="37.0" prefHeight="34.0" prefWidth="150.0" />
+                        <AnchorPane prefHeight="130.0" prefWidth="950.0">
+                           <children>
+      
+                                                                  <!-- Barra di ricerca -->
+                              <TextField fx:id="campoRicerca" layoutX="47.0" layoutY="38.0" prefHeight="34.0" prefWidth="255.0" promptText="Cerca annunci per titolo" styleClass="campi">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </TextField>
+                              <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="315.0" layoutY="38.0" prefHeight="34.0" prefWidth="150.0" />
+                              <ChoiceBox fx:id="campoTipologia" layoutX="475.0" layoutY="38.0" prefHeight="34.0" prefWidth="150.0" />
+                              <Button layoutX="702.0" layoutY="36.0" mnemonicParsing="false" onMouseClicked="#resetFiltri" prefHeight="30.0" prefWidth="45.0" styleClass="tasto-terziario">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                              <ImageView fitHeight="25.0" fitWidth="33.0" layoutX="712.0" layoutY="42.0" onMouseClicked="#resetFiltri" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../IMG/immaginiProgramma/clean.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                              <Button layoutX="642.0" layoutY="35.0" mnemonicParsing="false" onMouseClicked="#getInfoFiltri" prefHeight="30.0" prefWidth="45.0" styleClass="tasto-secondario">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                              <ImageView fitHeight="25.0" fitWidth="33.0" layoutX="652.0" layoutY="43.0" onMouseClicked="#getInfoFiltri" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../IMG/immaginiProgramma/search.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                              <Label fx:id="labelAnnunciTrovati" layoutX="54.0" layoutY="95.0" style="-fx-font-weight: bold;">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
 
                         <!-- Scroll con GridPane -->
-                        <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="88.0" prefHeight="410.0" prefWidth="952.0">
+                        <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="120.0" prefHeight="378.0" prefWidth="952.0">
                            <content>
                               <AnchorPane id="pannelloScrollabile" prefHeight="387.0" prefWidth="930.0">
                                  <children>
-                                    <GridPane fx:id="gridProdotti" alignment="CENTER" hgap="50" layoutX="40" layoutY="40" vgap="40">
+                                    <GridPane fx:id="gridProdotti" alignment="CENTER" hgap="50.0" layoutX="40.0" layoutY="10.0" vgap="40">
                                        <!-- I prodotti verranno aggiunti dinamicamente -->
                                     </GridPane>
                                  </children>
                               </AnchorPane>
                            </content>
                         </ScrollPane>
-                        <Button layoutX="641.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#getInfoFiltri" prefHeight="30.0" prefWidth="45.0" styleClass="tasto-secondario">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <ImageView fitHeight="25.0" fitWidth="33.0" layoutX="651.0" layoutY="42.0" onMouseClicked="#getInfoFiltri" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../IMG/immaginiProgramma/search.png" />
-                           </image>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </ImageView>
-                        <Label fx:id="labelAnnunciTrovati" layoutX="55.0" layoutY="90.0" style="-fx-font-weight: bold;">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
 
                      </children>
                   </AnchorPane>

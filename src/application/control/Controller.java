@@ -261,7 +261,32 @@ public class Controller {
 	
 	public int inviaOffertaRegalo(Annuncio a, String Motivazione){
 		Offerta offerta = new Offerta(a.getTipologia());
-		return new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(),Motivazione);
+		return new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(), Motivazione);
+	}
+	
+	public int inviaOffertaScambio(Annuncio a, ArrayList<Oggetto> listaOggettiOfferti)
+	{
+        if(listaOggettiOfferti.isEmpty()) return 1;
+        
+        OggettoDAO oggettoDao = new OggettoDAO();
+        OffertaDAO offertaDao = new OffertaDAO();
+        OggettiOffertiDAO oggettiOffertiDao = new OggettiOffertiDAO();
+        
+		Offerta offerta = new Offerta(a.getTipologia());
+		
+		int idOffertaInserita = 0;
+		int idOggettoInserito = 0;
+		
+        idOffertaInserita = offertaDao.SaveOfferta(a, offerta, this.studente.getMatricola(), "");
+        
+        if(idOffertaInserita == -1) return -1;
+        
+        for(Oggetto o: listaOggettiOfferti){
+        	idOggettoInserito = oggettoDao.SaveOggetto(o);
+        	oggettiOffertiDao.SaveOggettoOfferto(idOffertaInserita, idOggettoInserito);
+        }
+        
+		return 0;
 	}
 	
 	public int checkControfferta(Annuncio a, String stringaPrezzo) {
@@ -292,35 +317,6 @@ public class Controller {
 		return 0;
 	}
 	
-	public int inviaOffertaScambio(Annuncio a, ArrayList<Oggetto> listaOggettiOfferti)
-	{
-        if (listaOggettiOfferti.isEmpty()) {
-        	return 1;
-        }
-        
-        OggettoDAO oggettoDao = new OggettoDAO();
-        OffertaDAO offertaDao = new OffertaDAO();
-        OggettiOffertiDAO oggettiOffertiDao = new OggettiOffertiDAO();
-		Offerta offerta = new Offerta(a.getTipologia());
-		
-		int idOffertaInserita = 0;
-		int idOggettoInserito = 0;
-		
-        idOffertaInserita = offertaDao.SaveOfferta(a, offerta, this.studente.getMatricola(), "");
-        if(idOffertaInserita == -1)
-        {
-        	return -1;
-        }
-        for(Oggetto o : listaOggettiOfferti)
-        {
-        	idOggettoInserito = oggettoDao.SaveOggetto(o);
-        	System.out.println("idOggetto: " + idOggettoInserito + " idOfferta: " + idOffertaInserita);
-        	oggettiOffertiDao.SaveOggettoOfferto(idOffertaInserita, idOggettoInserito);
-        }
-        
-		return 0;
-	}
-	
 	public int rimuoviAnnuncio(Annuncio a) {
 		return new AnnuncioDAO().rimuoviAnnuncio(a);
 	}
@@ -336,7 +332,4 @@ public class Controller {
 	public int rimuoviOggetto(int idOggetto) {
 		return new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
 	}
-	
-	
-
 }

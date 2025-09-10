@@ -312,10 +312,9 @@ public class AnnunciStudenteBoundary {
             CostruisciProdottiUtente(controller.getStudente());
             ShowPopupAlert("Rimozione avvenuta", "L'annuncio è stato rimosso con successo.");
         }
-        
         else {
-        	System.out.println("Errore nella rimozione dell'annuncio.");
-        }
+			ShowPopupAlert("Rimozione fallita", "Si è verificato un errore durante la rimozione dell'annuncio.");
+		}
     }
     
     private void ShowPopupAlert(String title, String message) {
