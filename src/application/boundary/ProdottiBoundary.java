@@ -36,6 +36,7 @@ public class ProdottiBoundary {
 
     @FXML private HBox containerCatalogoProdotti;
     @FXML private Label usernameDashboard;
+    @FXML private Label labelAnnunciTrovati;
     @FXML private GridPane gridProdotti;
     @FXML private AnchorPane contentPane;
     @FXML private ImageView immagineNav;
@@ -214,10 +215,14 @@ public class ProdottiBoundary {
         }
     }
     
-    public boolean CostruisciCatalogoProdotti(Studente s) {
+    public void CostruisciCatalogoProdotti(Studente s) {
 
         ArrayList<Annuncio> annunci = controller.getInfoAnnunci(s.getMatricola());
-
+        	
+    	if(annunci.isEmpty()) labelAnnunciTrovati.setText("Nessun annuncio trovato");
+    	else if(annunci.size() == 1) labelAnnunciTrovati.setText(annunci.size() + " annuncio trovato");
+    	else labelAnnunciTrovati.setText(annunci.size() + " annunci trovati");
+    	
         pulisciCatalogo();
         
         int column = 0;
@@ -233,15 +238,13 @@ public class ProdottiBoundary {
                 row++;
             }
         }
-        
-        return true;
     }
 
     private VBox creaCardAnnuncio(Annuncio a) {
         VBox box = new VBox();
-        box.setSpacing(8);
         box.setPrefWidth(230);
         box.setPrefHeight(300);
+        box.setSpacing(5);
         box.setAlignment(Pos.TOP_CENTER);
         box.getStyleClass().add("card-annuncio");
 
@@ -293,9 +296,8 @@ public class ProdottiBoundary {
 
         Button btn = new Button("Scopri");
         btn.getStyleClass().add("tasto-secondario");
-        btn.setPrefWidth(150);
+        btn.setPrefWidth(130);
         btn.setOnMouseClicked(e -> showPopupOfferte(e, a));
-        VBox.setMargin(btn, new Insets(5, 0, 5, 0));
 
         box.getChildren().addAll(titolo, prezzo, tipo, venditore, disponibilità, btn);
 
@@ -373,12 +375,16 @@ public class ProdottiBoundary {
 
         pulisciCatalogo();
 
-        ArrayList<Annuncio> annunci = controller.getAnnunciByFiltri(keyword, categoria, tipologia);
+        ArrayList<Annuncio> annunciFiltrati = controller.getAnnunciByFiltri(keyword, categoria, tipologia);
+        
+    	if(annunciFiltrati.isEmpty()) labelAnnunciTrovati.setText("Nessun annuncio trovato");
+    	else if(annunciFiltrati.size() == 1) labelAnnunciTrovati.setText(annunciFiltrati.size() + " annuncio trovato");
+    	else labelAnnunciTrovati.setText(annunciFiltrati.size() + " annunci trovati");
 
         int column = 0;
         int row = 0;
 
-        for (Annuncio a : annunci) {
+        for (Annuncio a : annunciFiltrati) {
             VBox card = creaCardAnnuncio(a);
             gridProdotti.add(card, column, row);
 

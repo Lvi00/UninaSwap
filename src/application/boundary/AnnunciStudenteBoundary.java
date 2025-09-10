@@ -216,9 +216,9 @@ public class AnnunciStudenteBoundary {
 
     private VBox creaCardAnnuncio(Annuncio a) {
         VBox box = new VBox();
-        box.setSpacing(8);
         box.setPrefWidth(230);
         box.setPrefHeight(300);
+        box.setSpacing(5);
         box.setAlignment(Pos.TOP_CENTER);
         box.getStyleClass().add("card-annuncio");
 

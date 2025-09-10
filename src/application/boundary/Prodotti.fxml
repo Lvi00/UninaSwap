@@ -98,7 +98,7 @@
                         <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="317.0" layoutY="37.0" prefHeight="34.0" prefWidth="150.0" />
 
                         <!-- Scroll con GridPane -->
-                        <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="81.0" prefHeight="417.0" prefWidth="952.0">
+                        <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="88.0" prefHeight="410.0" prefWidth="952.0">
                            <content>
                               <AnchorPane id="pannelloScrollabile" prefHeight="387.0" prefWidth="930.0">
                                  <children>
@@ -122,6 +122,11 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
+                        <Label fx:id="labelAnnunciTrovati" layoutX="55.0" layoutY="90.0" style="-fx-font-weight: bold;">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
 
                      </children>
                   </AnchorPane>
