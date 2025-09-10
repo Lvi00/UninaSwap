@@ -320,10 +320,8 @@ public class AnnuncioDAO {
 	        resultSet.close();
 	        checkStatement.close();
 	        
-	        if(controller.rimuoviOfferte(idAnnuncio) == 1) return 1;
-	        
-	        if(controller.rimuoviOggetto(idAnnuncio) == 1) return 1;
-	        
+	        controller.rimuoviOfferte(idAnnuncio);
+	        	        	        	        
 	        String deleteAnnuncio = "DELETE FROM ANNUNCIO WHERE idAnnuncio = ?";
 	        PreparedStatement deleteAnnuncioStmt = conn.prepareStatement(deleteAnnuncio);
 	        deleteAnnuncioStmt.setInt(1, idAnnuncio);
@@ -334,6 +332,8 @@ public class AnnuncioDAO {
 	            System.out.println("Errore: eliminazione annuncio fallita.");
 	            return 1;
 	        }
+	        
+	        controller.rimuoviOggetto(idOggetto);
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();

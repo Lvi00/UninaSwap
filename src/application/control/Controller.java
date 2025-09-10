@@ -307,7 +307,10 @@ public class Controller {
 		int idOggettoInserito = 0;
 		
         idOffertaInserita = offertaDao.SaveOfferta(a, offerta, this.studente.getMatricola(), "");
-        
+        if(idOffertaInserita == -1)
+        {
+        	return -1;
+        }
         for(Oggetto o : listaOggettiOfferti)
         {
         	idOggettoInserito = oggettoDao.SaveOggetto(o);
@@ -326,7 +329,14 @@ public class Controller {
 		return new OffertaDAO().rimuoviOfferteByIdAnnuncio(idAnnuncio);
 	}
 	
+	public int rimuoviOggettiOfferti(int idOfferta) {
+		return new OggettiOffertiDAO().rimuoviOggettiOffertiByIdOfferta(idOfferta);
+	}
+	
 	public int rimuoviOggetto(int idOggetto) {
 		return new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
 	}
+	
+	
+
 }

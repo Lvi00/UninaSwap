@@ -380,7 +380,7 @@ public class PopupOfferteBoundary {
     	            ShowPopupError("Errore nella richiesta", "La richiesta di " + annuncio.getTipologia() + " non è stata inviata a causa di un errore nei dati inseriti.");
     	        break;
 
-    	        case 2: // offerta duplicata
+    	        case -1: // offerta duplicata
     	            ShowPopupError("Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
     	        break;
     	    }
@@ -396,6 +396,10 @@ public class PopupOfferteBoundary {
 
 	        case 1: // errore generico
     			ShowPopupError("Nessun oggetto aggiunto", "Non hai ancora aggiunto oggetti da offrire per lo scambio.");
+	        break;
+	        
+	        case -1: // offerta duplicata
+	            ShowPopupError("Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
 	        break;
     	    }
     	}
@@ -431,7 +435,7 @@ public class PopupOfferteBoundary {
                 ShowPopupError("Controfferta non valida!", "La controfferta deve avere max 3 cifre per la parte intera e max 2 cifre per quella decimale e (0 < controfferta < prezzo).");
             break;
 
-            case 2:
+            case -1:
                 ShowPopupError("Offerta già esistente!","Hai già effettuato un'offerta per questo annuncio.");
             break;
 

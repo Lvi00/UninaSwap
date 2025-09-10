@@ -2,11 +2,17 @@ package application.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import application.control.Controller;
+import application.entity.Annuncio;
 import application.resources.ConnessioneDB;
 
 public class OggettiOffertiDAO {
+	private Controller controller = new Controller();
+
 	public void SaveOggettoOfferto(int idOfferta, int idOggetto) {
 		try {
 			Connection conn = ConnessioneDB.getConnection();
@@ -22,5 +28,38 @@ public class OggettiOffertiDAO {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	public int rimuoviOggettiOffertiByIdOfferta(int idOfferta) {
+	    try {
+	        Connection conn = ConnessioneDB.getConnection();
+
+	        String selectOggetti = "SELECT idOggetto FROM OggettiOfferti WHERE idOfferta = ?";
+	        PreparedStatement selectStmt = conn.prepareStatement(selectOggetti);
+	        selectStmt.setInt(1, idOfferta);
+	        ResultSet rs = selectStmt.executeQuery();
+
+	        ArrayList<Integer> oggettiDaRimuovere = new ArrayList<>();
+	        while (rs.next()) {
+	            oggettiDaRimuovere.add(rs.getInt("idOggetto"));
+	        }
+	        rs.close();
+	        selectStmt.close();
+
+	        String deleteOfferte = "DELETE FROM OggettiOfferti WHERE idOfferta = ?";
+	        PreparedStatement deleteOfferteStmt = conn.prepareStatement(deleteOfferte);
+	        deleteOfferteStmt.setInt(1, idOfferta);
+	        deleteOfferteStmt.executeUpdate();
+	        deleteOfferteStmt.close();
+
+	        for (Integer idOggetto : oggettiDaRimuovere) {
+	            controller.rimuoviOggetto(idOggetto);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return 1;
+	    }
+	    return 0;
 	}
 }
