@@ -259,6 +259,12 @@ public class Controller {
 		new AnnuncioDAO().cambiaStatoAnnuncio(a);
 	}
 	
+	public int inviaOffertaVendita(Annuncio a) {
+		Offerta offerta = new Offerta(a.getTipologia());
+		offerta.setPrezzoOfferta(a.getPrezzo());
+		return new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(), "");
+	}
+	
 	public int inviaOffertaRegalo(Annuncio a, String Motivazione){
 		Offerta offerta = new Offerta(a.getTipologia());
 		return new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(), Motivazione);
@@ -266,27 +272,34 @@ public class Controller {
 	
 	public int inviaOffertaScambio(Annuncio a, ArrayList<Oggetto> listaOggettiOfferti)
 	{
-        if(listaOggettiOfferti.isEmpty()) return 1;
-        
-        OggettoDAO oggettoDao = new OggettoDAO();
         OffertaDAO offertaDao = new OffertaDAO();
-        OggettiOffertiDAO oggettiOffertiDao = new OggettiOffertiDAO();
         
 		Offerta offerta = new Offerta(a.getTipologia());
 		
 		int idOffertaInserita = 0;
-		int idOggettoInserito = 0;
 		
         idOffertaInserita = offertaDao.SaveOfferta(a, offerta, this.studente.getMatricola(), "");
         
+        //Offerta già esistente
         if(idOffertaInserita == -1) return -1;
         
-        for(Oggetto o: listaOggettiOfferti){
-        	idOggettoInserito = oggettoDao.SaveOggetto(o);
-        	oggettiOffertiDao.SaveOggettoOfferto(idOffertaInserita, idOggettoInserito);
+        if(!listaOggettiOfferti.isEmpty()) {
+        	
+            OggettoDAO oggettoDao = new OggettoDAO();
+            OggettiOffertiDAO oggettiOffertiDao = new OggettiOffertiDAO();
+    		int idOggettoInserito = 0;
+    		
+	        for(Oggetto o: listaOggettiOfferti){
+	        	idOggettoInserito = oggettoDao.SaveOggetto(o);
+	        	oggettiOffertiDao.SaveOggettoOfferto(idOffertaInserita, idOggettoInserito);
+	        }
+	        
+	        //Richiesta di scambio con oggetti offerti inserita correttamente
+			return 1;
         }
         
-		return 0;
+        //Richiesta di scambio normale inserita correttamente
+        return 0;
 	}
 	
 	public int checkControfferta(Annuncio a, String stringaPrezzo) {

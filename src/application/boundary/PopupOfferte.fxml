@@ -91,7 +91,7 @@
                            </font>
                         </Label>
                         <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="252.0" layoutY="69.0" prefHeight="34.0" prefWidth="209.0" />
-                        <Label layoutX="252.0" layoutY="106.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Descrizione annuncio">
+                        <Label layoutX="252.0" layoutY="106.0" prefHeight="25.0" prefWidth="151.0" styleClass="label-login-registrazione" text="Descrizione oggetto">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -180,8 +180,9 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <Button fx:id="aggiungiOggetto" layoutX="540.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#aggiungiOggettoDaScambiare" styleClass="tasto-secondario" text="Aggiungi oggetto" visible="false" />
+                  <Button fx:id="aggiungiOggetto" layoutX="545.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#aggiungiOggettoDaScambiare" styleClass="tasto-secondario" text="Aggiungi oggetto" visible="false" />
                   <Button fx:id="oggettiOffertiButton" layoutX="409.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#mostraOggettiOfferti" styleClass="tasto-terziario" text="Oggetti offerti" visible="false" />
+                  <Button fx:id="mostraCampiScambio" layoutX="574.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#mostraCampiScambio" styleClass="tasto-secondario" text="Offri oggetti" visible="false" />
                   </children>
               </AnchorPane>
             <AnchorPane fx:id="paneOggettiOfferti" prefHeight="438.0" prefWidth="815.0" visible="false">

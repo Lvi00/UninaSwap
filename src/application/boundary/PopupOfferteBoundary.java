@@ -65,6 +65,7 @@ public class PopupOfferteBoundary {
     @FXML private Button mostraOfferta;
     @FXML private Button oggettiOffertiButton;
     @FXML private Button sendButton;
+    @FXML private Button mostraCampiScambio;
     @FXML private ImageView sendImage;
     @FXML private Button controffertaButton;
     @FXML private ImageView backImage;
@@ -158,30 +159,29 @@ public class PopupOfferteBoundary {
                 
                 switch(this.annuncio.getTipologia()) {
 	                case "Scambio":
-	                	buttonOfferta.setText("Scambio");
-	                	controffertaButton.setVisible(false);
-	                	PaneOfferteScambio.setVisible(true);
-	                	aggiungiOggetto.setVisible(true);
-	                	oggettiOffertiButton.setVisible(true);
-	                	buttonOfferta.onMouseClickedProperty().set(e -> inviaOfferta(e));
-	                break;
+	                    buttonOfferta.setText("Proponi");
+	                    buttonOfferta.onMouseClickedProperty().set(e -> inviaOfferta(e));
+	                    controffertaButton.setVisible(false);
+	                    mostraCampiScambio.setVisible(true);
+	                    aggiungiOggetto.setVisible(false);
+	                    oggettiOffertiButton.setVisible(false);
+                    break;
 	                
 	                case "Vendita":
 						buttonOfferta.setText("Acquista");
+	                	buttonOfferta.onMouseClickedProperty().set(e -> inviaOfferta(e));
 						controffertaButton.setVisible(true);
 	                	aggiungiOggetto.setVisible(false);
 	                	oggettiOffertiButton.setVisible(false);
-	                	//Manca PaneOfferteVendita.setVisible(true); perche non serve in quanto abbiamo MostraControfferta
-	                	buttonOfferta.onMouseClickedProperty().set(e -> AcquistaOggetto(e));
 					break;
 					
 					case "Regalo":
 						buttonOfferta.setText("Richiedi");
+	                	buttonOfferta.onMouseClickedProperty().set(e -> inviaOfferta(e));
 	                	controffertaButton.setVisible(false);
 	                	PaneOfferteRegalo.setVisible(true);
 	                	aggiungiOggetto.setVisible(false);
 	                	oggettiOffertiButton.setVisible(false);
-	                	buttonOfferta.onMouseClickedProperty().set(e -> inviaOfferta(e));
 					break;
                 }
 
@@ -189,20 +189,6 @@ public class PopupOfferteBoundary {
                 e.printStackTrace();
             }
         }
-    }
-    
-    @FXML
-    public void AcquistaOggetto(MouseEvent e) {
-        controller.AcquistaOggetto(this.annuncio);
-        
-        if (prodottiBoundary != null) {
-            prodottiBoundary.CostruisciCatalogoProdotti(controller.getStudente());
-        }
-
-        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-        currentStage.close();
-        
-        ShowPopupAlert("Acquisto effettuato!", "Il prodotto è stato acquistato con successo.");
     }
     
     @FXML
@@ -359,8 +345,22 @@ public class PopupOfferteBoundary {
     public void inviaOfferta(MouseEvent e) { 
     	Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
     	
-    	if(this.annuncio.getTipologia().equals("Regalo")) {
+    	if(this.annuncio.getTipologia().equals("Vendita")) {
+    		switch(controller.inviaOffertaVendita(this.annuncio)) {
+	    		case 0:
+	    	        currentStage.close(); 
+	    	        ShowPopupAlert("Acquisto effettuato!", "Il prodotto è stato acquistato con successo.");
+	    		break;
+	    		
+	            case -1:
+	                ShowPopupError("Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
+	            break;
+    		}
+    	}
+    	
+    	else if(this.annuncio.getTipologia().equals("Regalo")) {
     	    String messaggioMotivazionale = campoDescrizioneAnnuncioRegalo.getText();
+    	    
     	    if (messaggioMotivazionale == null || messaggioMotivazionale.trim().isEmpty()) 
     	    {
     	    	messaggioMotivazionale = "Assente";
@@ -385,22 +385,23 @@ public class PopupOfferteBoundary {
     	        break;
     	    }
     	}
+    	
     	else if(this.annuncio.getTipologia().equals("Scambio"))
     	{
-
     	    switch(controller.inviaOffertaScambio(this.annuncio, this.listaOggettiOfferti)) {
-	        case 0: // offerta inviata correttamente
-                currentStage.close();
-	            ShowPopupAlert("Richiesta inviata!",  "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
-	        break;
-
-	        case 1: // errore generico
-    			ShowPopupError("Nessun oggetto aggiunto", "Non hai ancora aggiunto oggetti da offrire per lo scambio.");
-	        break;
-	        
-	        case -1: // offerta duplicata
-	            ShowPopupError("Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
-	        break;
+		        case 0: // offerta di scambio normale inviata correttamente
+	                currentStage.close();
+		            ShowPopupAlert("Richiesta inviata!",  "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
+		        break;
+	
+		        case 1: // offerta di scambio personalizzata inviata correttamente
+		        	currentStage.close();
+		            ShowPopupAlert("Richiesta personalizzata inviata!",  "La richiesta di " + annuncio.getTipologia() + " con gli oggetti inseriti è stata inviata con successo.");
+		        break;
+		        
+		        case -1: // offerta duplicata
+		            ShowPopupError("Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
+		        break;
     	    }
     	}
     }
@@ -547,4 +548,12 @@ public class PopupOfferteBoundary {
 			ex.printStackTrace();
 		}
 	}
+    
+    @FXML
+    public void mostraCampiScambio(MouseEvent e) {
+    	mostraCampiScambio.setVisible(false);
+    	PaneOfferteScambio.setVisible(true);
+    	aggiungiOggetto.setVisible(true);
+    	oggettiOffertiButton.setVisible(true);
+    }
 }

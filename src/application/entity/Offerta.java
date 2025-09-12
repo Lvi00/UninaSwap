@@ -1,26 +1,26 @@
 package application.entity;
 
 public class Offerta {
-	private String statoofferta;
-    private double prezzoofferta = 0;
+	private String statoOfferta;
+    private double prezzoOfferta = 0;
     private String tipologia;
 
 	    public Offerta(String tipologia) { 
-	        this.statoofferta = "Attesa";
+	        this.statoOfferta = "Attesa";
 	        this.tipologia = tipologia;
 	    }
 
-	    public void setPrezzoOfferta(double prezzoofferta)
+	    public void setPrezzoOfferta(double prezzoOfferta)
 	    {
-	        this.prezzoofferta = prezzoofferta;
+	        this.prezzoOfferta = prezzoOfferta;
 	    }
 
 	    public String getStatoOfferta() {
-	        return statoofferta;
+	        return statoOfferta;
 	    }
 
 	    public double getPrezzoOfferta() {
-	        return prezzoofferta;
+	        return prezzoOfferta;
 	    }
 
 	    public String getTipologia() {
