@@ -129,11 +129,6 @@ public class Controller {
 		return new OggettoDAO().getIdByOggetto(oggetto);
 	}
 	
-	
-	public Sede getSedeById(int idSede) {
-		return new SedeDAO().getSedeById(idSede);
-	}
-	
 	public int getIdBySede(Sede sede) {
 		return new SedeDAO().getIdBySede(sede);
 	}
@@ -344,5 +339,13 @@ public class Controller {
 	
 	public int rimuoviOggetto(int idOggetto) {
 		return new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
+	}
+	
+	public Studente getStudenteByMatricola(String matricola) {
+		return new StudenteDAO().getStudenteByMatricola(matricola);
+	}
+	
+	public Sede getSedeById(int idSede) {
+		return new SedeDAO().getSedeById(idSede);
 	}
 }

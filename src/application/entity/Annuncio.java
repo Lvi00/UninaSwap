@@ -10,7 +10,7 @@ public class Annuncio {
     private String descrizioneAnnuncio;
     private Oggetto oggetto;
     private Sede sede;
-    private String giorni; 
+    private String giorni;
 
     public Annuncio(String titoloAnnuncio,
                     boolean statoAnnuncio,

@@ -1,6 +1,5 @@
 package application.DAO;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,6 +45,7 @@ public class StudenteDAO{
 	public Studente LoginStudente(String username, String password){
 		
 		Studente studente = null;
+		
 		try {
 		    Connection conn = ConnessioneDB.getConnection();
 		    String query = "SELECT * FROM STUDENTE WHERE username = ? AND passkey = ?";

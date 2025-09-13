@@ -290,16 +290,17 @@ public class ProdottiBoundary {
 
         Label venditore = new Label("Pubblicato da " + a.getOggetto().getStudente().getUsername());
         venditore.setStyle("-fx-text-fill: #153464;");
-
-        Label disponibilità =  new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
+        
+        Label disponibilità = new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
         + "\ndalle " + a.getFasciaOrariaInizio() + " alle " + a.getFasciaOrariaFine());
 
-        Button btn = new Button("Scopri");
-        btn.getStyleClass().add("tasto-secondario");
-        btn.setPrefWidth(130);
-        btn.setOnMouseClicked(e -> showPopupOfferte(e, a));
+        Button button = new Button("Scopri");
+        button.getStyleClass().add("tasto-secondario");
+        button.setPrefWidth(130);
+        VBox.setMargin(button, new Insets(4, 0, 4, 0));
+        button.setOnMouseClicked(e -> showPopupOfferte(e, a));
 
-        box.getChildren().addAll(titolo, prezzo, tipo, venditore, disponibilità, btn);
+        box.getChildren().addAll(titolo, prezzo, tipo, venditore, disponibilità, button);
 
         return box;
     }

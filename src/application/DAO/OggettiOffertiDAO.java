@@ -39,7 +39,8 @@ public class OggettiOffertiDAO {
 	        selectStmt.setInt(1, idOfferta);
 	        ResultSet rs = selectStmt.executeQuery();
 
-	        ArrayList<Integer> oggettiDaRimuovere = new ArrayList<>();
+	        ArrayList<Integer> oggettiDaRimuovere = new ArrayList<Integer>();
+	        
 	        while (rs.next()) {
 	            oggettiDaRimuovere.add(rs.getInt("idOggetto"));
 	        }

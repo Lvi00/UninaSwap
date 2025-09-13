@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import application.control.Controller;
 import application.entity.Oggetto;
-import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
 public class OggettoDAO {
@@ -72,16 +71,12 @@ public class OggettoDAO {
 		    statement.setInt(1, idOggetto);
             ResultSet rs = statement.executeQuery();
             
-            if(rs.next()) {
-            	String matricola = rs.getString("matstudente");
-            	StudenteDAO studenteDao = new StudenteDAO();
-            	Studente studente = studenteDao.getStudenteByMatricola(matricola);
-            	
+            if(rs.next()) {            	
             	oggetto = new Oggetto(
 					rs.getString("immagineoggetto"),
 					rs.getString("categoria"),
 					rs.getString("descrizione"),
-					studente
+	            	controller.getStudenteByMatricola(rs.getString("matstudente"))
 				);
             }
 

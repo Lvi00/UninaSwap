@@ -23,7 +23,7 @@
     <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
-              <AnchorPane fx:id="paneOfferta" prefHeight="400.0" prefWidth="814.0">
+              <AnchorPane fx:id="paneOfferta" prefHeight="450.0" prefWidth="814.0">
                   <children>
                       <ImageView fx:id="immagineAnnuncio" fitHeight="150.0" fitWidth="240.0" layoutX="35.0" layoutY="20.0" smooth="false" />
       
@@ -71,9 +71,6 @@
                         </Button>
       				    </children>
       				</VBox>
-      
-                      <Label layoutX="35.0" layoutY="407.0" text="Disponibilità:" />
-                      <Label fx:id="disponibilitàAnnuncio" layoutX="111.0" layoutY="407.0" />
                   <AnchorPane fx:id="PaneOfferteScambio" layoutX="296.0" layoutY="146.0" prefHeight="249.0" prefWidth="503.0" visible="false">
                      <children>
                         <StackPane fx:id="imageScambio" layoutX="55.0" layoutY="41.0" prefHeight="108.0" prefWidth="138.0">
@@ -183,6 +180,11 @@
                   <Button fx:id="aggiungiOggetto" layoutX="545.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#aggiungiOggettoDaScambiare" styleClass="tasto-secondario" text="Aggiungi oggetto" visible="false" />
                   <Button fx:id="oggettiOffertiButton" layoutX="409.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#mostraOggettiOfferti" styleClass="tasto-terziario" text="Oggetti offerti" visible="false" />
                   <Button fx:id="mostraCampiScambio" layoutX="574.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#mostraCampiScambio" styleClass="tasto-secondario" text="Offri oggetti" visible="false" />
+      
+                      <Label layoutX="35.0" layoutY="399.0" prefHeight="17.0" prefWidth="74.0" text="Disponibilità:" wrapText="true" />
+                      <Label fx:id="disponibilitàAnnuncio" layoutX="111.0" layoutY="399.0" />
+                  <Label layoutX="35.0" layoutY="419.0" prefHeight="17.0" prefWidth="53.0" text="Indirizzo:" wrapText="true" />
+                  <Label fx:id="sedeAnnuncio" layoutX="90.0" layoutY="419.0" />
                   </children>
               </AnchorPane>
             <AnchorPane fx:id="paneOggettiOfferti" prefHeight="438.0" prefWidth="815.0" visible="false">

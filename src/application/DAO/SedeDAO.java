@@ -42,42 +42,41 @@ public class SedeDAO {
 	                System.out.println("Errore: inserimento fallito.");
 	            }
 		    }
-		    
-		    
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	 public Sede getSedeById(int idSede) {
-	    	Sede sede = null;
-	    	
-	        try {        	
-	            Connection conn = ConnessioneDB.getConnection();
-	            String query = "SELECT * FROM SEDE WHERE idsede = ?";
-	            PreparedStatement statement = conn.prepareStatement(query);
-			    statement.setInt(1, idSede);
-	            ResultSet rs = statement.executeQuery();
-	            
-	            if(rs.next()) {
-	            	sede = new Sede(
-						rs.getString("ptop"),
-						rs.getString("descrizione"),
-						rs.getString("civico"),
-						rs.getString("cap")
-					);
-	            }
+	 
+	public Sede getSedeById(int idSede) {
+	    Sede sede = null;
 
-	            rs.close();
-	            statement.close();
-	            
-	        } catch (SQLException ex) {
-	            ex.printStackTrace();
+	    String query = "SELECT * FROM SEDE WHERE idsede = ?";
+
+	    try {
+	    	Connection conn = ConnessioneDB.getConnection();
+	        PreparedStatement statement = conn.prepareStatement(query);
+	        statement.setInt(1, idSede);
+	        ResultSet rs = statement.executeQuery();
+
+	        if (rs.next()) {
+	            sede = new Sede(
+	                rs.getString("ptop"),
+	                rs.getString("descrizione"),
+	                rs.getString("civico"),
+	                rs.getString("cap")
+	            );
 	        }
+	        
+	        rs.close();
+	    }
+	    catch (SQLException ex) {
+	        ex.printStackTrace();
+	    }
 
-	        return sede;
-	 }
+	    return sede;
+	}
+
 	 
 	 public int getIdBySede(Sede sede) {
 		    int idSede = 0;
@@ -105,5 +104,4 @@ public class SedeDAO {
 
 		    return idSede;
 		}
-
 }

@@ -291,9 +291,9 @@ public class AnnunciStudenteBoundary {
 
         Label tipo = new Label(a.getOggetto().getCategoria() + " - " + a.getTipologia());
         tipo.setStyle("-fx-text-fill: gray;");
-
-        Label disponibilità = new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
-                + "\ndalle " + a.getFasciaOrariaInizio() + " alle " + a.getFasciaOrariaFine());
+        
+        Label disponibilità =  new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
+        + "\ndalle " + a.getFasciaOrariaInizio() + " alle " + a.getFasciaOrariaFine());
 
         VBox boxPrezzo = new VBox();
         boxPrezzo.setAlignment(Pos.CENTER);

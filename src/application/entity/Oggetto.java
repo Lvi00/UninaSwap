@@ -12,7 +12,7 @@ public class Oggetto {
         this.descrizione = descrizione;
         this.studente = studente;
     }
-
+    
     public String getImmagineOggetto() {
         return immagineOggetto;
     }

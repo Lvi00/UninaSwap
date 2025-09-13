@@ -7,13 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
-import application.entity.Oggetto;
 import application.resources.ConnessioneDB;
 
 public class AnnuncioDAO {
 	
 	private Controller controller = new Controller();
-
 
 	public void SaveAnnuncio(Annuncio annuncio) {
 		try {
@@ -35,9 +33,7 @@ public class AnnuncioDAO {
 		    checkStatement.setString(8, matStudente);
 		    checkStatement.setInt(9, idoggetto);
 		    checkStatement.setInt(10, idsede);		    
-		    checkStatement.setString(11, annuncio.getGiorni());
-
-		    
+		    checkStatement.setString(11, annuncio.getGiorni());		    
 		    
 		    ResultSet resultSet = checkStatement.executeQuery();
 		    
@@ -147,7 +143,7 @@ public class AnnuncioDAO {
     }
     
     public ArrayList<Annuncio> getAnnunciByFiltri(String matricola, String keyword, String categoria, String tipologia) {
-        ArrayList<Annuncio> annunci = new ArrayList<>();
+        ArrayList<Annuncio> annunci = new ArrayList<Annuncio>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
@@ -245,8 +241,8 @@ public class AnnuncioDAO {
 	}
    
    public int getIdByAnnuncio(Annuncio annuncio) {
-	   
 	   int id = 0;
+	   
 	   try {
 		    String matStudente = annuncio.getOggetto().getStudente().getMatricola();
 		    int idOggetto = controller.getIdByOggetto(annuncio.getOggetto());

@@ -3,6 +3,7 @@ package application.boundary;
 import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Oggetto;
+import application.entity.Sede;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -45,7 +46,6 @@ public class PopupOfferteBoundary {
     }
 
     private Controller controller;
-    private ProdottiBoundary prodottiBoundary;
     @FXML private HBox containerOfferte;
     @FXML private AnchorPane paneOfferta;
     @FXML private AnchorPane paneOggettiOfferti;
@@ -55,6 +55,7 @@ public class PopupOfferteBoundary {
     @FXML private Label usernameAnnuncio;
     @FXML private Label disponibilitàAnnuncio;
     @FXML private Label categoriaAnnuncio;
+    @FXML private Label sedeAnnuncio;
     @FXML private ImageView immagineAnnuncio;
     @FXML private ImageView immagineProfilo;
     @FXML private AnchorPane PaneOfferteVendita;
@@ -97,7 +98,6 @@ public class PopupOfferteBoundary {
     public void setProdottiBoundary(ProdottiBoundary prodottiBoundary) {
         campoCategoriaOggetto.setItems(FXCollections.observableArrayList(Categorie.values()));
         campoCategoriaOggetto.getSelectionModel().selectFirst();
-        this.prodottiBoundary = prodottiBoundary;
     }
     
     public void setAnnuncio(Annuncio annuncio) {
@@ -125,6 +125,10 @@ public class PopupOfferteBoundary {
             disponibilitàAnnuncio.setText(
                 annuncio.getGiorni() + " dalle " + annuncio.getFasciaOrariaInizio() + " alle " + annuncio.getFasciaOrariaFine()
             );
+            
+            Sede sede = annuncio.getSede();
+            
+            sedeAnnuncio.setText(sede.getParticellaToponomastica() + " " + sede.getDescrizioneIndirizzo() + " " + sede.getCivico() + " " + sede.getCap());
 
             try {
                 String path = annuncio.getOggetto().getImmagineOggetto();
@@ -205,7 +209,7 @@ public class PopupOfferteBoundary {
 			case 0:
 			   Oggetto nuovoOggetto = new Oggetto(percorsoImmagine, categoriaSelezionata.toString(), descrizione, controller.getStudente());
 			   
-			   if(this.listaOggettiOfferti.size()<5)
+			   if(this.listaOggettiOfferti.size() < 5)
 			   {
 				    //Aggiungo l'oggetto all'arraylist
 				   	this.listaOggettiOfferti.add(nuovoOggetto);
