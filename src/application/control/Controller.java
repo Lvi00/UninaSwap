@@ -325,6 +325,14 @@ public class Controller {
 		return 0;
 	}
 	
+	public Studente getStudenteByMatricola(String matricola) {
+		return new StudenteDAO().getStudenteByMatricola(matricola);
+	}
+	
+	public Sede getSedeById(int idSede) {
+		return new SedeDAO().getSedeById(idSede);
+	}
+	
 	public int rimuoviAnnuncio(Annuncio a) {
 		return new AnnuncioDAO().rimuoviAnnuncio(a);
 	}
@@ -341,11 +349,13 @@ public class Controller {
 		return new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
 	}
 	
-	public Studente getStudenteByMatricola(String matricola) {
-		return new StudenteDAO().getStudenteByMatricola(matricola);
+	public int getIdByAnnuncio(Annuncio a) {
+		return new AnnuncioDAO().getIdByAnnuncio(a);
 	}
 	
-	public Sede getSedeById(int idSede) {
-		return new SedeDAO().getSedeById(idSede);
+	public ArrayList<Offerta> getOffertebyAnnuncio (Annuncio a)
+	{
+		return new OffertaDAO().getOffertebyAnn(a);
 	}
+	
 }

@@ -361,7 +361,7 @@ public class ProdottiBoundary {
 
         // Controllo campi vuoti
         if ((newKeyword == null || newKeyword.isEmpty()) && newCategoria.equals("Nessuno") && newTipologia.equals("Nessuno")) {
-            return;
+        	resetFiltri();
         }
 
         // Controllo se i filtri sono uguali ai precedenti

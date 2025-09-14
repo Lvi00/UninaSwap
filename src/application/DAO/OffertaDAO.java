@@ -123,4 +123,34 @@ public class OffertaDAO {
 
         return 0;
     }
+    
+    public ArrayList<Offerta> getOffertebyAnn(Annuncio a) {
+        ArrayList<Offerta> offerte = new ArrayList<>();
+
+        try {
+        	Connection conn = ConnessioneDB.getConnection();
+            String query = "SELECT * FROM public.offerta WHERE idannuncio = ?";
+            PreparedStatement selectStmt = conn.prepareStatement(query);
+            selectStmt.setInt(1, controller.getIdByAnnuncio(a)); 
+            ResultSet rs = selectStmt.executeQuery();
+
+            while (rs.next()) {
+                // Crea l'offerta da ciascuna riga del ResultSet
+                Offerta offerta = new Offerta(rs.getString("tipologia"));
+                offerta.setPrezzoOfferta(rs.getDouble("prezzoofferta"));
+                offerta.setStatoOfferta(rs.getString("statoofferta"));
+                offerta.setMotivazione(rs.getString("motivazione"));
+                offerta.setStudente(controller.getStudenteByMatricola(rs.getString("matstudente")));
+                
+                // Aggiungi l'offerta alla lista
+                offerte.add(offerta);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } 
+        return offerte;
+    }
+
+
 }

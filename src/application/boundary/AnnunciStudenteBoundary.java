@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
+import application.entity.Offerta;
 import application.entity.Studente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -33,10 +36,13 @@ public class AnnunciStudenteBoundary {
     @FXML private Label usernameDashboard;
     @FXML private GridPane gridProdotti;
     @FXML private TextField searchField;
-    @FXML private AnchorPane contentPane;
     @FXML private ImageView immagineNav;
     @FXML private Label labelAnnunciPubblicati;
-
+    
+    @FXML private AnchorPane AnnunciPane;
+    @FXML private AnchorPane OfferteAnnunciPane;
+    @FXML private Label labelOfferteAnnuncio;
+    
     public void setController(Controller controller) {
         this.controller = controller;
     }
@@ -214,7 +220,7 @@ public class AnnunciStudenteBoundary {
         return true;
     }
 
-    private VBox creaCardAnnuncio(Annuncio a) {
+    private VBox creaCardAnnuncio(Annuncio a) { 
         VBox box = new VBox();
         box.setPrefWidth(230);
         box.setPrefHeight(300);
@@ -222,7 +228,6 @@ public class AnnunciStudenteBoundary {
         box.setAlignment(Pos.TOP_CENTER);
         box.getStyleClass().add("card-annuncio");
 
-        // Wrapper per immagine + button
         AnchorPane imagePane = new AnchorPane();
         imagePane.setPrefWidth(230);
         imagePane.setPrefHeight(150);
@@ -251,30 +256,29 @@ public class AnnunciStudenteBoundary {
             System.out.println("Immagine non trovata: " + a.getOggetto().getImmagineOggetto());
         }
 
-        Button button = new Button();
-        button.getStyleClass().add("tasto-terziario");
-        button.setPrefSize(24, 24);
-        button.setStyle("-fx-cursor: hand;");
-        button.setOnMouseClicked(event -> rimuoviAnnuncio(a));
-        AnchorPane.setTopAnchor(button, 5.0);
-        AnchorPane.setRightAnchor(button, 5.0);
-        
-        ImageView icon = new ImageView();
+        Button buttonOffers = new Button();
+        buttonOffers.getStyleClass().add("tasto-secondario");
+        buttonOffers.setPrefSize(24, 24);
+        buttonOffers.setStyle("-fx-cursor: hand;");
+        buttonOffers.setOnMouseClicked(event -> mostraOfferteAnnuncio(a));
+
+        ImageView iconOffers = new ImageView();
         try {
-            String iconPath = "../IMG/immaginiProgramma/delete_card.png";
-            Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
-            icon.setImage(imgIcon);
-            icon.setFitWidth(22);
-            icon.setFitHeight(22);
-            icon.setPreserveRatio(true);
-        }
-        catch (Exception e) {
+            String offersPath = "../IMG/immaginiProgramma/offers.png";
+            Image imgOffers = new Image(getClass().getResource(offersPath).toExternalForm());
+            iconOffers.setImage(imgOffers);
+            iconOffers.setFitWidth(22);
+            iconOffers.setFitHeight(22);
+            iconOffers.setPreserveRatio(true);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        button.setGraphic(icon);
+        buttonOffers.setGraphic(iconOffers);
 
-        imagePane.getChildren().addAll(imageView, button);
+        AnchorPane.setTopAnchor(buttonOffers, 5.0);
+        AnchorPane.setRightAnchor(buttonOffers, 5.0);
+
+        imagePane.getChildren().addAll(imageView, buttonOffers);
 
         Label titolo = new Label(a.getTitoloAnnuncio());
         titolo.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
@@ -292,19 +296,58 @@ public class AnnunciStudenteBoundary {
         Label tipo = new Label(a.getOggetto().getCategoria() + " - " + a.getTipologia());
         tipo.setStyle("-fx-text-fill: gray;");
         
-        Label disponibilità =  new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
-        + "\ndalle " + a.getFasciaOrariaInizio() + " alle " + a.getFasciaOrariaFine());
+        Button buttonDelete = new Button();
+        buttonDelete.getStyleClass().add("tasto-terziario");
+        buttonDelete.setPrefSize(24, 24);
+        buttonDelete.setStyle("-fx-cursor: hand;");
+        buttonDelete.setOnMouseClicked(event -> rimuoviAnnuncio(a));
+
+        ImageView iconDelete = new ImageView();
+        try {
+            String iconPath = "../IMG/immaginiProgramma/delete_card.png";
+            Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
+            iconDelete.setImage(imgIcon);
+            iconDelete.setFitWidth(22);
+            iconDelete.setFitHeight(22);
+            iconDelete.setPreserveRatio(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        buttonDelete.setGraphic(iconDelete);
+
+        Label disponibilità = new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
+            + "\ndalle " + a.getFasciaOrariaInizio() + " alle " + a.getFasciaOrariaFine());
+        disponibilità.setWrapText(true);
+        disponibilità.setMaxWidth(180); // per non sovrapporsi al delete
+
+        HBox hBoxDisponibilita = new HBox(8); // spaziatura tra delete e label
+        hBoxDisponibilita.setAlignment(Pos.CENTER_LEFT);
+        hBoxDisponibilita.getChildren().addAll(buttonDelete, disponibilità);
 
         VBox boxPrezzo = new VBox();
         boxPrezzo.setAlignment(Pos.CENTER);
         boxPrezzo.setSpacing(4);
         boxPrezzo.getChildren().addAll(stato, prezzo);
 
-        // Aggiungi tutto alla card
-        box.getChildren().addAll(imagePane, titolo, boxPrezzo, tipo, disponibilità);
+        box.getChildren().addAll(imagePane, titolo, boxPrezzo, tipo, hBoxDisponibilita);
 
         return box;
     }
+
+    public void mostraOfferteAnnuncio(Annuncio a)
+    {
+    	AnnunciPane.setVisible(false);
+    	OfferteAnnunciPane.setVisible(true);
+    	labelOfferteAnnuncio.setText("Offerte dell'Annuncio: "+a.getTitoloAnnuncio());
+    	
+    	ArrayList<Offerta> offerte = controller.getOffertebyAnnuncio(a);
+    	
+    	for(Offerta o : offerte)
+    	{
+    		System.out.println(o.getStatoOfferta()+" "+o.getPrezzoOfferta()+" "+o.getMotivazione());
+    	}
+    }
+   
     
     private void rimuoviAnnuncio(Annuncio a) {
         if(controller.rimuoviAnnuncio(a) == 0) {

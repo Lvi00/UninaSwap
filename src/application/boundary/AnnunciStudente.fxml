@@ -71,27 +71,49 @@
             <!-- Contenuto principale -->
             <HBox layoutX="149.0" layoutY="102.0" prefHeight="498.0" prefWidth="949.0" style="-fx-background-color: #F2EFEA;">
                <children>
-                  <AnchorPane prefHeight="498.0" prefWidth="949.0">
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="labelAnnunciPubblicati" layoutX="60.0" layoutY="45.0" style="-fx-font-weight: bold;">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-
-                        <!-- Scroll con GridPane -->
-                        <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="60.0" prefHeight="438.0" prefWidth="952.0">
-                           <content>
-                              <AnchorPane id="pannelloScrollabile" prefWidth="922.0">
-                                 <children>
-                                    <GridPane fx:id="gridProdotti" alignment="CENTER" hgap="50" layoutX="48" layoutY="40" vgap="40">
+                        <AnchorPane fx:id="AnnunciPane" prefHeight="498.0" prefWidth="949.0">
+                           <children>
+                              <Label fx:id="labelAnnunciPubblicati" layoutX="60.0" layoutY="45.0" style="-fx-font-weight: bold;">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+      
+                              <!-- Scroll con GridPane -->
+                              <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="60.0" prefHeight="438.0" prefWidth="952.0">
+                                 <content>
+                                    <AnchorPane id="pannelloScrollabile" prefWidth="922.0">
+                                       <children>
+                                          <GridPane fx:id="gridProdotti" alignment="CENTER" hgap="50" layoutX="48" layoutY="40" vgap="40">
                                        <!-- I prodotti verranno aggiunti dinamicamente -->
                                     </GridPane>
-                                 </children>
-                              </AnchorPane>
-                           </content>
-                        </ScrollPane>
-
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </ScrollPane>
+      
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="OfferteAnnunciPane" prefHeight="498.0" prefWidth="950.0" visible="false">
+                           <children>
+                              <Label fx:id="labelOfferteAnnuncio" layoutX="60.0" layoutY="45.0" style="-fx-font-weight: bold;">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="60.0" prefHeight="438.0" prefWidth="952.0">
+                                 <content>
+                                    <AnchorPane id="pannelloScrollabile" prefWidth="922.0">
+                                       <children>
+                                          <GridPane fx:id="gridOfferte" alignment="CENTER" hgap="50" layoutX="48" layoutY="40" vgap="40" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </AnchorPane>
                      </children>
                   </AnchorPane>
                </children>
