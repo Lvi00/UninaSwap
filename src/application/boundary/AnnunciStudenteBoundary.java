@@ -35,6 +35,7 @@ public class AnnunciStudenteBoundary {
     @FXML private HBox containerAnnunciStudente;
     @FXML private Label usernameDashboard;
     @FXML private GridPane gridProdotti;
+    @FXML private GridPane gridOfferte;
     @FXML private TextField searchField;
     @FXML private ImageView immagineNav;
     @FXML private Label labelAnnunciPubblicati;
@@ -251,16 +252,12 @@ public class AnnunciStudenteBoundary {
             imageView.setCache(true);
             imageView.setImage(img);
 
+            imagePane.getChildren().add(imageView);
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Immagine non trovata: " + a.getOggetto().getImmagineOggetto());
         }
-
-        Button buttonOffers = new Button();
-        buttonOffers.getStyleClass().add("tasto-secondario");
-        buttonOffers.setPrefSize(24, 24);
-        buttonOffers.setStyle("-fx-cursor: hand;");
-        buttonOffers.setOnMouseClicked(event -> mostraOfferteAnnuncio(a));
 
         ImageView iconOffers = new ImageView();
         try {
@@ -273,12 +270,6 @@ public class AnnunciStudenteBoundary {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        buttonOffers.setGraphic(iconOffers);
-
-        AnchorPane.setTopAnchor(buttonOffers, 5.0);
-        AnchorPane.setRightAnchor(buttonOffers, 5.0);
-
-        imagePane.getChildren().addAll(imageView, buttonOffers);
 
         Label titolo = new Label(a.getTitoloAnnuncio());
         titolo.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
@@ -295,12 +286,6 @@ public class AnnunciStudenteBoundary {
 
         Label tipo = new Label(a.getOggetto().getCategoria() + " - " + a.getTipologia());
         tipo.setStyle("-fx-text-fill: gray;");
-        
-        Button buttonDelete = new Button();
-        buttonDelete.getStyleClass().add("tasto-terziario");
-        buttonDelete.setPrefSize(24, 24);
-        buttonDelete.setStyle("-fx-cursor: hand;");
-        buttonDelete.setOnMouseClicked(event -> rimuoviAnnuncio(a));
 
         ImageView iconDelete = new ImageView();
         try {
@@ -313,23 +298,35 @@ public class AnnunciStudenteBoundary {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        buttonDelete.setGraphic(iconDelete);
 
         Label disponibilità = new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
             + "\ndalle " + a.getFasciaOrariaInizio() + " alle " + a.getFasciaOrariaFine());
-        disponibilità.setWrapText(true);
-        disponibilità.setMaxWidth(180); // per non sovrapporsi al delete
 
-        HBox hBoxDisponibilita = new HBox(8); // spaziatura tra delete e label
-        hBoxDisponibilita.setAlignment(Pos.CENTER_LEFT);
-        hBoxDisponibilita.getChildren().addAll(buttonDelete, disponibilità);
+        Button buttonOffers = new Button();
+        buttonOffers.getStyleClass().add("tasto-secondario");
+        buttonOffers.setPrefSize(24, 24);
+        buttonOffers.setStyle("-fx-cursor: hand;");
+        buttonOffers.setGraphic(iconOffers);
+        buttonOffers.setOnMouseClicked(event -> mostraOfferteAnnuncio(a));
+        
+        Button buttonDelete = new Button();
+        buttonDelete.getStyleClass().add("tasto-terziario");
+        buttonDelete.setPrefSize(24, 24);
+        buttonDelete.setStyle("-fx-cursor: hand;");
+        buttonDelete.setGraphic(iconDelete);
+        buttonDelete.setOnMouseClicked(event -> rimuoviAnnuncio(a));
+        
+        HBox containerButton = new HBox(20);
+        containerButton.setAlignment(Pos.CENTER);
+        containerButton.getChildren().addAll(buttonDelete, buttonOffers);
+        VBox.setMargin(containerButton, new Insets(5, 0, 0, 0));
 
         VBox boxPrezzo = new VBox();
         boxPrezzo.setAlignment(Pos.CENTER);
         boxPrezzo.setSpacing(4);
         boxPrezzo.getChildren().addAll(stato, prezzo);
 
-        box.getChildren().addAll(imagePane, titolo, boxPrezzo, tipo, hBoxDisponibilita);
+        box.getChildren().addAll(imagePane, titolo, boxPrezzo, tipo, disponibilità, containerButton);
 
         return box;
     }
@@ -338,17 +335,145 @@ public class AnnunciStudenteBoundary {
     {
     	AnnunciPane.setVisible(false);
     	OfferteAnnunciPane.setVisible(true);
-    	labelOfferteAnnuncio.setText("Offerte dell'Annuncio: "+a.getTitoloAnnuncio());
+    	labelOfferteAnnuncio.setText("Queste sono le offerte di " + a.getTitoloAnnuncio());
     	
     	ArrayList<Offerta> offerte = controller.getOffertebyAnnuncio(a);
     	
-    	for(Offerta o : offerte)
-    	{
-    		System.out.println(o.getStatoOfferta()+" "+o.getPrezzoOfferta()+" "+o.getMotivazione());
+        int column = 0;
+        int row = 0;
+        
+    	for(Offerta o : offerte) {
+    		HBox rigaOfferta = creaRigaOfferta(o);
+    		gridOfferte.add(rigaOfferta, column, row);
+    		row++;
     	}
     }
-   
     
+    private HBox creaRigaOfferta(Offerta o) {
+        HBox riga = new HBox();
+        riga.setPrefWidth(800);
+        riga.setSpacing(10);
+        riga.setAlignment(Pos.CENTER_LEFT);
+        riga.getStyleClass().add("card-annuncio");
+
+        Label statoOfferta = new Label(o.getStatoOfferta());
+        if (o.getStatoOfferta().equals("Attesa")) {
+            statoOfferta.getStyleClass().add("label-attesa");
+        } else if (o.getStatoOfferta().equals("Rifiutata")) {
+            statoOfferta.getStyleClass().add("label-inattivo");
+        } else {
+            statoOfferta.getStyleClass().add("label-attivo");
+        }
+
+        Label prezzoOfferta = new Label(String.format("\u20AC %.2f", o.getPrezzoOfferta()));
+        prezzoOfferta.setStyle("-fx-text-fill: green;");
+
+        Label autoreOfferta = new Label(o.getStudente().getUsername());
+        autoreOfferta.setStyle("-fx-font-weight: bold;");
+
+        ImageView iconInfo = new ImageView();
+        String path = o.getStudente().getImmagineProfilo();
+        
+        try {
+            File file = new File(path);
+            Image img;
+
+            if (file.exists()) img = new Image(file.toURI().toString());
+            else img = new Image(getClass().getResource(path).toExternalForm());
+
+            iconInfo.setImage(img);
+            iconInfo.setFitWidth(33);
+            iconInfo.setFitHeight(33);
+            iconInfo.setPreserveRatio(false);
+            
+            Circle clip = new Circle(16.5, 16.5, 16.5);
+            iconInfo.setClip(clip);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Immagine non trovata: " + path);
+        }
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        
+        ImageView iconAccetta = new ImageView();
+        try {
+            String iconPath = "../IMG/immaginiProgramma/success.png";
+            Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
+            iconAccetta.setImage(imgIcon);
+            iconAccetta.setFitWidth(22);
+            iconAccetta.setFitHeight(22);
+            iconAccetta.setPreserveRatio(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        ImageView iconRifiuta = new ImageView();
+        try {
+            String iconPath = "../IMG/immaginiProgramma/delete_card.png";
+            Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
+            iconRifiuta.setImage(imgIcon);
+            iconRifiuta.setFitWidth(22);
+            iconRifiuta.setFitHeight(22);
+            iconRifiuta.setPreserveRatio(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        Button buttonAccettaOfferta = new Button();
+        buttonAccettaOfferta.getStyleClass().add("tasto-secondario");
+        buttonAccettaOfferta.setStyle("-fx-cursor: hand;");
+        buttonAccettaOfferta.setGraphic(iconAccetta);
+        
+        Button buttonRifiutaOfferta = new Button();
+        buttonRifiutaOfferta.getStyleClass().add("tasto-terziario");
+        buttonRifiutaOfferta.setStyle("-fx-cursor: hand;");
+        buttonRifiutaOfferta.setGraphic(iconRifiuta);
+
+        HBox containerButtons = new HBox(10);
+        containerButtons.setAlignment(Pos.CENTER);
+
+        if(o.getTipologia().equals("Scambio")) {
+            ImageView iconInformazioni = new ImageView();
+            try {
+                String iconPath = "../IMG/immaginiProgramma/info.png";
+                Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
+                iconInformazioni.setImage(imgIcon);
+                iconInformazioni.setFitWidth(22);
+                iconInformazioni.setFitHeight(22);
+                iconInformazioni.setPreserveRatio(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+	        Button buttonShowInfo = new Button();
+	        buttonShowInfo.getStyleClass().add("tasto-secondario");
+	        buttonShowInfo.setStyle("-fx-cursor: hand;");
+	        buttonShowInfo.setOnMouseClicked(event -> showInfoOfferta(o));
+	        buttonShowInfo.setGraphic(iconInformazioni);
+	        containerButtons.getChildren().addAll(buttonAccettaOfferta, buttonRifiutaOfferta, buttonShowInfo);
+        }
+        else {
+			containerButtons.getChildren().addAll(buttonAccettaOfferta, buttonRifiutaOfferta);
+		}
+
+        riga.getChildren().addAll(statoOfferta, prezzoOfferta, autoreOfferta, iconInfo, spacer, containerButtons);
+
+        return riga;
+    }
+    
+    @FXML
+    public void tornaIndietroAnnunci() {
+		AnnunciPane.setVisible(true);
+		OfferteAnnunciPane.setVisible(false);
+		gridOfferte.getChildren().clear();
+	}
+    
+    public void showInfoOfferta(Offerta o) {
+    	System.out.println("Offerta di " + o.getStudente().getUsername() + " con prezzo: " + o.getPrezzoOfferta());
+    }
+
     private void rimuoviAnnuncio(Annuncio a) {
         if(controller.rimuoviAnnuncio(a) == 0) {
             gridProdotti.getChildren().clear();

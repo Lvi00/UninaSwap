@@ -430,12 +430,20 @@
     -fx-padding: 8;
     -fx-font-size: 13px;
     -fx-text-fill: #333333;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.1) , 4, 0, 0, 1 );
+    -fx-effect: dropshadow(gaussian , rgba(0,0,0,0.1) , 4, 0, 0, 1 );
 }
 
 .label-attivo {
     -fx-background-color: #90EE90;
     -fx-text-fill: #153464;
+    -fx-padding: 2 8 2 8;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+}
+
+.label-attesa {
+    -fx-background-color: #FFA500;
+    -fx-text-fill: #FFFFFF;
     -fx-padding: 2 8 2 8;
     -fx-background-radius: 20;
     -fx-font-weight: bold;
