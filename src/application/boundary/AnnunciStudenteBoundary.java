@@ -138,6 +138,28 @@ public class AnnunciStudenteBoundary {
 		                ex.printStackTrace();
 		            }
 	            break;
+	            
+                case "Informazioni":
+	            	try {
+		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Informazioni.fxml"));
+		    	        Parent root = loader.load();
+		                InformazioniBoundary infoCtrl = loader.getController();
+		                infoCtrl.setController(this.controller);
+		                infoCtrl.setUsername(this.controller.getStudente().getUsername());
+		                infoCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		    	        Scene scene = new Scene(root);
+		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+		    	        stage.setScene(scene);
+		    	        stage.setTitle("UninaSwap - Crea annuncio");
+		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+		    	        stage.setResizable(false);
+		    	        stage.show();
+		            }
+		            catch (Exception ex) {
+		                ex.printStackTrace();
+		            }
+	            break;
 
                 case "Crea annuncio":
                     try {
@@ -418,20 +440,21 @@ public class AnnunciStudenteBoundary {
         HBox containerButtons = new HBox(15);
         containerButtons.setAlignment(Pos.CENTER);
         
+        Button btnInfo = creaIconButton("../IMG/immaginiProgramma/info.png", "tasto-secondario");
+        btnInfo.setOnMouseClicked(e -> showInfoOfferta(e, o));
+        
         if(o.getStatoOfferta().equals("Attesa") && abilitaTasti) {
 	        Button btnAccetta = creaIconButton("../IMG/immaginiProgramma/check.png", "tasto-conferma");
 	        btnAccetta.setOnMouseClicked(e -> accettaOfferta(o));
 	
 	        Button btnRifiuta = creaIconButton("../IMG/immaginiProgramma/delete_card.png", "tasto-terziario");
 	        btnRifiuta.setOnMouseClicked(e -> rifiutaOfferta(o));
-	
-	        if (!o.getTipologia().equals("Vendita")) {
-	            Button btnInfo = creaIconButton("../IMG/immaginiProgramma/info.png", "tasto-secondario");
-	            btnInfo.setOnMouseClicked(e -> showInfoOfferta(e, o));
-	            containerButtons.getChildren().addAll(btnAccetta, btnRifiuta, btnInfo);
-	        } else {
-	            containerButtons.getChildren().addAll(btnAccetta, btnRifiuta);
-	        }
+	        
+	        containerButtons.getChildren().addAll(btnInfo, btnAccetta, btnRifiuta);
+        }
+        
+        else {
+        	containerButtons.getChildren().add(btnInfo);
         }
         
         riga.getChildren().addAll(statoOfferta, prezzoOfferta, infoBox, spacer, containerButtons);

@@ -1,38 +1,23 @@
 package application.boundary;
 
-import javafx.scene.input.MouseEvent;
-
 import java.io.File;
-import java.util.ArrayList;
+
 import application.control.Controller;
-import application.entity.Annuncio;
-import application.entity.Studente;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class OfferteBoundary {
-
-    private Controller controller;
+public class InformazioniBoundary {
+	private Controller controller;
 
     @FXML private HBox containerCatalogoProdotti;
     @FXML private Label usernameDashboard;
@@ -110,22 +95,18 @@ public class OfferteBoundary {
 	            break;
 	            
 	            case "Offerte":
-		            System.out.println("Sei già nella pagina Offerte.");
-	            break;
-	            
-	            case "Informazioni":
-	            	try {
-		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Informazioni.fxml"));
+		            try {
+		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Offerte.fxml"));
 		    	        Parent root = loader.load();
-		                InformazioniBoundary infoCtrl = loader.getController();
-		                infoCtrl.setController(this.controller);
-		                infoCtrl.setUsername(this.controller.getStudente().getUsername());
-		                infoCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                OfferteBoundary offerteCtrl = loader.getController();
+		                offerteCtrl.setController(this.controller);
+		                offerteCtrl.setUsername(this.controller.getStudente().getUsername());
+		                offerteCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 		    	        stage.setScene(scene);
-		    	        stage.setTitle("UninaSwap - Crea annuncio");
+		    	        stage.setTitle("UninaSwap - Offerte");
 		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 		    	        stage.setResizable(false);
 		    	        stage.show();
@@ -133,6 +114,10 @@ public class OfferteBoundary {
 		            catch (Exception ex) {
 		                ex.printStackTrace();
 		            }
+	            break;
+	            
+	            case "Informazioni":
+	            	System.out.println("Sei già nella pagina Informazioni.");
 	            break;
 	            
 	            case "Prodotti":

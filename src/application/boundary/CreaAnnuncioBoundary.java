@@ -146,6 +146,28 @@ public class CreaAnnuncioBoundary {
 					System.out.println("Sei già nella pagina Crea annuncio.");
                 break;
                 
+                case "Informazioni":
+	            	try {
+		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Informazioni.fxml"));
+		    	        Parent root = loader.load();
+		                InformazioniBoundary infoCtrl = loader.getController();
+		                infoCtrl.setController(this.controller);
+		                infoCtrl.setUsername(this.controller.getStudente().getUsername());
+		                infoCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		    	        Scene scene = new Scene(root);
+		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+		    	        stage.setScene(scene);
+		    	        stage.setTitle("UninaSwap - Crea annuncio");
+		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+		    	        stage.setResizable(false);
+		    	        stage.show();
+		            }
+		            catch (Exception ex) {
+		                ex.printStackTrace();
+		            }
+	            break;
+                
                 case "Offerte":
 		            try {
 		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Offerte.fxml"));
