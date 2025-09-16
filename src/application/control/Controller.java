@@ -358,4 +358,19 @@ public class Controller {
 		return new OffertaDAO().getOffertebyAnn(a);
 	}
 	
+	public int accettaOfferta(Offerta o, Annuncio a) {
+		return new OffertaDAO().accettaOfferta(o, a);
+	}
+	
+	public int rifiutaOfferta(Offerta o) {
+		return new OffertaDAO().rifiutaOfferta(o);
+	}
+	
+	public int getIdByOfferta(Offerta o) {
+		return new OffertaDAO().getIdByOfferta(o);
+	}
+	
+	public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta o) {
+		return new OffertaDAO().getOggettiOffertiByOfferta(o);
+	}
 }

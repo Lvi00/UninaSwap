@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
+import application.entity.Offerta;
 import application.resources.ConnessioneDB;
 
 public class AnnuncioDAO {

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox fx:id="containerOffertaAnnuncio" prefHeight="300.0" prefWidth="400.0" style="-fx-background-color: #F2EFEA;" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.PopupInfoOfferta">
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <AnchorPane fx:id="paneInfoOffertaRegalo" prefHeight="310.0" prefWidth="509.0" visible="false">
+               <children>
+                  <Label layoutX="165.0" layoutY="43.0" text="Messaggio motivazionale">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelMessaggioMotivazionale" layoutX="105.0" layoutY="81.0" prefHeight="89.0" prefWidth="299.0" wrapText="true" />
+               </children>
+            </AnchorPane>
+
+            <AnchorPane fx:id="paneInfoOffertaVendita" prefHeight="310.0" prefWidth="509.0" visible="false">
+               <children>
+                  <Label layoutX="187.0" layoutY="45.0" text="Prezzo controfferta">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelControfferta" layoutX="105.0" layoutY="80.0" prefHeight="89.0" prefWidth="299.0" wrapText="true" />
+               </children>
+            </AnchorPane>
+
+            <AnchorPane fx:id="paneInfoOffertaScambio" prefHeight="310.0" prefWidth="509.0" visible="false">
+               <children>
+                  <Label layoutX="187.0" layoutY="20.0" text="Lista oggetti offerti">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <ScrollPane fx:id="scrollPaneScambio"
+				            fitToWidth="true"
+				            fitToHeight="true"
+				            AnchorPane.topAnchor="60.0"
+				            AnchorPane.leftAnchor="0.0"
+				            AnchorPane.rightAnchor="0.0"
+				            AnchorPane.bottomAnchor="0.0"
+				            style="-fx-background: #F2EFEA; -fx-background-color: #F2EFEA;">
+				    <content>
+				        <GridPane fx:id="gridPaneScambio"
+				                  hgap="10" vgap="10"
+				                  alignment="CENTER"
+				                  style="-fx-background-color: #F2EFEA;" />
+				    </content>
+				</ScrollPane>
+                  <Label fx:id="labelOffertaScambio" layoutX="114.0" layoutY="80.0" text="L'utente non ha specificato oggetti alternativi" visible="false">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</HBox>

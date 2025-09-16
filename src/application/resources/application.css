@@ -24,7 +24,7 @@
 	-fx-background-color: #2207bb;
 }
 
-.tasto, .tasto-secondario, .tasto-terziario{
+.tasto, .tasto-secondario, .tasto-terziario, .tasto-conferma{
     -fx-background-radius: 20px;
     -fx-cursor: hand;
     -fx-padding: 10px;
@@ -34,6 +34,10 @@
     -fx-scale-y: 1.0;
     -fx-opacity: 1.0;
     -fx-font-size: 14px;
+}
+
+.tasto-conferma{
+	-fx-background-color: #28a745;
 }
 
 .tasto-secondario{

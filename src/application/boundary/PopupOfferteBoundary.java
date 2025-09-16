@@ -526,7 +526,6 @@ public class PopupOfferteBoundary {
 		try {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
 	        Parent root = loader.load();
-
 	        Stage mainStage = (Stage) containerOfferte.getScene().getWindow();
 	        Stage stage = new Stage();
 	        stage.initOwner(mainStage);

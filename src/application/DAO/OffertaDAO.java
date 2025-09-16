@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Offerta;
+import application.entity.Oggetto;
 import application.resources.ConnessioneDB;
 
 public class OffertaDAO {
@@ -129,7 +130,7 @@ public class OffertaDAO {
 
         try {
         	Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM public.offerta WHERE idannuncio = ?";
+            String query = "SELECT * FROM OFFERTA WHERE idannuncio = ? ORDER BY statoofferta";
             PreparedStatement selectStmt = conn.prepareStatement(query);
             selectStmt.setInt(1, controller.getIdByAnnuncio(a)); 
             ResultSet rs = selectStmt.executeQuery();
@@ -148,9 +149,123 @@ public class OffertaDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } 
+        }
         return offerte;
     }
+    
+    public int accettaOfferta(Offerta o, Annuncio a) {
+    	try {
+			Connection conn = ConnessioneDB.getConnection();
+			String accettaOfferta = "UPDATE OFFERTA SET statoofferta = 'Accettata' WHERE matstudente = ? AND prezzoofferta = ? AND tipologia = ? RETURNING idofferta";
+			PreparedStatement stmtAccettaOfferta = conn.prepareStatement(accettaOfferta);
+			stmtAccettaOfferta.setString(1, o.getStudente().getMatricola());
+			stmtAccettaOfferta.setDouble(2, o.getPrezzoOfferta());
+			stmtAccettaOfferta.setString(3, o.getTipologia());
+			
+			ResultSet rs = stmtAccettaOfferta.executeQuery();
+			
+			if (rs.next()) {
+				int idOffertaModificata = rs.getInt("idofferta");
+				String rifiutaOfferteRestanti = "UPDATE OFFERTA SET statoofferta = 'Rifiutata' WHERE idofferta <> ?";
+				PreparedStatement stmtRifiutaOfferte = conn.prepareStatement(rifiutaOfferteRestanti);
+				stmtRifiutaOfferte.setInt(1, idOffertaModificata);
+				stmtRifiutaOfferte.executeUpdate();
+				
+				String chiudiAnnuncio = "UPDATE ANNUNCIO SET statoannuncio = false WHERE idannuncio = ?";
+				PreparedStatement stmtChiudiAnnuncio = conn.prepareStatement(chiudiAnnuncio);
+				int idAnnuncio = controller.getIdByAnnuncio(a);
+				System.out.println("ID Annuncio da chiudere: " + idAnnuncio);
+				stmtChiudiAnnuncio.setInt(1, idAnnuncio);
+				stmtChiudiAnnuncio.executeUpdate();
+				
+				return 0;
+			}
+			else {
+				System.out.println("Nessuna offerta aggiornata.");
+				return 1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+    }
+    
+    public int rifiutaOfferta(Offerta o) {
+    	try {
+			Connection conn = ConnessioneDB.getConnection();
+			String accettaOfferta = "UPDATE OFFERTA SET statoofferta = 'Rifiutata' WHERE matstudente = ? AND prezzoofferta = ? AND tipologia = ?";
+			PreparedStatement stmtAccettaOfferta = conn.prepareStatement(accettaOfferta);
+			stmtAccettaOfferta.setString(1, o.getStudente().getMatricola());
+			stmtAccettaOfferta.setDouble(2, o.getPrezzoOfferta());
+			stmtAccettaOfferta.setString(3, o.getTipologia());
+			
+			if (stmtAccettaOfferta.executeUpdate() > 0) {
+				System.out.println("Offerta rifiutata con successo.");
+				return 0;
+			}
+			else {
+				System.out.println("Nessuna offerta aggiornata.");
+				return 1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+    }
+    
+    public int getIdByOfferta(Offerta offerta) {
+        int idOfferta = -1;
 
+        try {
+            Connection conn = ConnessioneDB.getConnection();
 
+            String query = "SELECT idOfferta FROM OFFERTA WHERE tipologia = ? AND prezzoofferta = ? AND matstudente = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, offerta.getTipologia());
+            stmt.setDouble(2, offerta.getPrezzoOfferta());
+            stmt.setString(3, offerta.getStudente().getMatricola());
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                idOfferta = rs.getInt("idOfferta");
+            }
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return idOfferta;
+    }
+    
+    public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta offerta) {
+        ArrayList<Oggetto> oggetti = new ArrayList<Oggetto>();
+        
+        try {
+            Connection conn = ConnessioneDB.getConnection();
+            String queryOggettiOfferti = "SELECT * FROM OGGETTIOFFERTI NATURAL JOIN OGGETTO WHERE idOfferta = ?";
+            PreparedStatement stmtOggettiOfferti = conn.prepareStatement(queryOggettiOfferti);
+            stmtOggettiOfferti.setInt(1, controller.getIdByOfferta(offerta));
+            ResultSet rsOggettiOfferti = stmtOggettiOfferti.executeQuery();
+
+            while (rsOggettiOfferti.next()) {
+            	Oggetto oggetto = new Oggetto(
+        			rsOggettiOfferti.getString("immagineoggetto"),
+        			rsOggettiOfferti.getString("categoria"),
+        			rsOggettiOfferti.getString("descrizione"),
+					controller.getStudenteByMatricola(rsOggettiOfferti.getString("matstudente"))
+				);
+                oggetti.add(oggetto);
+            }
+
+            rsOggettiOfferti.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return oggetti;
+    }
 }
