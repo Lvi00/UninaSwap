@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
+import application.entity.Offerta;
 import application.entity.Studente;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -38,6 +39,8 @@ public class OfferteBoundary {
     @FXML private Label usernameDashboard;
     @FXML private ImageView immagineNav;
     
+    @FXML private Label labelOffertePubblicate;
+    @FXML private GridPane gridOfferte;
     public void setController(Controller controller) {
         this.controller = controller;
     }
@@ -209,5 +212,89 @@ public class OfferteBoundary {
 	            break;
             }
         }
+    }
+    
+    public boolean CostruisciOfferteUtente(Studente s) {
+        ArrayList<Offerta> offerte = controller.getOffertebyMatricola(s);
+        String titolo = "";
+        
+        if(offerte.size() == 0) titolo = "Non ci sono offerte attive di ";
+        else titolo = "Offerte attive di ";
+        
+        labelOffertePubblicate.setText(titolo + s.getUsername());
+        
+        int column = 0;
+        int row = 0;
+
+        for (Offerta o : offerte) {
+            VBox card = creaCardOfferte(o);
+            gridOfferte.add(card, column, row);
+            column++;
+
+            if (column == 3) {
+                column = 0;
+                row++;
+            }
+        }
+
+        return true;
+    }
+
+    private VBox creaCardOfferte(Offerta o) { 
+        VBox box = new VBox();
+        box.setPrefWidth(230);
+        box.setPrefHeight(300);
+        box.setSpacing(5);
+        box.setAlignment(Pos.TOP_CENTER);
+        box.getStyleClass().add("card-annuncio");
+        
+        Label stato = new Label(o.getStatoOfferta());
+        switch(o.getStatoOfferta()) {
+            case "Attesa":
+                stato.getStyleClass().add("label-attesa");
+                break;
+            case "Accettata":
+                stato.getStyleClass().add("label-attivo");
+                break;
+            case "Rifiutata":
+                stato.getStyleClass().add("label-non-attivo");
+                break;
+        }
+        VBox.setMargin(stato, new Insets(4, 0, 4, 0));
+
+        // Correzione qui
+        Label prezzo = new Label(); 
+        if (o.getTipologia().equals("Vendita")) {
+            prezzo.setText(String.format("\u20AC %.2f", o.getPrezzoOfferta()));
+            prezzo.setStyle("-fx-text-fill: #153464; -fx-font-size: 12;");
+        }
+
+        Label tipo = new Label(o.getTipologia());
+        tipo.setStyle("-fx-text-fill: gray;");
+
+        ImageView iconDelete = new ImageView();
+        try {
+            String iconPath = "../IMG/immaginiProgramma/delete_card.png";
+            Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
+            iconDelete.setImage(imgIcon);
+            iconDelete.setFitWidth(22);
+            iconDelete.setFitHeight(22);
+            iconDelete.setPreserveRatio(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        HBox containerButton = new HBox(20);
+        containerButton.setAlignment(Pos.CENTER);
+        VBox.setMargin(containerButton, new Insets(5, 0, 0, 0));
+
+        VBox boxPrezzo = new VBox();
+        boxPrezzo.setAlignment(Pos.CENTER);
+        boxPrezzo.setSpacing(4);
+        boxPrezzo.getChildren().addAll(stato, prezzo);
+
+        box.getChildren().addAll(boxPrezzo, tipo, containerButton);
+
+        return box;
     }
 }

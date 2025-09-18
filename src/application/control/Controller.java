@@ -362,15 +362,20 @@ public class Controller {
 		return new OffertaDAO().accettaOfferta(o, a);
 	}
 	
-	public int rifiutaOfferta(Offerta o) {
-		return new OffertaDAO().rifiutaOfferta(o);
+	public int rifiutaOfferta(Offerta o, Annuncio a) {
+		return new OffertaDAO().rifiutaOfferta(o, a);
 	}
 	
-	public int getIdByOfferta(Offerta o) {
-		return new OffertaDAO().getIdByOfferta(o);
+	public int getIdByOfferta(Offerta o, Annuncio a) {
+		return new OffertaDAO().getIdByOfferta(o,a);
 	}
 	
-	public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta o) {
-		return new OffertaDAO().getOggettiOffertiByOfferta(o);
+	public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta o, Annuncio a) {
+		return new OffertaDAO().getOggettiOffertiByOfferta(o, a);
+	}
+	
+	public ArrayList<Offerta> getOffertebyMatricola(Studente s)
+	{
+		return new OffertaDAO().getOffertebyMatricola(s);
 	}
 }

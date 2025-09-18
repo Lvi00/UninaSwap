@@ -125,6 +125,7 @@ public class AnnunciStudenteBoundary {
 		                offerteCtrl.setController(this.controller);
 		                offerteCtrl.setUsername(this.controller.getStudente().getUsername());
 		                offerteCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                offerteCtrl.CostruisciOfferteUtente(this.controller.getStudente());
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -366,8 +367,10 @@ public class AnnunciStudenteBoundary {
     	OfferteAnnunciPane.setVisible(true);
     	labelOfferteAnnuncio.setText("Queste sono le offerte dell'annuncio: " + a.getTitoloAnnuncio());
     	
+    	System.out.println(a.getTitoloAnnuncio());
+
     	ArrayList<Offerta> offerte = controller.getOffertebyAnnuncio(a);
-    	
+        
         int column = 0;
         int row = 0;
         boolean abilitaTasti = true;
@@ -439,7 +442,7 @@ public class AnnunciStudenteBoundary {
         // Bottoni
         HBox containerButtons = new HBox(15);
         containerButtons.setAlignment(Pos.CENTER);
-        
+       
         Button btnInfo = creaIconButton("../IMG/immaginiProgramma/info.png", "tasto-secondario");
         btnInfo.setOnMouseClicked(e -> showInfoOfferta(e, o));
         
@@ -496,7 +499,7 @@ public class AnnunciStudenteBoundary {
 	}
     
     public void rifiutaOfferta(Offerta o) {
-    	switch(controller.rifiutaOfferta(o)) {
+    	switch(controller.rifiutaOfferta(o, this.annuncio)) {
     	case 0:
 			gridOfferte.getChildren().clear();
 			tornaIndietroAnnunci();
@@ -506,6 +509,17 @@ public class AnnunciStudenteBoundary {
     		System.out.println("Errore: Offerta non trovata.");
     	break;
     	}
+    }
+    
+    private void rimuoviAnnuncio(Annuncio a) {
+        if(controller.rimuoviAnnuncio(a) == 0) {
+            gridProdotti.getChildren().clear();
+            CostruisciProdottiUtente(controller.getStudente());
+            ShowPopupAlert("Rimozione avvenuta", "L'annuncio è stato rimosso con successo.");
+        }
+        else {
+			ShowPopupAlert("Rimozione fallita", "Si è verificato un errore durante la rimozione dell'annuncio.");
+		}
     }
     
     @FXML
@@ -522,7 +536,7 @@ public class AnnunciStudenteBoundary {
             Parent root = loader.load();
             PopupInfoOfferta popupInfoController = loader.getController();
             popupInfoController.setController(this.controller);
-            popupInfoController.setPopupInfoOfferta(offerta);
+            popupInfoController.setPopupInfoOfferta(offerta, this.annuncio);
             Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             Stage popupStage = new Stage();
             popupStage.initOwner(mainStage);
@@ -546,17 +560,6 @@ public class AnnunciStudenteBoundary {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    private void rimuoviAnnuncio(Annuncio a) {
-        if(controller.rimuoviAnnuncio(a) == 0) {
-            gridProdotti.getChildren().clear();
-            CostruisciProdottiUtente(controller.getStudente());
-            ShowPopupAlert("Rimozione avvenuta", "L'annuncio è stato rimosso con successo.");
-        }
-        else {
-			ShowPopupAlert("Rimozione fallita", "Si è verificato un errore durante la rimozione dell'annuncio.");
-		}
     }
     
     private void ShowPopupAlert(String title, String message) {

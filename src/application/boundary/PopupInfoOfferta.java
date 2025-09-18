@@ -22,6 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 public class PopupInfoOfferta {
 
@@ -39,7 +40,7 @@ public class PopupInfoOfferta {
         this.controller = controller;
     }
     
-    public void setPopupInfoOfferta(Offerta offerta) {
+    public void setPopupInfoOfferta(Offerta offerta, Annuncio a) {
     	switch(offerta.getTipologia()) {
 	    	case "Vendita":
 	    		paneInfoOffertaVendita.setVisible(true);
@@ -53,9 +54,9 @@ public class PopupInfoOfferta {
 	    	    paneInfoOffertaVendita.setVisible(false);
 	    	    paneInfoOffertaRegalo.setVisible(false);
 	    	    labelOffertaScambio.setVisible(false);
-	    	    gridPaneScambio.getChildren().clear();
+	    	    gridPaneScambio.getChildren().clear();  
 	    	    
-	    	    ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(offerta);
+	    	    ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(offerta,a);
 	    	    
 	    	    if(listaOggetti.isEmpty()) {
 	    	    	scrollPaneScambio.setVisible(false);
@@ -71,7 +72,7 @@ public class PopupInfoOfferta {
 		    	    int row = 0;
 		    	    
 		    	    for (Oggetto o : listaOggetti) {
-		    	        VBox card = creaCardAnnuncio(o);
+		    	        VBox card = creaCardOggettoOfferto(o);
 		    	        gridPaneScambio.add(card, 0, row);
 		    	        gridPaneScambio.setAlignment(Pos.TOP_CENTER);
 		    	        GridPane.setFillWidth(card, true);
@@ -92,7 +93,7 @@ public class PopupInfoOfferta {
     	}
     }
     
-    private VBox creaCardAnnuncio(Oggetto o) {
+    private VBox creaCardOggettoOfferto(Oggetto o) {
         VBox card = new VBox();
         card.setSpacing(8);
         card.setPadding(new Insets(12));
@@ -113,12 +114,15 @@ public class PopupInfoOfferta {
             }
 
             imageView.setFitWidth(150);
-            imageView.setFitHeight(150);
-            imageView.setPreserveRatio(true);
-            imageView.setSmooth(true);
+            imageView.setFitHeight(100);
+            imageView.setPreserveRatio(false);
+            imageView.setSmooth(false);
             imageView.setCache(true);
+            
+            Rectangle clip = new Rectangle(150,100);
+            imageView.setClip(clip);
+            
             imageView.setImage(img);
-
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Immagine non trovata: " + o.getImmagineOggetto());

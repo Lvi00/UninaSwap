@@ -10,6 +10,7 @@ import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Offerta;
 import application.entity.Oggetto;
+import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
 public class OffertaDAO {
@@ -134,7 +135,6 @@ public class OffertaDAO {
             PreparedStatement selectStmt = conn.prepareStatement(query);
             selectStmt.setInt(1, controller.getIdByAnnuncio(a)); 
             ResultSet rs = selectStmt.executeQuery();
-
             while (rs.next()) {
                 // Crea l'offerta da ciascuna riga del ResultSet
                 Offerta offerta = new Offerta(rs.getString("tipologia"));
@@ -156,19 +156,19 @@ public class OffertaDAO {
     public int accettaOfferta(Offerta o, Annuncio a) {
     	try {
 			Connection conn = ConnessioneDB.getConnection();
-			String accettaOfferta = "UPDATE OFFERTA SET statoofferta = 'Accettata' WHERE matstudente = ? AND prezzoofferta = ? AND tipologia = ? RETURNING idofferta";
+			String accettaOfferta = "UPDATE OFFERTA SET statoofferta = 'Accettata' WHERE matstudente = ? AND idannuncio = ? RETURNING idofferta";
 			PreparedStatement stmtAccettaOfferta = conn.prepareStatement(accettaOfferta);
 			stmtAccettaOfferta.setString(1, o.getStudente().getMatricola());
-			stmtAccettaOfferta.setDouble(2, o.getPrezzoOfferta());
-			stmtAccettaOfferta.setString(3, o.getTipologia());
+			stmtAccettaOfferta.setInt(2, controller.getIdByAnnuncio(a));
 			
 			ResultSet rs = stmtAccettaOfferta.executeQuery();
 			
 			if (rs.next()) {
 				int idOffertaModificata = rs.getInt("idofferta");
-				String rifiutaOfferteRestanti = "UPDATE OFFERTA SET statoofferta = 'Rifiutata' WHERE idofferta <> ?";
+				String rifiutaOfferteRestanti = "UPDATE OFFERTA SET statoofferta = 'Rifiutata' WHERE idofferta <> ? AND idannuncio = ?";
 				PreparedStatement stmtRifiutaOfferte = conn.prepareStatement(rifiutaOfferteRestanti);
 				stmtRifiutaOfferte.setInt(1, idOffertaModificata);
+				stmtRifiutaOfferte.setInt(2, controller.getIdByAnnuncio(a));
 				stmtRifiutaOfferte.executeUpdate();
 				
 				String chiudiAnnuncio = "UPDATE ANNUNCIO SET statoannuncio = false WHERE idannuncio = ?";
@@ -190,14 +190,13 @@ public class OffertaDAO {
 		}
     }
     
-    public int rifiutaOfferta(Offerta o) {
+    public int rifiutaOfferta(Offerta o, Annuncio a) {
     	try {
 			Connection conn = ConnessioneDB.getConnection();
-			String accettaOfferta = "UPDATE OFFERTA SET statoofferta = 'Rifiutata' WHERE matstudente = ? AND prezzoofferta = ? AND tipologia = ?";
+			String accettaOfferta = "UPDATE OFFERTA SET statoofferta = 'Rifiutata' WHERE matstudente = ? AND idannuncio = ?";
 			PreparedStatement stmtAccettaOfferta = conn.prepareStatement(accettaOfferta);
 			stmtAccettaOfferta.setString(1, o.getStudente().getMatricola());
-			stmtAccettaOfferta.setDouble(2, o.getPrezzoOfferta());
-			stmtAccettaOfferta.setString(3, o.getTipologia());
+			stmtAccettaOfferta.setInt(2, controller.getIdByAnnuncio(a));
 			
 			if (stmtAccettaOfferta.executeUpdate() > 0) {
 				System.out.println("Offerta rifiutata con successo.");
@@ -213,18 +212,16 @@ public class OffertaDAO {
 		}
     }
     
-    public int getIdByOfferta(Offerta offerta) {
+    public int getIdByOfferta(Offerta offerta, Annuncio a) {
         int idOfferta = -1;
 
         try {
             Connection conn = ConnessioneDB.getConnection();
 
-            String query = "SELECT idOfferta FROM OFFERTA WHERE tipologia = ? AND prezzoofferta = ? AND matstudente = ?";
+            String query = "SELECT idOfferta FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, offerta.getTipologia());
-            stmt.setDouble(2, offerta.getPrezzoOfferta());
-            stmt.setString(3, offerta.getStudente().getMatricola());
-
+            stmt.setString(1, offerta.getStudente().getMatricola());
+            stmt.setInt(2, controller.getIdByAnnuncio(a));
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -240,16 +237,17 @@ public class OffertaDAO {
         return idOfferta;
     }
     
-    public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta offerta) {
+    public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta offerta, Annuncio a) {
         ArrayList<Oggetto> oggetti = new ArrayList<Oggetto>();
         
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String queryOggettiOfferti = "SELECT * FROM OGGETTIOFFERTI NATURAL JOIN OGGETTO WHERE idOfferta = ?";
+            String queryOggettiOfferti = "SELECT * FROM OGGETTIOFFERTI AS OO NATURAL JOIN OGGETTO AS OG NATURAL JOIN OFFERTA AS OF WHERE OO.idOfferta = ? AND OF.idannuncio = ?";
             PreparedStatement stmtOggettiOfferti = conn.prepareStatement(queryOggettiOfferti);
-            stmtOggettiOfferti.setInt(1, controller.getIdByOfferta(offerta));
-            ResultSet rsOggettiOfferti = stmtOggettiOfferti.executeQuery();
+            stmtOggettiOfferti.setInt(1, controller.getIdByOfferta(offerta,a));
+            stmtOggettiOfferti.setInt(2, controller.getIdByAnnuncio(a));
 
+            ResultSet rsOggettiOfferti = stmtOggettiOfferti.executeQuery();
             while (rsOggettiOfferti.next()) {
             	Oggetto oggetto = new Oggetto(
         			rsOggettiOfferti.getString("immagineoggetto"),
@@ -268,4 +266,36 @@ public class OffertaDAO {
 
         return oggetti;
     }
+    
+    public ArrayList<Offerta> getOffertebyMatricola(Studente s) {	
+        ArrayList<Offerta> offerte = new ArrayList<>();
+
+        try{
+        	Connection conn = ConnessioneDB.getConnection();
+            String queryOggettiOfferti = "SELECT * FROM Offerta WHERE matstudente = ?";
+            PreparedStatement stmtOggettiOfferti = conn.prepareStatement(queryOggettiOfferti);
+            stmtOggettiOfferti.setString(1, s.getMatricola());
+
+            ResultSet rsOggettiOfferti = stmtOggettiOfferti.executeQuery();
+            while (rsOggettiOfferti.next()) {
+                // costruzione partendo dal costruttore esistente
+                Offerta offerta = new Offerta(rsOggettiOfferti.getString("tipologia"));
+
+                offerta.setStatoOfferta(rsOggettiOfferti.getString("statoOfferta"));
+                offerta.setPrezzoOfferta(rsOggettiOfferti.getDouble("prezzoofferta"));
+                offerta.setMotivazione(rsOggettiOfferti.getString("motivazione"));
+                offerta.setStudente(controller.getStudenteByMatricola(rsOggettiOfferti.getString("matstudente")));
+
+                offerte.add(offerta);
+            }
+
+            rsOggettiOfferti.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return offerte;
+    }
+
+
 }

@@ -2,9 +2,11 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
@@ -89,7 +91,27 @@
                   <!-- Contenuto principale -->
             <HBox layoutX="149.0" layoutY="102.0" prefHeight="498.0" prefWidth="949.0" style="-fx-background-color: #F2EFEA;">
                <children>
-                  <AnchorPane prefHeight="498.0" prefWidth="949.0" />
+                  <AnchorPane prefHeight="498.0" prefWidth="949.0">
+                     <children>
+                        <AnchorPane fx:id="OffertePane" prefHeight="498.0" prefWidth="949.0">
+                           <children>
+                              <Label fx:id="labelOffertePubblicate" layoutX="60.0" layoutY="45.0" style="-fx-font-weight: bold;">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="60.0" prefHeight="438.0" prefWidth="952.0">
+                                 <content>
+                                    <AnchorPane id="pannelloScrollabile" prefHeight="432.0" prefWidth="954.0">
+                                       <children>
+                                          <GridPane fx:id="gridOfferte" alignment="CENTER" hgap="50" layoutX="48" layoutY="20.0" vgap="40" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </AnchorPane>
+                     </children></AnchorPane>
                </children>
             </HBox>
 
