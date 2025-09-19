@@ -259,15 +259,15 @@ public class Controller {
 	
 	public int inviaOffertaVendita(Annuncio a) {
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
-		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente);
+		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente, a);
 		offerta.setPrezzoOfferta(a.getPrezzo());
-		return new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(), "");
+		return new OffertaDAO().SaveOfferta(offerta, this.studente.getMatricola(), "");
 	}
 	
 	public int inviaOffertaRegalo(Annuncio a, String Motivazione){
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
-		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente);
-		return new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(), Motivazione);
+		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente, a);
+		return new OffertaDAO().SaveOfferta(offerta, this.studente.getMatricola(), Motivazione);
 	}
 	
 	public int inviaOffertaScambio(Annuncio a, ArrayList<Oggetto> listaOggettiOfferti)
@@ -276,11 +276,11 @@ public class Controller {
         
         Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
         
-		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente);
+		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente, a);
 		
 		int idOffertaInserita = 0;
 		
-        idOffertaInserita = offertaDao.SaveOfferta(a, offerta, this.studente.getMatricola(), "");
+        idOffertaInserita = offertaDao.SaveOfferta(offerta, this.studente.getMatricola(), "");
         
         //Offerta già esistente
         if(idOffertaInserita == -1) return -1;
@@ -289,8 +289,25 @@ public class Controller {
         	
             OggettoDAO oggettoDao = new OggettoDAO();
             OggettiOffertiDAO oggettiOffertiDao = new OggettiOffertiDAO();
-    		int idOggettoInserito = 0;
     		
+    		Oggetto oggettoPrimario, oggettoSecondario;
+        	
+        	for(int i = 0; i < listaOggettiOfferti.size(); i++) {
+        		oggettoPrimario = listaOggettiOfferti.get(i);
+        		for(int j = i + 1; j < listaOggettiOfferti.size(); j++) {
+            		oggettoSecondario = listaOggettiOfferti.get(j);
+        			if(oggettoPrimario.getDescrizione().equals(oggettoSecondario.getDescrizione())
+            		&& oggettoPrimario.getCategoria().equals(oggettoSecondario.getCategoria())
+            		&& oggettoPrimario.getStudente().getMatricola().equals(oggettoSecondario.getStudente().getMatricola())
+            		&& oggettoPrimario.getImmagineOggetto().equals(oggettoSecondario.getImmagineOggetto())){
+        				System.out.println("Oggetti duplicati");
+            			return -2;
+            		}
+        		}
+        	}
+        	
+    		int idOggettoInserito = 0;
+        	
 	        for(Oggetto o: listaOggettiOfferti){
 	        	idOggettoInserito = oggettoDao.SaveOggetto(o);
 	        	oggettiOffertiDao.SaveOggettoOfferto(idOffertaInserita, idOggettoInserito);
@@ -317,10 +334,10 @@ public class Controller {
 		
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
 		
-		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente);
+		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente, a);
 		offerta.setPrezzoOfferta(prezzo);
 		
-		int appoggio = new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(), "");
+		int appoggio = new OffertaDAO().SaveOfferta(offerta, this.studente.getMatricola(), "");
 		
 		return appoggio;
 	}
@@ -366,27 +383,31 @@ public class Controller {
 	
 	public ArrayList<Offerta> getOffertebyAnnuncio (Annuncio a)
 	{
-		return new OffertaDAO().getOffertebyAnn(a);
+		return new OffertaDAO().getOffertebyAnnuncio(a);
 	}
 	
-	public int accettaOfferta(Offerta o, Annuncio a) {
-		return new OffertaDAO().accettaOfferta(o, a);
+	public int accettaOfferta(Offerta o) {
+		return new OffertaDAO().accettaOfferta(o);
 	}
 	
-	public int rifiutaOfferta(Offerta o, Annuncio a) {
-		return new OffertaDAO().rifiutaOfferta(o, a);
+	public int rifiutaOfferta(Offerta o) {
+		return new OffertaDAO().rifiutaOfferta(o);
 	}
 	
-	public int getIdByOfferta(Offerta o, Annuncio a) {
-		return new OffertaDAO().getIdByOfferta(o,a);
+	public int getIdByOfferta(Offerta o) {
+		return new OffertaDAO().getIdByOfferta(o);
 	}
 	
-	public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta o, Annuncio a) {
-		return new OffertaDAO().getOggettiOffertiByOfferta(o, a);
+	public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta o) {
+		return new OffertaDAO().getOggettiOffertiByOfferta(o);
 	}
 	
 	public ArrayList<Offerta> getOffertebyMatricola(Studente s)
 	{
 		return new OffertaDAO().getOffertebyMatricola(s);
 	}
+	
+    public Annuncio getAnnuncioById(int idAnnuncio) {
+    	return new AnnuncioDAO().getAnnuncioById(idAnnuncio);
+    }
 }

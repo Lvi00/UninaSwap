@@ -40,7 +40,7 @@ public class PopupInfoOfferta {
         this.controller = controller;
     }
     
-    public void setPopupInfoOfferta(Offerta offerta, Annuncio a) {
+    public void setPopupInfoOfferta(Offerta offerta) {
     	switch(offerta.getTipologia()) {
 	    	case "Vendita":
 	    		paneInfoOffertaVendita.setVisible(true);
@@ -57,7 +57,7 @@ public class PopupInfoOfferta {
 	    	    labelOffertaScambio.setVisible(false);
 	    	    gridPaneScambio.getChildren().clear();  
 	    	    
-	    	    ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(offerta,a);
+	    	    ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(offerta);
 	    	    
 	    	    if(listaOggetti.isEmpty()) {
 	    	    	scrollPaneScambio.setVisible(false);

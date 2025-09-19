@@ -100,7 +100,7 @@
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="60.0" prefHeight="438.0" prefWidth="952.0">
+                              <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutX="-2.0" layoutY="65.0" prefHeight="432.0" prefWidth="952.0">
                                  <content>
                                     <AnchorPane id="pannelloScrollabile" prefHeight="432.0" prefWidth="954.0">
                                        <children>

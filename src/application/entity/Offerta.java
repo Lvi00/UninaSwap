@@ -9,11 +9,13 @@ public class Offerta {
     private String motivazione;
     private Studente studente;
     private Timestamp dataPubblicazione;
+    private Annuncio annuncio;
     
-    public Offerta(String tipologia, Timestamp dataPubblicazione) { 
+    public Offerta(String tipologia, Timestamp dataPubblicazione, Annuncio annuncio) { 
         this.statoOfferta = "Attesa";
         this.tipologia = tipologia;
         this.dataPubblicazione = dataPubblicazione;
+        this.annuncio = annuncio;
     }
 
     public void setPrezzoOfferta(double prezzoOfferta)
@@ -56,4 +58,8 @@ public class Offerta {
     public Timestamp getDataPubblicazione() {
         return dataPubblicazione;
     }
+    
+    public Annuncio getAnnuncio() {
+		return annuncio;
+	}
 }

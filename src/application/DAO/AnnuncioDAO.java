@@ -345,4 +345,39 @@ public class AnnuncioDAO {
 
 	    return 0;
 	}
+   
+   public Annuncio getAnnuncioById(int idAnnuncio) {
+	   try {
+	        Connection conn = ConnessioneDB.getConnection();
+	        String query = "SELECT * FROM ANNUNCIO WHERE idannuncio = ?";
+	        PreparedStatement statement = conn.prepareStatement(query);
+	        statement.setInt(1, idAnnuncio);
+	        ResultSet rs = statement.executeQuery();
+	        if (rs.next()) {
+	            Annuncio annuncio = new Annuncio(
+	                rs.getString("titoloannuncio"),
+	                rs.getBoolean("statoannuncio"),
+	                rs.getString("fasciaOrariaInizio"),
+	                rs.getString("fasciaOrariaFine"),
+	                rs.getDouble("prezzo"),
+	                rs.getString("tipologia"),
+	                rs.getString("descrizioneAnnuncio"),
+	                controller.getOggettoById(rs.getInt("idoggetto")),
+	                controller.getSedeById(rs.getInt("idSede")),
+	                rs.getString("giorni"),
+	                rs.getTimestamp("dataPubblicazione")
+	            );
+	            
+	            return annuncio;
+	        }
+
+	        rs.close();
+	        statement.close();
+	        
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	    }
+
+	    return null;
+   }
 }

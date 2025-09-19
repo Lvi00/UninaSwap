@@ -251,7 +251,7 @@ public class OfferteBoundary {
         box.getStyleClass().add("card-annuncio");
         
         //Inserire annuncio in offerta
-        Label titoloAnnuncio = new Label("Titolo annuncio");
+        Label titoloAnnuncio = new Label(o.getAnnuncio().getTitoloAnnuncio());
         
         Label stato = new Label(o.getStatoOfferta());
         
@@ -288,9 +288,7 @@ public class OfferteBoundary {
         Button buttonDelete = new Button();
         buttonDelete.setGraphic(iconDelete);
         buttonDelete.getStyleClass().add("tasto-terziario");
-        buttonDelete.setOnMouseClicked(event -> {
-        	System.out.println("Hai cliccato su elimina offerta");
-        });
+        buttonDelete.setOnMouseClicked(event -> eliminaOfferta(o));
         
         ImageView iconInfo = new ImageView();
         try {
@@ -307,9 +305,7 @@ public class OfferteBoundary {
         Button buttonInfo = new Button();
         buttonInfo.setGraphic(iconInfo);
         buttonInfo.getStyleClass().add("tasto-secondario");
-        buttonInfo.setOnMouseClicked(event -> {
-        	System.out.println("Hai cliccato su info offerta");
-        });
+        buttonInfo.setOnMouseClicked(event -> mostraInfoOfferta(o));
         
         ImageView iconEdit = new ImageView();
         try {
@@ -326,9 +322,7 @@ public class OfferteBoundary {
         Button buttonEdit = new Button();
         buttonEdit.setGraphic(iconEdit);
         buttonEdit.getStyleClass().add("tasto-edit");
-        buttonEdit.setOnMouseClicked(event -> {
-        	System.out.println("Hai cliccato su modifica offerta");
-        });
+        buttonEdit.setOnMouseClicked(event -> editOfferta(o));
 
         HBox containerButton = new HBox(20);
         containerButton.setAlignment(Pos.CENTER);
@@ -350,5 +344,17 @@ public class OfferteBoundary {
         box.getChildren().addAll(titoloAnnuncio, boxStato, tipo, dataPubblicazione, containerButton);
 
         return box;
+    }
+    
+    public int eliminaOfferta(Offerta o) {
+    	return 0;
+    }
+    
+    public int editOfferta(Offerta o) {
+    	return 0;
+    }
+    
+    public void mostraInfoOfferta(Offerta o) {
+    	System.out.println("Mostra info offerta");
     }
 }

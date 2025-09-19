@@ -416,6 +416,11 @@ public class PopupOfferteBoundary {
 		        case -1: // offerta duplicata
 		            ShowPopupError("Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
 		        break;
+		        
+	            case -2:
+	                ShowPopupError("Oggetti offerti duplicati!","Hai inserito degli oggetti duplicati nella lista degli oggetti da offrire per lo scambio.");
+	                listaOggettiOfferti.clear();
+	            break;
     	    }
     	}
     }
@@ -454,7 +459,7 @@ public class PopupOfferteBoundary {
             case -1:
                 ShowPopupError("Offerta già esistente!","Hai già effettuato un'offerta per questo annuncio.");
             break;
-
+            
             default:
                 ShowPopupError("Errore sconosciuto", "Si è verificato un errore imprevisto. Riprova.");
             break;

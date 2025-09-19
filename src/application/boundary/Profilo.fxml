@@ -81,7 +81,7 @@
 						   <children>
 						      <ImageView fitHeight="16.0" fitWidth="16.0" layoutX="6.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
 						         <image>
-						            <Image url="@../IMG/immaginiProgramma/edit.png" />
+						            <Image url="@../IMG/immaginiProgramma/edit2.png" />
 						         </image>
 						      </ImageView>
 						   </children>

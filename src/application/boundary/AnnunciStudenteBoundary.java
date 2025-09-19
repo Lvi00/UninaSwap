@@ -48,8 +48,6 @@ public class AnnunciStudenteBoundary {
     @FXML private AnchorPane OfferteAnnunciPane;
     @FXML private Label labelOfferteAnnuncio;
     
-    private Annuncio annuncio = null;
-    
     public void setController(Controller controller) {
         this.controller = controller;
     }
@@ -351,7 +349,6 @@ public class AnnunciStudenteBoundary {
         buttonOffers.setStyle("-fx-cursor: hand;");
         buttonOffers.setGraphic(iconOffers);
         buttonOffers.setOnMouseClicked(event -> {
-            this.annuncio = a;
             mostraOfferteAnnuncio(a);
         });
 
@@ -498,11 +495,10 @@ public class AnnunciStudenteBoundary {
     }
     
     public void accettaOfferta(Offerta o) {
-		switch(controller.accettaOfferta(o, this.annuncio)) {
+		switch(controller.accettaOfferta(o)) {
 			case 0:
 				gridOfferte.getChildren().clear();
 				tornaIndietroAnnunci();
-				this.annuncio = null;
 			break;
 			
 			case 1:
@@ -512,10 +508,10 @@ public class AnnunciStudenteBoundary {
 	}
     
     public void rifiutaOfferta(Offerta o) {
-    	switch(controller.rifiutaOfferta(o, this.annuncio)) {
+    	switch(controller.rifiutaOfferta(o)) {
 	    	case 0:
 				gridOfferte.getChildren().clear();
-				mostraOfferteAnnuncio(this.annuncio);
+				mostraOfferteAnnuncio(o.getAnnuncio());
 	    	break;
 	    	
 	    	case 1:
@@ -549,7 +545,7 @@ public class AnnunciStudenteBoundary {
             Parent root = loader.load();
             PopupInfoOfferta popupInfoController = loader.getController();
             popupInfoController.setController(this.controller);
-            popupInfoController.setPopupInfoOfferta(offerta, this.annuncio);
+            popupInfoController.setPopupInfoOfferta(offerta);
             Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             Stage popupStage = new Stage();
             popupStage.initOwner(mainStage);
