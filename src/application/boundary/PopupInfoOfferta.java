@@ -46,7 +46,8 @@ public class PopupInfoOfferta {
 	    		paneInfoOffertaVendita.setVisible(true);
 	    		paneInfoOffertaRegalo.setVisible(false);
 	    		paneInfoOffertaVendita.setVisible(true);
-	    		labelControfferta.setText("Il prezzo offerto da " +  offerta.getStudente().getUsername() +  " è di: €" + offerta.getPrezzoOfferta());
+	    		String prezzoOfferta = String.format("%.2f", offerta.getPrezzoOfferta());
+	    		labelControfferta.setText("Il prezzo offerto da " +  offerta.getStudente().getUsername() +  " è di: €" + prezzoOfferta);
 	    	break;
 	    	
 	    	case "Scambio":

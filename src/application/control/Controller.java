@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -206,7 +207,9 @@ public class Controller {
 		Oggetto oggetto = new Oggetto(percorso, categoria, descrizione, studente);
 		new OggettoDAO().SaveOggetto(oggetto);
 		
-		Annuncio annuncio = new Annuncio(titolo, true, inizioOrarioDisponibilità, fineOrarioDisponibilità, prezzo, tipologia, descrizione, oggetto, sede, giorniDisponibilità);
+		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
+		
+		Annuncio annuncio = new Annuncio(titolo, true, inizioOrarioDisponibilità, fineOrarioDisponibilità, prezzo, tipologia, descrizione, oggetto, sede, giorniDisponibilità, dataCorrente);
 		new AnnuncioDAO().SaveAnnuncio(annuncio);
 		
 		return 0;
@@ -255,13 +258,15 @@ public class Controller {
 	}
 	
 	public int inviaOffertaVendita(Annuncio a) {
-		Offerta offerta = new Offerta(a.getTipologia());
+		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
+		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente);
 		offerta.setPrezzoOfferta(a.getPrezzo());
 		return new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(), "");
 	}
 	
 	public int inviaOffertaRegalo(Annuncio a, String Motivazione){
-		Offerta offerta = new Offerta(a.getTipologia());
+		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
+		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente);
 		return new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(), Motivazione);
 	}
 	
@@ -269,7 +274,9 @@ public class Controller {
 	{
         OffertaDAO offertaDao = new OffertaDAO();
         
-		Offerta offerta = new Offerta(a.getTipologia());
+        Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
+        
+		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente);
 		
 		int idOffertaInserita = 0;
 		
@@ -298,18 +305,22 @@ public class Controller {
 	}
 	
 	public int checkControfferta(Annuncio a, String stringaPrezzo) {
-		//Evita i caratteri speciali e le lettere, max un punto, max 3 cifre prima e 2 dopo, niente negativi
-		String prezzoRegex = "^\\d{1,3}(\\.\\d{1,2})?$";
-	    if (!stringaPrezzo.matches(prezzoRegex)) return 1;
+	    String prezzoRegex = "^\\d{1,3}(\\.\\d{1,2})$";
 	    
-		double prezzo = Double.parseDouble(stringaPrezzo);
+	    if (!stringaPrezzo.matches(prezzoRegex)) {
+	        return 1;
+	    }
+
+	    double prezzo = Double.parseDouble(stringaPrezzo);
 		
 		if(prezzo <= 0 || prezzo >= a.getPrezzo()) return 1;
 		
-		Offerta offerta = new Offerta(a.getTipologia());
+		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
+		
+		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente);
 		offerta.setPrezzoOfferta(prezzo);
 		
-		int appoggio = new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(),"");
+		int appoggio = new OffertaDAO().SaveOfferta(a, offerta, this.studente.getMatricola(), "");
 		
 		return appoggio;
 	}

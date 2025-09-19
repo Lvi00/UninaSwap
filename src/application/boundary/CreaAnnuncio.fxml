@@ -154,7 +154,7 @@
                                        </font>
                                     </Label>
                                     <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="279.0" layoutY="57.0" prefHeight="33.0" prefWidth="196.0" />
-                                    <TextArea fx:id="campoDescrizioneAnnuncio" layoutX="64.0" layoutY="270.0" prefHeight="74.0" prefWidth="413.0" promptText="Inserire la descrizione/In caso di scambio specificare se necessario cio che si vuole in cambio" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
+                                    <TextArea fx:id="campoDescrizioneAnnuncio" layoutX="64.0" layoutY="270.0" prefHeight="74.0" prefWidth="413.0" promptText="Inserire la descrizione / In caso di scambio specificare, se necessario, ciò che si vuole in cambio / Specificare informazioni aggiuntive sulla sede e sulle modalità di consegna" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
                                        <font>
                                           <Font size="14.0" />
                                        </font>

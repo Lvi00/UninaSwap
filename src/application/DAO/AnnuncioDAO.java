@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
-import application.entity.Offerta;
 import application.resources.ConnessioneDB;
 
 public class AnnuncioDAO {
@@ -22,7 +21,7 @@ public class AnnuncioDAO {
 			
 		    Connection conn = ConnessioneDB.getConnection();
 		    String queryCheck = "SELECT * FROM ANNUNCIO WHERE titoloannuncio = ? AND statoannuncio = ? AND fasciaorariainizio = ? AND fasciaorariafine = ? "
-		    		+ "AND prezzo = ? AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? AND idoggetto = ? AND idsede = ? AND giorni = ?";
+		    		+ "AND prezzo = ? AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? AND idoggetto = ? AND idsede = ? AND giorni = ? AND dataPubblicazione = ?";
 		    PreparedStatement checkStatement = conn.prepareStatement(queryCheck);
 		    checkStatement.setString(1, annuncio.getTitoloAnnuncio());
 		    checkStatement.setBoolean(2, annuncio.isStatoAnnuncio());
@@ -34,7 +33,8 @@ public class AnnuncioDAO {
 		    checkStatement.setString(8, matStudente);
 		    checkStatement.setInt(9, idoggetto);
 		    checkStatement.setInt(10, idsede);		    
-		    checkStatement.setString(11, annuncio.getGiorni());		    
+		    checkStatement.setString(11, annuncio.getGiorni());
+		    checkStatement.setTimestamp(12, annuncio.getDataPubblicazione());
 		    
 		    ResultSet resultSet = checkStatement.executeQuery();
 		    
@@ -46,8 +46,8 @@ public class AnnuncioDAO {
 		    
 		    else {
 	            String insert = "INSERT INTO ANNUNCIO(titoloannuncio, statoannuncio, fasciaorariainizio, fasciaorariafine, " +
-                        "prezzo, tipologia, descrizioneannuncio, matstudente, idoggetto, idsede, giorni) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        "prezzo, tipologia, descrizioneannuncio, matstudente, idoggetto, idsede, giorni, dataPubblicazione) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		        PreparedStatement statement = conn.prepareStatement(insert);
 		        statement.setString(1, annuncio.getTitoloAnnuncio());
 		        statement.setBoolean(2, annuncio.isStatoAnnuncio());
@@ -60,6 +60,7 @@ public class AnnuncioDAO {
 		        statement.setInt(9, idoggetto);
 		        statement.setInt(10, idsede);
 		        statement.setString(11, annuncio.getGiorni());
+		        statement.setTimestamp(12, annuncio.getDataPubblicazione());
 		        
 			    int rowsInserted = statement.executeUpdate();
 			    statement.close();
@@ -95,7 +96,8 @@ public class AnnuncioDAO {
                     rs.getString("descrizioneAnnuncio"),
                     controller.getOggettoById(rs.getInt("idoggetto")),
                     controller.getSedeById(rs.getInt("idSede")),
-                    rs.getString("giorni")
+                    rs.getString("giorni"),
+                    rs.getTimestamp("dataPubblicazione")
                 ));
             }
 
@@ -129,7 +131,8 @@ public class AnnuncioDAO {
                     rs.getString("descrizioneAnnuncio"),
                     controller.getOggettoById(rs.getInt("idoggetto")),
                     controller.getSedeById(rs.getInt("idSede")),
-                    rs.getString("giorni")
+                    rs.getString("giorni"),
+                    rs.getTimestamp("dataPubblicazione")
                 ));
             }
 
@@ -194,7 +197,8 @@ public class AnnuncioDAO {
                     rs.getString("descrizioneAnnuncio"),
                     controller.getOggettoById(rs.getInt("idoggetto")),
                     controller.getSedeById(rs.getInt("idSede")),
-                    rs.getString("giorni")
+                    rs.getString("giorni"),
+                    rs.getTimestamp("dataPubblicazione")
                 ));
             }
 
@@ -215,7 +219,7 @@ public class AnnuncioDAO {
 
 	        Connection conn = ConnessioneDB.getConnection();
 		    String query = "UPDATE ANNUNCIO SET statoannuncio = false WHERE titoloannuncio = ? AND statoannuncio = ? AND fasciaorariainizio = ? AND fasciaorariafine = ? "
-		    		+ "AND prezzo = ? AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? AND idoggetto = ? AND idsede = ? AND giorni = ?";
+		    		+ "AND prezzo = ? AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? AND idoggetto = ? AND idsede = ? AND giorni = ? AND dataPubblicazione = ?";
 	        PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, annuncio.getTitoloAnnuncio());
             ps.setBoolean(2, annuncio.isStatoAnnuncio());
@@ -228,6 +232,7 @@ public class AnnuncioDAO {
             ps.setInt(9, idOggetto);
             ps.setInt(10, idSede);
             ps.setString(11, annuncio.getGiorni());
+            ps.setTimestamp(12, annuncio.getDataPubblicazione());
 
             int updatedRows = ps.executeUpdate();
             if (updatedRows > 0) {
@@ -252,7 +257,7 @@ public class AnnuncioDAO {
 		    String query = "SELECT idannuncio FROM ANNUNCIO WHERE titoloannuncio = ? AND statoannuncio = ? "
 		            + "AND fasciaorariainizio = ? AND fasciaorariafine = ? AND prezzo = ? "
 		            + "AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? "
-		            + "AND idoggetto = ? AND idsede = ? AND giorni = ?";
+		            + "AND idoggetto = ? AND idsede = ? AND giorni = ? AND dataPubblicazione = ?";
 	
 	    	Connection conn = ConnessioneDB.getConnection();
 	        PreparedStatement statement = conn.prepareStatement(query);
@@ -268,6 +273,7 @@ public class AnnuncioDAO {
 	        statement.setInt(9, idOggetto);
 	        statement.setInt(10, idSede);
 	        statement.setString(11, annuncio.getGiorni());
+	        statement.setTimestamp(12, annuncio.getDataPubblicazione());
 	
 	        ResultSet rs = statement.executeQuery();
 	        if (rs.next()) {
@@ -290,7 +296,7 @@ public class AnnuncioDAO {
 
 	        // Trova l'id dell'annuncio
 	        String queryCheck = "SELECT idannuncio FROM ANNUNCIO WHERE titoloannuncio = ? AND statoannuncio = ? AND fasciaorariainizio = ? AND fasciaorariafine = ? "
-	                + "AND prezzo = ? AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? AND idoggetto = ? AND idsede = ? AND giorni = ?";
+	                + "AND prezzo = ? AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? AND idoggetto = ? AND idsede = ? AND giorni = ? AND dataPubblicazione = ?";
 	        PreparedStatement checkStatement = conn.prepareStatement(queryCheck);
 	        checkStatement.setString(1, annuncio.getTitoloAnnuncio());
 	        checkStatement.setBoolean(2, annuncio.isStatoAnnuncio());
@@ -303,6 +309,7 @@ public class AnnuncioDAO {
 	        checkStatement.setInt(9, idOggetto);
 	        checkStatement.setInt(10, idSede);
 	        checkStatement.setString(11, annuncio.getGiorni());
+	        checkStatement.setTimestamp(12, annuncio.getDataPubblicazione());
 
 	        ResultSet resultSet = checkStatement.executeQuery();
 

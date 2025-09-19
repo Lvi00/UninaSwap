@@ -28,6 +28,7 @@
                       <ImageView fx:id="immagineAnnuncio" fitHeight="150.0" fitWidth="240.0" layoutX="35.0" layoutY="20.0" smooth="false" />
       
                       <Label fx:id="categoriaAnnuncio" layoutX="35.0" layoutY="180.0" />
+                  <Label fx:id="labelDataPubblicazione" layoutX="170.0" layoutY="180.0" />
                   <Pane layoutX="35.0" layoutY="198.0" prefHeight="40.0" prefWidth="240.0">
                      <children>
             

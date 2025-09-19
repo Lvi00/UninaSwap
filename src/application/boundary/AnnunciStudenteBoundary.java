@@ -1,6 +1,9 @@
 package application.boundary;
 
 import java.io.File;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
@@ -324,9 +327,12 @@ public class AnnunciStudenteBoundary {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        Timestamp data = a.getDataPubblicazione();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = data.toLocalDateTime().format(formatter);
 
-        Label disponibilità = new Label("Disponibile il " + (a.getGiorni() != null ? a.getGiorni() : "N/D")
-            + "\ndalle " + a.getFasciaOrariaInizio() + " alle " + a.getFasciaOrariaFine());
+        Label dataPubblicazione = new Label("Pubblicato il: " + formattedDate);
         
         HBox containerButton = new HBox(20);
         containerButton.setAlignment(Pos.CENTER);
@@ -356,7 +362,7 @@ public class AnnunciStudenteBoundary {
         boxPrezzo.setSpacing(4);
         boxPrezzo.getChildren().addAll(stato, prezzo);
 
-        box.getChildren().addAll(imagePane, titolo, boxPrezzo, tipo, disponibilità, containerButton);
+        box.getChildren().addAll(imagePane, titolo, boxPrezzo, tipo, dataPubblicazione, containerButton);
 
         return box;
     }
@@ -404,11 +410,18 @@ public class AnnunciStudenteBoundary {
             statoOfferta.getStyleClass().add("label-attivo");
         }
 
-        // Prezzo Offerta
-        Label prezzoOfferta = new Label(String.format("€ %.2f", o.getPrezzoOfferta()));
-        prezzoOfferta.setStyle("-fx-text-fill: #153464; -fx-font-size: 12;");
-        prezzoOfferta.setPrefWidth(100);
-        prezzoOfferta.setAlignment(Pos.CENTER);
+        HBox dataPubblicazioneBox = new HBox();
+        
+        Timestamp data = o.getDataPubblicazione();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = data.toLocalDateTime().format(formatter);
+        
+        Label dataPubblicazione = new Label(formattedDate);
+        dataPubblicazione.setStyle("-fx-text-fill: gray; -fx-font-size: 12;");
+        
+        dataPubblicazioneBox.getChildren().add(dataPubblicazione);
+        dataPubblicazioneBox.setAlignment(Pos.CENTER);
+        dataPubblicazioneBox.setPrefWidth(150);
 
         // Info Studente
         HBox infoBox = new HBox(10);
@@ -460,7 +473,7 @@ public class AnnunciStudenteBoundary {
         	containerButtons.getChildren().add(btnInfo);
         }
         
-        riga.getChildren().addAll(statoOfferta, prezzoOfferta, infoBox, spacer, containerButtons);
+        riga.getChildren().addAll(statoOfferta, dataPubblicazioneBox, infoBox, spacer, containerButtons);
         
         return riga;
     }
@@ -500,14 +513,14 @@ public class AnnunciStudenteBoundary {
     
     public void rifiutaOfferta(Offerta o) {
     	switch(controller.rifiutaOfferta(o, this.annuncio)) {
-    	case 0:
-			gridOfferte.getChildren().clear();
-			tornaIndietroAnnunci();
-    	break;
-    	
-    	case 1:
-    		System.out.println("Errore: Offerta non trovata.");
-    	break;
+	    	case 0:
+				gridOfferte.getChildren().clear();
+				mostraOfferteAnnuncio(this.annuncio);
+	    	break;
+	    	
+	    	case 1:
+	    		System.out.println("Errore: Offerta non trovata.");
+	    	break;
     	}
     }
     

@@ -32,6 +32,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class PopupOfferteBoundary {
@@ -55,6 +57,7 @@ public class PopupOfferteBoundary {
     @FXML private Label usernameAnnuncio;
     @FXML private Label disponibilitàAnnuncio;
     @FXML private Label categoriaAnnuncio;
+    @FXML private Label labelDataPubblicazione;
     @FXML private Label sedeAnnuncio;
     @FXML private ImageView immagineAnnuncio;
     @FXML private ImageView immagineProfilo;
@@ -121,6 +124,13 @@ public class PopupOfferteBoundary {
             }
 
             categoriaAnnuncio.setText(annuncio.getOggetto().getCategoria());
+            
+            Timestamp data = annuncio.getDataPubblicazione();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDate = data.toLocalDateTime().format(formatter);
+            
+            labelDataPubblicazione.setText(formattedDate);
+            
             usernameAnnuncio.setText(annuncio.getOggetto().getStudente().getUsername());
             disponibilitàAnnuncio.setText(
                 annuncio.getGiorni() + " dalle " + annuncio.getFasciaOrariaInizio() + " alle " + annuncio.getFasciaOrariaFine()
@@ -325,7 +335,7 @@ public class PopupOfferteBoundary {
         tabellaOggetti.setMaxHeight(altezzaTotale);
     }
 
-    // Metodo di utilità per tooltip
+    // Aggiunge il tooltip ad ogni colonna
     private void addTooltipToColumn(TableColumn<Oggetto, String> column) {
         column.setCellFactory(col -> new TableCell<Oggetto, String>() {
             @Override
@@ -420,6 +430,7 @@ public class PopupOfferteBoundary {
         if (intero.isEmpty()) {
         	intero = "0";
         }
+        
         // Se decimale è vuoto, aggiungi "00"
         if (decimale.isEmpty()) {
             decimale = "00";

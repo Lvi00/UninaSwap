@@ -54,8 +54,8 @@ public class OffertaDAO {
             }
 
             // Inserimento offerta
-            String insert = "INSERT INTO OFFERTA(statoofferta, prezzoofferta, tipologia, matstudente, idannuncio, motivazione) "
-                    + "VALUES (?, ?, ?, ?, ?, ?)";
+            String insert = "INSERT INTO OFFERTA(statoofferta, prezzoofferta, tipologia, matstudente, idannuncio, motivazione, dataPubblicazione) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(insert);
             
             if ("Scambio".equalsIgnoreCase(offerta.getTipologia())) {
@@ -71,6 +71,7 @@ public class OffertaDAO {
             statement.setString(4, matStudente);
             statement.setInt(5, idannuncio);
             statement.setString(6, motivazione);
+            statement.setTimestamp(7, offerta.getDataPubblicazione());
 
             int rowsInserted = statement.executeUpdate();
 
@@ -136,14 +137,16 @@ public class OffertaDAO {
             selectStmt.setInt(1, controller.getIdByAnnuncio(a)); 
             ResultSet rs = selectStmt.executeQuery();
             while (rs.next()) {
-                // Crea l'offerta da ciascuna riga del ResultSet
-                Offerta offerta = new Offerta(rs.getString("tipologia"));
+                Offerta offerta = new Offerta(
+            		rs.getString("tipologia"),
+                    rs.getTimestamp("dataPubblicazione")
+                );
+                
                 offerta.setPrezzoOfferta(rs.getDouble("prezzoofferta"));
                 offerta.setStatoOfferta(rs.getString("statoofferta"));
                 offerta.setMotivazione(rs.getString("motivazione"));
                 offerta.setStudente(controller.getStudenteByMatricola(rs.getString("matstudente")));
                 
-                // Aggiungi l'offerta alla lista
                 offerte.add(offerta);
             }
 
@@ -278,8 +281,11 @@ public class OffertaDAO {
 
             ResultSet rsOggettiOfferti = stmtOggettiOfferti.executeQuery();
             while (rsOggettiOfferti.next()) {
-                // costruzione partendo dal costruttore esistente
-                Offerta offerta = new Offerta(rsOggettiOfferti.getString("tipologia"));
+            	
+                Offerta offerta = new Offerta(
+                		rsOggettiOfferti.getString("tipologia"),
+                		rsOggettiOfferti.getTimestamp("dataPubblicazione")
+                );
 
                 offerta.setStatoOfferta(rsOggettiOfferti.getString("statoOfferta"));
                 offerta.setPrezzoOfferta(rsOggettiOfferti.getDouble("prezzoofferta"));
