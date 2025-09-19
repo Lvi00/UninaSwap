@@ -410,4 +410,8 @@ public class Controller {
     public Annuncio getAnnuncioById(int idAnnuncio) {
     	return new AnnuncioDAO().getAnnuncioById(idAnnuncio);
     }
+    
+    public int eliminaOfferta(Offerta o) {
+		return new OffertaDAO().eliminaOfferta(o);
+	}
 }

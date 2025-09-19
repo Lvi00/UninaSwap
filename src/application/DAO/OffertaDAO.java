@@ -276,7 +276,7 @@ public class OffertaDAO {
 
         try{
         	Connection conn = ConnessioneDB.getConnection();
-            String queryOggettiOfferti = "SELECT * FROM Offerta WHERE matstudente = ?";
+            String queryOggettiOfferti = "SELECT * FROM Offerta WHERE matstudente = ? ORDER BY dataPubblicazione";
             PreparedStatement stmtOggettiOfferti = conn.prepareStatement(queryOggettiOfferti);
             stmtOggettiOfferti.setString(1, s.getMatricola());
 
@@ -304,4 +304,34 @@ public class OffertaDAO {
 
         return offerte;
     }
+    
+    public int eliminaOfferta(Offerta o) {
+		try {
+			Connection conn = ConnessioneDB.getConnection();
+			
+			if(o.getTipologia().equals("Scambio")) {
+				String eliminaOggettiOfferti = "DELETE FROM OGGETTIOFFERTI WHERE idOfferta = ?";
+				PreparedStatement stmtEliminaOggetti = conn.prepareStatement(eliminaOggettiOfferti);
+				stmtEliminaOggetti.setInt(1, controller.getIdByOfferta(o));
+				stmtEliminaOggetti.executeUpdate();
+			}
+			
+			String eliminaOfferta = "DELETE FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
+			PreparedStatement stmtEliminaOfferta = conn.prepareStatement(eliminaOfferta);
+			stmtEliminaOfferta.setString(1, o.getStudente().getMatricola());
+			stmtEliminaOfferta.setInt(2, controller.getIdByAnnuncio(o.getAnnuncio()));
+			
+			if (stmtEliminaOfferta.executeUpdate() > 0) {
+				System.out.println("Offerta eliminata con successo.");
+				return 0;
+			}
+			else {
+				System.out.println("Nessuna offerta eliminata.");
+				return 1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+	}
 }

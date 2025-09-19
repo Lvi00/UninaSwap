@@ -27,7 +27,7 @@
 - **Reportistica**:
   - Statistiche sul numero di offerte inviate e accettate per tipologia
   - Per gli annunci di vendita accettati: valore medio, minimo e massimo in euro
-  - Grafici dei dati generati con [JFreeChart](http://www.jfree.org/jfreechart/)
+  - Grafici dei dati generati con una libreria come JFreeChart (http://www.jfree.org/jfreechart/) o con JavaFX
 
 ---
 

@@ -37,9 +37,12 @@ public class OfferteBoundary {
 
     private Controller controller;
 
-    @FXML private HBox containerCatalogoProdotti;
+    @FXML private HBox containerOfferte;
+    @FXML private AnchorPane OffertePane;
     @FXML private Label usernameDashboard;
     @FXML private ImageView immagineNav;
+    @FXML private AnchorPane paneModificaOfferta;
+    @FXML private Label labelModificaOfferta;
     
     @FXML private Label labelOffertePubblicate;
     @FXML private GridPane gridOfferte;
@@ -250,8 +253,12 @@ public class OfferteBoundary {
         box.setAlignment(Pos.TOP_CENTER);
         box.getStyleClass().add("card-annuncio");
         
-        //Inserire annuncio in offerta
+        Label labelAnnuncio = new Label("Offerta per l'annuncio:");
+        labelAnnuncio.setStyle("-fx-font-size: 14px;");
+        
         Label titoloAnnuncio = new Label(o.getAnnuncio().getTitoloAnnuncio());
+        titoloAnnuncio.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+        titoloAnnuncio.setWrapText(true);
         
         Label stato = new Label(o.getStatoOfferta());
         
@@ -341,20 +348,62 @@ public class OfferteBoundary {
 
         Label dataPubblicazione = new Label("Inviata il: " + formattedDate);
 
-        box.getChildren().addAll(titoloAnnuncio, boxStato, tipo, dataPubblicazione, containerButton);
+        box.getChildren().addAll(labelAnnuncio, titoloAnnuncio, boxStato, tipo, dataPubblicazione, containerButton);
 
         return box;
     }
     
-    public int eliminaOfferta(Offerta o) {
-    	return 0;
+    public void eliminaOfferta(Offerta o) {
+    	switch(controller.eliminaOfferta(o)){
+    		case 0:
+    			ShowPopupAlert("Eliminazione offerta", "Offerta eliminata correttamente.");
+				gridOfferte.getChildren().clear();
+				CostruisciOfferteUtente(this.controller.getStudente());
+			break;
+			
+    		case 1:
+    			System.out.println("Errore durante l'eliminazione dell'offerta.");
+			break;
+    	}
     }
     
-    public int editOfferta(Offerta o) {
-    	return 0;
+    public void editOfferta(Offerta o) {
+    	labelModificaOfferta.setText("Modifica offerta per l'annuncio: " + o.getAnnuncio().getTitoloAnnuncio());
+    	OffertePane.setVisible(false);
+    	paneModificaOfferta.setVisible(true);
     }
     
     public void mostraInfoOfferta(Offerta o) {
     	System.out.println("Mostra info offerta");
     }
+    
+    private void ShowPopupAlert(String title, String message) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupAlert.fxml"));
+	        Parent root = loader.load();
+	        Stage mainStage = (Stage) containerOfferte.getScene().getWindow();
+	        Stage stage = new Stage();
+	        stage.initOwner(mainStage);
+	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+	        Scene scene = new Scene(root);
+	        stage.setScene(scene);
+	        stage.setTitle("UninaSwap - " + title);
+	        stage.setResizable(false);
+	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+
+	        PopupErrorBoundary popupController = loader.getController();
+	        popupController.setLabels(title, message);
+	       
+	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+
+	        stage.show();
+	        
+	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
+	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }
