@@ -24,7 +24,7 @@
 	-fx-background-color: #2207bb;
 }
 
-.tasto, .tasto-secondario, .tasto-terziario, .tasto-conferma{
+.tasto, .tasto-secondario, .tasto-terziario, .tasto-conferma, .tasto-edit{
     -fx-background-radius: 20px;
     -fx-cursor: hand;
     -fx-padding: 10px;
@@ -40,8 +40,8 @@
 	-fx-background-color: #28a745;
 }
 
-.tasto-secondario{
-	-fx-background-radius: 100px;
+.tasto-edit{
+	-fx-background-color: #ffb733;
 }
 
 .tasto-terziario{

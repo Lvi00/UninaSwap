@@ -3,6 +3,8 @@ package application.boundary;
 import javafx.scene.input.MouseEvent;
 
 import java.io.File;
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
@@ -242,32 +244,31 @@ public class OfferteBoundary {
 
     private VBox creaCardOfferte(Offerta o) { 
         VBox box = new VBox();
-        box.setPrefWidth(230);
-        box.setPrefHeight(300);
+        box.setPrefWidth(250);
+        box.setPrefHeight(150);
         box.setSpacing(5);
         box.setAlignment(Pos.TOP_CENTER);
         box.getStyleClass().add("card-annuncio");
         
+        //Inserire annuncio in offerta
+        Label titoloAnnuncio = new Label("Titolo annuncio");
+        
         Label stato = new Label(o.getStatoOfferta());
+        
         switch(o.getStatoOfferta()) {
             case "Attesa":
                 stato.getStyleClass().add("label-attesa");
-                break;
+            break;
+            
             case "Accettata":
                 stato.getStyleClass().add("label-attivo");
-                break;
+            break;
+
             case "Rifiutata":
                 stato.getStyleClass().add("label-non-attivo");
-                break;
+            break;
         }
         VBox.setMargin(stato, new Insets(4, 0, 4, 0));
-
-        // Correzione qui
-        Label prezzo = new Label(); 
-        if (o.getTipologia().equals("Vendita")) {
-            prezzo.setText(String.format("\u20AC %.2f", o.getPrezzoOfferta()));
-            prezzo.setStyle("-fx-text-fill: #153464; -fx-font-size: 12;");
-        }
 
         Label tipo = new Label(o.getTipologia());
         tipo.setStyle("-fx-text-fill: gray;");
@@ -283,17 +284,70 @@ public class OfferteBoundary {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        Button buttonDelete = new Button();
+        buttonDelete.setGraphic(iconDelete);
+        buttonDelete.getStyleClass().add("tasto-terziario");
+        buttonDelete.setOnMouseClicked(event -> {
+        	System.out.println("Hai cliccato su elimina offerta");
+        });
+        
+        ImageView iconInfo = new ImageView();
+        try {
+            String iconPath = "../IMG/immaginiProgramma/info.png";
+            Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
+            iconInfo.setImage(imgIcon);
+            iconInfo.setFitWidth(22);
+            iconInfo.setFitHeight(22);
+            iconInfo.setPreserveRatio(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        Button buttonInfo = new Button();
+        buttonInfo.setGraphic(iconInfo);
+        buttonInfo.getStyleClass().add("tasto-secondario");
+        buttonInfo.setOnMouseClicked(event -> {
+        	System.out.println("Hai cliccato su info offerta");
+        });
+        
+        ImageView iconEdit = new ImageView();
+        try {
+            String iconPath = "../IMG/immaginiProgramma/edit.png";
+            Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
+            iconEdit.setImage(imgIcon);
+            iconEdit.setFitWidth(22);
+            iconEdit.setFitHeight(22);
+            iconEdit.setPreserveRatio(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        Button buttonEdit = new Button();
+        buttonEdit.setGraphic(iconEdit);
+        buttonEdit.getStyleClass().add("tasto-edit");
+        buttonEdit.setOnMouseClicked(event -> {
+        	System.out.println("Hai cliccato su modifica offerta");
+        });
 
         HBox containerButton = new HBox(20);
         containerButton.setAlignment(Pos.CENTER);
         VBox.setMargin(containerButton, new Insets(5, 0, 0, 0));
+        
+        containerButton.getChildren().addAll(buttonInfo, buttonEdit, buttonDelete);
+        
+        VBox boxStato = new VBox();
+        boxStato.setAlignment(Pos.CENTER);
+        boxStato.setSpacing(4);
+        boxStato.getChildren().addAll(stato);
+        
+        Timestamp data = o.getDataPubblicazione();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = data.toLocalDateTime().format(formatter);
 
-        VBox boxPrezzo = new VBox();
-        boxPrezzo.setAlignment(Pos.CENTER);
-        boxPrezzo.setSpacing(4);
-        boxPrezzo.getChildren().addAll(stato, prezzo);
+        Label dataPubblicazione = new Label("Inviata il: " + formattedDate);
 
-        box.getChildren().addAll(boxPrezzo, tipo, containerButton);
+        box.getChildren().addAll(titoloAnnuncio, boxStato, tipo, dataPubblicazione, containerButton);
 
         return box;
     }
