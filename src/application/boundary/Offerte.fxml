@@ -10,102 +10,106 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="containerOfferte" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.OfferteBoundary">
+<HBox fx:id="containerOfferte" prefHeight="600.0" prefWidth="1100.0"
+      stylesheets="@../resources/application.css"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="application.boundary.OfferteBoundary">
+
    <children>
-      <!-- Root AnchorPane -->
-      <AnchorPane prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: #F2EFEA;">
+      <AnchorPane prefHeight="600.0" prefWidth="1100.0">
          <children>
 
-            <!-- Sidebar -->
+            <!-- Sidebar identica ad AnnunciStudente -->
             <AnchorPane id="sidebar" prefHeight="600.0" prefWidth="143.0">
                <children>
-                  <ImageView fitHeight="102.0" fitWidth="112.0" layoutX="26.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="102.0" fitWidth="112.0" layoutX="26.0" layoutY="14.0"
+                             pickOnBounds="true" preserveRatio="true">
                      <image><Image url="@../IMG/immaginiProgramma/logo2.png" /></image>
                   </ImageView>
 
-                  <!-- Sezioni -->
-                  <Label layoutX="35.0" layoutY="140.0" onMouseClicked="#SelezionaPagina" prefHeight="50.0" prefWidth="80.0" styleClass="label-sidebar" text="Prodotti" textFill="WHITE">
+                  <Label layoutX="19.0" layoutY="140.0" onMouseClicked="#SelezionaPagina"
+                         prefHeight="50.0" prefWidth="112.0" styleClass="label-sidebar"
+                         text="Prodotti" textFill="WHITE">
                      <cursor><Cursor fx:constant="HAND" /></cursor>
                      <font><Font size="16.0" /></font>
                   </Label>
-                  <Label layoutX="18.0" layoutY="210.0" onMouseClicked="#SelezionaPagina" prefHeight="50.0" prefWidth="112.0" styleClass="label-sidebar" text="Crea annuncio" textFill="WHITE">
+
+                  <Label layoutX="18.0" layoutY="210.0" onMouseClicked="#SelezionaPagina"
+                         prefHeight="50.0" prefWidth="112.0" styleClass="label-sidebar"
+                         text="Crea annuncio" textFill="WHITE">
                      <cursor><Cursor fx:constant="HAND" /></cursor>
                      <font><Font size="16.0" /></font>
                   </Label>
-                  <Label layoutX="18.0" layoutY="280.0" onMouseClicked="#SelezionaPagina" prefHeight="54.0" prefWidth="112.0" styleClass="label-sidebar" text="I tuoi annunci" textFill="WHITE">
+
+                  <Label layoutX="18.0" layoutY="280.0" onMouseClicked="#SelezionaPagina"
+                         prefHeight="54.0" prefWidth="112.0" styleClass="label-sidebar"
+                         text="I tuoi annunci" textFill="WHITE">
                      <cursor><Cursor fx:constant="HAND" /></cursor>
                      <font><Font size="16.0" /></font>
                   </Label>
-                  <Label layoutX="45.0" layoutY="350.0" onMouseClicked="#SelezionaPagina" prefHeight="54.0" prefWidth="65.0" styleClass="label-sidebar" text="Offerte" textFill="WHITE">
+
+                  <Label layoutX="13.0" layoutY="350.0" onMouseClicked="#SelezionaPagina"
+                         prefHeight="54.0" prefWidth="128.0" styleClass="label-sidebar"
+                         text="Offerte" textFill="WHITE">
                      <cursor><Cursor fx:constant="HAND" /></cursor>
                      <font><Font size="16.0" /></font>
                   </Label>
-                  <Label layoutX="26.0" layoutY="420.0" onMouseClicked="#SelezionaPagina" prefHeight="54.0" prefWidth="102.0" styleClass="label-sidebar" text="Informazioni" textFill="WHITE">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font size="16.0" />
-                     </font>
+
+                  <Label layoutX="13.0" layoutY="420.0" onMouseClicked="#SelezionaPagina"
+                         prefHeight="54.0" prefWidth="128.0" styleClass="label-sidebar"
+                         text="Informazioni" textFill="WHITE">
+                     <cursor><Cursor fx:constant="HAND" /></cursor>
+                     <font><Font size="16.0" /></font>
                   </Label>
                </children>
             </AnchorPane>
 
-                                    <!-- Navbar -->
+            <!-- Navbar -->
             <AnchorPane id="navbar" layoutX="148.0" prefHeight="102.0" prefWidth="952.0">
                <children>
-                  <HBox alignment="CENTER_RIGHT" layoutX="719.0" layoutY="20.0" prefHeight="62.0" prefWidth="220.0" spacing="10.0">
+                  <HBox alignment="CENTER_RIGHT" layoutX="719.0" layoutY="20.0"
+                        prefHeight="62.0" prefWidth="220.0" spacing="10.0">
                      <children>
-                        <ImageView fx:id="immagineNav" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label id="label-profilo" fx:id="usernameDashboard" onMouseClicked="#SelezionaPagina" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
+                        <ImageView fx:id="immagineNav" fitHeight="33.0" fitWidth="33.0"
+                                   pickOnBounds="true" preserveRatio="true" />
+                        <Label id="label-profilo" fx:id="usernameDashboard"
+                               onMouseClicked="#SelezionaPagina" textFill="WHITE">
+                           <font><Font size="16.0" /></font>
+                           <cursor><Cursor fx:constant="HAND" /></cursor>
                         </Label>
                      </children>
                   </HBox>
                </children>
             </AnchorPane>
-            <HBox layoutX="150.0" layoutY="102.0" prefHeight="471.0" prefWidth="947.0">
+
+            <!-- Contenuto principale -->
+            <HBox layoutX="149.0" layoutY="102.0" prefHeight="498.0" prefWidth="949.0"
+                  style="-fx-background-color: #F2EFEA;">
                <children>
-                  <AnchorPane prefHeight="501.0" prefWidth="945.0">
+                  <AnchorPane fx:id="OffertePane" prefHeight="495.0" prefWidth="949.0">
                      <children>
-                        <AnchorPane fx:id="OffertePane" prefHeight="485.0" prefWidth="947.0">
-                           <children>
-                              <Label fx:id="labelOffertePubblicate" layoutX="60.0" layoutY="45.0" style="-fx-font-weight: bold;">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                              <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true" layoutY="63.0" prefHeight="432.0" prefWidth="947.0">
-                                 <content>
-                                    <AnchorPane id="pannelloScrollabile" prefHeight="409.0" prefWidth="919.0">
-                                       <children>
-                                          <GridPane fx:id="gridOfferte" alignment="CENTER" hgap="50" layoutX="48" layoutY="20.0" vgap="40" />
-                                       </children>
-                                    </AnchorPane>
-                                 </content>
-                              </ScrollPane>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="paneModificaOfferta" layoutX="-3.0" prefHeight="498.0" prefWidth="906.0" visible="false">
-                           <children>
-                              <Label fx:id="labelModificaOfferta" layoutX="60.0" layoutY="45.0" style="-fx-font-weight: bold;">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
+                        <Label fx:id="labelOffertePubblicate" layoutX="60.0" layoutY="45.0"
+                               style="-fx-font-weight: bold;">
+                           <font><Font size="20.0" /></font>
+                        </Label>
+
+                        <ScrollPane id="listaProdotti" fitToHeight="true" fitToWidth="true"
+                                    layoutY="80.0" prefHeight="400.0" prefWidth="949.0">
+                           <content>
+                              <AnchorPane id="pannelloScrollabile" prefHeight="409.0" prefWidth="922.0">
+                                 <children>
+                                    <GridPane fx:id="gridOfferte" alignment="CENTER"
+                                              hgap="50" vgap="40" layoutX="48" layoutY="20.0" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </ScrollPane>
                      </children>
                   </AnchorPane>
                </children>
             </HBox>
 
-                                 </children>
+         </children>
       </AnchorPane>
    </children>
 </HBox>
