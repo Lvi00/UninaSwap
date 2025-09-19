@@ -41,7 +41,7 @@ public class OfferteBoundary {
     @FXML private AnchorPane OffertePane;
     @FXML private Label usernameDashboard;
     @FXML private ImageView immagineNav;
-    @FXML private AnchorPane paneModificaOfferta;
+    @FXML private HBox containerModificaOfferta;
     @FXML private Label labelModificaOfferta;
     
     @FXML private Label labelOffertePubblicate;
@@ -370,7 +370,7 @@ public class OfferteBoundary {
     public void editOfferta(Offerta o) {
     	labelModificaOfferta.setText("Modifica offerta per l'annuncio: " + o.getAnnuncio().getTitoloAnnuncio());
     	OffertePane.setVisible(false);
-    	paneModificaOfferta.setVisible(true);
+    	containerModificaOfferta.setVisible(true);
     }
     
     public void mostraInfoOfferta(Offerta o) {
