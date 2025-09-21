@@ -6,7 +6,6 @@ import javafx.scene.control.TextField;
 import java.io.File;
 import java.util.ArrayList;
 import application.control.Controller;
-import application.entity.Annuncio;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -548,6 +547,11 @@ public class CreaAnnuncioBoundary {
     
     @FXML
     public void mostraOggettiDesiderati(MouseEvent e) {
+    	if(this.listaOggetti.isEmpty()) {
+			ShowPopupError("Nessun oggetto inserito", "Non sono stati ancora aggiunti oggetti desiderati. Aggiungi almeno un oggetto per poter visualizzare la lista.");
+			return;
+		}
+    	
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOggettiDesiderati.fxml"));
             Parent root = loader.load();

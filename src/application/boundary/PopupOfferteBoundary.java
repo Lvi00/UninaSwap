@@ -219,21 +219,16 @@ public class PopupOfferteBoundary {
 			case 0:
 			   Oggetto nuovoOggetto = new Oggetto(percorsoImmagine, categoriaSelezionata.toString(), descrizione, controller.getStudente());
 			   
-			   if(this.listaOggettiOfferti.size() < 5)
-			   {
-				    //Aggiungo l'oggetto all'arraylist
-				   	this.listaOggettiOfferti.add(nuovoOggetto);
+			   if(this.listaOggettiOfferti.size() < 5){
 			   		ShowPopupAlert("Oggetto aggiunto!", "L'oggetto è stato aggiunto alla lista degli oggetti da offrire.");
+				   	this.listaOggettiOfferti.add(nuovoOggetto);
 	    	   }
-			   else 
-			   {
-				   	ShowPopupError("Troppi oggetti!", "Hai inserito il limite massimo di 5 oggetti scambiabili.");
-			   }
-			   // Pulisco i campi del form
+			   else ShowPopupError("Troppi oggetti!", "Hai inserito il limite massimo di 5 oggetti scambiabili.");
+			   
 			   campoDescrizioneAnnuncioScambio.clear();
 			   campoCategoriaOggetto.getSelectionModel().selectFirst();
 			   immagineCaricata.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/no_image.png").toExternalForm()));
-			   fileSelezionato = null;
+			   this.fileSelezionato = null;
 			break;
 			
 			case 1:
@@ -256,11 +251,9 @@ public class PopupOfferteBoundary {
             ShowPopupError("Nessun oggetto aggiunto", "Non hai ancora aggiunto oggetti da offrire per lo scambio.");
             return;
         }
-
+        
         paneOfferta.setVisible(false);
         paneOggettiOfferti.setVisible(true);
-
-        // Pulisce eventuali dati precedenti e popola la TableView
         tabellaOggetti.getItems().setAll(listaOggettiOfferti);
     }
 
@@ -305,13 +298,9 @@ public class PopupOfferteBoundary {
             }
         });
 
-        // --- Imposta policy di resize colonne ---
         tabellaOggetti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        // Imposta altezza fissa delle righe
         tabellaOggetti.setFixedCellSize(38);
-
-        // Aggiorna altezza dinamica quando cambia il numero di righe
+        tabellaOggetti.setSelectionModel(null);
         tabellaOggetti.getItems().addListener((ListChangeListener<Oggetto>) change -> aggiornaAltezzaTabella());
     }
 
@@ -375,14 +364,8 @@ public class PopupOfferteBoundary {
     	else if(this.annuncio.getTipologia().equals("Regalo")) {
     	    String messaggioMotivazionale = campoDescrizioneAnnuncioRegalo.getText();
     	    
-    	    if (messaggioMotivazionale == null || messaggioMotivazionale.trim().isEmpty()) 
-    	    {
-    	    	messaggioMotivazionale = "Assente";
-    	    } 
-    	    else 
-    	    {
-    	    	messaggioMotivazionale = messaggioMotivazionale.trim();
-    	    }
+    	    if (messaggioMotivazionale == null || messaggioMotivazionale.trim().isEmpty()) messaggioMotivazionale = "Assente";
+    	    else messaggioMotivazionale = messaggioMotivazionale.trim();
 
     	    switch(controller.inviaOffertaRegalo(annuncio, messaggioMotivazionale)) {
     	        case 0: // offerta inviata correttamente
