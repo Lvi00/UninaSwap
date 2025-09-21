@@ -399,12 +399,14 @@ public class CreaAnnuncioBoundary {
 	        
     	}
     
-        switch(controller.checkDatiAnnuncio(datiAnnuncio, this.fileSelezionato, controller.getStudente())) {
+        switch(controller.checkDatiAnnuncio(datiAnnuncio, this.fileSelezionato, controller.getStudente(), this.listaOggetti)) {
 	        case 0:
 	        	ShowPopupAlert("Annuncio creato con successo!", "Dati inseriti con successo in UninaSwap");
 	        	controller.copiaFileCaricato(this.fileSelezionato);
+	        	NascondiPaneScambio(e);
 	        	inizializzaCampi();
 	        	this.fileSelezionato = null;
+	        	this.listaOggetti.clear();
 	        break;
 	        
         	case 1:
@@ -425,7 +427,7 @@ public class CreaAnnuncioBoundary {
         	break;
         	
         	case 5:
-        		ShowPopupError("Descrizione non valida", "La descrizione dell'annuncio non può essere vuota e deve contenere al massimo 255 caratteri.");
+        		ShowPopupError("Descrizione non valida", "La descrizione dell'annuncio non può essere vuota e deve contenere al massimo 100 caratteri.");
         		campoDescrizioneAnnuncio.clear();
         	break;
         	
@@ -449,6 +451,12 @@ public class CreaAnnuncioBoundary {
         	case 9:
         		ShowPopupError("Immagine non valida", "L'immagine inserita non è valida oppure non ha un nome valido.");
 				this.fileSelezionato = null;
+			break;
+			
+        	case 10:
+				ShowPopupError("Oggetti desiderati non validi", "Gli oggetti desiderati non sono validi. Devi specificare minimo 1 o massimo 5 oggetti che desideri in cambio.");
+				this.listaOggetti.clear();
+				campoAggiungiOggetto.clear();
 			break;
         	
         	default:
@@ -519,7 +527,7 @@ public class CreaAnnuncioBoundary {
     
     @FXML
     public void aggiungiOggettoDesiderato() {
-    	String nomeOggetto = campoAggiungiOggetto.getText().trim();
+    	String nomeOggetto = campoAggiungiOggetto.getText().trim().toLowerCase();
     	switch(controller.controllaOggettoDesiderato(nomeOggetto, this.listaOggetti)) {
     		case 0:
     			ShowPopupAlert("Oggetto desiderato aggiunto", "L'oggetto desiderato è stato aggiunto con successo.");
@@ -527,7 +535,7 @@ public class CreaAnnuncioBoundary {
     		break;
     		
     		case 1:
-    			ShowPopupError("Oggetto desiderato non valido", "L'oggetto desiderato non è valido. Assicurarsi che non sia vuoto, che contenga minimo 2 e al massimo 30 caratteri e che non sia già presente nella lista.");
+    			ShowPopupError("Oggetto desiderato non valido", "Il nome dell'oggetto deve avere un formato valido, deve essere compreso tra 2 e 20 caratteri e non deve essere già presente nella lista.");
     		break;
     		
     		case 2:

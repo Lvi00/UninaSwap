@@ -146,7 +146,7 @@ public class Controller {
 	    return this.studente;
 	}
 	
-	public int checkDatiAnnuncio(ArrayList<String> datiAnnuncio, File fileSelezionato, Studente studente) {
+	public int checkDatiAnnuncio(ArrayList<String> datiAnnuncio, File fileSelezionato, Studente studente, ArrayList<String> listaOggettiDesiderati) {
 		
 		String titolo = datiAnnuncio.get(0);
 		if(titolo == "" || titolo.length() > 50) return 1;
@@ -167,7 +167,7 @@ public class Controller {
 		if(giorniDisponibilità == "") return 4;
 		
 		String descrizione = datiAnnuncio.get(5);
-		if(descrizione == "" || descrizione.length() > 255) return 5;
+		if(descrizione == "" || descrizione.length() > 100) return 5;
 		
 		String particellatoponomastica = datiAnnuncio.get(6);
 		String descrizioneIndirizzo = datiAnnuncio.get(7);
@@ -199,6 +199,19 @@ public class Controller {
 		}
 		
 		if(fileSelezionato == null || fileSelezionato.getName().isEmpty() || fileSelezionato.getName().startsWith("no_image")) return 9;
+		
+		if(listaOggettiDesiderati.size() < 1 || listaOggettiDesiderati.size() > 5) return 10;
+		
+		String appoggioDescrizione = descrizione;
+		
+		descrizione = "Oggetti desiderati: ";
+		
+		for(int i = 0; i < listaOggettiDesiderati.size(); i++) {
+			descrizione = descrizione + listaOggettiDesiderati.get(i);
+			if(i != listaOggettiDesiderati.size() - 1) descrizione = descrizione + ", ";
+		}
+		
+		descrizione += "\n" + appoggioDescrizione;
 		
 		Sede sede = new Sede(particellatoponomastica, descrizioneIndirizzo, civico, cap);
 		new SedeDAO().SaveSade(sede);
@@ -233,7 +246,6 @@ public class Controller {
     		File destinationDir = new File(System.getProperty("user.dir"), "src/application/IMG/immaginiProfilo");
     		if (!destinationDir.exists()) destinationDir.mkdirs();
     		File destinationFile = new File(destinationDir, immagineSelezionata.getName());
-    		//non carica file con lo stesso nome
     		Files.copy(immagineSelezionata.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
     	catch (IOException ex) {
@@ -432,7 +444,12 @@ public class Controller {
 	}
     
     public int controllaOggettoDesiderato(String nomeOggetto, ArrayList<String> listaOggetti) {
-		if(nomeOggetto == "" || nomeOggetto.length() > 255) return 1;
+    	String regexOggettoDesiderato = "^[A-Za-zÀ-ÿ0-9\\s]+$";
+
+		Pattern pattern = Pattern.compile(regexOggettoDesiderato);
+		Matcher matcher = pattern.matcher(nomeOggetto);
+		
+		if(nomeOggetto == "" || nomeOggetto.length() < 2 || nomeOggetto.length() > 20 || !matcher.matches()) return 1;
 		
 		for(String s: listaOggetti) {
 			if(s.equals(nomeOggetto)) return 2;

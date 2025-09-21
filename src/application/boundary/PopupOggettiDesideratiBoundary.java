@@ -37,7 +37,6 @@ public class PopupOggettiDesideratiBoundary {
 
         colAzioni.setCellFactory(col -> new TableCell<>() {
             private final Button removeButton = new Button();
-
             {
                 ImageView imageView = new ImageView(
                     new Image(getClass().getResourceAsStream("/application/IMG/immaginiProgramma/Delete.png"))
