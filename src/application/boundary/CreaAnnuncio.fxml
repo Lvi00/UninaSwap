@@ -118,7 +118,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </RadioButton>
-                                    <RadioButton fx:id="campoScambio" layoutX="321.0" layoutY="443.0" mnemonicParsing="false" onMouseClicked="#NascondiPaneVendita" prefHeight="40.0" prefWidth="112.0" text="Scambio">
+                                    <RadioButton fx:id="campoScambio" layoutX="321.0" layoutY="443.0" mnemonicParsing="false" onMouseClicked="#MostraPaneScambio" prefHeight="40.0" prefWidth="112.0" text="Scambio">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
@@ -154,7 +154,7 @@
                                        </font>
                                     </Label>
                                     <ChoiceBox fx:id="campoCategoriaOggetto" layoutX="279.0" layoutY="57.0" prefHeight="33.0" prefWidth="196.0" />
-                                    <TextArea fx:id="campoDescrizioneAnnuncio" layoutX="64.0" layoutY="270.0" prefHeight="74.0" prefWidth="413.0" promptText="Inserire la descrizione / In caso di scambio specificare, se necessario, ciò che si vuole in cambio / Specificare informazioni aggiuntive sulla sede e sulle modalità di consegna" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
+                                    <TextArea fx:id="campoDescrizioneAnnuncio" layoutX="64.0" layoutY="270.0" prefHeight="74.0" prefWidth="413.0" promptText="Inserire la descrizione / Specificare informazioni aggiuntive sulla sede e sulle modalità di consegna" style="-fx-padding: -10px;" styleClass="campi textarea-rounded" wrapText="true">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
@@ -197,7 +197,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <Pane fx:id="campiPrezzo" layoutX="522.0" layoutY="300.0" prefHeight="102.0" prefWidth="385.0">
+                                    <Pane fx:id="campiPrezzo" layoutX="522.0" layoutY="300.0" prefHeight="112.0" prefWidth="385.0" visible="false">
                                        <children>
                                           <Label layoutX="170.0" layoutY="14.0" prefHeight="25.0" prefWidth="47.0" styleClass="label-login-registrazione" text="Prezzo">
                                              <font>
@@ -240,7 +240,7 @@
                                           </ImageView>
                                        </children>
                                     </StackPane>
-                                    <Button layoutX="695.0" layoutY="229.0" mnemonicParsing="false" onMouseClicked="#showFileChooser" prefHeight="36.0" prefWidth="43.0" styleClass="tasto-secondario" textFill="WHITE">
+                                    <Button layoutX="693.0" layoutY="223.0" mnemonicParsing="false" onMouseClicked="#showFileChooser" prefHeight="36.0" prefWidth="43.0" styleClass="tasto-secondario" textFill="WHITE">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
@@ -248,7 +248,7 @@
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </Button>
-                                    <ImageView fitHeight="43.0" fitWidth="47.0" layoutX="695.0" layoutY="228.0" onMouseClicked="#showFileChooser" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="43.0" fitWidth="47.0" layoutX="693.0" layoutY="222.0" onMouseClicked="#showFileChooser" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../IMG/immaginiProgramma/add.png" />
                                        </image>
@@ -256,7 +256,7 @@
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </ImageView>
-                                    <Button layoutX="652.0" layoutY="431.0" mnemonicParsing="false" onMouseClicked="#InviaDati" prefHeight="43.0" prefWidth="128.0" styleClass="tasto-secondario" text="Crea annuncio" textFill="WHITE">
+                                    <Button layoutX="651.0" layoutY="430.0" mnemonicParsing="false" onMouseClicked="#InviaDati" prefHeight="43.0" prefWidth="128.0" styleClass="tasto-secondario" text="Crea annuncio" textFill="WHITE">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
@@ -264,6 +264,34 @@
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </Button>
+                                    <Pane fx:id="campiOggettiDesiderati" layoutX="522.0" layoutY="291.0" prefHeight="121.0" prefWidth="385.0" visible="false">
+                                       <children>
+                                          <Label layoutX="129.0" layoutY="14.0" prefHeight="25.0" prefWidth="128.0" styleClass="label-login-registrazione" text="Oggetti desiderati">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="campoAggiungiOggetto" layoutX="76.0" layoutY="60.0" promptText="Inserire un oggetto" />
+                                          <Button layoutX="268.0" layoutY="57.0" mnemonicParsing="false" onMouseClicked="#aggiungiOggettoDesiderato" prefHeight="40.0" prefWidth="43.0" styleClass="tasto-secondario" />
+                                          <ImageView fitHeight="40.0" fitWidth="33.0" layoutX="273.0" layoutY="61.0" onMouseClicked="#aggiungiOggettoDesiderato" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../IMG/immaginiProgramma/check.png" />
+                                             </image>
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                          </ImageView>
+                                          <Button layoutX="319.0" layoutY="57.0" mnemonicParsing="false" onMouseClicked="#mostraOggettiDesiderati" prefHeight="40.0" prefWidth="43.0" styleClass="tasto-secondario" />
+                                          <ImageView fitHeight="30.0" fitWidth="27.0" layoutX="327.0" layoutY="64.0" onMouseClicked="#mostraOggettiDesiderati" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../IMG/immaginiProgramma/offers.png" />
+                                             </image>
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
                                  </children>
                               </Pane>
                            </children>

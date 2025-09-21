@@ -220,10 +220,14 @@ public class OfferteBoundary {
     }
     
     public boolean CostruisciOfferteUtente(Studente s) {
-        ArrayList<Offerta> offerte = controller.getOffertebyMatricola(s);
+        ArrayList<Offerta> offerteInviate;
+        
+        if(controller.getStudente().getOfferteInviate().isEmpty()) offerteInviate = controller.getOffertebyMatricola(s);
+        else offerteInviate = controller.getStudente().getOfferteInviate();
+        
         String titolo = "";
         
-        if(offerte.size() == 0) titolo = "Non ci sono offerte attive di ";
+        if(offerteInviate.size() == 0) titolo = "Non ci sono offerte attive di ";
         else titolo = "Offerte attive di ";
         
         labelOffertePubblicate.setText(titolo + s.getUsername());
@@ -231,7 +235,7 @@ public class OfferteBoundary {
         int column = 0;
         int row = 0;
 
-        for (Offerta o : offerte) {
+        for (Offerta o : offerteInviate) {
             VBox card = creaCardOfferte(o);
             gridOfferte.add(card, column, row);
             column++;
@@ -358,6 +362,7 @@ public class OfferteBoundary {
     		case 0:
     			ShowPopupAlert("Eliminazione offerta", "Offerta eliminata correttamente.");
 				gridOfferte.getChildren().clear();
+				controller.eliminaOffertaDaLista(o);
 				CostruisciOfferteUtente(this.controller.getStudente());
 			break;
 			

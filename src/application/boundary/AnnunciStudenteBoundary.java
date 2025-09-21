@@ -223,7 +223,11 @@ public class AnnunciStudenteBoundary {
     }
 
     public boolean CostruisciProdottiUtente(Studente s) {
-        ArrayList<Annuncio> annunci = controller.getAnnunciStudente(s.getMatricola());
+        ArrayList<Annuncio> annunci;
+        
+        if(controller.getStudente().getAnnunciPubblicati().isEmpty()) annunci = controller.getAnnunciStudente(s);
+		else annunci = controller.getStudente().getAnnunciPubblicati();
+        
         String titolo = "";
         
         if(annunci.size() == 0) titolo = "Non ci sono annunci attivi di ";
@@ -369,10 +373,11 @@ public class AnnunciStudenteBoundary {
     	AnnunciPane.setVisible(false);
     	OfferteAnnunciPane.setVisible(true);
     	labelOfferteAnnuncio.setText("Queste sono le offerte dell'annuncio: " + a.getTitoloAnnuncio());
-    	
-    	System.out.println(a.getTitoloAnnuncio());
 
-    	ArrayList<Offerta> offerte = controller.getOffertebyAnnuncio(a);
+    	ArrayList<Offerta> offerte;
+    	
+    	if(controller.getStudente().getOfferteRicevute().isEmpty()) offerte = controller.getOffertebyAnnuncio(a);
+    	else offerte = controller.getStudente().getOfferteRicevute();
         
         int column = 0;
         int row = 0;
@@ -499,6 +504,7 @@ public class AnnunciStudenteBoundary {
 			case 0:
 				gridOfferte.getChildren().clear();
 				tornaIndietroAnnunci();
+				controller.svuotaOfferteRicevute();
 			break;
 			
 			case 1:
@@ -512,6 +518,7 @@ public class AnnunciStudenteBoundary {
 	    	case 0:
 				gridOfferte.getChildren().clear();
 				mostraOfferteAnnuncio(o.getAnnuncio());
+				controller.svuotaOfferteRicevute();
 	    	break;
 	    	
 	    	case 1:
@@ -525,6 +532,7 @@ public class AnnunciStudenteBoundary {
             gridProdotti.getChildren().clear();
             CostruisciProdottiUtente(controller.getStudente());
             ShowPopupAlert("Rimozione avvenuta", "L'annuncio è stato rimosso con successo.");
+            controller.eliminaAnnuncioDaLista(a);
         }
         else {
 			ShowPopupAlert("Rimozione fallita", "Si è verificato un errore durante la rimozione dell'annuncio.");

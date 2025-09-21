@@ -240,18 +240,21 @@ public class ProdottiBoundary {
     
     public void CostruisciCatalogoProdotti(Studente s) {
 
-        ArrayList<Annuncio> annunci = controller.getInfoAnnunci(s.getMatricola());
+        ArrayList<Annuncio> annunciVisibili;
+    	
+    	if(controller.getStudente().getAnnunciVisibili().isEmpty()) annunciVisibili = controller.getInfoAnnunci(s);
+    	else annunciVisibili = controller.getStudente().getAnnunciVisibili();
         	
-    	if(annunci.isEmpty()) labelAnnunciTrovati.setText("Nessun annuncio trovato");
-    	else if(annunci.size() == 1) labelAnnunciTrovati.setText(annunci.size() + " annuncio trovato");
-    	else labelAnnunciTrovati.setText(annunci.size() + " annunci trovati");
+    	if(annunciVisibili.isEmpty()) labelAnnunciTrovati.setText("Nessun annuncio trovato");
+    	else if(annunciVisibili.size() == 1) labelAnnunciTrovati.setText(annunciVisibili.size() + " annuncio trovato");
+    	else labelAnnunciTrovati.setText(annunciVisibili.size() + " annunci trovati");
     	
         pulisciCatalogo();
         
         int column = 0;
         int row = 0;
 
-        for (Annuncio a : annunci) {
+        for (Annuncio a : annunciVisibili) {
             VBox card = creaCardAnnuncio(a);
             gridProdotti.add(card, column, row);
 
@@ -345,7 +348,7 @@ public class ProdottiBoundary {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
             popupStage.setScene(scene);
-            popupStage.setTitle("UninaSwap - " +annuncio.getTipologia());
+            popupStage.setTitle("UninaSwap - " + annuncio.getTipologia());
             popupStage.getIcons().add(
                 new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
             );

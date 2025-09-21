@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import java.io.File;
 import java.util.ArrayList;
 import application.control.Controller;
+import application.entity.Annuncio;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class CreaAnnuncioBoundary {
@@ -70,10 +72,12 @@ public class CreaAnnuncioBoundary {
     @FXML private RadioButton campoRegalo;
     @FXML private RadioButton campoScambio;
     @FXML private Pane campiPrezzo;
+    @FXML private Pane campiOggettiDesiderati;
     @FXML private ImageView immagineCaricata;
     @FXML private TextField campoPrezzoIntero;
     @FXML private TextField campoPrezzoDecimale;
     @FXML private ImageView immagineNav;
+    @FXML private TextField campoAggiungiOggetto;
 
     public void setController(Controller controller) {
         this.controller = controller;
@@ -272,7 +276,18 @@ public class CreaAnnuncioBoundary {
     
     public void MostraPaneVendita(MouseEvent e) {
     	campiPrezzo.setVisible(true);
+    	NascondiPaneScambio(e);
     }
+    
+    public void NascondiPaneScambio(MouseEvent e) {
+    	campiOggettiDesiderati.setVisible(false);
+    	campoAggiungiOggetto.clear();
+    }
+    
+    public void MostraPaneScambio(MouseEvent e) {
+		campiOggettiDesiderati.setVisible(true);
+		NascondiPaneVendita(e);
+	}
     
     @FXML
     public void NascondiPaneVendita(MouseEvent e) {
@@ -503,5 +518,41 @@ public class CreaAnnuncioBoundary {
     	campoPrezzoDecimale.clear();
     	
     	immagineCaricata.setImage(new Image(getClass().getResource("..\\IMG\\immaginiProgramma\\no_image.png").toExternalForm()));    	
+    }
+    
+    @FXML
+    public void aggiungiOggettoDesiderato() {
+    	String nomeOggetto = campoAggiungiOggetto.getText().trim();
+    	String descrizioneAnnuncio = campoDescrizioneAnnuncio.getText().trim();
+    	controller.aggiungiOggettoDesiderato(nomeOggetto);
+    }
+    
+    @FXML
+    public void mostraOggettiDesiderati(MouseEvent e) {
+    	try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOggettiDesiderati.fxml"));
+            Parent root = loader.load();
+            PopupOggettiDesideratiBoundary popupOggettiDesideratiCtrl = loader.getController();
+            popupOggettiDesideratiCtrl.setController(this.controller);                
+            Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            Stage popupStage = new Stage();
+            popupStage.initOwner(mainStage);
+            popupStage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+            popupStage.setScene(scene);
+            popupStage.setTitle("UninaSwap - Oggetti desiderati");
+            popupStage.getIcons().add(
+                new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
+            );
+            popupStage.setResizable(false);
+            mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+            popupStage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+            popupStage.show();
+            popupStage.setX(mainStage.getX() + (mainStage.getWidth() - popupStage.getWidth()) / 2);
+            popupStage.setY(mainStage.getY() + (mainStage.getHeight() - popupStage.getHeight()) / 2 - 40);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

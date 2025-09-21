@@ -134,12 +134,12 @@ public class Controller {
 		return new SedeDAO().getIdBySede(sede);
 	}
 	
-	public ArrayList<Annuncio> getInfoAnnunci(String s) {
-	    return new AnnuncioDAO().getAnnunci(s);
+	public ArrayList<Annuncio> getInfoAnnunci(Studente s) {
+	    return new AnnuncioDAO().getAnnunci(s.getMatricola());
 	}
 	
-	public ArrayList<Annuncio> getAnnunciStudente(String s) {
-	    return new AnnuncioDAO().getAnnunciStudente(s);
+	public ArrayList<Annuncio> getAnnunciStudente(Studente s) {
+	    return new AnnuncioDAO().getAnnunciStudente(s.getMatricola());
 	}
 	
 	public Studente getStudente() {
@@ -414,4 +414,24 @@ public class Controller {
     public int eliminaOfferta(Offerta o) {
 		return new OffertaDAO().eliminaOfferta(o);
 	}
+    
+    public void logoutStudente() {
+    	this.studente = null;
+    }
+    
+    public void svuotaOfferteRicevute() {
+    	this.studente.getOfferteRicevute().clear();
+    }
+    
+    public void eliminaAnnuncioDaLista(Annuncio a) {
+        this.studente.getAnnunciPubblicati().remove(a);
+    }
+    
+    public void eliminaOffertaDaLista(Offerta o) {
+		this.studente.getOfferteRicevute().remove(o);
+	}
+    
+    public void aggiungiOggettoDesiderato(String nome) {
+    	this.studente.getOggettiDesiderati().add(nome);
+    }
 }

@@ -1,12 +1,19 @@
 package application.entity;
 
+import java.util.ArrayList;
+
 public class Studente {
 	private String matricola;
 	private String email;
 	private String nome;
 	private String cognome;
 	private String username;
-	public String immagineProfilo;
+	private String immagineProfilo;
+	private ArrayList<Annuncio> annunciPubblicati = new ArrayList<Annuncio>();
+	private ArrayList<Annuncio> annunciVisibili = new ArrayList<Annuncio>();
+	private ArrayList<Offerta> offerteRicevute = new ArrayList<Offerta>();
+	private ArrayList<Offerta> offerteInviate = new ArrayList<Offerta>();
+	private ArrayList<String> oggettiDesiderati = new ArrayList<String>();
 	
 	public Studente(String matricola, String email, String nome, String cognome, String username) {
 		this.matricola = matricola;
@@ -43,4 +50,40 @@ public class Studente {
     public void setImmagine(String immagineProfilo) {
         this.immagineProfilo = immagineProfilo;
     }
+    
+    public ArrayList<Annuncio> getAnnunciPubblicati() {
+		return annunciPubblicati;
+	}
+	
+	public void setAnnunciPubblicati(ArrayList<Annuncio> annunciPubblicati) {
+		this.annunciPubblicati = annunciPubblicati;
+	}
+	
+    public ArrayList<Annuncio> getAnnunciVisibili() {
+		return annunciVisibili;
+	}
+	
+	public void setAnnunciVisibili(ArrayList<Annuncio> annunciVisibili) {
+		this.annunciVisibili = annunciVisibili;
+	}
+	
+    public ArrayList<Offerta> getOfferteRicevute() {
+		return offerteRicevute;
+	}
+	
+	public void setOfferteRicevute(ArrayList<Offerta> offerteRicevute) {
+		this.offerteRicevute = offerteRicevute;
+	}
+	
+    public ArrayList<Offerta> getOfferteInviate() {
+		return offerteInviate;
+	}
+	
+	public void setOfferteInviate(ArrayList<Offerta> offerteInviate) {
+		this.offerteInviate = offerteInviate;
+	}
+	
+	public ArrayList<String> getOggettiDesiderati() {
+		return oggettiDesiderati;
+	}
 }
