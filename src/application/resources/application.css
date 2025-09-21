@@ -460,3 +460,19 @@
     -fx-background-radius: 20;
     -fx-font-weight: bold;
 }
+
+.table-view {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.table-row-cell:filled:selected, 
+.table-row-cell:filled:selected:focused {
+    -fx-background-color: transparent;
+}
+
+.table-view {
+    -fx-background-color: #F2EFEA;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}

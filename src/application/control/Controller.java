@@ -195,7 +195,7 @@ public class Controller {
 		    
 			prezzo = Double.parseDouble(stringaPrezzo);
 			
-			if(prezzo<=0 || prezzo>=1000) return 8;
+			if(prezzo <= 0 || prezzo >= 1000) return 8;
 		}
 		
 		if(fileSelezionato == null || fileSelezionato.getName().isEmpty() || fileSelezionato.getName().startsWith("no_image")) return 9;
@@ -431,7 +431,22 @@ public class Controller {
 		this.studente.getOfferteRicevute().remove(o);
 	}
     
-    public void aggiungiOggettoDesiderato(String nome) {
-    	this.studente.getOggettiDesiderati().add(nome);
+    public int controllaOggettoDesiderato(String nomeOggetto, ArrayList<String> listaOggetti) {
+		if(nomeOggetto == "" || nomeOggetto.length() > 255) return 1;
+		
+		for(String s: listaOggetti) {
+			if(s.equals(nomeOggetto)) return 2;
+		}
+		
+		return 0;
+	}
+    
+    public ArrayList<String> rimuoviOggettoDaLista(ArrayList<String> lista, int idOggettoDaRimuovere) {
+    	lista.remove(idOggettoDaRimuovere);
+    	return lista;
+    }
+    
+    public void rimuoviOggettoDesideratoDaLista(ArrayList<String> listaOggetti, String nomeOggetto) {
+        listaOggetti.remove(nomeOggetto);
     }
 }

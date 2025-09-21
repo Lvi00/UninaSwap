@@ -78,6 +78,8 @@ public class CreaAnnuncioBoundary {
     @FXML private TextField campoPrezzoDecimale;
     @FXML private ImageView immagineNav;
     @FXML private TextField campoAggiungiOggetto;
+    
+    private ArrayList<String> listaOggetti = new ArrayList<String>();
 
     public void setController(Controller controller) {
         this.controller = controller;
@@ -320,7 +322,6 @@ public class CreaAnnuncioBoundary {
 		try {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
 	        Parent root = loader.load();
-
 	        Stage mainStage = (Stage) paneCreaAnnuncio.getScene().getWindow();
 	        Stage stage = new Stage();
 	        stage.initOwner(mainStage);
@@ -330,15 +331,11 @@ public class CreaAnnuncioBoundary {
 	        stage.setTitle("UninaSwap - " + title);
 	        stage.setResizable(false);
 	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-
 	        PopupErrorBoundary popupController = loader.getController();
 	        popupController.setLabels(title, message);
-	       
 	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
 	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
-
 	        stage.show();
-	        
 	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
 	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
 		}
@@ -523,8 +520,22 @@ public class CreaAnnuncioBoundary {
     @FXML
     public void aggiungiOggettoDesiderato() {
     	String nomeOggetto = campoAggiungiOggetto.getText().trim();
-    	String descrizioneAnnuncio = campoDescrizioneAnnuncio.getText().trim();
-    	controller.aggiungiOggettoDesiderato(nomeOggetto);
+    	switch(controller.controllaOggettoDesiderato(nomeOggetto, this.listaOggetti)) {
+    		case 0:
+    			ShowPopupAlert("Oggetto desiderato aggiunto", "L'oggetto desiderato è stato aggiunto con successo.");
+    			this.listaOggetti.add(nomeOggetto);
+    		break;
+    		
+    		case 1:
+    			ShowPopupError("Oggetto desiderato non valido", "L'oggetto desiderato non è valido. Assicurarsi che non sia vuoto, che contenga minimo 2 e al massimo 30 caratteri e che non sia già presente nella lista.");
+    		break;
+    		
+    		case 2:
+    			ShowPopupError("Oggetto desiderato già esistente", "L'oggetto desiderato inserito già esiste, inserisci un oggetto diverso.");
+    		break;
+    	}
+    	
+		campoAggiungiOggetto.clear();
     }
     
     @FXML
@@ -533,7 +544,8 @@ public class CreaAnnuncioBoundary {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOggettiDesiderati.fxml"));
             Parent root = loader.load();
             PopupOggettiDesideratiBoundary popupOggettiDesideratiCtrl = loader.getController();
-            popupOggettiDesideratiCtrl.setController(this.controller);                
+            popupOggettiDesideratiCtrl.setController(this.controller);              
+            popupOggettiDesideratiCtrl.costruisciTabella(this.listaOggetti);
             Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             Stage popupStage = new Stage();
             popupStage.initOwner(mainStage);

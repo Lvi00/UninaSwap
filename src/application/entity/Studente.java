@@ -13,7 +13,6 @@ public class Studente {
 	private ArrayList<Annuncio> annunciVisibili = new ArrayList<Annuncio>();
 	private ArrayList<Offerta> offerteRicevute = new ArrayList<Offerta>();
 	private ArrayList<Offerta> offerteInviate = new ArrayList<Offerta>();
-	private ArrayList<String> oggettiDesiderati = new ArrayList<String>();
 	
 	public Studente(String matricola, String email, String nome, String cognome, String username) {
 		this.matricola = matricola;
@@ -81,9 +80,5 @@ public class Studente {
 	
 	public void setOfferteInviate(ArrayList<Offerta> offerteInviate) {
 		this.offerteInviate = offerteInviate;
-	}
-	
-	public ArrayList<String> getOggettiDesiderati() {
-		return oggettiDesiderati;
 	}
 }

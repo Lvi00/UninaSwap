@@ -188,7 +188,7 @@
                   <Label fx:id="sedeAnnuncio" layoutX="90.0" layoutY="419.0" />
                   </children>
               </AnchorPane>
-            <AnchorPane fx:id="paneOggettiOfferti" prefHeight="438.0" prefWidth="815.0" visible="false">
+            <AnchorPane fx:id="paneOggettiOfferti" prefHeight="450.0" prefWidth="815.0" visible="false">
                <children>
                   <Button fx:id="mostraOffertaButton" layoutX="30.0" layoutY="29.0" mnemonicParsing="false" onMouseClicked="#costruisciPopup" prefHeight="40.0" prefWidth="43.0" styleClass="tasto-terziario" />
                   <ImageView fx:id="mostraOffertaImage" fitHeight="30.0" fitWidth="30.0" layoutX="37.0" layoutY="34.0" onMouseClicked="#costruisciPopup" pickOnBounds="true" preserveRatio="true">
