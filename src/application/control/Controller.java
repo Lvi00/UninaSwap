@@ -24,6 +24,7 @@ import application.entity.Offerta;
 import application.entity.Oggetto;
 import application.entity.Sede;
 import application.entity.Studente;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -152,7 +153,7 @@ public class Controller {
 		if(titolo == "" || titolo.length() > 50) return 1;
 		
 		String categoria = datiAnnuncio.get(1);
-		if(categoria == "") return 2;
+		if(categoria.equals("")) return 2;
 		
 		String inizioOrarioDisponibilità = datiAnnuncio.get(2);
 		String fineOrarioDisponibilità = datiAnnuncio.get(3);
@@ -167,7 +168,7 @@ public class Controller {
 		if(giorniDisponibilità == "") return 4;
 		
 		String descrizione = datiAnnuncio.get(5);
-		if(descrizione == "" || descrizione.length() > 100) return 5;
+		if(descrizione.equals("") || descrizione.length() > 100) return 5;
 		
 		String particellatoponomastica = datiAnnuncio.get(6);
 		String descrizioneIndirizzo = datiAnnuncio.get(7);
@@ -186,7 +187,7 @@ public class Controller {
 		//Rimane cosi in caso di Scambio o Regalo
 		double prezzo = 0.0;
 		
-		if(tipologia == "Vendita"){
+		if(tipologia.equals("Vendita")){
 			String stringaPrezzo = datiAnnuncio.get(11);
 			
 			//Evita i caratteri speciali e le lettere, max un punto, max 3 cifre prima e 2 dopo, niente negativi
@@ -200,19 +201,20 @@ public class Controller {
 		
 		if(fileSelezionato == null || fileSelezionato.getName().isEmpty() || fileSelezionato.getName().startsWith("no_image")) return 9;
 		
-		if(listaOggettiDesiderati.size() < 1 || listaOggettiDesiderati.size() > 5) return 10;
-		
-		String appoggioDescrizione = descrizione;
-		
-		descrizione = "Oggetti desiderati: ";
-		
-		for(int i = 0; i < listaOggettiDesiderati.size(); i++) {
-			descrizione = descrizione + listaOggettiDesiderati.get(i);
-			if(i != listaOggettiDesiderati.size() - 1) descrizione = descrizione + ", ";
+		if(tipologia.equals("Scambio")) {
+			if(listaOggettiDesiderati.size() < 1 || listaOggettiDesiderati.size() > 5) return 10;
+			
+			String appoggioDescrizione = descrizione;
+			
+			descrizione = "Oggetti desiderati: ";
+			
+			for(int i = 0; i < listaOggettiDesiderati.size(); i++) {
+				descrizione = descrizione + listaOggettiDesiderati.get(i);
+				if(i != listaOggettiDesiderati.size() - 1) descrizione = descrizione + ", ";
+			}
+			
+			descrizione += "\n" + appoggioDescrizione;
 		}
-		
-		descrizione += "\n" + appoggioDescrizione;
-		
 		Sede sede = new Sede(particellatoponomastica, descrizioneIndirizzo, civico, cap);
 		new SedeDAO().SaveSade(sede);
 		
@@ -282,7 +284,7 @@ public class Controller {
 		return new OffertaDAO().SaveOfferta(offerta, this.studente.getMatricola(), Motivazione);
 	}
 	
-	public int inviaOffertaScambio(Annuncio a, ArrayList<Oggetto> listaOggettiOfferti)
+	public int inviaOffertaScambio(Annuncio a, ObservableList<Oggetto> listaOggettiOfferti)
 	{
         OffertaDAO offertaDao = new OffertaDAO();
         

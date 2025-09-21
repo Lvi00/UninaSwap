@@ -280,11 +280,13 @@ public class CreaAnnuncioBoundary {
     	NascondiPaneScambio(e);
     }
     
+    @FXML
     public void NascondiPaneScambio(MouseEvent e) {
     	campiOggettiDesiderati.setVisible(false);
     	campoAggiungiOggetto.clear();
     }
     
+    @FXML
     public void MostraPaneScambio(MouseEvent e) {
 		campiOggettiDesiderati.setVisible(true);
 		NascondiPaneVendita(e);
@@ -295,6 +297,12 @@ public class CreaAnnuncioBoundary {
     	campiPrezzo.setVisible(false);
     	campoPrezzoIntero.clear();
     	campoPrezzoDecimale.clear();
+    }
+    
+    @FXML
+    public void NascondiPaneScambioVendita(MouseEvent e) {
+    	NascondiPaneScambio(e);
+    	NascondiPaneVendita(e);
     }
     
     @FXML

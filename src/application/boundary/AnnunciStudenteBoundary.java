@@ -372,12 +372,17 @@ public class AnnunciStudenteBoundary {
     {
     	AnnunciPane.setVisible(false);
     	OfferteAnnunciPane.setVisible(true);
-    	labelOfferteAnnuncio.setText("Queste sono le offerte dell'annuncio: " + a.getTitoloAnnuncio());
 
     	ArrayList<Offerta> offerte;
     	
-    	if(controller.getStudente().getOfferteRicevute().isEmpty()) offerte = controller.getOffertebyAnnuncio(a);
-    	else offerte = controller.getStudente().getOfferteRicevute();
+    	if(controller.getStudente().getOfferteRicevute().isEmpty()) {
+    		offerte = controller.getOffertebyAnnuncio(a);
+        	labelOfferteAnnuncio.setText("Non ci sono offerte per l'annuncio: " + a.getTitoloAnnuncio());
+    	}
+    	else{
+    		offerte = controller.getStudente().getOfferteRicevute();
+        	labelOfferteAnnuncio.setText("Queste sono le offerte dell'annuncio: " + a.getTitoloAnnuncio());
+    	}
         
         int column = 0;
         int row = 0;
@@ -551,7 +556,7 @@ public class AnnunciStudenteBoundary {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOfferteAnnuncio.fxml"));
             Parent root = loader.load();
-            PopupInfoOfferta popupInfoController = loader.getController();
+            PopupOfferteAnnuncioBoundary popupInfoController = loader.getController();
             popupInfoController.setController(this.controller);
             popupInfoController.setPopupInfoOfferta(offerta);
             Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();

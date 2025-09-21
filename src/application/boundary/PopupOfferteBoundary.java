@@ -7,6 +7,7 @@ import application.entity.Sede;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -34,7 +35,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 public class PopupOfferteBoundary {
 	
@@ -43,7 +43,6 @@ public class PopupOfferteBoundary {
         Informatica,
         Elettronica,
         Cancelleria,
-        Cultura,
         Musica
     }
 
@@ -84,15 +83,15 @@ public class PopupOfferteBoundary {
     @FXML private TextArea campoDescrizioneAnnuncioScambio;
     @FXML private TextArea campoDescrizioneAnnuncioRegalo;
     @FXML private TableView<Oggetto> tabellaOggetti;
-    @FXML private TableColumn<Oggetto, String> colId;
     @FXML private TableColumn<Oggetto, String> colCategoria;
     @FXML private TableColumn<Oggetto, String> colDescrizione;
     @FXML private TableColumn<Oggetto, String> colPercorsoImmagine;
     @FXML private TableColumn<Oggetto, String> colAzioni;
+    private ObservableList<Oggetto> listaOggettiOfferti = FXCollections.observableArrayList();
     
     private File fileSelezionato = null;
-	private ArrayList<Oggetto> listaOggettiOfferti = new ArrayList<Oggetto>();
     private Annuncio annuncio;
+    private boolean oggettiOffertiVisibili = false;
 
     public void setController(Controller controller) {
         this.controller = controller;
@@ -177,8 +176,18 @@ public class PopupOfferteBoundary {
 	                    buttonOfferta.onMouseClickedProperty().set(e -> inviaOfferta(e));
 	                    controffertaButton.setVisible(false);
 	                    mostraCampiScambio.setVisible(true);
-	                    aggiungiOggetto.setVisible(false);
-	                    oggettiOffertiButton.setVisible(false);
+	                    
+	                    if(this.oggettiOffertiVisibili) {
+	                    	PaneOfferteScambio.setVisible(true);
+	                    	aggiungiOggetto.setVisible(true);
+	                    	oggettiOffertiButton.setVisible(true);
+	                    	mostraCampiScambio.setVisible(false);
+	                    }
+	                    else {
+	                    	PaneOfferteScambio.setVisible(false);
+	                    	aggiungiOggetto.setVisible(false);
+	                    	oggettiOffertiButton.setVisible(false);
+	                    }
                     break;
 	                
 	                case "Vendita":
@@ -219,10 +228,10 @@ public class PopupOfferteBoundary {
 			case 0:
 			   Oggetto nuovoOggetto = new Oggetto(percorsoImmagine, categoriaSelezionata.toString(), descrizione, controller.getStudente());
 			   
-			   if(this.listaOggettiOfferti.size() < 5){
-			   		ShowPopupAlert("Oggetto aggiunto!", "L'oggetto è stato aggiunto alla lista degli oggetti da offrire.");
-				   	this.listaOggettiOfferti.add(nuovoOggetto);
-	    	   }
+			   if (this.listaOggettiOfferti.size() < 5) {
+				    ShowPopupAlert("Oggetto aggiunto!", "L'oggetto è stato aggiunto alla lista degli oggetti da offrire.");
+				    this.listaOggettiOfferti.add(nuovoOggetto);
+			}
 			   else ShowPopupError("Troppi oggetti!", "Hai inserito il limite massimo di 5 oggetti scambiabili.");
 			   
 			   campoDescrizioneAnnuncioScambio.clear();
@@ -254,27 +263,20 @@ public class PopupOfferteBoundary {
         
         paneOfferta.setVisible(false);
         paneOggettiOfferti.setVisible(true);
-        tabellaOggetti.getItems().setAll(listaOggettiOfferti);
     }
 
     //Chiamato automaticamente da JavaFX dopo il caricamento dell'FXML
     @FXML
-    public void initialize() 
-    {
-        // Inizializza le colonne
-        colId.setCellValueFactory(data -> 
-            new SimpleStringProperty(String.valueOf(tabellaOggetti.getItems().indexOf(data.getValue()) + 1))
-        );
+    public void initialize() {
+        tabellaOggetti.setItems(listaOggettiOfferti);
         colCategoria.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategoria()));
         colDescrizione.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDescrizione()));
         colPercorsoImmagine.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getImmagineOggetto()));
 
-        // Aggiungi tooltip alle colonne
         addTooltipToColumn(colCategoria);
         addTooltipToColumn(colDescrizione);
         addTooltipToColumn(colPercorsoImmagine);
 
-        // Colonna Azioni con bottone "rimuovi"
         colAzioni.setCellFactory(col -> new TableCell<Oggetto, String>() {
             private final Button removeButton = new Button();
             {
@@ -287,8 +289,7 @@ public class PopupOfferteBoundary {
                 removeButton.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-cursor: hand;");
                 removeButton.setOnAction(e -> {
                     Oggetto oggetto = getTableView().getItems().get(getIndex());
-                    tabellaOggetti.getItems().remove(oggetto);
-                    listaOggettiOfferti.remove(oggetto);
+                    listaOggettiOfferti.remove(oggetto); // basta rimuovere dalla lista
                 });
             }
             @Override
@@ -301,10 +302,9 @@ public class PopupOfferteBoundary {
         tabellaOggetti.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tabellaOggetti.setFixedCellSize(38);
         tabellaOggetti.setSelectionModel(null);
-        tabellaOggetti.getItems().addListener((ListChangeListener<Oggetto>) change -> aggiornaAltezzaTabella());
+        listaOggettiOfferti.addListener((ListChangeListener<Oggetto>) change -> aggiornaAltezzaTabella());
     }
 
-   // Aggiorna altezza dinamica
     private void aggiornaAltezzaTabella() {
         int numeroRighe = tabellaOggetti.getItems().size();
         double altezzaHeader = 28;
@@ -324,7 +324,6 @@ public class PopupOfferteBoundary {
         tabellaOggetti.setMaxHeight(altezzaTotale);
     }
 
-    // Aggiunge il tooltip ad ogni colonna
     private void addTooltipToColumn(TableColumn<Oggetto, String> column) {
         column.setCellFactory(col -> new TableCell<Oggetto, String>() {
             @Override
@@ -485,7 +484,6 @@ public class PopupOfferteBoundary {
     	
         if (selectedFile != null) {
             Image image = new Image(selectedFile.toURI().toString());
-            //Carica sull'imaggine di default la nuova immagine
             immagineCaricata.setImage(image);
             this.fileSelezionato = selectedFile;
         }
@@ -549,5 +547,6 @@ public class PopupOfferteBoundary {
     	PaneOfferteScambio.setVisible(true);
     	aggiungiOggetto.setVisible(true);
     	oggettiOffertiButton.setVisible(true);
+    	this.oggettiOffertiVisibili = true;
     }
 }

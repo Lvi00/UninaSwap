@@ -24,7 +24,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
-public class PopupInfoOfferta {
+public class PopupOfferteAnnuncioBoundary {
 
     private Controller controller;
     @FXML private AnchorPane paneInfoOffertaScambio;

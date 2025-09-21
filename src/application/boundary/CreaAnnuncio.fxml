@@ -113,7 +113,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </RadioButton>
-                                    <RadioButton fx:id="campoRegalo" layoutX="212.0" layoutY="443.0" mnemonicParsing="false" onMouseClicked="#NascondiPaneVendita" prefHeight="40.0" prefWidth="112.0" text="Regalo">
+                                    <RadioButton fx:id="campoRegalo" layoutX="212.0" layoutY="443.0" mnemonicParsing="false" onMouseClicked="#NascondiPaneScambioVendita" prefHeight="40.0" prefWidth="112.0" text="Regalo">
                                        <font>
                                           <Font size="14.0" />
                                        </font>

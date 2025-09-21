@@ -201,11 +201,10 @@
                   </ImageView>
 				  <TableView fx:id="tabellaOggetti" fixedCellSize="38" layoutY="88.0" prefHeight="352.0" prefWidth="815.0">
                     <columns>
-                        <TableColumn fx:id="colId" prefWidth="57" text="id" />
                         <TableColumn fx:id="colCategoria" prefWidth="154" text="Categoria" />
-                        <TableColumn fx:id="colDescrizione" prefWidth="279" text="Descrizione" />
-                        <TableColumn fx:id="colPercorsoImmagine" prefWidth="207" text="Percorso immagine" />
-                        <TableColumn fx:id="colAzioni" prefWidth="117" text="Azioni" />
+                        <TableColumn fx:id="colDescrizione" prefWidth="331.9999694824219" text="Descrizione" />
+                        <TableColumn fx:id="colPercorsoImmagine" prefWidth="219.3333740234375" text="Percorso immagine" />
+                        <TableColumn fx:id="colAzioni" prefWidth="108.6666259765625" text="Azioni" />
                     </columns>
                 </TableView>
                   <Label layoutX="225.0" layoutY="36.0" text="Qui sono riportati gli oggetti che vuoi scambiare">
