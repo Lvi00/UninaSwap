@@ -225,6 +225,7 @@ public class Controller {
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
 		
 		Annuncio annuncio = new Annuncio(titolo, true, inizioOrarioDisponibilità, fineOrarioDisponibilità, prezzo, tipologia, descrizione, oggetto, sede, giorniDisponibilità, dataCorrente);
+		this.studente.getAnnunciPubblicati().clear();
 		new AnnuncioDAO().SaveAnnuncio(annuncio);
 		
 		return 0;
@@ -437,12 +438,12 @@ public class Controller {
     	this.studente.getOfferteRicevute().clear();
     }
     
-    public void eliminaAnnuncioDaLista(Annuncio a) {
-        this.studente.getAnnunciPubblicati().remove(a);
+    public void SvuotaAnnunciPubblicati() {
+        this.studente.getAnnunciPubblicati().clear();
     }
     
-    public void eliminaOffertaDaLista(Offerta o) {
-		this.studente.getOfferteRicevute().remove(o);
+    public void SvuotaOfferteRicevute() {
+		this.studente.getOfferteRicevute().clear();
 	}
     
     public int controllaOggettoDesiderato(String nomeOggetto, ArrayList<String> listaOggetti) {
@@ -451,8 +452,10 @@ public class Controller {
 		Pattern pattern = Pattern.compile(regexOggettoDesiderato);
 		Matcher matcher = pattern.matcher(nomeOggetto);
 		
-		if(nomeOggetto == "" || nomeOggetto.length() < 2 || nomeOggetto.length() > 20 || !matcher.matches()) return 1;
+		if(listaOggetti.size()== 5) return 3;
 		
+		if(nomeOggetto == "" || nomeOggetto.length() < 2 || nomeOggetto.length() > 20 || !matcher.matches()) return 1;
+	
 		for(String s: listaOggetti) {
 			if(s.equals(nomeOggetto)) return 2;
 		}
@@ -460,9 +463,14 @@ public class Controller {
 		return 0;
 	}
     
-    public ArrayList<String> rimuoviOggettoDaLista(ArrayList<String> lista, int idOggettoDaRimuovere) {
-    	lista.remove(idOggettoDaRimuovere);
-    	return lista;
+    public void setAnnunciVisibili(ArrayList<Annuncio> lista)
+    {
+    	this.studente.setAnnunciVisibili(lista);
+    }
+    
+    public void setAnnunciPubblicati(ArrayList<Annuncio> lista)
+    {
+    	this.studente.setAnnunciPubblicati(lista);
     }
     
     public void rimuoviOggettoDesideratoDaLista(ArrayList<String> listaOggetti, String nomeOggetto) {

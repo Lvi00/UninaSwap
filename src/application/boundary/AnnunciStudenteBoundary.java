@@ -173,7 +173,7 @@ public class AnnunciStudenteBoundary {
                         creaCtrl.setUsername(this.controller.getStudente().getUsername());
                         creaCtrl.setCampiForm();
                         creaCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
-
+		                creaCtrl.MostraPaneVendita(e);
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -225,8 +225,17 @@ public class AnnunciStudenteBoundary {
     public boolean CostruisciProdottiUtente(Studente s) {
         ArrayList<Annuncio> annunci;
         
-        if(controller.getStudente().getAnnunciPubblicati().isEmpty()) annunci = controller.getAnnunciStudente(s);
-		else annunci = controller.getStudente().getAnnunciPubblicati();
+        if(controller.getStudente().getAnnunciPubblicati().isEmpty()) 
+        {
+        	annunci = controller.getAnnunciStudente(s);
+        	controller.setAnnunciPubblicati(annunci);
+        	
+        }
+		else 
+        {
+			annunci = controller.getStudente().getAnnunciPubblicati();
+        	System.out.println("sono nell'else");
+        }
         
         String titolo = "";
         
@@ -509,6 +518,7 @@ public class AnnunciStudenteBoundary {
 			case 0:
 				gridOfferte.getChildren().clear();
 				tornaIndietroAnnunci();
+				//DA RIMUOVERE E METTERE REMOVE
 				controller.svuotaOfferteRicevute();
 			break;
 			
@@ -523,6 +533,7 @@ public class AnnunciStudenteBoundary {
 	    	case 0:
 				gridOfferte.getChildren().clear();
 				mostraOfferteAnnuncio(o.getAnnuncio());
+				//DA RIMUOVERE E METTERE REMOVE
 				controller.svuotaOfferteRicevute();
 	    	break;
 	    	
@@ -535,9 +546,9 @@ public class AnnunciStudenteBoundary {
     private void rimuoviAnnuncio(Annuncio a) {
         if(controller.rimuoviAnnuncio(a) == 0) {
             gridProdotti.getChildren().clear();
+            controller.SvuotaAnnunciPubblicati();
             CostruisciProdottiUtente(controller.getStudente());
             ShowPopupAlert("Rimozione avvenuta", "L'annuncio è stato rimosso con successo.");
-            controller.eliminaAnnuncioDaLista(a);
         }
         else {
 			ShowPopupAlert("Rimozione fallita", "Si è verificato un errore durante la rimozione dell'annuncio.");

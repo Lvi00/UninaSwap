@@ -122,6 +122,7 @@ public class ProdottiBoundary {
 		                creaCtrl.setUsername(this.controller.getStudente().getUsername());
 		                creaCtrl.setCampiForm();
 		                creaCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                creaCtrl.MostraPaneVendita(e);
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -242,7 +243,11 @@ public class ProdottiBoundary {
 
         ArrayList<Annuncio> annunciVisibili;
     	
-    	if(controller.getStudente().getAnnunciVisibili().isEmpty()) annunciVisibili = controller.getInfoAnnunci(s);
+    	if(controller.getStudente().getAnnunciVisibili().isEmpty()) 
+    	{
+    		annunciVisibili = controller.getInfoAnnunci(s);
+    		controller.setAnnunciVisibili(annunciVisibili);
+    	}
     	else annunciVisibili = controller.getStudente().getAnnunciVisibili();
         	
     	if(annunciVisibili.isEmpty()) labelAnnunciTrovati.setText("Nessun annuncio trovato");

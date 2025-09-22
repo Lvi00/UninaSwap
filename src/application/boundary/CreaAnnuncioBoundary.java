@@ -548,6 +548,10 @@ public class CreaAnnuncioBoundary {
     		case 2:
     			ShowPopupError("Oggetto desiderato già esistente", "L'oggetto desiderato inserito già esiste, inserisci un oggetto diverso.");
     		break;
+    		
+    		case 3:
+    			ShowPopupError("Limite oggetti raggiunto", "L'oggetto desiderato non puo essere inserito.");
+    		break;
     	}
     	
 		campoAggiungiOggetto.clear();

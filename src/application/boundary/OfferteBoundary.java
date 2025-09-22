@@ -103,6 +103,7 @@ public class OfferteBoundary {
 		                creaCtrl.setUsername(this.controller.getStudente().getUsername());
 		                creaCtrl.setCampiForm();
 		                creaCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                creaCtrl.MostraPaneVendita(e);
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -362,7 +363,7 @@ public class OfferteBoundary {
     		case 0:
     			ShowPopupAlert("Eliminazione offerta", "Offerta eliminata correttamente.");
 				gridOfferte.getChildren().clear();
-				controller.eliminaOffertaDaLista(o);
+				controller.SvuotaOfferteRicevute();
 				CostruisciOfferteUtente(this.controller.getStudente());
 			break;
 			
