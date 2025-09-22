@@ -43,9 +43,9 @@ public class OfferteBoundary {
     @FXML private ImageView immagineNav;
     @FXML private HBox containerModificaOfferta;
     @FXML private Label labelModificaOfferta;
-    
     @FXML private Label labelOffertePubblicate;
     @FXML private GridPane gridOfferte;
+    
     public void setController(Controller controller) {
         this.controller = controller;
     }
@@ -223,8 +223,14 @@ public class OfferteBoundary {
     public boolean CostruisciOfferteUtente(Studente s) {
         ArrayList<Offerta> offerteInviate;
         
-        if(controller.getStudente().getOfferteInviate().isEmpty()) offerteInviate = controller.getOffertebyMatricola(s);
-        else offerteInviate = controller.getStudente().getOfferteInviate();
+        if(controller.getStudente().getOfferteInviate().isEmpty()) {
+        	offerteInviate = controller.getOffertebyMatricola(s);
+        	controller.getStudente().setOfferteInviate(offerteInviate);
+        }
+        else{
+        	System.out.println("offerte inviate già caricate");
+        	offerteInviate = controller.getStudente().getOfferteInviate();
+        }
         
         String titolo = "";
         
@@ -363,7 +369,7 @@ public class OfferteBoundary {
     		case 0:
     			ShowPopupAlert("Eliminazione offerta", "Offerta eliminata correttamente.");
 				gridOfferte.getChildren().clear();
-				controller.SvuotaOfferteRicevute();
+				controller.SvuotaOfferteInviate();
 				CostruisciOfferteUtente(this.controller.getStudente());
 			break;
 			
@@ -377,6 +383,7 @@ public class OfferteBoundary {
     	labelModificaOfferta.setText("Modifica offerta per l'annuncio: " + o.getAnnuncio().getTitoloAnnuncio());
     	OffertePane.setVisible(false);
     	containerModificaOfferta.setVisible(true);
+    	//aggiungere lo svuotamento della lista delle offerte inviate
     }
     
     public void mostraInfoOfferta(Offerta o) {

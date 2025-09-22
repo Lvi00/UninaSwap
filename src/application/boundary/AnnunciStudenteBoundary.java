@@ -2,7 +2,6 @@ package application.boundary;
 
 import java.io.File;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import application.control.Controller;
@@ -229,13 +228,8 @@ public class AnnunciStudenteBoundary {
         {
         	annunci = controller.getAnnunciStudente(s);
         	controller.setAnnunciPubblicati(annunci);
-        	
         }
-		else 
-        {
-			annunci = controller.getStudente().getAnnunciPubblicati();
-        	System.out.println("sono nell'else");
-        }
+		else annunci = controller.getStudente().getAnnunciPubblicati();
         
         String titolo = "";
         
@@ -382,24 +376,26 @@ public class AnnunciStudenteBoundary {
     	AnnunciPane.setVisible(false);
     	OfferteAnnunciPane.setVisible(true);
 
-    	ArrayList<Offerta> offerte;
+    	ArrayList<Offerta> offerteRicevute;
     	
     	if(controller.getStudente().getOfferteRicevute().isEmpty()) {
-    		offerte = controller.getOffertebyAnnuncio(a);
+    		offerteRicevute = controller.getOffertebyAnnuncio(a);
+    		controller.setOfferteRicevute(offerteRicevute);
         	labelOfferteAnnuncio.setText("Non ci sono offerte per l'annuncio: " + a.getTitoloAnnuncio());
     	}
     	else{
-    		offerte = controller.getStudente().getOfferteRicevute();
+    		offerteRicevute = controller.getStudente().getOfferteRicevute();
         	labelOfferteAnnuncio.setText("Queste sono le offerte dell'annuncio: " + a.getTitoloAnnuncio());
+        	System.out.println("Offerte ricevute già caricate.");
     	}
         
         int column = 0;
         int row = 0;
         boolean abilitaTasti = true;
         
-        for(Offerta o : offerte) if(o.getStatoOfferta().equals("Accettata")) abilitaTasti = false;
+        for(Offerta o : offerteRicevute) if(o.getStatoOfferta().equals("Accettata")) abilitaTasti = false;
         
-    	for(Offerta o : offerte) {
+    	for(Offerta o : offerteRicevute) {
     		HBox rigaOfferta = creaRigaOfferta(o, abilitaTasti);
     		gridOfferte.add(rigaOfferta, column, row);
     		row++;
@@ -517,9 +513,9 @@ public class AnnunciStudenteBoundary {
 		switch(controller.accettaOfferta(o)) {
 			case 0:
 				gridOfferte.getChildren().clear();
-				tornaIndietroAnnunci();
-				//DA RIMUOVERE E METTERE REMOVE
 				controller.svuotaOfferteRicevute();
+				controller.SvuotaAnnunciPubblicati();
+				tornaIndietroAnnunci();
 			break;
 			
 			case 1:
@@ -533,7 +529,6 @@ public class AnnunciStudenteBoundary {
 	    	case 0:
 				gridOfferte.getChildren().clear();
 				mostraOfferteAnnuncio(o.getAnnuncio());
-				//DA RIMUOVERE E METTERE REMOVE
 				controller.svuotaOfferteRicevute();
 	    	break;
 	    	

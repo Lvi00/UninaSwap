@@ -446,6 +446,10 @@ public class Controller {
 		this.studente.getOfferteRicevute().clear();
 	}
     
+    public void SvuotaOfferteInviate() {
+    	this.studente.getOfferteInviate().clear();
+    }
+    
     public int controllaOggettoDesiderato(String nomeOggetto, ArrayList<String> listaOggetti) {
     	String regexOggettoDesiderato = "^[A-Za-zÀ-ÿ0-9\\s]+$";
 
@@ -472,6 +476,16 @@ public class Controller {
     {
     	this.studente.setAnnunciPubblicati(lista);
     }
+    
+    public void setOfferteRicevute(ArrayList<Offerta> lista)
+	{
+		this.studente.setOfferteRicevute(lista);
+	}
+    
+    public void setOfferteInviate(ArrayList<Offerta> lista)
+	{
+		this.studente.setOfferteInviate(lista);
+	}
     
     public void rimuoviOggettoDesideratoDaLista(ArrayList<String> listaOggetti, String nomeOggetto) {
         listaOggetti.remove(nomeOggetto);
