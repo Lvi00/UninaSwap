@@ -430,28 +430,16 @@ public class ProdottiBoundary {
     }
     
     @FXML
-    public void resetFiltri() {    	
-        // Controllo se i filtri sono già allo stato di default
-        String categoriaCorrente = this.categoria != null ? this.categoria : "Nessuno";
-        String tipologiaCorrente = this.tipologia != null ? this.tipologia : "Nessuno";
-
-        if ((this.keyword == null || this.keyword.isEmpty()) && categoriaCorrente.equals("Nessuno") && tipologiaCorrente.equals("Nessuno")) {
-            return;
-        }
-
-        // Reset dei campi UI
+    public void resetFiltri() {
         campoRicerca.clear();
         campoCategoriaOggetto.getSelectionModel().selectFirst();
         campoTipologia.getSelectionModel().selectFirst();
 
-        // Reset dei valori interni
         this.keyword = "";
         this.categoria = "Nessuno";
         this.tipologia = "Nessuno";
 
-        // Ripristino catalogo completo
         gridProdotti.getChildren().clear();
         CostruisciCatalogoProdotti(this.controller.getStudente());
-
     }
 }

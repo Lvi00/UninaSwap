@@ -17,7 +17,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -29,11 +28,12 @@ public class PopupEditOffertaBoundary {
     @FXML private VBox paneOffertaVendita;
     @FXML private VBox paneOffertaScambio;
     @FXML private VBox paneOffertaRegalo;
-
     @FXML private TextArea messaggioMotivazionale;
     @FXML private TextField campoPrezzoIntero;
     @FXML private TextField campoPrezzoDecimale;
     @FXML private Label labelOffertaScambio;
+    @FXML private Label labelOffertaVendita;
+    @FXML private Label labelOffertaRegalo;
     @FXML private Button inviaDatiOfferta;
     @FXML private GridPane gridOggettiOfferti;
     private Controller controller;
@@ -53,7 +53,6 @@ public class PopupEditOffertaBoundary {
         paneOffertaRegalo.setManaged(false);
 
         switch (o.getTipologia()) {
-
             case "Vendita":
                 paneOffertaVendita.setVisible(true);
                 paneOffertaVendita.setManaged(true);
@@ -64,10 +63,12 @@ public class PopupEditOffertaBoundary {
                 String[] parti = prezzoString.split(",");
                 campoPrezzoIntero.setText(parti[0]);
                 campoPrezzoDecimale.setText(parti[1]);
+                
+                VBox.setMargin(labelOffertaVendita, new Insets(20, 0, 0, 0));
 
                 stage.setWidth(450);
                 stage.setHeight(175);
-                break;
+            break;
 
             case "Scambio":
                 paneOffertaScambio.setVisible(true);
@@ -75,51 +76,50 @@ public class PopupEditOffertaBoundary {
 
                 ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(o);
 
-                gridOggettiOfferti.getChildren().clear(); // pulisce card precedenti
-                gridOggettiOfferti.getColumnConstraints().clear(); // reset colonne
+                gridOggettiOfferti.getChildren().clear();
+                gridOggettiOfferti.getColumnConstraints().clear();
 
                 int numeroCol = listaOggetti.size();
-                int larghezzaCard = 300; // larghezza stimata per ogni card
-                int altezzaCard = 300;   // altezza stimata per ogni card
+                int larghezzaCard = 300;
+                int altezzaCard = 300;
 
-                gridOggettiOfferti.setHgap(35);  // spazio tra le card
+                gridOggettiOfferti.setHgap(35);
                 gridOggettiOfferti.setVgap(10);
-                gridOggettiOfferti.setAlignment(Pos.CENTER); // centra tutte le card nello stage
-
+                gridOggettiOfferti.setAlignment(Pos.CENTER);
+                VBox.setMargin(gridOggettiOfferti, new Insets(10));
+                
                 int colonna = 0;
-                for (Oggetto og : listaOggetti) {
-                    VBox card = creaCardOggettoOfferto(og);
+                for (Oggetto oggetto : listaOggetti) {
+                    VBox card = creaCardOggettoOfferto(oggetto);
                     card.getStyleClass().add("card-annuncio");
 
                     gridOggettiOfferti.add(card, colonna, 0);
-                    GridPane.setFillWidth(card, false); // evita che la card si allarghi
+                    GridPane.setFillWidth(card, false);
 
-                    // colonna cresce automaticamente (opzionale)
+                    // colonna cresce automaticamente
                     ColumnConstraints col = new ColumnConstraints();
-                    col.setHgrow(Priority.NEVER); // le card restano della larghezza prefissata
+                    col.setHgrow(Priority.NEVER);
                     gridOggettiOfferti.getColumnConstraints().add(col);
 
                     colonna++;
                 }
 
-                // imposta dimensione stage in base al numero di card
-                double larghezzaTotaleCard = (larghezzaCard * numeroCol) /1.25;
-                stage.setWidth(larghezzaTotaleCard); // aggiungi margine minimo
-                stage.setHeight(altezzaCard); // altezza fissa o regolabile
-                break;
+                double larghezzaTotaleCard = (larghezzaCard * numeroCol) / 1.4;
+                stage.setWidth(larghezzaTotaleCard);
+                stage.setHeight(altezzaCard);
+            break;
 
             case "Regalo":
                 paneOffertaRegalo.setVisible(true);
                 paneOffertaRegalo.setManaged(true);
 
-                if (o.getMotivazione().equals("Assente"))
-                    messaggioMotivazionale.setText("");
-                else
-                    messaggioMotivazionale.setText(o.getMotivazione());
-
+                if (o.getMotivazione().equals("Assente")) messaggioMotivazionale.setText("");
+                else messaggioMotivazionale.setText(o.getMotivazione());
+                
+                VBox.setMargin(labelOffertaRegalo, new Insets(20, 0, 0, 0));
                 stage.setWidth(450);
                 stage.setHeight(175);
-                break;
+            break;
         }
 
         inviaDatiOfferta.setOnAction(event -> prelevaDatiOfferta(o));
@@ -131,26 +131,24 @@ public class PopupEditOffertaBoundary {
                 String prezzoIntero = campoPrezzoIntero.getText().trim();
                 String prezzoDecimale = campoPrezzoDecimale.getText().trim();
                 controller.editOffertaVendita(o, prezzoIntero, prezzoDecimale);
-                break;
+            break;
 
             case "Scambio":
                 // logica per scambio, se necessario
-                break;
+            break;
 
             case "Regalo":
                 String motivazione = messaggioMotivazionale.getText().trim();
                 controller.editOffertaRegalo(o, motivazione);
-                break;
+            break;
         }
     }
     
     private VBox creaCardOggettoOfferto(Oggetto o) {
-        // Contenitore “card invisibile” per ogni oggetto
-        VBox box = new VBox(8); // spazio tra immagine e testo
-        box.setAlignment(Pos.CENTER); // centra tutto
-        box.setPadding(new Insets(10)); // piccolo padding interno
+        VBox box = new VBox(8);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10));
 
-        // immagine
         ImageView imageView = new ImageView();
         try {
             String path = o.getImmagineOggetto();
@@ -173,21 +171,19 @@ public class PopupEditOffertaBoundary {
 
         // testo
         Label categoria = new Label(o.getCategoria());
-        categoria.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+        categoria.setStyle("-fx-font-size: 14;");
         categoria.setWrapText(true);
         categoria.setAlignment(Pos.CENTER);
 
         Label descrizione = new Label(o.getDescrizione());
-        descrizione.setStyle("-fx-text-fill: #555;");
+        descrizione.setStyle("-fx-font-size: 14; -fx-text-fill: #555;");
         descrizione.setWrapText(true);
         descrizione.setAlignment(Pos.CENTER);
 
-        // aggiungo immagine + testo al box
         box.getChildren().addAll(imageView, categoria, descrizione);
 
-        // se vuoi puoi aggiungere un bordo leggero per distinguere visivamente ogni “card invisibile”
         box.setStyle(
-            "-fx-border-color: transparent;" + // oppure #ccc per leggero bordo
+            "-fx-border-color: transparent;" +
             "-fx-border-radius: 5;" +
             "-fx-background-radius: 5;"
         );
