@@ -7,21 +7,19 @@ import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import application.control.Controller;
-import application.entity.Annuncio;
 import application.entity.Offerta;
+import application.entity.Oggetto;
 import application.entity.Studente;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -45,6 +43,12 @@ public class OfferteBoundary {
     @FXML private Label labelModificaOfferta;
     @FXML private Label labelOffertePubblicate;
     @FXML private GridPane gridOfferte;
+    @FXML private TextArea campoMotivazione;
+    @FXML private AnchorPane paneOffertaRegalo;
+    @FXML private AnchorPane paneOffertaScambio;
+    @FXML private AnchorPane paneOffertaVendita;
+    @FXML private TextField campoPrezzoIntero;
+    @FXML private TextField campoPrezzoDecimale;
     
     public void setController(Controller controller) {
         this.controller = controller;
@@ -73,16 +77,13 @@ public class OfferteBoundary {
             immagineNav.setFitWidth(33);
             immagineNav.setFitHeight(33);  
             immagineNav.setPreserveRatio(false);
-            
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Errore caricando immagine: " + immagineP);
         }
     }
     
-    
     public void SelezionaPagina(MouseEvent e) {
-        
     	//Prende l'oggetto cliccato
         Object source = e.getSource();
         
@@ -234,8 +235,8 @@ public class OfferteBoundary {
         
         String titolo = "";
         
-        if(offerteInviate.size() == 0) titolo = "Non ci sono offerte attive di ";
-        else titolo = "Offerte attive di ";
+        if(offerteInviate.size() == 0) titolo = "Non ci sono offerte inviate da ";
+        else titolo = "Offerte inviate da ";
         
         labelOffertePubblicate.setText(titolo + s.getUsername());
         
@@ -290,23 +291,10 @@ public class OfferteBoundary {
 
         Label tipo = new Label(o.getTipologia());
         tipo.setStyle("-fx-text-fill: gray;");
-
-        ImageView iconDelete = new ImageView();
-        try {
-            String iconPath = "../IMG/immaginiProgramma/delete_card.png";
-            Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
-            iconDelete.setImage(imgIcon);
-            iconDelete.setFitWidth(22);
-            iconDelete.setFitHeight(22);
-            iconDelete.setPreserveRatio(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         
-        Button buttonDelete = new Button();
-        buttonDelete.setGraphic(iconDelete);
-        buttonDelete.getStyleClass().add("tasto-terziario");
-        buttonDelete.setOnMouseClicked(event -> eliminaOfferta(o));
+        HBox containerButton = new HBox(20);
+        containerButton.setAlignment(Pos.CENTER);
+        VBox.setMargin(containerButton, new Insets(5, 0, 0, 0));
         
         ImageView iconInfo = new ImageView();
         try {
@@ -325,28 +313,45 @@ public class OfferteBoundary {
         buttonInfo.getStyleClass().add("tasto-secondario");
         buttonInfo.setOnMouseClicked(event -> mostraInfoOfferta(o));
         
-        ImageView iconEdit = new ImageView();
-        try {
-            String iconPath = "../IMG/immaginiProgramma/edit.png";
-            Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
-            iconEdit.setImage(imgIcon);
-            iconEdit.setFitWidth(22);
-            iconEdit.setFitHeight(22);
-            iconEdit.setPreserveRatio(true);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(!o.getStatoOfferta().equals("Accettata")) {
+            ImageView iconDelete = new ImageView();
+            try {
+                String iconPath = "../IMG/immaginiProgramma/delete_card.png";
+                Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
+                iconDelete.setImage(imgIcon);
+                iconDelete.setFitWidth(22);
+                iconDelete.setFitHeight(22);
+                iconDelete.setPreserveRatio(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+	        Button buttonDelete = new Button();
+	        buttonDelete.setGraphic(iconDelete);
+	        buttonDelete.getStyleClass().add("tasto-terziario");
+	        buttonDelete.setOnMouseClicked(event -> eliminaOfferta(o));
+	        
+	        ImageView iconEdit = new ImageView();
+	        try {
+	            String iconPath = "../IMG/immaginiProgramma/edit.png";
+	            Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
+	            iconEdit.setImage(imgIcon);
+	            iconEdit.setFitWidth(22);
+	            iconEdit.setFitHeight(22);
+	            iconEdit.setPreserveRatio(true);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        
+	        Button buttonEdit = new Button();
+	        buttonEdit.setGraphic(iconEdit);
+	        buttonEdit.getStyleClass().add("tasto-edit");
+	        buttonEdit.setOnMouseClicked(event -> editOfferta(event, o));
+	        
+	        containerButton.getChildren().addAll(buttonInfo, buttonEdit, buttonDelete);
         }
         
-        Button buttonEdit = new Button();
-        buttonEdit.setGraphic(iconEdit);
-        buttonEdit.getStyleClass().add("tasto-edit");
-        buttonEdit.setOnMouseClicked(event -> editOfferta(o));
-
-        HBox containerButton = new HBox(20);
-        containerButton.setAlignment(Pos.CENTER);
-        VBox.setMargin(containerButton, new Insets(5, 0, 0, 0));
-        
-        containerButton.getChildren().addAll(buttonInfo, buttonEdit, buttonDelete);
+        else containerButton.getChildren().addAll(buttonInfo);
         
         VBox boxStato = new VBox();
         boxStato.setAlignment(Pos.CENTER);
@@ -379,11 +384,39 @@ public class OfferteBoundary {
     	}
     }
     
-    public void editOfferta(Offerta o) {
-    	labelModificaOfferta.setText("Modifica offerta per l'annuncio: " + o.getAnnuncio().getTitoloAnnuncio());
-    	OffertePane.setVisible(false);
-    	containerModificaOfferta.setVisible(true);
-    	//aggiungere lo svuotamento della lista delle offerte inviate
+    public void editOfferta(MouseEvent e, Offerta o) {
+    	try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupEditOfferta.fxml"));
+            Parent root = loader.load();
+            PopupEditOffertaBoundary popupEditController = loader.getController();
+            popupEditController.setController(this.controller);
+            popupEditController.CostruisciPopupEdit(o);
+            Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            Stage popupStage = new Stage();
+            popupStage.initOwner(mainStage);
+            popupStage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+            popupStage.setScene(scene);
+            popupStage.setTitle("UninaSwap - Modifica offerta");
+            popupStage.getIcons().add(
+                new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
+            );
+            popupStage.setResizable(false);
+            mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+            popupStage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+            popupStage.show();
+            popupStage.setX(mainStage.getX() + (mainStage.getWidth() - popupStage.getWidth()) / 2);
+            popupStage.setY(mainStage.getY() + (mainStage.getHeight() - popupStage.getHeight()) / 2 - 40);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    @FXML
+    public void tornaIndietroOfferte() {
+    	OffertePane.setVisible(true);
+    	containerModificaOfferta.setVisible(false);
     }
     
     public void mostraInfoOfferta(Offerta o) {

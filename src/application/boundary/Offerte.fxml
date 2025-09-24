@@ -70,7 +70,7 @@
                <children>
                   <AnchorPane fx:id="OffertePane" prefHeight="495.0" prefWidth="949.0">
                      <children>
-                        <Label fx:id="labelOffertePubblicate" layoutX="60.0" layoutY="45.0" style="-fx-font-weight: bold;">
+                        <Label fx:id="labelOffertePubblicate" layoutX="60.0" layoutY="48.0" style="-fx-font-weight: bold;">
                            <font><Font size="20.0" /></font>
                         </Label>
 
@@ -83,19 +83,6 @@
                               </AnchorPane>
                            </content>
                         </ScrollPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </HBox>
-            <HBox fx:id="containerModificaOfferta" layoutX="149.0" layoutY="102.0" prefHeight="498.0" prefWidth="949.0" style="-fx-background-color: #F2EFEA;" visible="false">
-               <children>
-                  <AnchorPane prefHeight="495.0" prefWidth="949.0">
-                     <children>
-                        <Label fx:id="labelModificaOfferta" layoutX="60.0" layoutY="45.0" style="-fx-font-weight: bold;">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
                      </children>
                   </AnchorPane>
                </children>
