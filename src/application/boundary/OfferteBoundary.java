@@ -226,6 +226,7 @@ public class OfferteBoundary {
         
         if(controller.getStudente().getOfferteInviate().isEmpty()) {
         	offerteInviate = controller.getOffertebyMatricola(s);
+        	controller.setOfferteInviate(offerteInviate);
         	controller.getStudente().setOfferteInviate(offerteInviate);
         }
         else{
@@ -307,12 +308,7 @@ public class OfferteBoundary {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        Button buttonInfo = new Button();
-        buttonInfo.setGraphic(iconInfo);
-        buttonInfo.getStyleClass().add("tasto-secondario");
-        buttonInfo.setOnMouseClicked(event -> mostraInfoOfferta(o));
-        
+
         if(!o.getStatoOfferta().equals("Accettata")) {
             ImageView iconDelete = new ImageView();
             try {
@@ -348,11 +344,9 @@ public class OfferteBoundary {
 	        buttonEdit.getStyleClass().add("tasto-edit");
 	        buttonEdit.setOnMouseClicked(event -> editOfferta(event, o));
 	        
-	        containerButton.getChildren().addAll(buttonInfo, buttonEdit, buttonDelete);
+	        containerButton.getChildren().addAll( buttonEdit, buttonDelete);
         }
-        
-        else containerButton.getChildren().addAll(buttonInfo);
-        
+                
         VBox boxStato = new VBox();
         boxStato.setAlignment(Pos.CENTER);
         boxStato.setSpacing(4);
@@ -385,32 +379,44 @@ public class OfferteBoundary {
     }
     
     public void editOfferta(MouseEvent e, Offerta o) {
-    	try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupEditOfferta.fxml"));
-            Parent root = loader.load();
-            PopupEditOffertaBoundary popupEditController = loader.getController();
-            popupEditController.setController(this.controller);
-            popupEditController.CostruisciPopupEdit(o);
-            Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            Stage popupStage = new Stage();
-            popupStage.initOwner(mainStage);
-            popupStage.initModality(Modality.WINDOW_MODAL);
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-            popupStage.setScene(scene);
-            popupStage.setTitle("UninaSwap - Modifica offerta");
-            popupStage.getIcons().add(
-                new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
-            );
-            popupStage.setResizable(false);
-            mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
-            popupStage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
-            popupStage.show();
-            popupStage.setX(mainStage.getX() + (mainStage.getWidth() - popupStage.getWidth()) / 2);
-            popupStage.setY(mainStage.getY() + (mainStage.getHeight() - popupStage.getHeight()) / 2 - 40);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    	 try {
+    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupEditOfferta.fxml"));
+    	        Parent root = loader.load();
+
+    	        PopupEditOffertaBoundary popupEditController = loader.getController();
+    	        popupEditController.setController(this.controller);
+
+    	        // PREPARO LO STAGE DEL POPUP
+    	        Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+    	        Stage popupStage = new Stage();
+    	        popupStage.initOwner(mainStage);
+    	        popupStage.initModality(Modality.WINDOW_MODAL);
+
+    	        Scene scene = new Scene(root);
+    	        scene.getStylesheets().add(
+    	            getClass().getResource("../resources/application.css").toExternalForm()
+    	        );
+    	        popupStage.setScene(scene);
+    	        popupStage.setTitle("UninaSwap - Modifica offerta");
+    	        popupStage.getIcons().add(
+    	            new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
+    	        );
+    	        popupStage.setResizable(false);
+
+    	        // EFFETTO OSCURAMENTO SUL MAIN
+    	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+    	        popupStage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+
+    	       
+    	        popupEditController.CostruisciPopupEdit(o, popupStage);
+
+    	        popupStage.show();
+    	        popupStage.setX(mainStage.getX() + (mainStage.getWidth() - popupStage.getWidth()) / 2);
+    	        popupStage.setY(mainStage.getY() + (mainStage.getHeight() - popupStage.getHeight()) / 2 - 40);
+
+    	    } catch (Exception ex) {
+    	        ex.printStackTrace();
+    	    }
     }
     
     @FXML
