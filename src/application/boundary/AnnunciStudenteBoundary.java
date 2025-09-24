@@ -528,8 +528,9 @@ public class AnnunciStudenteBoundary {
     	switch(controller.rifiutaOfferta(o)) {
 	    	case 0:
 				gridOfferte.getChildren().clear();
-				mostraOfferteAnnuncio(o.getAnnuncio());
 				controller.svuotaOfferteRicevute();
+				controller.SvuotaAnnunciPubblicati();
+				mostraOfferteAnnuncio(o.getAnnuncio());
 	    	break;
 	    	
 	    	case 1:
@@ -572,7 +573,7 @@ public class AnnunciStudenteBoundary {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
             popupStage.setScene(scene);
-            popupStage.setTitle("Informazioni di " + offerta.getTipologia().toLowerCase());
+            popupStage.setTitle("UninaSwap - Informazioni di " + offerta.getTipologia().toLowerCase());
             popupStage.getIcons().add(
                 new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
             );
