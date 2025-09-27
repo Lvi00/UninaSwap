@@ -168,7 +168,6 @@ public class PopupEditOffertaBoundary {
     }
     
     private StackPane creaCardOggettoOfferto(Oggetto o) {
-
         VBox content = new VBox(8);
         content.setAlignment(Pos.CENTER);
         content.setPadding(new Insets(10));
@@ -190,23 +189,58 @@ public class PopupEditOffertaBoundary {
             localImageView.setClip(clip);
             localImageView.setImage(img);
             localImageView.setStyle("-fx-cursor: hand;");
-            localImageView.setOnMouseClicked(event -> showFileChooser(event, o, localImageView));
+            //localImageView.setOnMouseClicked(event -> showFileChooser(event, o, localImageView));
         } catch (Exception e) { e.printStackTrace(); }
+        
+        Label categoria = new Label(o.getCategoria());
+        categoria.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+        categoria.setVisible(true);
+        categoria.setStyle(
+        	    "-fx-font-size: 14px; " +
+        	    "-fx-font-weight: bold; " +
+        	    "-fx-background-color: #f4f4f4; " +
+        	    "-fx-border-color: #bdbdbd; " +
+        	    "-fx-border-radius: 5; " +
+        	    "-fx-background-radius: 5; " +
+        	    "-fx-padding: 6 10; " +
+        	    "-fx-pref-width: 150;"
+        	);
         
         ChoiceBox<Categorie> choiceCategoria = new ChoiceBox<>();
         choiceCategoria.getItems().addAll(Categorie.values());
         choiceCategoria.setValue(Categorie.valueOf(o.getCategoria()));
         choiceCategoria.setPrefWidth(150);
         choiceCategoria.setStyle("-fx-cursor: hand;");
-
+        choiceCategoria.setVisible(false);
+        choiceCategoria.setManaged(false);
+        
+        Label descrizione = new Label(o.getDescrizione());
+        descrizione.setStyle("-fx-font-size: 12px;");
+        descrizione.setWrapText(true);
+        descrizione.setPrefWidth(150);
+        descrizione.setVisible(true);
+        descrizione.setStyle(
+        	    "-fx-font-size: 12px; " +
+        	    "-fx-background-color: #f4f4f4; " +
+        	    "-fx-border-color: #bdbdbd; " +
+        	    "-fx-border-radius: 5; " +
+        	    "-fx-background-radius: 5; " +
+        	    "-fx-padding: 6 10; " +
+        	    "-fx-pref-width: 150; " +
+        	    "-fx-pref-height: 220;" +
+        	    "-fx-alignment: top-left;"
+        	);
+        
         TextArea textDescrizione = new TextArea();
         textDescrizione.setText(o.getDescrizione());
         textDescrizione.setWrapText(true);
         textDescrizione.setPrefRowCount(3);
         textDescrizione.setPrefWidth(150);
         textDescrizione.setStyle("-fx-padding: -10");
+        textDescrizione.setVisible(false);
+        textDescrizione.setManaged(false);
 
-        content.getChildren().addAll(localImageView, choiceCategoria, textDescrizione);
+        content.getChildren().addAll(localImageView, categoria, choiceCategoria, descrizione, textDescrizione);
 
         ImageView iconDelete = new ImageView();
         try {
@@ -223,7 +257,7 @@ public class PopupEditOffertaBoundary {
         buttonDelete.setPrefSize(24, 24);
         buttonDelete.setStyle("-fx-cursor: hand;");
         buttonDelete.setGraphic(iconDelete);
-        buttonDelete.setOnMouseClicked(event -> rimuoviAnnuncio(o));
+        buttonDelete.setOnMouseClicked(event -> rimuoviOggettoOfferto(o));
 
         AnchorPane topRightLayer = new AnchorPane(buttonDelete);
         topRightLayer.setPickOnBounds(false); 
@@ -247,27 +281,35 @@ public class PopupEditOffertaBoundary {
         buttonEdit.setPrefSize(24, 24);
         buttonEdit.setStyle("-fx-cursor: hand;");
         buttonEdit.setGraphic(iconEdit);
-        buttonEdit.setOnMouseClicked(event -> rimuoviAnnuncio(o));
+        buttonEdit.setOnMouseClicked(event -> showCampiModifica(
+        	    categoria, choiceCategoria, descrizione, textDescrizione
+        	));
 
         AnchorPane topLeftLayer = new AnchorPane(buttonEdit);
         topLeftLayer.setPickOnBounds(false); 
         AnchorPane.setTopAnchor(buttonEdit, -11.0);
         AnchorPane.setLeftAnchor(buttonEdit, -11.0);
         
-        // CARD CON OVERLAY
         StackPane card = new StackPane(content, topRightLayer, topLeftLayer);
-        card.setStyle(
-            "-fx-border-color: transparent;" +
-            "-fx-border-radius: 5;" +
-            "-fx-background-radius: 5;"
-        );
+        card.getStyleClass().add("card-annuncio");
 
         return card;
     }
 
     
-    private void rimuoviAnnuncio(Oggetto o) {
+    private void rimuoviOggettoOfferto(Oggetto o) {
       
+    }
+    
+    private void showCampiModifica(Label categoria, ChoiceBox<Categorie> choiceCategoria, Label descrizione, TextArea textDescrizione) {
+        categoria.setVisible(false);
+        descrizione.setVisible(false);
+        categoria.setManaged(false);
+        descrizione.setManaged(false);
+        choiceCategoria.setVisible(true);
+        textDescrizione.setVisible(true);
+        choiceCategoria.setManaged(true);
+        textDescrizione.setManaged(true);
     }
     
     public void showFileChooser(MouseEvent e, Oggetto o, ImageView targetImageView) {
@@ -287,7 +329,4 @@ public class PopupEditOffertaBoundary {
             this.fileSelezionato = selectedFile;
         }
     }
-
-   
-    
 }
