@@ -3,13 +3,9 @@ package application.boundary;
 import java.io.File;
 import java.util.ArrayList;
 
-import application.boundary.CreaAnnuncioBoundary.Categorie;
-import application.boundary.CreaAnnuncioBoundary.ParticellaToponomastica;
 import application.control.Controller;
-import application.entity.Annuncio;
 import application.entity.Offerta;
 import application.entity.Oggetto;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,12 +15,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -65,9 +59,7 @@ public class PopupEditOffertaBoundary {
         this.controller = controller;
     }
 
-    public void CostruisciPopupEdit(Offerta o, Stage stage) {
-
-        // Nascondi tutti i pannelli inizialmente
+    public void CostruisciPopupEdit(Offerta offerta, Stage stage) {
         paneOffertaVendita.setVisible(false);
         paneOffertaVendita.setManaged(false);
         paneOffertaScambio.setVisible(false);
@@ -75,13 +67,13 @@ public class PopupEditOffertaBoundary {
         paneOffertaRegalo.setVisible(false);
         paneOffertaRegalo.setManaged(false);
 
-        switch (o.getTipologia()) {
+        switch (offerta.getTipologia()) {
             case "Vendita":
                 paneOffertaVendita.setVisible(true);
                 paneOffertaVendita.setManaged(true);
 
                 // Imposta prezzo
-                double prezzo = o.getPrezzoOfferta();
+                double prezzo = offerta.getPrezzoOfferta();
                 String prezzoString = String.format("%.2f", prezzo).replace(".", ",");
                 String[] parti = prezzoString.split(",");
                 campoPrezzoIntero.setText(parti[0]);
@@ -97,7 +89,7 @@ public class PopupEditOffertaBoundary {
                 paneOffertaScambio.setVisible(true);
                 paneOffertaScambio.setManaged(true);
 
-                ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(o);
+                ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(offerta);
                 controller.SetOggettiOfferti(listaOggetti);
                 gridOggettiOfferti.getChildren().clear();
                 gridOggettiOfferti.getColumnConstraints().clear();
@@ -113,7 +105,7 @@ public class PopupEditOffertaBoundary {
                 
                 int colonna = 0;
                 for (Oggetto oggetto : listaOggetti) {
-                	StackPane card = creaCardOggettoOfferto(oggetto);
+                	StackPane card = creaCardOggettoOfferto(oggetto, offerta);
                     card.getStyleClass().add("card-annuncio");
 
                     gridOggettiOfferti.add(card, colonna, 0);
@@ -136,8 +128,8 @@ public class PopupEditOffertaBoundary {
                 paneOffertaRegalo.setVisible(true);
                 paneOffertaRegalo.setManaged(true);
 
-                if (o.getMotivazione().equals("Assente")) messaggioMotivazionale.setText("");
-                else messaggioMotivazionale.setText(o.getMotivazione());
+                if (offerta.getMotivazione().equals("Assente")) messaggioMotivazionale.setText("");
+                else messaggioMotivazionale.setText(offerta.getMotivazione());
                 
                 VBox.setMargin(labelOffertaRegalo, new Insets(20, 0, 0, 0));
                 stage.setWidth(450);
@@ -145,15 +137,15 @@ public class PopupEditOffertaBoundary {
             break;
         }
 
-        inviaDatiOfferta.setOnAction(event -> prelevaDatiOfferta(o));
+        inviaDatiOfferta.setOnAction(event -> prelevaDatiOfferta(offerta));
     }
 
-    private void prelevaDatiOfferta(Offerta o) {
-        switch(o.getTipologia()) {
+    private void prelevaDatiOfferta(Offerta offerta) {
+        switch(offerta.getTipologia()) {
             case "Vendita":
                 String prezzoIntero = campoPrezzoIntero.getText().trim();
                 String prezzoDecimale = campoPrezzoDecimale.getText().trim();
-                controller.editOffertaVendita(o, prezzoIntero, prezzoDecimale);
+                controller.editOffertaVendita(offerta, prezzoIntero, prezzoDecimale);
             break;
 
             case "Scambio":
@@ -162,12 +154,12 @@ public class PopupEditOffertaBoundary {
 
             case "Regalo":
                 String motivazione = messaggioMotivazionale.getText().trim();
-                controller.editOffertaRegalo(o, motivazione);
+                controller.editOffertaRegalo(offerta, motivazione);
             break;
         }
     }
     
-    private StackPane creaCardOggettoOfferto(Oggetto o) {
+    private StackPane creaCardOggettoOfferto(Oggetto oggetto, Offerta offerta) {
         VBox content = new VBox(8);
         content.setAlignment(Pos.CENTER);
         content.setPadding(new Insets(10));
@@ -175,7 +167,7 @@ public class PopupEditOffertaBoundary {
         // --- IMMAGINE ---
         ImageView localImageView = new ImageView();
         try {
-            String path = o.getImmagineOggetto();
+            String path = oggetto.getImmagineOggetto();
             Image img;
             File file = new File(path);
             if (file.exists()) {
@@ -194,7 +186,7 @@ public class PopupEditOffertaBoundary {
         }
 
         // --- LABEL CATEGORIA ---
-        Label categoria = new Label(o.getCategoria());
+        Label categoria = new Label(oggetto.getCategoria());
         categoria.setStyle(
             "-fx-font-size: 14px;" +
             "-fx-background-color: #f4f4f4;" +
@@ -208,14 +200,14 @@ public class PopupEditOffertaBoundary {
         // --- CHOICEBOX PER MODIFICA ---
         ChoiceBox<Categorie> choiceCategoria = new ChoiceBox<>();
         choiceCategoria.getItems().addAll(Categorie.values());
-        choiceCategoria.setValue(Categorie.valueOf(o.getCategoria()));
+        choiceCategoria.setValue(Categorie.valueOf(oggetto.getCategoria()));
         choiceCategoria.setPrefWidth(150);
         choiceCategoria.setStyle("-fx-cursor: hand;");
         choiceCategoria.setVisible(false);
         choiceCategoria.setManaged(false);
 
         // --- LABEL DESCRIZIONE ---
-        Label descrizione = new Label(o.getDescrizione());
+        Label descrizione = new Label(oggetto.getDescrizione());
         descrizione.setWrapText(true);
         descrizione.setPrefWidth(150);
         descrizione.setStyle(
@@ -231,7 +223,7 @@ public class PopupEditOffertaBoundary {
         );
 
         // --- TEXTAREA PER MODIFICA ---
-        TextArea textDescrizione = new TextArea(o.getDescrizione());
+        TextArea textDescrizione = new TextArea(oggetto.getDescrizione());
         textDescrizione.setWrapText(true);
         textDescrizione.setPrefRowCount(3);
         textDescrizione.setPrefWidth(150);
@@ -309,8 +301,9 @@ public class PopupEditOffertaBoundary {
         buttonCheck.setVisible(false);
         buttonCheck.setManaged(false);
 
-        buttonEdit.setOnMouseClicked(event -> showCampiModifica(o, categoria, choiceCategoria, descrizione, textDescrizione, buttonDelete, buttonEdit, buttonBack, buttonCheck));
-        buttonBack.setOnMouseClicked(event -> showCampiModifica(o, categoria, choiceCategoria, descrizione, textDescrizione, buttonDelete, buttonEdit, buttonBack, buttonCheck));
+        buttonEdit.setOnMouseClicked(event -> showCampiModifica(oggetto, categoria, choiceCategoria, descrizione, textDescrizione, buttonDelete, buttonEdit, buttonBack, buttonCheck));
+        buttonBack.setOnMouseClicked(event -> showCampiModifica(oggetto, categoria, choiceCategoria, descrizione, textDescrizione, buttonDelete, buttonEdit, buttonBack, buttonCheck));
+        buttonDelete.setOnMouseClicked(event -> rimuoviOggettoOfferto(oggetto, offerta));
         
         AnchorPane topLeftLayer = new AnchorPane(buttonEdit, buttonBack);
         AnchorPane topRightLayer = new AnchorPane(buttonDelete, buttonCheck);
@@ -331,12 +324,12 @@ public class PopupEditOffertaBoundary {
         return card;
     }
 
-    
-    private void rimuoviOggettoOfferto(Oggetto o) {
-      
+    private void rimuoviOggettoOfferto(Oggetto oggetto, Offerta offerta) {
+    	controller.rimuoviOggettoOfferto(oggetto, offerta);
+    	CostruisciPopupEdit(offerta, (Stage) GeneralOffersPane.getScene().getWindow());
     }
     
-    private void showCampiModifica(Oggetto o, Label categoria, ChoiceBox<Categorie> choiceCategoria, Label descrizione, TextArea textDescrizione, Button btnDelete, Button btnModifica, Button btnBack, Button btnCheck) {
+    private void showCampiModifica(Oggetto oggetto, Label categoria, ChoiceBox<Categorie> choiceCategoria, Label descrizione, TextArea textDescrizione, Button btnDelete, Button btnModifica, Button btnBack, Button btnCheck) {
         if(categoria.isVisible()) {
 	        categoria.setVisible(false);
 	        descrizione.setVisible(false);
@@ -347,8 +340,8 @@ public class PopupEditOffertaBoundary {
 	        choiceCategoria.setManaged(true);
 	        textDescrizione.setManaged(true);
 	        
-	        choiceCategoria.setValue(Categorie.valueOf(o.getCategoria()));
-	        textDescrizione.setText(o.getDescrizione());
+	        choiceCategoria.setValue(Categorie.valueOf(oggetto.getCategoria()));
+	        textDescrizione.setText(oggetto.getDescrizione());
 	        
 	        btnDelete.setVisible(false);
 	        btnDelete.setManaged(false);
@@ -381,7 +374,7 @@ public class PopupEditOffertaBoundary {
         }
     }
     
-    public void showFileChooser(MouseEvent e, Oggetto o, ImageView targetImageView) {
+    public void showFileChooser(MouseEvent e, Oggetto oggetto, ImageView targetImageView) {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
         FileChooser fileChooser = new FileChooser();

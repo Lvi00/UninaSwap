@@ -63,4 +63,21 @@ public class OggettiOffertiDAO {
 	    }
 	    return 0;
 	}
+	
+	public void rimuoviOggettoOffertoById(int idOggetto, int idOfferta) {
+		try {
+			Connection conn = ConnessioneDB.getConnection();
+			
+			String delete = "DELETE FROM OGGETTIOFFERTI WHERE idofferta = ? AND idoggetto = ?";
+			PreparedStatement statement = conn.prepareStatement(delete);
+			statement.setInt(1, idOfferta);
+			statement.setInt(2, idOggetto);
+			
+			statement.executeUpdate();
+			statement.close();
+			
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
 }

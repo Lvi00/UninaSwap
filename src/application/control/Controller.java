@@ -506,4 +506,11 @@ public class Controller {
     public void editOffertaVendita(Offerta o, String prezzoIntero, String prezzoDecimale) {
     	
     }
+    
+    public void rimuoviOggettoOfferto(Oggetto oggetto, Offerta offerta) {
+    	int idOggetto = new OggettoDAO().getIdByOggetto(oggetto);
+    	int idOfferta = new OffertaDAO().getIdByOfferta(offerta);
+    	new OggettiOffertiDAO().rimuoviOggettoOffertoById(idOggetto, idOfferta);
+    	new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
+    }
 }

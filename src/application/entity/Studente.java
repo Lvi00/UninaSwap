@@ -89,5 +89,10 @@ public class Studente {
 	}
 	
 	public void setOggettiOffertiModificati(ArrayList<Oggetto> ListaOggettiOffertiModificati) {
+		this.OggettiOffertiModificati = ListaOggettiOffertiModificati;
+	}
+	
+	public ArrayList<Oggetto> getOggettiOfferti() {
+		return OggettiOfferti;
 	}
 }
