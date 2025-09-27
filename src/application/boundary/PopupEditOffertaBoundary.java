@@ -172,6 +172,7 @@ public class PopupEditOffertaBoundary {
         content.setAlignment(Pos.CENTER);
         content.setPadding(new Insets(10));
 
+        // --- IMMAGINE ---
         ImageView localImageView = new ImageView();
         try {
             String path = o.getImmagineOggetto();
@@ -185,27 +186,26 @@ public class PopupEditOffertaBoundary {
             localImageView.setFitWidth(150);
             localImageView.setFitHeight(100);
             localImageView.setPreserveRatio(false);
-            Rectangle clip = new Rectangle(150, 100);
-            localImageView.setClip(clip);
+            localImageView.setClip(new Rectangle(150, 100));
             localImageView.setImage(img);
             localImageView.setStyle("-fx-cursor: hand;");
-            //localImageView.setOnMouseClicked(event -> showFileChooser(event, o, localImageView));
-        } catch (Exception e) { e.printStackTrace(); }
-        
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // --- LABEL CATEGORIA ---
         Label categoria = new Label(o.getCategoria());
-        categoria.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-        categoria.setVisible(true);
         categoria.setStyle(
-        	    "-fx-font-size: 14px; " +
-        	    "-fx-font-weight: bold; " +
-        	    "-fx-background-color: #f4f4f4; " +
-        	    "-fx-border-color: #bdbdbd; " +
-        	    "-fx-border-radius: 5; " +
-        	    "-fx-background-radius: 5; " +
-        	    "-fx-padding: 6 10; " +
-        	    "-fx-pref-width: 150;"
-        	);
-        
+            "-fx-font-size: 14px;" +
+            "-fx-background-color: #f4f4f4;" +
+            "-fx-border-color: #bdbdbd;" +
+            "-fx-border-radius: 5;" +
+            "-fx-background-radius: 5;" +
+            "-fx-padding: 6 10;" +
+            "-fx-pref-width: 150;"
+        );
+
+        // --- CHOICEBOX PER MODIFICA ---
         ChoiceBox<Categorie> choiceCategoria = new ChoiceBox<>();
         choiceCategoria.getItems().addAll(Categorie.values());
         choiceCategoria.setValue(Categorie.valueOf(o.getCategoria()));
@@ -213,83 +213,118 @@ public class PopupEditOffertaBoundary {
         choiceCategoria.setStyle("-fx-cursor: hand;");
         choiceCategoria.setVisible(false);
         choiceCategoria.setManaged(false);
-        
+
+        // --- LABEL DESCRIZIONE ---
         Label descrizione = new Label(o.getDescrizione());
-        descrizione.setStyle("-fx-font-size: 12px;");
         descrizione.setWrapText(true);
         descrizione.setPrefWidth(150);
-        descrizione.setVisible(true);
         descrizione.setStyle(
-        	    "-fx-font-size: 12px; " +
-        	    "-fx-background-color: #f4f4f4; " +
-        	    "-fx-border-color: #bdbdbd; " +
-        	    "-fx-border-radius: 5; " +
-        	    "-fx-background-radius: 5; " +
-        	    "-fx-padding: 6 10; " +
-        	    "-fx-pref-width: 150; " +
-        	    "-fx-pref-height: 220;" +
-        	    "-fx-alignment: top-left;"
-        	);
-        
-        TextArea textDescrizione = new TextArea();
-        textDescrizione.setText(o.getDescrizione());
+            "-fx-font-size: 12px;" +
+            "-fx-background-color: #f4f4f4;" +
+            "-fx-border-color: #bdbdbd;" +
+            "-fx-border-radius: 5;" +
+            "-fx-background-radius: 5;" +
+            "-fx-padding: 6 10;" +
+            "-fx-pref-width: 150;" +
+            "-fx-pref-height: 220;" +
+            "-fx-alignment: top-left;"
+        );
+
+        // --- TEXTAREA PER MODIFICA ---
+        TextArea textDescrizione = new TextArea(o.getDescrizione());
         textDescrizione.setWrapText(true);
         textDescrizione.setPrefRowCount(3);
         textDescrizione.setPrefWidth(150);
-        textDescrizione.setStyle("-fx-padding: -10");
         textDescrizione.setVisible(false);
         textDescrizione.setManaged(false);
+        textDescrizione.setStyle("-fx-padding: -10px");
 
         content.getChildren().addAll(localImageView, categoria, choiceCategoria, descrizione, textDescrizione);
 
+        // --- ICONA DELETE ---
         ImageView iconDelete = new ImageView();
         try {
-            String iconPath = "../IMG/immaginiProgramma/delete_card.png";
-            Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
-            iconDelete.setImage(imgIcon);
+            iconDelete.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/delete_card.png").toExternalForm()));
             iconDelete.setFitWidth(22);
             iconDelete.setFitHeight(22);
             iconDelete.setPreserveRatio(true);
-        } catch (Exception e) { e.printStackTrace(); }
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Button buttonDelete = new Button();
         buttonDelete.getStyleClass().add("tasto-terziario");
         buttonDelete.setPrefSize(24, 24);
         buttonDelete.setStyle("-fx-cursor: hand;");
         buttonDelete.setGraphic(iconDelete);
-        buttonDelete.setOnMouseClicked(event -> rimuoviOggettoOfferto(o));
 
-        AnchorPane topRightLayer = new AnchorPane(buttonDelete);
-        topRightLayer.setPickOnBounds(false); 
-        AnchorPane.setTopAnchor(buttonDelete, -11.0);
-        AnchorPane.setRightAnchor(buttonDelete, -11.0);
-        
+        // --- ICONA EDIT ---
         ImageView iconEdit = new ImageView();
         try {
-            String iconPath = "../IMG/immaginiProgramma/edit.png";
-            Image imgIcon = new Image(getClass().getResource(iconPath).toExternalForm());
-            iconEdit.setImage(imgIcon);
+            iconEdit.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/edit.png").toExternalForm()));
             iconEdit.setFitWidth(22);
             iconEdit.setFitHeight(22);
             iconEdit.setPreserveRatio(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
         Button buttonEdit = new Button();
         buttonEdit.getStyleClass().add("tasto-edit");
         buttonEdit.setPrefSize(24, 24);
         buttonEdit.setStyle("-fx-cursor: hand;");
         buttonEdit.setGraphic(iconEdit);
-        buttonEdit.setOnMouseClicked(event -> showCampiModifica(
-        	    categoria, choiceCategoria, descrizione, textDescrizione
-        	));
 
-        AnchorPane topLeftLayer = new AnchorPane(buttonEdit);
-        topLeftLayer.setPickOnBounds(false); 
-        AnchorPane.setTopAnchor(buttonEdit, -11.0);
-        AnchorPane.setLeftAnchor(buttonEdit, -11.0);
+        // --- ICONA BACK ---
+        ImageView iconBack = new ImageView();
+        try {
+            iconBack.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/back.png").toExternalForm()));
+            iconBack.setFitWidth(22);
+            iconBack.setFitHeight(22);
+            iconBack.setPreserveRatio(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Button buttonBack = new Button();
+        buttonBack.getStyleClass().add("tasto-secondario");
+        buttonBack.setPrefSize(24, 24);
+        buttonBack.setStyle("-fx-cursor: hand;");
+        buttonBack.setGraphic(iconBack);
+        buttonBack.setVisible(false);
+        buttonBack.setManaged(false);
         
+        // --- ICONA CHECK ---
+        ImageView iconCheck = new ImageView();
+        try {
+        	iconCheck.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/check.png").toExternalForm()));
+        	iconCheck.setFitWidth(22);
+        	iconCheck.setFitHeight(22);
+        	iconCheck.setPreserveRatio(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Button buttonCheck = new Button();
+        buttonCheck.getStyleClass().add("tasto-conferma");
+        buttonCheck.setPrefSize(24, 24);
+        buttonCheck.setStyle("-fx-cursor: hand;");
+        buttonCheck.setGraphic(iconCheck);
+        buttonCheck.setVisible(false);
+        buttonCheck.setManaged(false);
+
+        buttonEdit.setOnMouseClicked(event -> showCampiModifica(o, categoria, choiceCategoria, descrizione, textDescrizione, buttonDelete, buttonEdit, buttonBack, buttonCheck));
+        buttonBack.setOnMouseClicked(event -> showCampiModifica(o, categoria, choiceCategoria, descrizione, textDescrizione, buttonDelete, buttonEdit, buttonBack, buttonCheck));
+        
+        AnchorPane topLeftLayer = new AnchorPane(buttonEdit, buttonBack);
+        AnchorPane topRightLayer = new AnchorPane(buttonDelete, buttonCheck);
+        topLeftLayer.setPickOnBounds(false);
+        AnchorPane.setTopAnchor(buttonEdit, -16.0);
+        AnchorPane.setLeftAnchor(buttonEdit, -16.0);
+        AnchorPane.setTopAnchor(buttonBack, -16.0);
+        AnchorPane.setLeftAnchor(buttonBack, -16.0);
+        AnchorPane.setTopAnchor(buttonCheck, -16.0);
+        AnchorPane.setRightAnchor(buttonCheck, -16.0);
+        topRightLayer.setPickOnBounds(false);
+        AnchorPane.setTopAnchor(buttonDelete, -16.0);
+        AnchorPane.setRightAnchor(buttonDelete, -16.0);
+
         StackPane card = new StackPane(content, topRightLayer, topLeftLayer);
         card.getStyleClass().add("card-annuncio");
 
@@ -301,15 +336,49 @@ public class PopupEditOffertaBoundary {
       
     }
     
-    private void showCampiModifica(Label categoria, ChoiceBox<Categorie> choiceCategoria, Label descrizione, TextArea textDescrizione) {
-        categoria.setVisible(false);
-        descrizione.setVisible(false);
-        categoria.setManaged(false);
-        descrizione.setManaged(false);
-        choiceCategoria.setVisible(true);
-        textDescrizione.setVisible(true);
-        choiceCategoria.setManaged(true);
-        textDescrizione.setManaged(true);
+    private void showCampiModifica(Oggetto o, Label categoria, ChoiceBox<Categorie> choiceCategoria, Label descrizione, TextArea textDescrizione, Button btnDelete, Button btnModifica, Button btnBack, Button btnCheck) {
+        if(categoria.isVisible()) {
+	        categoria.setVisible(false);
+	        descrizione.setVisible(false);
+	        categoria.setManaged(false);
+	        descrizione.setManaged(false);
+	        choiceCategoria.setVisible(true);
+	        textDescrizione.setVisible(true);
+	        choiceCategoria.setManaged(true);
+	        textDescrizione.setManaged(true);
+	        
+	        choiceCategoria.setValue(Categorie.valueOf(o.getCategoria()));
+	        textDescrizione.setText(o.getDescrizione());
+	        
+	        btnDelete.setVisible(false);
+	        btnDelete.setManaged(false);
+	        btnModifica.setVisible(false);
+	        btnModifica.setManaged(false);
+	        btnBack.setVisible(true);
+	        btnBack.setManaged(true);
+	        btnCheck.setVisible(true);
+	        btnCheck.setManaged(true);
+        }
+        else {
+	        categoria.setVisible(true);
+	        descrizione.setVisible(true);
+	        categoria.setManaged(true);
+	        descrizione.setManaged(true);
+	        
+	        choiceCategoria.setVisible(false);
+	        textDescrizione.setVisible(false);
+	        choiceCategoria.setManaged(false);
+	        textDescrizione.setManaged(false);
+	        
+	        btnDelete.setVisible(true);
+	        btnDelete.setManaged(true);
+	        btnModifica.setVisible(true);
+	        btnModifica.setManaged(true);
+	        btnBack.setVisible(false);
+	        btnBack.setManaged(false);
+	        btnCheck.setVisible(false);
+	        btnCheck.setManaged(false);
+        }
     }
     
     public void showFileChooser(MouseEvent e, Oggetto o, ImageView targetImageView) {
