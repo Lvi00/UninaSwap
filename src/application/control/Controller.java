@@ -490,12 +490,16 @@ public class Controller {
     public void rimuoviOggettoDesideratoDaLista(ArrayList<String> listaOggetti, String nomeOggetto) {
         listaOggetti.remove(nomeOggetto);
     }
-    
-    public void editOffertaRegalo(Offerta o, String motivazione) {
+
+    public void editOffertaScambio(Offerta o) {
     	
     }
     
-    public void editOffertaScambio(Offerta o) {
+    public void SetOggettiOfferti (ArrayList<Oggetto> ListaOggettiOfferti) {
+    	this.studente.setOggettiOfferti(ListaOggettiOfferti);
+    }
+    
+    public void editOffertaRegalo(Offerta o, String motivazione) {
     	
     }
     
