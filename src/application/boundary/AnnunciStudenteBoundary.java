@@ -100,9 +100,9 @@ public class AnnunciStudenteBoundary {
                         Parent root = loader.load();
                         ProdottiBoundary prodottiCtrl = loader.getController();
                         prodottiCtrl.setController(this.controller);
-                        prodottiCtrl.setUsername(this.controller.getStudente().getUsername());
+                        prodottiCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
                         prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
-                        prodottiCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+                        prodottiCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
                         prodottiCtrl.setFiltri();
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
@@ -123,8 +123,8 @@ public class AnnunciStudenteBoundary {
 		    	        Parent root = loader.load();
 		                OfferteBoundary offerteCtrl = loader.getController();
 		                offerteCtrl.setController(this.controller);
-		                offerteCtrl.setUsername(this.controller.getStudente().getUsername());
-		                offerteCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                offerteCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
+		                offerteCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
 		                offerteCtrl.CostruisciOfferteUtente(this.controller.getStudente());
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
@@ -141,18 +141,46 @@ public class AnnunciStudenteBoundary {
 	            break;
 	            
                 case "Informazioni":
-	            	try {
-		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Informazioni.fxml"));
+                	System.out.println("Sei già nella pagina Informazioni");
+	            break;
+
+                case "Crea annuncio":
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("CreaAnnuncio.fxml"));
+                        Parent root = loader.load();
+                        CreaAnnuncioBoundary creaCtrl = loader.getController();
+                        creaCtrl.setController(this.controller);
+                        creaCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
+                        creaCtrl.setCampiForm();
+                        creaCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
+		                creaCtrl.MostraPaneVendita(e);
+                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+                        stage.setScene(scene);
+                        stage.setTitle("UninaSwap - Crea annuncio");
+                        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+                        stage.setResizable(false);
+                        stage.show();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    break;
+                    
+	            case "I tuoi annunci":
+		            try {
+		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("AnnunciStudente.fxml"));
 		    	        Parent root = loader.load();
-		                InformazioniBoundary infoCtrl = loader.getController();
-		                infoCtrl.setController(this.controller);
-		                infoCtrl.setUsername(this.controller.getStudente().getUsername());
-		                infoCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                AnnunciStudenteBoundary annunciCtrl = loader.getController();
+		                annunciCtrl.setController(this.controller);
+		                annunciCtrl.CostruisciProdottiUtente(this.controller.getStudente());
+		                annunciCtrl.setUsername(this.controller.getStudente().getUsername());
+		                annunciCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
 		    	        stage.setScene(scene);
-		    	        stage.setTitle("UninaSwap - Crea annuncio");
+		    	        stage.setTitle("UninaSwap - I tuoi annunci");
 		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
 		    	        stage.setResizable(false);
 		    	        stage.show();
@@ -160,36 +188,6 @@ public class AnnunciStudenteBoundary {
 		            catch (Exception ex) {
 		                ex.printStackTrace();
 		            }
-	            break;
-
-                case "Crea annuncio":
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("CreaAnnuncio.fxml"));
-                        Parent root = loader.load();
-
-                        CreaAnnuncioBoundary creaCtrl = loader.getController();
-                        creaCtrl.setController(this.controller);
-                        creaCtrl.setUsername(this.controller.getStudente().getUsername());
-                        creaCtrl.setCampiForm();
-                        creaCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
-		                creaCtrl.MostraPaneVendita(e);
-                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-
-                        stage.setScene(scene);
-                        stage.setTitle("UninaSwap - Crea annuncio");
-                        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-                        stage.setResizable(false);
-                        stage.show();
-
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    break;
-                    
-	            case "I tuoi annunci":
-	            	System.out.println("Sei già nella pagina I tuoi annunci.");
 	            break;
 
                 default:
@@ -200,11 +198,11 @@ public class AnnunciStudenteBoundary {
                         ProfiloBoundary ProfiloCtrl = loader.getController();
                         ProfiloCtrl.setController(this.controller);
                         ProfiloCtrl.setUsername(this.controller.getStudente().getUsername());
-                        ProfiloCtrl.setNome(this.controller.getStudente().getNome());
-                        ProfiloCtrl.setCognome(this.controller.getStudente().getCognome());
-                        ProfiloCtrl.setMatricola(this.controller.getStudente().getMatricola());
-                        ProfiloCtrl.setEmail(this.controller.getStudente().getEmail());
-                        ProfiloCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+                        ProfiloCtrl.setNome(controller.getNome(this.controller.getStudente()));
+                        ProfiloCtrl.setCognome(controller.getCognome(this.controller.getStudente()));
+                        ProfiloCtrl.setMatricola(controller.getMatricola(this.controller.getStudente()));
+                        ProfiloCtrl.setEmail(controller.getEmail(this.controller.getStudente()));
+                        ProfiloCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -224,7 +222,7 @@ public class AnnunciStudenteBoundary {
     public boolean CostruisciProdottiUtente(Studente s) {
         ArrayList<Annuncio> annunci;
         
-        if(controller.getStudente().getAnnunciPubblicati().isEmpty()) 
+        if(this.controller.getStudente().getAnnunciPubblicati().isEmpty()) 
         {
         	annunci = controller.getAnnunciStudente(s);
         	controller.setAnnunciPubblicati(annunci);
@@ -236,7 +234,7 @@ public class AnnunciStudenteBoundary {
         if(annunci.size() == 0) titolo = "Non ci sono annunci attivi di ";
         else titolo = "Annunci attivi di ";
         
-        labelAnnunciPubblicati.setText(titolo + s.getUsername());
+        labelAnnunciPubblicati.setText(titolo + controller.getUsername(s));
         
         int column = 0;
         int row = 0;
@@ -269,7 +267,7 @@ public class AnnunciStudenteBoundary {
 
         ImageView imageView = new ImageView();
         try {
-            String path = a.getOggetto().getImmagineOggetto();
+            String path = controller.getImmagineOggetto(controller.getOggetto(a));
             Image img;
             File file = new File(path);
 
@@ -290,7 +288,7 @@ public class AnnunciStudenteBoundary {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Immagine non trovata: " + a.getOggetto().getImmagineOggetto());
+            System.out.println("Immagine non trovata: " + controller.getImmagineOggetto(controller.getOggetto(a)));
         }
 
         ImageView iconOffers = new ImageView();
@@ -305,20 +303,20 @@ public class AnnunciStudenteBoundary {
             e.printStackTrace();
         }
 
-        Label titolo = new Label(a.getTitoloAnnuncio());
+        Label titolo = new Label(controller.getTitoloAnnuncio(a));
         titolo.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
         titolo.setWrapText(true);
         titolo.setMaxWidth(200);
         titolo.setAlignment(Pos.CENTER);
 
-        Label stato = new Label(a.isStatoAnnuncio() ? "Attivo" : "Non attivo");
+        Label stato = new Label(controller.getStatoAnnuncio(a) ? "Attivo" : "Non attivo");
         stato.getStyleClass().add(a.isStatoAnnuncio() ? "label-attivo" : "label-non-attivo");
         VBox.setMargin(stato, new Insets(4, 0, 4, 0));
 
-        Label prezzo = new Label(String.format("\u20AC %.2f", a.getPrezzo()));
+        Label prezzo = new Label(String.format("\u20AC %.2f", controller.getPrezzoAnnuncio(a)));
         prezzo.setStyle("-fx-text-fill: #153464; -fx-font-size: 12;");
 
-        Label tipo = new Label(a.getOggetto().getCategoria() + " - " + a.getTipologia());
+        Label tipo = new Label(controller.getCategoriaOggetto(controller.getOggettoAnnuncio(a)) + " - " + controller.getTipologiaAnnuncio(a));
         tipo.setStyle("-fx-text-fill: gray;");
 
         ImageView iconDelete = new ImageView();
@@ -333,7 +331,7 @@ public class AnnunciStudenteBoundary {
             e.printStackTrace();
         }
         
-        Timestamp data = a.getDataPubblicazione();
+        Timestamp data = controller.getDataPubblicazioneAnnuncio(a);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDate = data.toLocalDateTime().format(formatter);
 
@@ -393,7 +391,7 @@ public class AnnunciStudenteBoundary {
         int row = 0;
         boolean abilitaTasti = true;
         
-        for(Offerta o : offerteRicevute) if(o.getStatoOfferta().equals("Accettata")) abilitaTasti = false;
+        for(Offerta o : offerteRicevute) if(controller.getStatoOfferta(o).equals("Accettata")) abilitaTasti = false;
         
     	for(Offerta o : offerteRicevute) {
     		HBox rigaOfferta = creaRigaOfferta(o, abilitaTasti);
@@ -410,13 +408,13 @@ public class AnnunciStudenteBoundary {
         riga.getStyleClass().add("card-annuncio");
 
         // Stato Offerta
-        Label statoOfferta = new Label(o.getStatoOfferta());
+        Label statoOfferta = new Label(controller.getStatoOfferta(o));
         statoOfferta.setPrefWidth(90);
         statoOfferta.setAlignment(Pos.CENTER);
 
-        if (o.getStatoOfferta().equals("Attesa")) {
+        if (controller.getStatoOfferta(o).equals("Attesa")) {
             statoOfferta.getStyleClass().add("label-attesa");
-        } else if (o.getStatoOfferta().equals("Rifiutata")) {
+        } else if (controller.getStatoOfferta(o).equals("Rifiutata")) {
             statoOfferta.getStyleClass().add("label-non-attivo");
         } else {
             statoOfferta.getStyleClass().add("label-attivo");
@@ -424,7 +422,7 @@ public class AnnunciStudenteBoundary {
 
         HBox dataPubblicazioneBox = new HBox();
         
-        Timestamp data = o.getDataPubblicazione();
+        Timestamp data = controller.getDataPubblicazioneOfferta(o);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDate = data.toLocalDateTime().format(formatter);
         
@@ -442,10 +440,10 @@ public class AnnunciStudenteBoundary {
 
         ImageView iconInfo = new ImageView();
         try {
-            File file = new File(o.getStudente().getImmagineProfilo());
+            File file = new File(controller.getImmagineProfilo(controller.getStudenteOfferta(o)));
             Image img = file.exists()
                     ? new Image(file.toURI().toString())
-                    : new Image(getClass().getResource(o.getStudente().getImmagineProfilo()).toExternalForm());
+                    : new Image(getClass().getResource(controller.getImmagineProfilo(controller.getStudenteOfferta(o))).toExternalForm());
 
             iconInfo.setImage(img);
             iconInfo.setFitWidth(33);
@@ -456,7 +454,7 @@ public class AnnunciStudenteBoundary {
             e.printStackTrace();
         }
 
-        Label autoreOfferta = new Label(o.getStudente().getUsername());
+        Label autoreOfferta = new Label(controller.getUsername(controller.getStudenteOfferta(o)));
         autoreOfferta.setStyle("-fx-font-weight: bold;");
         infoBox.getChildren().addAll(iconInfo, autoreOfferta);
 
@@ -573,7 +571,7 @@ public class AnnunciStudenteBoundary {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
             popupStage.setScene(scene);
-            popupStage.setTitle("UninaSwap - Informazioni di " + offerta.getTipologia().toLowerCase());
+            popupStage.setTitle("UninaSwap - Informazioni di " + controller.getTipologiaOfferta(offerta).toLowerCase());
             popupStage.getIcons().add(
                 new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
             );

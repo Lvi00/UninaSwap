@@ -513,4 +513,134 @@ public class Controller {
     	new OggettiOffertiDAO().rimuoviOggettoOffertoById(idOggetto, idOfferta);
     	new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
     }
+    
+    //Metodi per l'ottenimento dei dati
+    
+    public String getUsername(Studente studente) {
+    	return studente.getUsername();
+    }
+    
+    public String getNome(Studente studente) {
+    	return studente.getNome();
+    }
+    
+    public String getMatricola(Studente studente) {
+    	return studente.getMatricola();
+    }
+    
+    public String getEmail(Studente studente) {
+    	return studente.getEmail();
+    }
+    
+    public String getCognome(Studente studente) {
+		return studente.getCognome();
+	}
+    
+    public String getImmagineProfilo(Studente studente) {
+		return studente.getImmagineProfilo();
+	}
+    
+    public Oggetto getOggetto(Annuncio annuncio) {
+    	return annuncio.getOggetto();
+    }
+    
+    public String getImmagineOggetto(Oggetto oggetto) {
+    	return oggetto.getImmagineOggetto();
+    }
+    
+    public String getTitoloAnnuncio(Annuncio annuncio) {
+    	return annuncio.getTitoloAnnuncio();
+    }
+    
+    public boolean getStatoAnnuncio(Annuncio annuncio) {
+    	return annuncio.isStatoAnnuncio();
+    }
+    
+    public double getPrezzoAnnuncio(Annuncio annuncio) {
+    	return annuncio.getPrezzo();
+    }
+    
+    public String getTipologiaAnnuncio(Annuncio annuncio) {
+    	return annuncio.getTipologia();
+    }
+    
+    public Oggetto getOggettoAnnuncio(Annuncio annuncio) {
+    	return annuncio.getOggetto();
+    }
+    
+    public String getCategoriaOggetto(Oggetto oggetto) {
+    	return oggetto.getCategoria();
+    }
+    
+    public Timestamp getDataPubblicazioneAnnuncio(Annuncio annuncio) {
+    	return annuncio.getDataPubblicazione();
+    }
+    
+    public String getDescrizioneAnnuncio(Annuncio annuncio) {
+		return annuncio.getDescrizioneAnnuncio();
+	}
+    
+    public String getStatoOfferta(Offerta offerta) {
+    	return offerta.getStatoOfferta();
+    }
+    
+    public Timestamp getDataPubblicazioneOfferta(Offerta offerta) {
+		return offerta.getDataPubblicazione();
+	}
+    
+    public Studente getStudenteOfferta(Offerta offerta) {
+    	return offerta.getStudente();
+    }
+    
+    public Studente getStudenteOggetto(Oggetto oggetto) {
+    	return oggetto.getStudente();
+    }
+    
+    public String getTipologiaOfferta(Offerta offerta) {
+		return offerta.getTipologia();
+	}
+    
+    public double getPrezzoOfferta(Offerta offerta) {
+    	return offerta.getPrezzoOfferta();
+    }
+    
+    public String getMotivazioneOfferta(Offerta offerta) {
+		return offerta.getMotivazione();
+	}
+    
+    public String getDescrizioneOggetto(Oggetto oggetto) {
+		return oggetto.getDescrizione();
+	}
+    
+    public String giorniDisponibilitaAnnuncio(Annuncio annuncio) {
+		return annuncio.getGiorni();
+	}
+    
+    public String getFasciaInizioAnnuncio(Annuncio annuncio) {
+    	return annuncio.getFasciaOrariaInizio();
+    }
+    
+    public String getFasciaFineAnnuncio(Annuncio annuncio) {
+		return annuncio.getFasciaOrariaFine();
+	}
+    
+    public Sede getSedeAnnuncio(Annuncio annuncio) {
+		return annuncio.getSede();
+	}
+    
+    public String getParticellaToponomasticaSede(Sede sede) {
+    	return sede.getParticellaToponomastica();
+    }
+    
+    public String getDescrizioneIndirizzo(Sede sede) {
+		return sede.getDescrizioneIndirizzo();
+	}
+    
+    public String getCivicoSede(Sede sede) {
+    	return sede.getCivico();
+    }
+    
+    public String getCapSede(Sede sede) {
+    	return sede.getCap();
+    }
 }

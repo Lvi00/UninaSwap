@@ -34,6 +34,7 @@ public class PopupEditOffertaBoundary {
     @FXML private VBox paneOffertaVendita;
     @FXML private VBox paneOffertaScambio;
     @FXML private VBox paneOffertaRegalo;
+    @FXML private Label labelNessunOggettoOfferto;
     @FXML private TextArea messaggioMotivazionale;
     @FXML private TextField campoPrezzoIntero;
     @FXML private TextField campoPrezzoDecimale;
@@ -54,7 +55,6 @@ public class PopupEditOffertaBoundary {
         Musica
     }
     
-    
     public void setController(Controller controller) {
         this.controller = controller;
     }
@@ -67,13 +67,13 @@ public class PopupEditOffertaBoundary {
         paneOffertaRegalo.setVisible(false);
         paneOffertaRegalo.setManaged(false);
 
-        switch (offerta.getTipologia()) {
+        switch (controller.getTipologiaOfferta(offerta)) {
             case "Vendita":
                 paneOffertaVendita.setVisible(true);
                 paneOffertaVendita.setManaged(true);
 
                 // Imposta prezzo
-                double prezzo = offerta.getPrezzoOfferta();
+                double prezzo = controller.getPrezzoOfferta(offerta);
                 String prezzoString = String.format("%.2f", prezzo).replace(".", ",");
                 String[] parti = prezzoString.split(",");
                 campoPrezzoIntero.setText(parti[0]);
@@ -94,42 +94,50 @@ public class PopupEditOffertaBoundary {
                 gridOggettiOfferti.getChildren().clear();
                 gridOggettiOfferti.getColumnConstraints().clear();
 
-                int numeroCol = listaOggetti.size();
-                int larghezzaCard = 300;
-                int altezzaCard = 400;
-
-                gridOggettiOfferti.setHgap(35);
-                gridOggettiOfferti.setVgap(10);
-                gridOggettiOfferti.setAlignment(Pos.CENTER);
-                VBox.setMargin(gridOggettiOfferti, new Insets(10));
-                
-                int colonna = 0;
-                for (Oggetto oggetto : listaOggetti) {
-                	StackPane card = creaCardOggettoOfferto(oggetto, offerta);
-                    card.getStyleClass().add("card-annuncio");
-
-                    gridOggettiOfferti.add(card, colonna, 0);
-                    GridPane.setFillWidth(card, false);
-
-                    // colonna cresce automaticamente
-                    ColumnConstraints col = new ColumnConstraints();
-                    col.setHgrow(Priority.NEVER);
-                    gridOggettiOfferti.getColumnConstraints().add(col);
-
-                    colonna++;
+                if(!listaOggetti.isEmpty()) {
+                    labelNessunOggettoOfferto.setVisible(false);
+	                int numeroCol = listaOggetti.size();
+	                int larghezzaCard = 300;
+	                int altezzaCard = 400;
+	
+	                gridOggettiOfferti.setHgap(35);
+	                gridOggettiOfferti.setVgap(10);
+	                gridOggettiOfferti.setAlignment(Pos.CENTER);
+	                VBox.setMargin(gridOggettiOfferti, new Insets(10));
+	                
+	                int colonna = 0;
+	                for (Oggetto oggetto : listaOggetti) {
+	                	StackPane card = creaCardOggettoOfferto(oggetto, offerta);
+	                    card.getStyleClass().add("card-annuncio");
+	
+	                    gridOggettiOfferti.add(card, colonna, 0);
+	                    GridPane.setFillWidth(card, false);
+	
+	                    // colonna cresce automaticamente
+	                    ColumnConstraints col = new ColumnConstraints();
+	                    col.setHgrow(Priority.NEVER);
+	                    gridOggettiOfferti.getColumnConstraints().add(col);
+	
+	                    colonna++;
+	                }
+	
+	                double larghezzaTotaleCard = (larghezzaCard * numeroCol) / 1.2;
+	                stage.setWidth(larghezzaTotaleCard);
+	                stage.setHeight(altezzaCard);
                 }
-
-                double larghezzaTotaleCard = (larghezzaCard * numeroCol) / 1.2;
-                stage.setWidth(larghezzaTotaleCard);
-                stage.setHeight(altezzaCard);
+                else {
+	                stage.setWidth(450);
+	                stage.setHeight(175);
+	                labelNessunOggettoOfferto.setVisible(true);
+                }
             break;
 
             case "Regalo":
                 paneOffertaRegalo.setVisible(true);
                 paneOffertaRegalo.setManaged(true);
 
-                if (offerta.getMotivazione().equals("Assente")) messaggioMotivazionale.setText("");
-                else messaggioMotivazionale.setText(offerta.getMotivazione());
+                if (controller.getMotivazioneOfferta(offerta).equals("Assente")) messaggioMotivazionale.setText("");
+                else messaggioMotivazionale.setText(controller.getMotivazioneOfferta(offerta));
                 
                 VBox.setMargin(labelOffertaRegalo, new Insets(20, 0, 0, 0));
                 stage.setWidth(450);
@@ -138,25 +146,14 @@ public class PopupEditOffertaBoundary {
         }
 
         inviaDatiOfferta.setOnAction(event -> prelevaDatiOfferta(offerta));
+        
+        javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
+        stage.setX(screenBounds.getMinX() + (screenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY(screenBounds.getMinY() + (screenBounds.getHeight() - stage.getHeight()) / 2);
     }
 
     private void prelevaDatiOfferta(Offerta offerta) {
-        switch(offerta.getTipologia()) {
-            case "Vendita":
-                String prezzoIntero = campoPrezzoIntero.getText().trim();
-                String prezzoDecimale = campoPrezzoDecimale.getText().trim();
-                controller.editOffertaVendita(offerta, prezzoIntero, prezzoDecimale);
-            break;
 
-            case "Scambio":
-                // logica per scambio, se necessario
-            break;
-
-            case "Regalo":
-                String motivazione = messaggioMotivazionale.getText().trim();
-                controller.editOffertaRegalo(offerta, motivazione);
-            break;
-        }
     }
     
     private StackPane creaCardOggettoOfferto(Oggetto oggetto, Offerta offerta) {
@@ -164,10 +161,9 @@ public class PopupEditOffertaBoundary {
         content.setAlignment(Pos.CENTER);
         content.setPadding(new Insets(10));
 
-        // --- IMMAGINE ---
         ImageView localImageView = new ImageView();
         try {
-            String path = oggetto.getImmagineOggetto();
+            String path = controller.getImmagineOggetto(oggetto);
             Image img;
             File file = new File(path);
             if (file.exists()) {
@@ -185,8 +181,7 @@ public class PopupEditOffertaBoundary {
             e.printStackTrace();
         }
 
-        // --- LABEL CATEGORIA ---
-        Label categoria = new Label(oggetto.getCategoria());
+        Label categoria = new Label(controller.getCategoriaOggetto(oggetto));
         categoria.setStyle(
             "-fx-font-size: 14px;" +
             "-fx-background-color: #f4f4f4;" +
@@ -197,7 +192,6 @@ public class PopupEditOffertaBoundary {
             "-fx-pref-width: 150;"
         );
 
-        // --- CHOICEBOX PER MODIFICA ---
         ChoiceBox<Categorie> choiceCategoria = new ChoiceBox<>();
         choiceCategoria.getItems().addAll(Categorie.values());
         choiceCategoria.setValue(Categorie.valueOf(oggetto.getCategoria()));
@@ -206,8 +200,7 @@ public class PopupEditOffertaBoundary {
         choiceCategoria.setVisible(false);
         choiceCategoria.setManaged(false);
 
-        // --- LABEL DESCRIZIONE ---
-        Label descrizione = new Label(oggetto.getDescrizione());
+        Label descrizione = new Label(controller.getDescrizioneOggetto(oggetto));
         descrizione.setWrapText(true);
         descrizione.setPrefWidth(150);
         descrizione.setStyle(
@@ -222,8 +215,7 @@ public class PopupEditOffertaBoundary {
             "-fx-alignment: top-left;"
         );
 
-        // --- TEXTAREA PER MODIFICA ---
-        TextArea textDescrizione = new TextArea(oggetto.getDescrizione());
+        TextArea textDescrizione = new TextArea(controller.getDescrizioneOggetto(oggetto));
         textDescrizione.setWrapText(true);
         textDescrizione.setPrefRowCount(3);
         textDescrizione.setPrefWidth(150);
@@ -233,7 +225,6 @@ public class PopupEditOffertaBoundary {
 
         content.getChildren().addAll(localImageView, categoria, choiceCategoria, descrizione, textDescrizione);
 
-        // --- ICONA DELETE ---
         ImageView iconDelete = new ImageView();
         try {
             iconDelete.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/delete_card.png").toExternalForm()));
@@ -249,7 +240,6 @@ public class PopupEditOffertaBoundary {
         buttonDelete.setStyle("-fx-cursor: hand;");
         buttonDelete.setGraphic(iconDelete);
 
-        // --- ICONA EDIT ---
         ImageView iconEdit = new ImageView();
         try {
             iconEdit.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/edit.png").toExternalForm()));
@@ -265,7 +255,6 @@ public class PopupEditOffertaBoundary {
         buttonEdit.setStyle("-fx-cursor: hand;");
         buttonEdit.setGraphic(iconEdit);
 
-        // --- ICONA BACK ---
         ImageView iconBack = new ImageView();
         try {
             iconBack.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/back.png").toExternalForm()));
@@ -283,7 +272,6 @@ public class PopupEditOffertaBoundary {
         buttonBack.setVisible(false);
         buttonBack.setManaged(false);
         
-        // --- ICONA CHECK ---
         ImageView iconCheck = new ImageView();
         try {
         	iconCheck.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/check.png").toExternalForm()));
@@ -387,7 +375,7 @@ public class PopupEditOffertaBoundary {
 
         if (selectedFile != null) {
             Image image = new Image(selectedFile.toURI().toString());
-            targetImageView.setImage(image);   
+            targetImageView.setImage(image);
             this.fileSelezionato = selectedFile;
         }
     }

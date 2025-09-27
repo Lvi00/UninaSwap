@@ -133,8 +133,8 @@ public class LoginBoundary {
                     ProdottiBoundary prodottiCtrl = loader.getController();
                     prodottiCtrl.setController(this.controller);
 	                prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
-	                prodottiCtrl.setUsername(this.controller.getStudente().getUsername());
-                    prodottiCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+	                prodottiCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
+                    prodottiCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
                     prodottiCtrl.setFiltri();
                     Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		            Scene scene = new Scene(root);
