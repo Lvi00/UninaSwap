@@ -328,8 +328,8 @@ public class PopupEditOffertaBoundary {
 	        choiceCategoria.setManaged(true);
 	        textDescrizione.setManaged(true);
 	        
-	        choiceCategoria.setValue(Categorie.valueOf(oggetto.getCategoria()));
-	        textDescrizione.setText(oggetto.getDescrizione());
+	        choiceCategoria.setValue(Categorie.valueOf(controller.getCategoriaOggetto(oggetto)));
+	        textDescrizione.setText(controller.getDescrizioneOggetto(oggetto));
 	        
 	        btnDelete.setVisible(false);
 	        btnDelete.setManaged(false);

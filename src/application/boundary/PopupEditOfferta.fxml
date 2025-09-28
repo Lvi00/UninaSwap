@@ -57,7 +57,7 @@
             <Insets top="10.0" />
          </VBox.margin></Label>
       <GridPane fx:id="gridOggettiOfferti" alignment="CENTER" hgap="50.0" vgap="40" />
-        <Label fx:id="labelNessunOggettoOfferto" text="L'utente non ha specificato oggetti alternativi" visible="false">
+        <Label fx:id="labelNessunOggettoOfferto" text="Non hai specificato oggetti alternativi" visible="false">
          <font>
             <Font size="14.0" />
          </font>

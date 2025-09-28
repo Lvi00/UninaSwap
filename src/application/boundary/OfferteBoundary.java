@@ -101,9 +101,9 @@ public class OfferteBoundary {
 		    	        Parent root = loader.load();
 		                CreaAnnuncioBoundary creaCtrl = loader.getController();
 		                creaCtrl.setController(this.controller);
-		                creaCtrl.setUsername(this.controller.getStudente().getUsername());
+		                creaCtrl.setUsername(this.controller.getUsername(this.controller.getStudente()));
 		                creaCtrl.setCampiForm();
-		                creaCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                creaCtrl.setImmagine(this.controller.getImmagineProfilo(this.controller.getStudente()));
 		                creaCtrl.MostraPaneVendita(e);
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
@@ -129,8 +129,8 @@ public class OfferteBoundary {
 		    	        Parent root = loader.load();
 		                InformazioniBoundary infoCtrl = loader.getController();
 		                infoCtrl.setController(this.controller);
-		                infoCtrl.setUsername(this.controller.getStudente().getUsername());
-		                infoCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                infoCtrl.setUsername(this.controller.getUsername(this.controller.getStudente()));
+		                infoCtrl.setImmagine(this.controller.getImmagineProfilo(this.controller.getStudente()));
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -151,9 +151,9 @@ public class OfferteBoundary {
                         Parent root = loader.load();
                         ProdottiBoundary prodottiCtrl = loader.getController();
                         prodottiCtrl.setController(this.controller);
-                        prodottiCtrl.setUsername(this.controller.getStudente().getUsername());
+                        prodottiCtrl.setUsername(this.controller.getUsername(this.controller.getStudente()));
                         prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
-                        prodottiCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+                        prodottiCtrl.setImmagine(this.controller.getImmagineProfilo(this.controller.getStudente()));
                         prodottiCtrl.setFiltri();
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
@@ -175,8 +175,8 @@ public class OfferteBoundary {
 		                AnnunciStudenteBoundary annunciCtrl = loader.getController();
 		                annunciCtrl.setController(this.controller);
 		                annunciCtrl.CostruisciProdottiUtente(this.controller.getStudente());
-		                annunciCtrl.setUsername(this.controller.getStudente().getUsername());
-		                annunciCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                annunciCtrl.setUsername(this.controller.getUsername(this.controller.getStudente()));
+		                annunciCtrl.setImmagine(this.controller.getImmagineProfilo(this.controller.getStudente()));
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -198,12 +198,12 @@ public class OfferteBoundary {
 		    	        Parent root = loader.load();
 		                ProfiloBoundary ProfiloCtrl = loader.getController();
 		                ProfiloCtrl.setController(this.controller);
-		                ProfiloCtrl.setUsername(this.controller.getStudente().getUsername());
+		                ProfiloCtrl.setUsername(this.controller.getUsername(this.controller.getStudente()));
 		                ProfiloCtrl.setNome(this.controller.getStudente().getNome());
 		                ProfiloCtrl.setCognome(this.controller.getStudente().getCognome());
 		                ProfiloCtrl.setMatricola(this.controller.getStudente().getMatricola());
 		                ProfiloCtrl.setEmail(this.controller.getStudente().getEmail());
-		                ProfiloCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+		                ProfiloCtrl.setImmagine(this.controller.getImmagineProfilo(this.controller.getStudente()));
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -258,7 +258,7 @@ public class OfferteBoundary {
         return true;
     }
 
-    private VBox creaCardOfferte(Offerta o) { 
+    private VBox creaCardOfferte(Offerta offerta) { 
         VBox box = new VBox();
         box.setPrefWidth(250);
         box.setPrefHeight(150);
@@ -269,13 +269,13 @@ public class OfferteBoundary {
         Label labelAnnuncio = new Label("Offerta per l'annuncio:");
         labelAnnuncio.setStyle("-fx-font-size: 14px;");
         
-        Label titoloAnnuncio = new Label(o.getAnnuncio().getTitoloAnnuncio());
+        Label titoloAnnuncio = new Label(controller.getTitoloAnnuncio(controller.getAnnuncioOfferta(offerta)));
         titoloAnnuncio.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
         titoloAnnuncio.setWrapText(true);
         
-        Label stato = new Label(o.getStatoOfferta());
+        Label stato = new Label(controller.getStatoOfferta(offerta));
         
-        switch(o.getStatoOfferta()) {
+        switch(controller.getStatoOfferta(offerta)) {
             case "Attesa":
                 stato.getStyleClass().add("label-attesa");
             break;
@@ -290,7 +290,7 @@ public class OfferteBoundary {
         }
         VBox.setMargin(stato, new Insets(4, 0, 4, 0));
 
-        Label tipo = new Label(o.getTipologia());
+        Label tipo = new Label(controller.getTipologiaOfferta(offerta));
         tipo.setStyle("-fx-text-fill: gray;");
         
         HBox containerButton = new HBox(20);
@@ -309,7 +309,7 @@ public class OfferteBoundary {
             e.printStackTrace();
         }
 
-        if(!o.getStatoOfferta().equals("Accettata")) {
+        if(!controller.getStatoOfferta(offerta).equals("Accettata")) {
             ImageView iconDelete = new ImageView();
             try {
                 String iconPath = "../IMG/immaginiProgramma/delete_card.png";
@@ -325,7 +325,7 @@ public class OfferteBoundary {
 	        Button buttonDelete = new Button();
 	        buttonDelete.setGraphic(iconDelete);
 	        buttonDelete.getStyleClass().add("tasto-terziario");
-	        buttonDelete.setOnMouseClicked(event -> eliminaOfferta(o));
+	        buttonDelete.setOnMouseClicked(event -> eliminaOfferta(offerta));
 	        
 	        ImageView iconEdit = new ImageView();
 	        try {
@@ -342,9 +342,9 @@ public class OfferteBoundary {
 	        Button buttonEdit = new Button();
 	        buttonEdit.setGraphic(iconEdit);
 	        buttonEdit.getStyleClass().add("tasto-edit");
-	        buttonEdit.setOnMouseClicked(event -> editOfferta(event, o));
+	        buttonEdit.setOnMouseClicked(event -> editOfferta(event, offerta));
 	        
-	        containerButton.getChildren().addAll( buttonEdit, buttonDelete);
+	        containerButton.getChildren().addAll(buttonEdit, buttonDelete);
         }
                 
         VBox boxStato = new VBox();
@@ -352,7 +352,7 @@ public class OfferteBoundary {
         boxStato.setSpacing(4);
         boxStato.getChildren().addAll(stato);
         
-        Timestamp data = o.getDataPubblicazione();
+        Timestamp data = controller.getDataPubblicazioneOfferta(offerta);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDate = data.toLocalDateTime().format(formatter);
 
@@ -363,8 +363,8 @@ public class OfferteBoundary {
         return box;
     }
     
-    public void eliminaOfferta(Offerta o) {
-    	switch(controller.eliminaOfferta(o)){
+    public void eliminaOfferta(Offerta offerta) {
+    	switch(controller.eliminaOfferta(offerta)){
     		case 0:
     			ShowPopupAlert("Eliminazione offerta", "Offerta eliminata correttamente.");
 				gridOfferte.getChildren().clear();
@@ -378,55 +378,42 @@ public class OfferteBoundary {
     	}
     }
     
-    public void editOfferta(MouseEvent e, Offerta o) {
-    	 try {
-    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupEditOfferta.fxml"));
-    	        Parent root = loader.load();
-
-    	        PopupEditOffertaBoundary popupEditController = loader.getController();
-    	        popupEditController.setController(this.controller);
-
-    	        // PREPARO LO STAGE DEL POPUP
-    	        Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-    	        Stage popupStage = new Stage();
-    	        popupStage.initOwner(mainStage);
-    	        popupStage.initModality(Modality.WINDOW_MODAL);
-
-    	        Scene scene = new Scene(root);
-    	        scene.getStylesheets().add(
-    	            getClass().getResource("../resources/application.css").toExternalForm()
-    	        );
-    	        popupStage.setScene(scene);
-    	        popupStage.setTitle("UninaSwap - Modifica offerta");
-    	        popupStage.getIcons().add(
-    	            new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
-    	        );
-    	        popupStage.setResizable(false);
-
-    	        // EFFETTO OSCURAMENTO SUL MAIN
-    	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
-    	        popupStage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
-
-    	       
-    	        popupEditController.CostruisciPopupEdit(o, popupStage);
-
-    	        popupStage.show();
-    	        popupStage.setX(mainStage.getX() + (mainStage.getWidth() - popupStage.getWidth()) / 2);
-    	        popupStage.setY(mainStage.getY() + (mainStage.getHeight() - popupStage.getHeight()) / 2 - 40);
-
-    	    } catch (Exception ex) {
-    	        ex.printStackTrace();
-    	    }
+    public void editOfferta(MouseEvent e, Offerta offerta) {
+		try{
+		   FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupEditOfferta.fxml"));
+		   Parent root = loader.load();
+		   PopupEditOffertaBoundary popupEditController = loader.getController();
+		   popupEditController.setController(this.controller);
+		   Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		   Stage popupStage = new Stage();
+		   popupStage.initOwner(mainStage);
+		   popupStage.initModality(Modality.WINDOW_MODAL);
+		   Scene scene = new Scene(root);
+		   scene.getStylesheets().add(
+		       getClass().getResource("../resources/application.css").toExternalForm()
+		   );
+		   popupStage.setScene(scene);
+		   popupStage.setTitle("UninaSwap - Modifica offerta");
+		   popupStage.getIcons().add(
+		       new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
+		   );
+		   popupStage.setResizable(false);
+		   mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+		   popupStage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));    	       
+		   popupEditController.CostruisciPopupEdit(offerta, popupStage);
+		   popupStage.show();
+		   popupStage.setX(mainStage.getX() + (mainStage.getWidth() - popupStage.getWidth()) / 2);
+		   popupStage.setY(mainStage.getY() + (mainStage.getHeight() - popupStage.getHeight()) / 2 - 40);
+		}
+		catch (Exception ex) {
+		    ex.printStackTrace();
+		}
     }
     
     @FXML
     public void tornaIndietroOfferte() {
     	OffertePane.setVisible(true);
     	containerModificaOfferta.setVisible(false);
-    }
-    
-    public void mostraInfoOfferta(Offerta o) {
-    	System.out.println("Mostra info offerta");
     }
     
     private void ShowPopupAlert(String title, String message) {

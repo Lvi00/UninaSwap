@@ -41,13 +41,13 @@ public class PopupOfferteAnnuncioBoundary {
     }
     
     public void setPopupInfoOfferta(Offerta offerta) {
-    	switch(offerta.getTipologia()) {
+    	switch(controller.getTipologiaOfferta(offerta)) {
 	    	case "Vendita":
 	    		paneInfoOffertaVendita.setVisible(true);
 	    		paneInfoOffertaRegalo.setVisible(false);
 	    		paneInfoOffertaVendita.setVisible(true);
-	    		String prezzoOfferta = String.format("%.2f", offerta.getPrezzoOfferta());
-	    		labelControfferta.setText("Il prezzo offerto da " +  offerta.getStudente().getUsername() +  " è di: €" + prezzoOfferta);
+	    		String prezzoOfferta = String.format("%.2f", controller.getPrezzoOfferta(offerta));
+	    		labelControfferta.setText("Il prezzo offerto da " +  controller.getUsername(controller.getStudente()) +  " è di: €" + prezzoOfferta);
 	    	break;
 	    	
 	    	case "Scambio":
@@ -86,7 +86,7 @@ public class PopupOfferteAnnuncioBoundary {
 	    		paneInfoOffertaRegalo.setVisible(true);
 	    		paneInfoOffertaVendita.setVisible(false);
 	    		paneInfoOffertaRegalo.setVisible(true);
-	    		if(offerta.getMotivazione().equals("Assente"))
+	    		if(controller.getMotivazioneOfferta(offerta).equals("Assente"))
 	    			labelMessaggioMotivazionale.setText("Non è stato inserito nessun messaggio motivazionale.");
 	    		else
 	    			labelMessaggioMotivazionale.setText(offerta.getMotivazione());
@@ -94,7 +94,7 @@ public class PopupOfferteAnnuncioBoundary {
     	}
     }
     
-    private VBox creaCardOggettoOfferto(Oggetto o) {
+    private VBox creaCardOggettoOfferto(Oggetto oggetto) {
         VBox card = new VBox();
         card.setSpacing(8);
         card.setPadding(new Insets(12));
@@ -104,7 +104,7 @@ public class PopupOfferteAnnuncioBoundary {
         // immagine oggetto
         ImageView imageView = new ImageView();
         try {
-            String path = o.getImmagineOggetto();
+            String path = controller.getImmagineOggetto(oggetto);
             Image img;
             File file = new File(path);
 
@@ -124,9 +124,10 @@ public class PopupOfferteAnnuncioBoundary {
             imageView.setClip(clip);
             
             imageView.setImage(img);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Immagine non trovata: " + o.getImmagineOggetto());
+            System.out.println("Immagine non trovata: " + controller.getImmagineOggetto(oggetto));
         }
 
         // contenuto orizzontale: immagine + testo
@@ -138,11 +139,11 @@ public class PopupOfferteAnnuncioBoundary {
         textBox.setAlignment(Pos.CENTER_LEFT);
         textBox.setMaxWidth(Double.MAX_VALUE);
 
-        Label categoria = new Label(o.getCategoria());
+        Label categoria = new Label(controller.getCategoriaOggetto(oggetto));
         categoria.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
         categoria.setWrapText(true);
 
-        Label descrizione = new Label(o.getDescrizione());
+        Label descrizione = new Label(controller.getDescrizioneOggetto(oggetto));
         descrizione.setStyle("-fx-text-fill: #555;");
         descrizione.setWrapText(true);
         descrizione.setMaxWidth(Double.MAX_VALUE);

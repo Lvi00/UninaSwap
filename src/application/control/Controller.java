@@ -643,4 +643,12 @@ public class Controller {
     public String getCapSede(Sede sede) {
     	return sede.getCap();
     }
+    
+    public Annuncio getAnnuncioOfferta(Offerta offerta) {
+		return offerta.getAnnuncio();
+	}
+    
+    public String getcategoriaOggetto(Oggetto oggetto) {
+    	return oggetto.getCategoria();
+    }
 }

@@ -90,21 +90,21 @@ public class ProfiloBoundary {
     @FXML
     public void SelezionaPagina(MouseEvent e) {
         Object source = e.getSource();
-        
+
         if (source instanceof Label) {
             Label label = (Label) source;
             String testo = label.getText();
-       
+
             switch (testo) {
                 case "Prodotti":
-                    try{
+                    try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("Prodotti.fxml"));
                         Parent root = loader.load();
                         ProdottiBoundary prodottiCtrl = loader.getController();
                         prodottiCtrl.setController(this.controller);
                         prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
-                        prodottiCtrl.setUsername(this.controller.getStudente().getUsername());
-                        prodottiCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
+                        prodottiCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
+                        prodottiCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
                         prodottiCtrl.setFiltri();
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
@@ -114,107 +114,102 @@ public class ProfiloBoundary {
                         stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
                         stage.setResizable(false);
                         stage.show();
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                break;
-                
+                    break;
+
                 case "Crea annuncio":
-		            try {
-		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("CreaAnnuncio.fxml"));
-		    	        Parent root = loader.load();
-		                CreaAnnuncioBoundary creaCtrl = loader.getController();
-		                creaCtrl.setController(this.controller);
-		                creaCtrl.setUsername(this.controller.getStudente().getUsername());
-		                creaCtrl.setCampiForm();
-		                creaCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
-		                creaCtrl.MostraPaneVendita(e);
-		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-		    	        Scene scene = new Scene(root);
-		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-		    	        stage.setScene(scene);
-		    	        stage.setTitle("UninaSwap - Crea annuncio");
-		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-		    	        stage.setResizable(false);
-		    	        stage.show();
-		            }
-		            catch (Exception ex) {
-		                ex.printStackTrace();
-		            }
-                break;
-                
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("CreaAnnuncio.fxml"));
+                        Parent root = loader.load();
+                        CreaAnnuncioBoundary creaCtrl = loader.getController();
+                        creaCtrl.setController(this.controller);
+                        creaCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
+                        creaCtrl.setCampiForm();
+                        creaCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
+                        creaCtrl.MostraPaneVendita(e);
+                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+                        stage.setScene(scene);
+                        stage.setTitle("UninaSwap - Crea annuncio");
+                        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+                        stage.setResizable(false);
+                        stage.show();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    break;
+
                 case "Informazioni":
-	            	try {
-		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Informazioni.fxml"));
-		    	        Parent root = loader.load();
-		                InformazioniBoundary infoCtrl = loader.getController();
-		                infoCtrl.setController(this.controller);
-		                infoCtrl.setUsername(this.controller.getStudente().getUsername());
-		                infoCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
-		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-		    	        Scene scene = new Scene(root);
-		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-		    	        stage.setScene(scene);
-		    	        stage.setTitle("UninaSwap - Crea annuncio");
-		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-		    	        stage.setResizable(false);
-		    	        stage.show();
-		            }
-		            catch (Exception ex) {
-		                ex.printStackTrace();
-		            }
-	            break;
-                
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("Informazioni.fxml"));
+                        Parent root = loader.load();
+                        InformazioniBoundary infoCtrl = loader.getController();
+                        infoCtrl.setController(this.controller);
+                        infoCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
+                        infoCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
+                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+                        stage.setScene(scene);
+                        stage.setTitle("UninaSwap - Informazioni");
+                        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+                        stage.setResizable(false);
+                        stage.show();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    break;
+
                 case "Offerte":
-		            try {
-		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Offerte.fxml"));
-		    	        Parent root = loader.load();
-		                OfferteBoundary offerteCtrl = loader.getController();
-		                offerteCtrl.setController(this.controller);
-		                offerteCtrl.setUsername(this.controller.getStudente().getUsername());
-		                offerteCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
-		                offerteCtrl.CostruisciOfferteUtente(this.controller.getStudente());
-		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-		    	        Scene scene = new Scene(root);
-		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-		    	        stage.setScene(scene);
-		    	        stage.setTitle("UninaSwap - Offerte");
-		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-		    	        stage.setResizable(false);
-		    	        stage.show();
-		            }
-		            catch (Exception ex) {
-		                ex.printStackTrace();
-		            }
-	            break;
-                
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("Offerte.fxml"));
+                        Parent root = loader.load();
+                        OfferteBoundary offerteCtrl = loader.getController();
+                        offerteCtrl.setController(this.controller);
+                        offerteCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
+                        offerteCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
+                        offerteCtrl.CostruisciOfferteUtente(this.controller.getStudente());
+                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+                        stage.setScene(scene);
+                        stage.setTitle("UninaSwap - Offerte");
+                        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+                        stage.setResizable(false);
+                        stage.show();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    break;
+
                 case "I tuoi annunci":
-		            try {
-		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("AnnunciStudente.fxml"));
-		    	        Parent root = loader.load();
-		                AnnunciStudenteBoundary annunciCtrl = loader.getController();
-		                annunciCtrl.setController(this.controller);
-		                annunciCtrl.CostruisciProdottiUtente(this.controller.getStudente());
-		                annunciCtrl.setUsername(this.controller.getStudente().getUsername());
-		                annunciCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
-		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-		    	        Scene scene = new Scene(root);
-		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-		    	        stage.setScene(scene);
-		    	        stage.setTitle("UninaSwap - I tuoi annunci");
-		    	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-		    	        stage.setResizable(false);
-		    	        stage.show();
-		            }
-		            catch (Exception ex) {
-		                ex.printStackTrace();
-		            }
-	            break;
-                
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("AnnunciStudente.fxml"));
+                        Parent root = loader.load();
+                        AnnunciStudenteBoundary annunciCtrl = loader.getController();
+                        annunciCtrl.setController(this.controller);
+                        annunciCtrl.CostruisciProdottiUtente(this.controller.getStudente());
+                        annunciCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
+                        annunciCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
+                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
+                        stage.setScene(scene);
+                        stage.setTitle("UninaSwap - I tuoi annunci");
+                        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+                        stage.setResizable(false);
+                        stage.show();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    break;
+
                 default:
                     System.out.println("Selezione non valida: " + testo);
-                break;
+                    break;
             }
         }
     }
@@ -233,7 +228,6 @@ public class ProfiloBoundary {
     	
         if (selectedFile != null) {
             Image image = new Image(selectedFile.toURI().toString());
-            //Carica sull'imaggine di defoult la nuova immagine
             this.immagineProfilo.setImage(image);
             this.immagineNav.setImage(image);
             this.immagineSelezionata = selectedFile;
