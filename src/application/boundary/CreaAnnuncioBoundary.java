@@ -77,7 +77,7 @@ public class CreaAnnuncioBoundary {
     @FXML private ImageView immagineNav;
     @FXML private TextField campoAggiungiOggetto;
     
-    private SceneManager sceneManager = new SceneManager();
+    private SceneManager sceneManager = SceneManager.sceneManager();
 	private Controller controller = Controller.getController();
     private ArrayList<String> listaOggetti = new ArrayList<String>();
 
@@ -405,7 +405,7 @@ public class CreaAnnuncioBoundary {
     
     @FXML
     public void aggiungiOggettoDesiderato() {
-    	String nomeOggetto = campoAggiungiOggetto.getText().trim().toLowerCase();
+    	String nomeOggetto = campoAggiungiOggetto.getText();
     	switch(controller.controllaOggettoDesiderato(nomeOggetto, this.listaOggetti)) {
     		case 0:
     			ShowPopupAlert("Oggetto desiderato aggiunto", "L'oggetto desiderato è stato aggiunto con successo.");

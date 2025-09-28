@@ -16,7 +16,7 @@ public class InformazioniBoundary {
     @FXML private Label usernameDashboard;
     @FXML private ImageView immagineNav;
     
-    private SceneManager sceneManager = new SceneManager();
+    private SceneManager sceneManager = SceneManager.sceneManager();
 	private Controller controller = Controller.getController();
 
     public void setUsername(String s) {

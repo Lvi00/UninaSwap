@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 public class ProfiloBoundary {
 	
     private Controller controller = Controller.getController();
-    private SceneManager sceneManager = new SceneManager();
+    private SceneManager sceneManager = SceneManager.sceneManager();
 	private File immagineSelezionata = null;
 	
     @FXML private Label usernameDashboard;

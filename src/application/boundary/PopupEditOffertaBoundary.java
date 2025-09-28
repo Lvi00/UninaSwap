@@ -44,6 +44,7 @@ public class PopupEditOffertaBoundary {
     @FXML private Button inviaDatiOfferta;
     @FXML private GridPane gridOggettiOfferti;
     private Controller controller = Controller.getController();
+    private SceneManager sceneManager = SceneManager.sceneManager();
 	private File fileSelezionato = null;
 
     enum Categorie {

@@ -47,7 +47,7 @@ public class OfferteBoundary {
     @FXML private TextField campoPrezzoDecimale;
     
     private Controller controller = Controller.getController();
-    private SceneManager sceneManager = new SceneManager();
+    private SceneManager sceneManager = SceneManager.sceneManager();
 
     public void setUsername(String s) {
         usernameDashboard.setText(s);

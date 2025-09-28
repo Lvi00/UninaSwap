@@ -36,6 +36,7 @@ public class LoginBoundary {
 	@FXML private TextField VisualizzaPasswordLogin;
 	
 	private Controller controller = Controller.getController();
+	private SceneManager sceneManager = SceneManager.sceneManager();
 	
 	@FXML
 	public void MostraRegistrazione(MouseEvent e) {
@@ -131,7 +132,6 @@ public class LoginBoundary {
 		            FXMLLoader loader = new FXMLLoader(getClass().getResource("Prodotti.fxml"));
 		            Parent root = loader.load();
                     ProdottiBoundary prodottiCtrl = loader.getController();
-                    prodottiCtrl.setController(this.controller);
 	                prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
 	                prodottiCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
                     prodottiCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));

@@ -355,11 +355,9 @@ public class Controller {
 	        	oggettiOffertiDao.SaveOggettoOfferto(idOffertaInserita, idOggettoInserito);
 	        }
 	        
-	        //Richiesta di scambio con oggetti offerti inserita correttamente
 			return 1;
         }
-        
-        //Richiesta di scambio normale inserita correttamente
+
         return 0;
 	}
 	
@@ -478,17 +476,19 @@ public class Controller {
     }
     
     public int controllaOggettoDesiderato(String nomeOggetto, ArrayList<String> listaOggetti) {
-    	String regexOggettoDesiderato = "^[A-Za-zÀ-ÿ0-9\\s]+$";
+    	String nomeOggettoDesiderato = nomeOggetto.trim().toLowerCase();
+    	
+    	String regexOggettoDesiderato = "^(?!.* {2})[A-Za-zÀ-ÿ0-9\\s]+$";
 
 		Pattern pattern = Pattern.compile(regexOggettoDesiderato);
-		Matcher matcher = pattern.matcher(nomeOggetto);
+		Matcher matcher = pattern.matcher(nomeOggettoDesiderato);
 		
 		if(listaOggetti.size()== 5) return 3;
 		
-		if(nomeOggetto == "" || nomeOggetto.length() < 2 || nomeOggetto.length() > 20 || !matcher.matches()) return 1;
+		if(nomeOggettoDesiderato == "" || nomeOggettoDesiderato.length() < 2 || nomeOggettoDesiderato.length() > 20 || !matcher.matches()) return 1;
 	
 		for(String s: listaOggetti) {
-			if(s.equals(nomeOggetto)) return 2;
+			if(s.equals(nomeOggettoDesiderato)) return 2;
 		}
 		
 		return 0;
@@ -517,6 +517,8 @@ public class Controller {
     public void rimuoviOggettoDesideratoDaLista(ArrayList<String> listaOggetti, String nomeOggetto) {
         listaOggetti.remove(nomeOggetto);
     }
+    
+    //Logica di modifica offerta
 
     public void editOffertaScambio(Offerta o) {
     	
@@ -529,6 +531,8 @@ public class Controller {
     public void editOffertaVendita(Offerta o, String prezzoIntero, String prezzoDecimale) {
     	
     }
+    
+    //End logica di modifica offerta
     
     public void rimuoviOggettoOfferto(Oggetto oggetto, Offerta offerta) {
     	int idOggetto = new OggettoDAO().getIdByOggetto(oggetto);
@@ -674,4 +678,6 @@ public class Controller {
     public String getcategoriaOggetto(Oggetto oggetto) {
     	return oggetto.getCategoria();
     }
+    
+    //End metodi per l'ottenimento dei dati
 }

@@ -35,6 +35,7 @@ public class PopupOfferteAnnuncioBoundary {
     @FXML private Label labelOffertaScambio;
 
     private Controller controller = Controller.getController();
+    private SceneManager sceneManager = SceneManager.sceneManager();
     
     public void setPopupInfoOfferta(Offerta offerta) {
     	switch(controller.getTipologiaOfferta(offerta)) {

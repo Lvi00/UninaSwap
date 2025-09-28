@@ -34,7 +34,7 @@ import javafx.stage.Stage;
 public class ProdottiBoundary {
 
     private Controller controller = Controller.getController();
-    private SceneManager sceneManager = new SceneManager();
+    private SceneManager sceneManager = SceneManager.sceneManager();
 
     @FXML private HBox containerCatalogoProdotti;
     @FXML private Label usernameDashboard;
@@ -65,10 +65,6 @@ public class ProdottiBoundary {
         Vendita,
         Regalo,
         Scambio
-    }
-    
-    public void setController(Controller controller) {
-        this.controller = controller;
     }
 
     public void setUsername(String s) {

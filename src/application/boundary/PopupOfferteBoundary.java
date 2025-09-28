@@ -47,6 +47,7 @@ public class PopupOfferteBoundary {
     }
 
     private Controller controller = Controller.getController();
+    private SceneManager sceneManager = SceneManager.sceneManager();
     @FXML private HBox containerOfferte;
     @FXML private AnchorPane paneOfferta;
     @FXML private AnchorPane paneOggettiOfferti;

@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 public class RegistrazioneBoundary {
 	
     private Controller controller = Controller.getController();
+    private SceneManager sceneManager = SceneManager.sceneManager();
 	
 	@FXML private Pane PaneRegistrazione;
 	@FXML private ScrollPane InformazioniRegistrazione;

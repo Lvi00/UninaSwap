@@ -13,6 +13,15 @@ import javafx.stage.Stage;
 
 public class SceneManager {
 	private Controller controller = Controller.getController();
+	private static SceneManager sceneManager = null;
+	
+	//Pattern singleton per preservare lo stato dello SceneManager
+	public static SceneManager sceneManager() {
+        if (sceneManager == null) {
+        	sceneManager = new SceneManager();
+        }
+        return sceneManager;
+    }
 	
 	@FXML
 	public void SelezionaPagina(MouseEvent e) {
@@ -30,7 +39,6 @@ public class SceneManager {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("Prodotti.fxml"));
                         Parent root = loader.load();
                         ProdottiBoundary prodottiCtrl = loader.getController();
-                        prodottiCtrl.setController(this.controller);
                         prodottiCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
                         prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
                         prodottiCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
