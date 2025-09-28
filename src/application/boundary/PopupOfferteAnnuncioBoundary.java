@@ -25,8 +25,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
 public class PopupOfferteAnnuncioBoundary {
-
-    private Controller controller;
     @FXML private AnchorPane paneInfoOffertaScambio;
     @FXML private ScrollPane scrollPaneScambio;
     @FXML private GridPane gridPaneScambio;
@@ -36,9 +34,7 @@ public class PopupOfferteAnnuncioBoundary {
     @FXML private Label labelControfferta;
     @FXML private Label labelOffertaScambio;
 
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
+    private Controller controller = Controller.getController();
     
     public void setPopupInfoOfferta(Offerta offerta) {
     	switch(controller.getTipologiaOfferta(offerta)) {

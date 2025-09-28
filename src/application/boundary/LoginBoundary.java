@@ -20,9 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class LoginBoundary {
-	private Controller controller = new Controller();
-	
+public class LoginBoundary {	
 	@FXML private Pane PaneLogin;
 	@FXML private ScrollPane InformazioniLogin;
 	@FXML private ImageView ImmagineInfo;
@@ -36,6 +34,8 @@ public class LoginBoundary {
 	@FXML private ImageView TastoShowPassword;
 	@FXML private ImageView TastoHidePassword;
 	@FXML private TextField VisualizzaPasswordLogin;
+	
+	private Controller controller = Controller.getController();
 	
 	@FXML
 	public void MostraRegistrazione(MouseEvent e) {
@@ -56,7 +56,6 @@ public class LoginBoundary {
 		}
 	}
 
-	//.isVisible() da mofigicare
 	@FXML
 	public void MostraInfoLogin (MouseEvent e) {
 		PaneLogin.setVisible(false);
@@ -127,6 +126,7 @@ public class LoginBoundary {
 			if(studente == null)
 				ShowPopupError("Utente non esistente", "Le credenziali inserite non sono corrette");
 			else {
+				this.controller.setStudente(studente);
 				try {
 		            FXMLLoader loader = new FXMLLoader(getClass().getResource("Prodotti.fxml"));
 		            Parent root = loader.load();

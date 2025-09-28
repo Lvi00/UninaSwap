@@ -46,7 +46,7 @@ public class PopupOfferteBoundary {
         Musica
     }
 
-    private Controller controller;
+    private Controller controller = Controller.getController();
     @FXML private HBox containerOfferte;
     @FXML private AnchorPane paneOfferta;
     @FXML private AnchorPane paneOggettiOfferti;
@@ -90,10 +90,6 @@ public class PopupOfferteBoundary {
     private ObservableList<Oggetto> listaOggettiOfferti = FXCollections.observableArrayList();
     private File fileSelezionato = null;
     private boolean oggettiOffertiVisibili = false;
-
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
     
     public void setProdottiBoundary(ProdottiBoundary prodottiBoundary) {
         campoCategoriaOggetto.setItems(FXCollections.observableArrayList(Categorie.values()));

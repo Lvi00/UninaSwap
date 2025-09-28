@@ -33,7 +33,8 @@ import javafx.stage.Stage;
 
 public class ProdottiBoundary {
 
-    private Controller controller;
+    private Controller controller = Controller.getController();
+    private SceneManager sceneManager = new SceneManager();
 
     @FXML private HBox containerCatalogoProdotti;
     @FXML private Label usernameDashboard;
@@ -102,132 +103,7 @@ public class ProdottiBoundary {
     
     @FXML
     public void SelezionaPagina(MouseEvent e) {
-        Object source = e.getSource();
-
-        if (source instanceof Label) {
-            Label label = (Label) source;
-            String testo = label.getText();
-
-            switch (testo) {
-                case "Crea annuncio":
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("CreaAnnuncio.fxml"));
-                        Parent root = loader.load();
-                        CreaAnnuncioBoundary creaCtrl = loader.getController();
-                        creaCtrl.setController(this.controller);
-                        creaCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
-                        creaCtrl.setCampiForm();
-                        creaCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
-                        creaCtrl.MostraPaneVendita(e);
-                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-                        stage.setScene(scene);
-                        stage.setTitle("UninaSwap - Crea annuncio");
-                        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-                        stage.setResizable(false);
-                        stage.show();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    break;
-
-                case "Informazioni":
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("Informazioni.fxml"));
-                        Parent root = loader.load();
-                        InformazioniBoundary infoCtrl = loader.getController();
-                        infoCtrl.setController(this.controller);
-                        infoCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
-                        infoCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
-                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-                        stage.setScene(scene);
-                        stage.setTitle("UninaSwap - Informazioni");
-                        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-                        stage.setResizable(false);
-                        stage.show();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    break;
-
-                case "Offerte":
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("Offerte.fxml"));
-                        Parent root = loader.load();
-                        OfferteBoundary offerteCtrl = loader.getController();
-                        offerteCtrl.setController(this.controller);
-                        offerteCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
-                        offerteCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
-                        offerteCtrl.CostruisciOfferteUtente(this.controller.getStudente());
-                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-                        stage.setScene(scene);
-                        stage.setTitle("UninaSwap - Offerte");
-                        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-                        stage.setResizable(false);
-                        stage.show();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    break;
-
-                case "Prodotti":
-                    System.out.println("Sei già nella pagina Prodotti.");
-                    break;
-
-                case "I tuoi annunci":
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("AnnunciStudente.fxml"));
-                        Parent root = loader.load();
-                        AnnunciStudenteBoundary annunciCtrl = loader.getController();
-                        annunciCtrl.setController(this.controller);
-                        annunciCtrl.CostruisciProdottiUtente(this.controller.getStudente());
-                        annunciCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
-                        annunciCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
-                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-                        stage.setScene(scene);
-                        stage.setTitle("UninaSwap - I tuoi annunci");
-                        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-                        stage.setResizable(false);
-                        stage.show();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    break;
-
-                default:
-                    // Profilo utente
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("Profilo.fxml"));
-                        Parent root = loader.load();
-                        ProfiloBoundary ProfiloCtrl = loader.getController();
-                        ProfiloCtrl.setController(this.controller);
-                        ProfiloCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
-                        ProfiloCtrl.setNome(controller.getNome(this.controller.getStudente()));
-                        ProfiloCtrl.setCognome(controller.getCognome(this.controller.getStudente()));
-                        ProfiloCtrl.setMatricola(controller.getMatricola(this.controller.getStudente()));
-                        ProfiloCtrl.setEmail(controller.getEmail(this.controller.getStudente()));
-                        ProfiloCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
-                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-                        stage.setScene(scene);
-                        stage.setTitle("UninaSwap - Profilo");
-                        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-                        stage.setResizable(false);
-                        stage.show();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    break;
-            }
-        }
+        sceneManager.SelezionaPagina(e);
     }
     
     public void CostruisciCatalogoProdotti(Studente studente) {
@@ -332,7 +208,6 @@ public class ProdottiBoundary {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOfferte.fxml"));
             Parent root = loader.load();
             PopupOfferteBoundary popupCtrl = loader.getController();
-            popupCtrl.setController(this.controller);
             popupCtrl.setProdottiBoundary(this);
             controller.setAnnuncioSelezionato(annuncio);
             popupCtrl.costruisciPopup();

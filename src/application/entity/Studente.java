@@ -13,10 +13,6 @@ public class Studente {
 	private ArrayList<Annuncio> annunciVisibili = new ArrayList<Annuncio>();
 	private ArrayList<Offerta> offerteRicevute = new ArrayList<Offerta>();
 	private ArrayList<Offerta> offerteInviate = new ArrayList<Offerta>();
-	private ArrayList<Oggetto> OggettiOfferti = new ArrayList<Oggetto>();
-	private ArrayList<Oggetto> OggettiOffertiModificati = new ArrayList<Oggetto>();
-	//Per le modifiche di un'offerta inviata
-	private Annuncio annuncioSelezionato;
 
 	public Studente(String matricola, String email, String nome, String cognome, String username) {
 		this.matricola = matricola;
@@ -84,25 +80,5 @@ public class Studente {
 	
 	public void setOfferteInviate(ArrayList<Offerta> offerteInviate) {
 		this.offerteInviate = offerteInviate;
-	}
-	
-	public void setOggettiOfferti(ArrayList<Oggetto> ListaOggettiOfferti) {
-		this.OggettiOfferti = ListaOggettiOfferti;
-	}
-	
-	public void setOggettiOffertiModificati(ArrayList<Oggetto> ListaOggettiOffertiModificati) {
-		this.OggettiOffertiModificati = ListaOggettiOffertiModificati;
-	}
-	
-	public ArrayList<Oggetto> getOggettiOfferti() {
-		return OggettiOfferti;
-	}
-	
-	public void setAnnuncioSelezionato(Annuncio annuncio) {
-		this.annuncioSelezionato = annuncio;
-	}
-	
-	public Annuncio getAnnuncioSelezionato() {
-		return annuncioSelezionato;
 	}
 }

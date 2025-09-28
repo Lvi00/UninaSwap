@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 
 public class RegistrazioneBoundary {
 	
-	private Controller controller = new Controller();
+    private Controller controller = Controller.getController();
 	
 	@FXML private Pane PaneRegistrazione;
 	@FXML private ScrollPane InformazioniRegistrazione;
@@ -62,7 +62,6 @@ public class RegistrazioneBoundary {
 	    }
 	}
 	
-	//.isVisible() da mofigicare
 	@FXML
 	public void MostraInfoRegistrazione (MouseEvent e) {
 		PaneRegistrazione.setVisible(false);

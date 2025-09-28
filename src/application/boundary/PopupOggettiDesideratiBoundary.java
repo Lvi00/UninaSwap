@@ -16,15 +16,11 @@ import javafx.scene.layout.StackPane;
 
 public class PopupOggettiDesideratiBoundary {
 
-    private Controller controller;
+    private Controller controller = Controller.getController();
     @FXML private AnchorPane paneOggettiOfferti;
     @FXML private TableView<String> tabellaOggettiDesiderati;
     @FXML private TableColumn<String, String> colNome;
     @FXML private TableColumn<String, String> colAzioni;
-
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
 
     public void costruisciTabella(ArrayList<String> listaOggetti) {
         ObservableList<String> items = FXCollections.observableArrayList(listaOggetti);

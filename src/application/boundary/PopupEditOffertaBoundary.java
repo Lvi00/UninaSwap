@@ -43,7 +43,7 @@ public class PopupEditOffertaBoundary {
     @FXML private Label labelOffertaRegalo;
     @FXML private Button inviaDatiOfferta;
     @FXML private GridPane gridOggettiOfferti;
-    private Controller controller;
+    private Controller controller = Controller.getController();
 	private File fileSelezionato = null;
 
     enum Categorie {
@@ -53,10 +53,6 @@ public class PopupEditOffertaBoundary {
         Cancelleria,
         Cultura,
         Musica
-    }
-    
-    public void setController(Controller controller) {
-        this.controller = controller;
     }
 
     public void CostruisciPopupEdit(Offerta offerta, Stage stage) {
@@ -90,7 +86,7 @@ public class PopupEditOffertaBoundary {
                 paneOffertaScambio.setManaged(true);
 
                 ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(offerta);
-                controller.SetOggettiOfferti(listaOggetti);
+                controller.setOggettiOfferti(listaOggetti);
                 gridOggettiOfferti.getChildren().clear();
                 gridOggettiOfferti.getColumnConstraints().clear();
 

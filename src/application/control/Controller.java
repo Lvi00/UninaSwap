@@ -16,23 +16,50 @@ import application.DAO.OffertaDAO;
 import application.DAO.OggettoDAO;
 import application.DAO.SedeDAO;
 import application.DAO.StudenteDAO;
-import application.boundary.CreaAnnuncioBoundary;
-import application.boundary.PopupErrorBoundary;
-import application.boundary.ProdottiBoundary;
 import application.entity.Annuncio;
 import application.entity.Offerta;
 import application.entity.Oggetto;
 import application.entity.Sede;
 import application.entity.Studente;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
 
 public class Controller {
-	private Studente studente;
+	private static Controller controller = null;
+	private Studente studente = null;
+	private Annuncio annuncioSelezionato = null;
+	private ArrayList<Oggetto> listaOggettiOfferti = new ArrayList<Oggetto>();
+	private ArrayList<Oggetto> oggettiOffertiModificati = new ArrayList<Oggetto>();
+	
+	public static Controller getController() {
+        if (controller == null) {
+            controller = new Controller();
+        }
+        return controller;
+    }
+	
+	public void setStudente(Studente studente) {
+		this.studente = studente;
+	}
+	
+	public void setAnnuncioSelezionato(Annuncio annuncio) {
+		this.annuncioSelezionato = annuncio;
+	}
+	
+	public Annuncio getAnnuncioSelezionato() {
+		return annuncioSelezionato;
+	}
+	
+	public void setOggettiOfferti(ArrayList<Oggetto> listaOggettiOfferti) {
+		this.listaOggettiOfferti = listaOggettiOfferti;
+	}
+    
+	public void setOggettiOffertiModificati(ArrayList<Oggetto> listaOggettiOffertiModificati) {
+		this.oggettiOffertiModificati = listaOggettiOffertiModificati;
+	}
+	
+	public ArrayList<Oggetto> getOggettiOfferti() {
+		return listaOggettiOfferti;
+	}
 	
 	public int checkDatiRegistrazione(ArrayList<String> credenziali) {
 		String nome = credenziali.get(0);
@@ -495,10 +522,6 @@ public class Controller {
     	
     }
     
-    public void SetOggettiOfferti (ArrayList<Oggetto> ListaOggettiOfferti) {
-    	this.studente.setOggettiOfferti(ListaOggettiOfferti);
-    }
-    
     public void editOffertaRegalo(Offerta o, String motivazione) {
     	
     }
@@ -651,12 +674,4 @@ public class Controller {
     public String getcategoriaOggetto(Oggetto oggetto) {
     	return oggetto.getCategoria();
     }
-    
-    public void setAnnuncioSelezionato(Annuncio annuncio) {
-    	this.studente.setAnnuncioSelezionato(annuncio);
-    }
-    
-    public Annuncio getAnnuncioSelezionato() {
-		return this.studente.getAnnuncioSelezionato();
-	}
 }
