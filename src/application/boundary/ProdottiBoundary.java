@@ -334,7 +334,8 @@ public class ProdottiBoundary {
             PopupOfferteBoundary popupCtrl = loader.getController();
             popupCtrl.setController(this.controller);
             popupCtrl.setProdottiBoundary(this);
-            popupCtrl.setAnnuncio(annuncio);                   
+            controller.setAnnuncioSelezionato(annuncio);
+            popupCtrl.costruisciPopup();
             Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             Stage popupStage = new Stage();
             popupStage.initOwner(mainStage);

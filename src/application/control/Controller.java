@@ -651,4 +651,12 @@ public class Controller {
     public String getcategoriaOggetto(Oggetto oggetto) {
     	return oggetto.getCategoria();
     }
+    
+    public void setAnnuncioSelezionato(Annuncio annuncio) {
+    	this.studente.setAnnuncioSelezionato(annuncio);
+    }
+    
+    public Annuncio getAnnuncioSelezionato() {
+		return this.studente.getAnnuncioSelezionato();
+	}
 }

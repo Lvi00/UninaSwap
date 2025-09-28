@@ -42,7 +42,6 @@ public class AnnunciStudenteBoundary {
     @FXML private TextField searchField;
     @FXML private ImageView immagineNav;
     @FXML private Label labelAnnunciPubblicati;
-    
     @FXML private AnchorPane AnnunciPane;
     @FXML private AnchorPane OfferteAnnunciPane;
     @FXML private Label labelOfferteAnnuncio;

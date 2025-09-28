@@ -88,9 +88,7 @@ public class PopupOfferteBoundary {
     @FXML private TableColumn<Oggetto, String> colPercorsoImmagine;
     @FXML private TableColumn<Oggetto, String> colAzioni;
     private ObservableList<Oggetto> listaOggettiOfferti = FXCollections.observableArrayList();
-    
     private File fileSelezionato = null;
-    private Annuncio annuncio;
     private boolean oggettiOffertiVisibili = false;
 
     public void setController(Controller controller) {
@@ -101,47 +99,43 @@ public class PopupOfferteBoundary {
         campoCategoriaOggetto.setItems(FXCollections.observableArrayList(Categorie.values()));
         campoCategoriaOggetto.getSelectionModel().selectFirst();
     }
-    
-    public void setAnnuncio(Annuncio annuncio) {
-        this.annuncio = annuncio;
-        costruisciPopup();
-    }
 
-    @FXML
-    private void costruisciPopup() {
+    public void costruisciPopup() {
+    	Annuncio annuncio = controller.getAnnuncioSelezionato();
+    	
     	if(this.paneOggettiOfferti.isVisible()) {
     		paneOggettiOfferti.setVisible(false);
     		paneOfferta.setVisible(true);
     	}
     	
-        if (this.annuncio != null) {
-            titoloAnnuncio.setText(controller.getTitoloAnnuncio(this.annuncio));
-            descrizioneAnnuncio.setText(controller.getDescrizioneAnnuncio(this.annuncio));
+        if (annuncio != null) {
+            titoloAnnuncio.setText(controller.getTitoloAnnuncio(annuncio));
+            descrizioneAnnuncio.setText(controller.getDescrizioneAnnuncio(annuncio));
 
             if (annuncio.getTipologia().equals("Vendita")) {
-                prezzoAnnuncio.setText(String.format("€ %.2f", controller.getPrezzoAnnuncio(this.annuncio)));
+                prezzoAnnuncio.setText(String.format("€ %.2f", controller.getPrezzoAnnuncio(annuncio)));
             }
 
-            categoriaAnnuncio.setText(controller.getCategoriaOggetto(controller.getOggettoAnnuncio(this.annuncio)));
+            categoriaAnnuncio.setText(controller.getCategoriaOggetto(controller.getOggettoAnnuncio(annuncio)));
             
-            Timestamp data = controller.getDataPubblicazioneAnnuncio(this.annuncio);
+            Timestamp data = controller.getDataPubblicazioneAnnuncio(annuncio);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formattedDate = data.toLocalDateTime().format(formatter);
             
             labelDataPubblicazione.setText(formattedDate);
             
-            usernameAnnuncio.setText(controller.getUsername(controller.getStudenteOggetto(controller.getOggettoAnnuncio(this.annuncio))));
+            usernameAnnuncio.setText(controller.getUsername(controller.getStudenteOggetto(controller.getOggettoAnnuncio(annuncio))));
             
             disponibilitàAnnuncio.setText(
-                controller.giorniDisponibilitaAnnuncio(this.annuncio) + " dalle " + controller.getFasciaInizioAnnuncio(this.annuncio) + " alle " + controller.getFasciaFineAnnuncio(this.annuncio)
+                controller.giorniDisponibilitaAnnuncio(annuncio) + " dalle " + controller.getFasciaInizioAnnuncio(annuncio) + " alle " + controller.getFasciaFineAnnuncio(annuncio)
             );
             
-            Sede sede = controller.getSedeAnnuncio(this.annuncio);
+            Sede sede = controller.getSedeAnnuncio(annuncio);
             
             sedeAnnuncio.setText(controller.getParticellaToponomasticaSede(sede) + " " + controller.getDescrizioneIndirizzo(sede) + " " + controller.getCivicoSede(sede) + " " + controller.getCapSede(sede));
 
             try {
-                String path = controller.getImmagineOggetto(controller.getOggettoAnnuncio(this.annuncio));
+                String path = controller.getImmagineOggetto(controller.getOggettoAnnuncio(annuncio));
                 File file = new File(path);
                 Image img;
                 if (file.exists()) {
@@ -155,7 +149,7 @@ public class PopupOfferteBoundary {
             }
 
             try {
-                String path = controller.getImmagineProfilo(controller.getStudenteOggetto(controller.getOggettoAnnuncio(this.annuncio)));
+                String path = controller.getImmagineProfilo(controller.getStudenteOggetto(controller.getOggettoAnnuncio(annuncio)));
                 File file = new File(path);
                 Image img;
                 if (file.exists()) {
@@ -171,7 +165,7 @@ public class PopupOfferteBoundary {
                 Circle clip = new Circle(47, 47, 47);
                 immagineProfilo.setClip(clip);
                 
-                switch(controller.getTipologiaAnnuncio(this.annuncio)) {
+                switch(controller.getTipologiaAnnuncio(annuncio)) {
 	                case "Scambio":
 	                    buttonOfferta.setText("Scambia");
 	                    buttonOfferta.onMouseClickedProperty().set(e -> inviaOfferta(e));
@@ -348,8 +342,10 @@ public class PopupOfferteBoundary {
     public void inviaOfferta(MouseEvent e) { 
     	Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
     	
-    	if(controller.getTipologiaAnnuncio(this.annuncio).equals("Vendita")) {
-    		switch(controller.inviaOffertaVendita(this.annuncio)) {
+    	Annuncio annuncio = controller.getAnnuncioSelezionato();
+    	
+    	if(controller.getTipologiaAnnuncio(annuncio).equals("Vendita")) {
+    		switch(controller.inviaOffertaVendita(annuncio)) {
 	    		case 0:
 	    	        currentStage.close(); 
 	    	        ShowPopupAlert("Offerta inviata!", "Hai inviato correttamente un'offerta per questo annuncio.");
@@ -361,7 +357,7 @@ public class PopupOfferteBoundary {
     		}
     	}
     	
-    	else if(controller.getTipologiaAnnuncio(this.annuncio).equals("Regalo")) {
+    	else if(controller.getTipologiaAnnuncio(annuncio).equals("Regalo")) {
     	    String messaggioMotivazionale = campoDescrizioneAnnuncioRegalo.getText();
     	    
     	    if (messaggioMotivazionale == null || messaggioMotivazionale.trim().isEmpty()) messaggioMotivazionale = "Assente";
@@ -383,9 +379,9 @@ public class PopupOfferteBoundary {
     	    }
     	}
     	
-    	else if(controller.getTipologiaAnnuncio(this.annuncio).equals("Scambio"))
+    	else if(controller.getTipologiaAnnuncio(annuncio).equals("Scambio"))
     	{
-    	    switch(controller.inviaOffertaScambio(this.annuncio, this.listaOggettiOfferti)) {
+    	    switch(controller.inviaOffertaScambio(annuncio, this.listaOggettiOfferti)) {
 		        case 0: // offerta di scambio normale inviata correttamente
 	                currentStage.close();
 		            ShowPopupAlert("Richiesta inviata!",  "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
@@ -410,6 +406,9 @@ public class PopupOfferteBoundary {
     
     @FXML
     public void checkControfferta(MouseEvent e) {
+    	
+    	Annuncio annuncio = controller.getAnnuncioSelezionato();
+    	
     	Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
     	String intero = campoPrezzoIntero.getText();
         String decimale = campoPrezzoDecimale.getText();
@@ -427,7 +426,7 @@ public class PopupOfferteBoundary {
         // Costruisci il prezzo finale
         String stringaPrezzo = intero + "." + decimale;
         
-        switch(controller.checkControfferta(this.annuncio, stringaPrezzo)) {
+        switch(controller.checkControfferta(annuncio, stringaPrezzo)) {
             case 0:
                 currentStage.close();
                 ShowPopupAlert("Controfferta inviata!", "La controfferta è stata inviata con successo.");
