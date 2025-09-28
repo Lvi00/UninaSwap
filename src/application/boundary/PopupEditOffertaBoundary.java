@@ -7,9 +7,12 @@ import application.control.Controller;
 import application.entity.Offerta;
 import application.entity.Oggetto;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -158,26 +161,26 @@ public class PopupEditOffertaBoundary {
         content.setAlignment(Pos.CENTER);
         content.setPadding(new Insets(10));
 
-        ImageView localImageView = new ImageView();
-        try {
-            String path = controller.getImmagineOggetto(oggetto);
-            Image img;
-            File file = new File(path);
-            if (file.exists()) {
-                img = new Image(file.toURI().toString());
-            } else {
-                img = new Image(getClass().getResource(path).toExternalForm());
-            }
-            localImageView.setFitWidth(150);
-            localImageView.setFitHeight(100);
-            localImageView.setPreserveRatio(false);
-            localImageView.setClip(new Rectangle(150, 100));
-            localImageView.setImage(img);
-            localImageView.setStyle("-fx-cursor: hand;");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ImageView localImageView = new ImageView(); 
+    	String path = controller.getImmagineOggetto(oggetto); 
+    	Image img; 
+    	File file = new File(path);
+    	if (file.exists()) 
+    	{ 
+    		img = new Image(file.toURI().toString()); 
+    	} 
+    	else 
+    	{ 
+    		img = new Image(getClass().getResource(path).toExternalForm()); 
+    	} 
+    	localImageView.setFitWidth(150); 
+    	localImageView.setFitHeight(100); 
+    	localImageView.setPreserveRatio(false); 
+    	localImageView.setClip(new Rectangle(150, 100)); 
+    	localImageView.setImage(img); localImageView.setStyle("-fx-cursor: hand;"); 
+    	localImageView.setOnMouseClicked(event -> showFileChooser(event, oggetto, localImageView));
 
+        
         Label categoria = new Label(controller.getCategoriaOggetto(oggetto));
         categoria.setStyle(
             "-fx-font-size: 14px;" +
@@ -289,7 +292,30 @@ public class PopupEditOffertaBoundary {
         buttonEdit.setOnMouseClicked(event -> showCampiModifica(oggetto, categoria, choiceCategoria, descrizione, textDescrizione, buttonDelete, buttonEdit, buttonBack, buttonCheck));
         buttonBack.setOnMouseClicked(event -> showCampiModifica(oggetto, categoria, choiceCategoria, descrizione, textDescrizione, buttonDelete, buttonEdit, buttonBack, buttonCheck));
         buttonDelete.setOnMouseClicked(event -> rimuoviOggettoOfferto(oggetto, offerta));
-        
+
+        buttonCheck.setOnMouseClicked(event -> {
+            String newPath;
+            if (fileSelezionato != null) {
+                newPath = fileSelezionato.getAbsolutePath();
+            } else {
+                newPath = path; // se non è stata cambiata l'immagine
+            }
+            editOggettiOfferti(        
+            		oggetto,
+                    offerta,
+                    newPath,
+                    choiceCategoria.getValue().toString(),
+                    textDescrizione.getText(),
+                    categoria,
+                    choiceCategoria,
+                    descrizione,
+                    textDescrizione,
+                    buttonDelete,
+                    buttonEdit,
+                    buttonBack,
+                    buttonCheck);
+        });
+
         AnchorPane topLeftLayer = new AnchorPane(buttonEdit, buttonBack);
         AnchorPane topRightLayer = new AnchorPane(buttonDelete, buttonCheck);
         topLeftLayer.setPickOnBounds(false);
@@ -359,7 +385,31 @@ public class PopupEditOffertaBoundary {
         }
     }
     
-    public void showFileChooser(MouseEvent e, Oggetto oggetto, ImageView targetImageView) {
+    public void editOggettiOfferti(Oggetto oggetto, Offerta offerta, String pathImmagine, String categoria, String descrizione, Label categoriaLabel, ChoiceBox<Categorie> choiceCategoria, Label descrizioneLabel, TextArea textDescrizione, Button btnDelete, Button btnEdit, Button btnBack, Button btnCheck) 
+    {
+    	    int result = controller.editOffertaScambio(oggetto, offerta, pathImmagine, categoria, descrizione);
+
+    	    switch(result) {
+    	        case 0:
+    	            ShowPopupAlert("Modifiche Effettuate", "Le modifiche sono state applicate con successo");
+    	            break;
+    	        case 1:
+    	            ShowPopupError("Errore di modifica", "Nessun cambiamento effettuato");
+    	            break;
+    	        case 2:
+    	            ShowPopupError("Errore di modifica", "Offerte ripetute");
+    	            break;
+    	        case 3:
+    	            ShowPopupError("Errore di modifica", "Nessun record aggiornato (ID non trovato)");
+    	            break;
+    	    }
+
+    	    showCampiModifica(oggetto, categoriaLabel, choiceCategoria, descrizioneLabel, textDescrizione, btnDelete, btnEdit, btnBack, btnCheck);
+    	    CostruisciPopupEdit(offerta, (Stage) GeneralOffersPane.getScene().getWindow());
+    	    
+    }
+    
+    public void showFileChooser( MouseEvent e, Oggetto oggetto, ImageView targetImageView) {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
         FileChooser fileChooser = new FileChooser();
@@ -376,4 +426,61 @@ public class PopupEditOffertaBoundary {
             this.fileSelezionato = selectedFile;
         }
     }
+    
+    private void ShowPopupError(String title, String message) {
+		try {
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
+	        Parent root = loader.load();
+	        Stage mainStage = (Stage) paneOffertaScambio.getScene().getWindow();
+	        Stage stage = new Stage();
+	        stage.initOwner(mainStage);
+	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+	        Scene scene = new Scene(root);
+	        stage.setScene(scene);
+	        stage.setTitle("UninaSwap - " + title);
+	        stage.setResizable(false);
+	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+	        PopupErrorBoundary popupController = loader.getController();
+	        popupController.setLabels(title, message);
+	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+	        stage.show();
+	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
+	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+    
+    private void ShowPopupAlert(String title, String message) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupAlert.fxml"));
+	        Parent root = loader.load();
+
+	        Stage mainStage = (Stage) paneOffertaScambio.getScene().getWindow();
+	        Stage stage = new Stage();
+	        stage.initOwner(mainStage);
+	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+	        Scene scene = new Scene(root);
+	        stage.setScene(scene);
+	        stage.setTitle("UninaSwap - " + title);
+	        stage.setResizable(false);
+	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
+
+	        PopupErrorBoundary popupController = loader.getController();
+	        popupController.setLabels(title, message);
+	       
+	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
+
+	        stage.show();
+	        
+	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
+	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }

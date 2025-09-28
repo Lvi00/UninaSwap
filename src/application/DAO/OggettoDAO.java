@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import application.control.Controller;
+import application.entity.Offerta;
 import application.entity.Oggetto;
 import application.resources.ConnessioneDB;
 
@@ -91,12 +92,11 @@ public class OggettoDAO {
     }
     
     public int getIdByOggetto(Oggetto oggetto) {
-    	
-        int id = 0;
-	    String matStudente = oggetto.getStudente().getMatricola();
-        String query = "SELECT idoggetto FROM OGGETTO WHERE immagineoggetto = ? AND categoria = ? AND descrizione = ? AND matstudente = ?";
-
-        try {
+    	int id = 0;
+    	try {
+		    String matStudente = oggetto.getStudente().getMatricola();
+	        String query = "SELECT idoggetto FROM OGGETTO WHERE immagineoggetto = ? AND categoria = ? AND descrizione = ? AND matstudente = ?";
+	        
         	Connection conn = ConnessioneDB.getConnection();
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, oggetto.getImmagineOggetto());
@@ -150,4 +150,36 @@ public class OggettoDAO {
 		}
         return 0;
     }
+    public int UpdateOggetto(Oggetto oggetto, String pathImmagine, String categoria, String descrizione) 
+    {
+        try 
+        {
+        	Connection conn = ConnessioneDB.getConnection();
+        	String query = "UPDATE OGGETTO SET immagineoggetto = ?, categoria = ?, descrizione = ? WHERE idoggetto = ?";
+        	PreparedStatement statement = conn.prepareStatement(query); 
+
+            int id = getIdByOggetto(oggetto);
+
+            statement.setString(1, pathImmagine);
+            statement.setString(2, categoria);
+            statement.setString(3, descrizione);
+            statement.setInt(4, id);
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Aggiornamento completato con successo!");
+                
+            } else {
+                System.out.println("Nessun record aggiornato (ID non trovato).");
+                return 1;
+            }
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return 1;
+        }
+        
+        return 0;
+    }
+
 }

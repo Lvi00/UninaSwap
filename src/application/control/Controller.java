@@ -520,8 +520,26 @@ public class Controller {
     
     //Logica di modifica offerta
 
-    public void editOffertaScambio(Offerta o) {
+    public int editOffertaScambio(Oggetto oggetto, Offerta offerta, String pathImmagine , String categoria, String descrizione) {
+    	if(getImmagineOggetto(oggetto).equals(pathImmagine) && getCategoriaOggetto(oggetto).equals(categoria) && getDescrizioneOggetto(oggetto).equals(descrizione) ) 
+    	{
+    		return 1;
+    	}
+    	ArrayList<Oggetto> listaOggettiOfferti = getOggettiOffertiByOfferta(offerta);
+    	for(Oggetto o : listaOggettiOfferti) {
+        	if(getImmagineOggetto(o).equals(pathImmagine) && getCategoriaOggetto(o).equals(categoria) && getDescrizioneOggetto(o).equals(descrizione) ) 
+        	{
+        		return 2;
+        	}
+    	}
+    	OggettoDAO dao = new OggettoDAO();
     	
+    	if(dao.UpdateOggetto(oggetto,pathImmagine, categoria, descrizione)==1)
+    	{
+    		return 3;
+    	}
+    	
+    	return 0;
     }
     
     public void editOffertaRegalo(Offerta o, String motivazione) {
