@@ -12,10 +12,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class SceneManager {
+	//Da modificare
 	private Controller controller = Controller.getController();
 	private static SceneManager sceneManager = null;
 	
-	//Pattern singleton per preservare lo stato dello SceneManager
 	public static SceneManager sceneManager() {
         if (sceneManager == null) {
         	sceneManager = new SceneManager();
@@ -39,9 +39,8 @@ public class SceneManager {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("Prodotti.fxml"));
                         Parent root = loader.load();
                         ProdottiBoundary prodottiCtrl = loader.getController();
-                        prodottiCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
-                        prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
-                        prodottiCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
+                        prodottiCtrl.costruisciPagina();
+                        prodottiCtrl.CostruisciCatalogoProdotti();
                         prodottiCtrl.setFiltri();
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
@@ -61,8 +60,7 @@ public class SceneManager {
 		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("Offerte.fxml"));
 		    	        Parent root = loader.load();
 		                OfferteBoundary offerteCtrl = loader.getController();
-		                offerteCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
-		                offerteCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
+		                offerteCtrl.costruisciPagina();
 		                offerteCtrl.CostruisciOfferteUtente(this.controller.getStudente());
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
@@ -83,8 +81,7 @@ public class SceneManager {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("Informazioni.fxml"));
                         Parent root = loader.load();
                         InformazioniBoundary infoCtrl = loader.getController();
-                        infoCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
-                        infoCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
+                        infoCtrl.costruisciPagina();
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -103,10 +100,8 @@ public class SceneManager {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("CreaAnnuncio.fxml"));
                         Parent root = loader.load();
                         CreaAnnuncioBoundary creaCtrl = loader.getController();
-                        creaCtrl.setController(this.controller);
-                        creaCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
+                        creaCtrl.costruisciPagina();
                         creaCtrl.setCampiForm();
-                        creaCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
 		                creaCtrl.MostraPaneVendita(e);
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
@@ -126,9 +121,8 @@ public class SceneManager {
 		    	        FXMLLoader loader = new FXMLLoader(getClass().getResource("AnnunciStudente.fxml"));
 		    	        Parent root = loader.load();
 		                AnnunciStudenteBoundary annunciCtrl = loader.getController();
+		                annunciCtrl.costruisciPagina();
 		                annunciCtrl.CostruisciProdottiUtente(this.controller.getStudente());
-		                annunciCtrl.setUsername(this.controller.getStudente().getUsername());
-		                annunciCtrl.setImmagine(this.controller.getStudente().getImmagineProfilo());
 		                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		    	        Scene scene = new Scene(root);
 		    	        scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
@@ -148,13 +142,7 @@ public class SceneManager {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("Profilo.fxml"));
                         Parent root = loader.load();
                         ProfiloBoundary ProfiloCtrl = loader.getController();
-                        ProfiloCtrl.setController(this.controller);
-                        ProfiloCtrl.setUsername(this.controller.getStudente().getUsername());
-                        ProfiloCtrl.setNome(controller.getNome(this.controller.getStudente()));
-                        ProfiloCtrl.setCognome(controller.getCognome(this.controller.getStudente()));
-                        ProfiloCtrl.setMatricola(controller.getMatricola(this.controller.getStudente()));
-                        ProfiloCtrl.setEmail(controller.getEmail(this.controller.getStudente()));
-                        ProfiloCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
+                        ProfiloCtrl.costruisciPagina();
                         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());

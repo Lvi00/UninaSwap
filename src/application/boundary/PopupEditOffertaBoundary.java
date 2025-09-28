@@ -48,8 +48,7 @@ public class PopupEditOffertaBoundary {
     @FXML private GridPane gridOggettiOfferti;
     private Controller controller = Controller.getController();
     private SceneManager sceneManager = SceneManager.sceneManager();
-	private File fileSelezionato = null;
-
+    
     enum Categorie {
         Abbigliamento,
         Informatica,
@@ -295,10 +294,11 @@ public class PopupEditOffertaBoundary {
 
         buttonCheck.setOnMouseClicked(event -> {
             String newPath;
-            if (fileSelezionato != null) {
-                newPath = fileSelezionato.getAbsolutePath();
+            File fileOggettoOfferto = controller.getFileOggettoOfferto();
+            if (fileOggettoOfferto != null) {
+                newPath = fileOggettoOfferto.getAbsolutePath();
             } else {
-                newPath = path; // se non è stata cambiata l'immagine
+                newPath = path;
             }
             editOggettiOfferti(        
             		oggetto,
@@ -423,7 +423,7 @@ public class PopupEditOffertaBoundary {
         if (selectedFile != null) {
             Image image = new Image(selectedFile.toURI().toString());
             targetImageView.setImage(image);
-            this.fileSelezionato = selectedFile;
+            controller.setFileOggettoOfferto(selectedFile);
         }
     }
     

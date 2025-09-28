@@ -49,12 +49,10 @@ public class OfferteBoundary {
     private Controller controller = Controller.getController();
     private SceneManager sceneManager = SceneManager.sceneManager();
 
-    public void setUsername(String s) {
-        usernameDashboard.setText(s);
-    }
-    
-    public void setImmagine(String immagineP) {
-        try {
+    public void costruisciPagina() {
+		usernameDashboard.setText(controller.getUsername(controller.getStudente()));
+		String immagineP = controller.getImmagineProfilo(controller.getStudente());
+		try {
             File file = new File(immagineP);
             Image image;
             if (file.exists()) {
@@ -72,11 +70,12 @@ public class OfferteBoundary {
             immagineNav.setFitWidth(33);
             immagineNav.setFitHeight(33);  
             immagineNav.setPreserveRatio(false);
+            
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Errore caricando immagine: " + immagineP);
         }
-    }
+	}
     
     public void SelezionaPagina(MouseEvent e) {
     	sceneManager.SelezionaPagina(e);

@@ -19,12 +19,10 @@ public class InformazioniBoundary {
     private SceneManager sceneManager = SceneManager.sceneManager();
 	private Controller controller = Controller.getController();
 
-    public void setUsername(String s) {
-        usernameDashboard.setText(s);
-    }
-    
-    public void setImmagine(String immagineP) {
-        try {
+	public void costruisciPagina() {
+		usernameDashboard.setText(controller.getUsername(controller.getStudente()));
+		String immagineP = controller.getImmagineProfilo(controller.getStudente());
+		try {
             File file = new File(immagineP);
             Image image;
             if (file.exists()) {
@@ -47,7 +45,7 @@ public class InformazioniBoundary {
             e.printStackTrace();
             System.err.println("Errore caricando immagine: " + immagineP);
         }
-    }
+	}
     
     @FXML
     public void SelezionaPagina(MouseEvent e) {

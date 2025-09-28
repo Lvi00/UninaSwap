@@ -47,15 +47,12 @@ public class AnnunciStudenteBoundary {
     private SceneManager sceneManager = SceneManager.sceneManager();
 	private Controller controller = Controller.getController();
 
-    public void setUsername(String s) {
-        usernameDashboard.setText(s);
-    }
-
-    public void setImmagine(String immagineP) {
-        try {
+	public void costruisciPagina() {
+		usernameDashboard.setText(controller.getUsername(controller.getStudente()));
+		String immagineP = controller.getImmagineProfilo(controller.getStudente());
+		try {
             File file = new File(immagineP);
             Image image;
-
             if (file.exists()) {
                 // Se esiste come file nel file system, caricalo da file
                 image = new Image(file.toURI().toString());
@@ -63,7 +60,7 @@ public class AnnunciStudenteBoundary {
                 // Altrimenti prova a caricare da risorsa classpath
                 image = new Image(getClass().getResource(immagineP).toExternalForm());
             }
-
+            
             immagineNav.setImage(image);
             Circle clip = new Circle(16.5, 16.5, 16.5);
             immagineNav.setClip(clip);
@@ -71,12 +68,12 @@ public class AnnunciStudenteBoundary {
             immagineNav.setFitWidth(33);
             immagineNav.setFitHeight(33);  
             immagineNav.setPreserveRatio(false);
-
+            
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Errore caricando immagine: " + immagineP);
         }
-    }
+	}
     
     @FXML
     public void SelezionaPagina(MouseEvent e) {

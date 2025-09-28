@@ -26,10 +26,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class CreaAnnuncioBoundary {
-	
-	private File fileSelezionato = null;
-	
+public class CreaAnnuncioBoundary {	
     enum Categorie {
         Abbigliamento,
         Informatica,
@@ -79,18 +76,11 @@ public class CreaAnnuncioBoundary {
     
     private SceneManager sceneManager = SceneManager.sceneManager();
 	private Controller controller = Controller.getController();
-    private ArrayList<String> listaOggetti = new ArrayList<String>();
-
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
     
-    public void setUsername(String s) {
-        usernameDashboard.setText(s);
-    }
-    
-    public void setImmagine(String immagineP) {
-        try {
+	public void costruisciPagina() {
+		usernameDashboard.setText(controller.getUsername(controller.getStudente()));
+		String immagineP = controller.getImmagineProfilo(controller.getStudente());
+		try {
             File file = new File(immagineP);
             Image image;
             if (file.exists()) {
@@ -113,7 +103,7 @@ public class CreaAnnuncioBoundary {
             e.printStackTrace();
             System.err.println("Errore caricando immagine: " + immagineP);
         }
-    }
+	}
     
     @FXML
     public void SelezionaPagina(MouseEvent e) {
@@ -192,7 +182,7 @@ public class CreaAnnuncioBoundary {
             Image image = new Image(selectedFile.toURI().toString());
             //Carica sull'imaggine di defoult la nuova immagine
             immagineCaricata.setImage(image);
-            this.fileSelezionato = selectedFile;
+            controller.setFileOggettoAnnuncio(selectedFile);
         }
     }
     
@@ -277,14 +267,16 @@ public class CreaAnnuncioBoundary {
 	        
     	}
     
-        switch(controller.checkDatiAnnuncio(datiAnnuncio, this.fileSelezionato, controller.getStudente(), this.listaOggetti)) {
+        File fileOggettoAnnuncio = controller.getFileOggettoAnnuncio();
+        
+        switch(controller.checkDatiAnnuncio(datiAnnuncio, fileOggettoAnnuncio, controller.getStudente(), controller.getListaOggettiDesiderati())) {
 	        case 0:
 	        	ShowPopupAlert("Annuncio creato con successo!", "Dati inseriti con successo in UninaSwap");
-	        	controller.copiaFileCaricato(this.fileSelezionato);
+	        	controller.copiaFileCaricato(fileOggettoAnnuncio);
 	        	NascondiPaneScambio(e);
 	        	inizializzaCampi();
-	        	this.fileSelezionato = null;
-	        	this.listaOggetti.clear();
+	        	controller.setFileOggettoAnnuncio(null);
+	        	controller.svuotaListaOggettiDesiderati();
 	        break;
 	        
         	case 1:
@@ -328,12 +320,12 @@ public class CreaAnnuncioBoundary {
 			
         	case 9:
         		ShowPopupError("Immagine non valida", "L'immagine inserita non è valida oppure non ha un nome valido.");
-				this.fileSelezionato = null;
+	        	controller.setFileOggettoAnnuncio(null);
 			break;
 			
         	case 10:
 				ShowPopupError("Oggetti desiderati non validi", "Gli oggetti desiderati non sono validi. Devi specificare minimo 1 o massimo 5 oggetti che desideri in cambio.");
-				this.listaOggetti.clear();
+				controller.svuotaListaOggettiDesiderati();
 				campoAggiungiOggetto.clear();
 			break;
         	
@@ -406,10 +398,12 @@ public class CreaAnnuncioBoundary {
     @FXML
     public void aggiungiOggettoDesiderato() {
     	String nomeOggetto = campoAggiungiOggetto.getText();
-    	switch(controller.controllaOggettoDesiderato(nomeOggetto, this.listaOggetti)) {
+    	ArrayList<String> listaOggettiDesiderati = controller.getListaOggettiDesiderati();
+    	
+    	switch(controller.controllaOggettoDesiderato(nomeOggetto, listaOggettiDesiderati)) {
     		case 0:
     			ShowPopupAlert("Oggetto desiderato aggiunto", "L'oggetto desiderato è stato aggiunto con successo.");
-    			this.listaOggetti.add(nomeOggetto);
+    			controller.aggiungiOggettoDesiderato(nomeOggetto);
     		break;
     		
     		case 1:
@@ -430,7 +424,7 @@ public class CreaAnnuncioBoundary {
     
     @FXML
     public void mostraOggettiDesiderati(MouseEvent e) {
-    	if(this.listaOggetti.isEmpty()) {
+    	if(controller.getListaOggettiDesiderati().isEmpty()) {
 			ShowPopupError("Nessun oggetto inserito", "Non sono stati ancora aggiunti oggetti desiderati. Aggiungi almeno un oggetto per poter visualizzare la lista.");
 			return;
 		}
@@ -439,7 +433,7 @@ public class CreaAnnuncioBoundary {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOggettiDesiderati.fxml"));
             Parent root = loader.load();
             PopupOggettiDesideratiBoundary popupOggettiDesideratiCtrl = loader.getController();              
-            popupOggettiDesideratiCtrl.costruisciTabella(this.listaOggetti);
+            popupOggettiDesideratiCtrl.costruisciTabella(controller.getListaOggettiDesiderati());
             Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             Stage popupStage = new Stage();
             popupStage.initOwner(mainStage);

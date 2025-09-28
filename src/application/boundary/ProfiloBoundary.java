@@ -31,34 +31,22 @@ public class ProfiloBoundary {
     @FXML private ImageView immagineProfilo;
     @FXML private ImageView immagineNav;
     
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
-    
-    public void setUsername(String s) {
-        usernameDashboard.setText(s);
-        usernameProfilo.setText(s);
-    }
-    
-    public void setNome(String nome) {
+    public void costruisciPagina() { 	
+    	usernameDashboard.setText(controller.getUsername(controller.getStudente()));
+        usernameProfilo.setText(controller.getUsername(controller.getStudente()));
+        
+        String nome = controller.getNome(controller.getStudente());
         nome = nome.substring(0, 1).toUpperCase() + nome.substring(1).toLowerCase();
-    	nomeProfilo.setText(nome); 
-    }
-
-    public void setCognome(String cognome) {
+        nomeProfilo.setText(nome);
+        
+        String cognome = controller.getCognome(controller.getStudente());
         cognome = cognome.substring(0, 1).toUpperCase() + cognome.substring(1).toLowerCase();
-    	cognomeProfilo.setText(cognome); 
-    }
-
-    public void setMatricola(String matricola) {
-    	matricolaProfilo.setText(matricola);
-    }
-    
-    public void setEmail(String email) {
-    	emailProfilo.setText(email); 
-    }
-    
-    public void setImmagine(String immagineP) {
+        cognomeProfilo.setText(cognome);
+        
+        matricolaProfilo.setText(controller.getMatricola(controller.getStudente()));
+        emailProfilo.setText(controller.getEmail(controller.getStudente()));
+        String immagineP = controller.getImmagineProfilo(controller.getStudente());
+        
         try {
             File file = new File(immagineP);
             Image image;
@@ -116,9 +104,7 @@ public class ProfiloBoundary {
     }
 	
     @FXML
-    public void logout(MouseEvent e) {
-    	controller.logoutStudente();
-    	
+    public void logout(MouseEvent e) {   	
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
             Parent root = loader.load();

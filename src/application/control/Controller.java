@@ -26,9 +26,12 @@ import javafx.collections.ObservableList;
 public class Controller {
 	private static Controller controller = null;
 	private Studente studente = null;
+	private File fileOggettoAnnuncio = null;
+	private File fileOggettoOfferto = null;
+    private File fileOggettoAlternativo = null;
 	private Annuncio annuncioSelezionato = null;
 	private ArrayList<Oggetto> listaOggettiOfferti = new ArrayList<Oggetto>();
-	private ArrayList<Oggetto> oggettiOffertiModificati = new ArrayList<Oggetto>();
+    private ArrayList<String> listaOggettiDesiderati = new ArrayList<String>();
 	
 	public static Controller getController() {
         if (controller == null) {
@@ -41,6 +44,46 @@ public class Controller {
 		this.studente = studente;
 	}
 	
+	public File getFileOggettoAlternativo() {
+		return fileOggettoAlternativo;
+	}
+
+	public void setFileOggettoAlternativo(File fileOggettoAlternativo) {
+		this.fileOggettoAlternativo = fileOggettoAlternativo;
+	}
+	
+	public File getFileOggettoOfferto() {
+		return fileOggettoOfferto;
+	}
+	
+	public File getFileOggettoAnnuncio() {
+		return fileOggettoAnnuncio;
+	}
+	
+	public void setFileOggettoAnnuncio(File fileOggettoAnnuncio) {
+		this.fileOggettoAnnuncio = fileOggettoAnnuncio;
+	}
+	
+	public void setFileOggettoOfferto(File fileOggettoOfferto) {
+		this.fileOggettoOfferto = fileOggettoOfferto;
+	}
+	
+	public ArrayList<String> getListaOggettiDesiderati() {
+		return listaOggettiDesiderati;
+	}
+	
+	public void setListaOggettiDesiderati(ArrayList<String> listaOggettiDesiderati) {
+		this.listaOggettiDesiderati = listaOggettiDesiderati;
+	}
+	
+	public void svuotaListaOggettiDesiderati() {
+		this.listaOggettiDesiderati.clear();
+	}
+	
+	public void aggiungiOggettoDesiderato(String oggetto) {
+		this.listaOggettiDesiderati.add(oggetto);
+	}
+	
 	public void setAnnuncioSelezionato(Annuncio annuncio) {
 		this.annuncioSelezionato = annuncio;
 	}
@@ -51,10 +94,6 @@ public class Controller {
 	
 	public void setOggettiOfferti(ArrayList<Oggetto> listaOggettiOfferti) {
 		this.listaOggettiOfferti = listaOggettiOfferti;
-	}
-    
-	public void setOggettiOffertiModificati(ArrayList<Oggetto> listaOggettiOffertiModificati) {
-		this.oggettiOffertiModificati = listaOggettiOffertiModificati;
 	}
 	
 	public ArrayList<Oggetto> getOggettiOfferti() {
@@ -455,10 +494,6 @@ public class Controller {
 		return new OffertaDAO().eliminaOfferta(o);
 	}
     
-    public void logoutStudente() {
-    	this.studente = null;
-    }
-    
     public void svuotaOfferteRicevute() {
     	this.studente.getOfferteRicevute().clear();
     }
@@ -696,6 +731,10 @@ public class Controller {
     public String getcategoriaOggetto(Oggetto oggetto) {
     	return oggetto.getCategoria();
     }
+    
+    public ArrayList<Annuncio> getAnnunciVisibili(){
+		return this.studente.getAnnunciVisibili();
+	}
     
     //End metodi per l'ottenimento dei dati
 }

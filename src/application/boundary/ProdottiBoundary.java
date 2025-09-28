@@ -6,8 +6,6 @@ import java.io.File;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
-import application.entity.Sede;
-import application.entity.Studente;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -67,12 +65,10 @@ public class ProdottiBoundary {
         Scambio
     }
 
-    public void setUsername(String s) {
-        usernameDashboard.setText(s);
-    }
-    
-    public void setImmagine(String immagineP) {
-        try {
+    public void costruisciPagina() {
+		usernameDashboard.setText(controller.getUsername(controller.getStudente()));
+		String immagineP = controller.getImmagineProfilo(controller.getStudente());
+		try {
             File file = new File(immagineP);
             Image image;
             if (file.exists()) {
@@ -95,23 +91,23 @@ public class ProdottiBoundary {
             e.printStackTrace();
             System.err.println("Errore caricando immagine: " + immagineP);
         }
-    }
+	}
     
     @FXML
     public void SelezionaPagina(MouseEvent e) {
         sceneManager.SelezionaPagina(e);
     }
     
-    public void CostruisciCatalogoProdotti(Studente studente) {
+    public void CostruisciCatalogoProdotti() {
 
         ArrayList<Annuncio> annunciVisibili;
     	
     	if(controller.getStudente().getAnnunciVisibili().isEmpty()) 
     	{
-    		annunciVisibili = controller.getInfoAnnunci(studente);
+    		annunciVisibili = controller.getInfoAnnunci(controller.getStudente());
     		controller.setAnnunciVisibili(annunciVisibili);
     	}
-    	else annunciVisibili = controller.getStudente().getAnnunciVisibili();
+    	else annunciVisibili = controller.getAnnunciVisibili();
         	
     	if(annunciVisibili.isEmpty()) labelAnnunciTrovati.setText("Nessun annuncio trovato");
     	else if(annunciVisibili.size() == 1) labelAnnunciTrovati.setText(annunciVisibili.size() + " annuncio trovato");
@@ -299,6 +295,6 @@ public class ProdottiBoundary {
         this.tipologia = "Nessuno";
 
         gridProdotti.getChildren().clear();
-        CostruisciCatalogoProdotti(this.controller.getStudente());
+        CostruisciCatalogoProdotti();
     }
 }

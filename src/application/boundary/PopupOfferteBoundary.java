@@ -89,8 +89,6 @@ public class PopupOfferteBoundary {
     @FXML private TableColumn<Oggetto, String> colPercorsoImmagine;
     @FXML private TableColumn<Oggetto, String> colAzioni;
     private ObservableList<Oggetto> listaOggettiOfferti = FXCollections.observableArrayList();
-    private File fileSelezionato = null;
-    private boolean oggettiOffertiVisibili = false;
     
     public void setProdottiBoundary(ProdottiBoundary prodottiBoundary) {
         campoCategoriaOggetto.setItems(FXCollections.observableArrayList(Categorie.values()));
@@ -169,7 +167,7 @@ public class PopupOfferteBoundary {
 	                    controffertaButton.setVisible(false);
 	                    mostraCampiScambio.setVisible(true);
 	                    
-	                    if(this.oggettiOffertiVisibili) {
+	                    if(PaneOfferteScambio.isVisible()) {
 	                    	PaneOfferteScambio.setVisible(true);
 	                    	aggiungiOggetto.setVisible(true);
 	                    	oggettiOffertiButton.setVisible(true);
@@ -212,8 +210,10 @@ public class PopupOfferteBoundary {
 	    String categoriaSelezionata = campoCategoriaOggetto.getValue().toString();
 	    String percorsoImmagine = null;
 	    
-	    if (fileSelezionato != null) {
-	        percorsoImmagine = fileSelezionato.getAbsolutePath();
+	    File fileOggettoAlternativo = controller.getFileOggettoAlternativo();
+	    
+	    if (fileOggettoAlternativo != null) {
+	        percorsoImmagine = fileOggettoAlternativo.getAbsolutePath();
 	    }
 	    
 	    switch(controller.controllaCampiOggettoScambio(descrizione, categoriaSelezionata, percorsoImmagine)) {
@@ -229,7 +229,7 @@ public class PopupOfferteBoundary {
 			   campoDescrizioneAnnuncioScambio.clear();
 			   campoCategoriaOggetto.getSelectionModel().selectFirst();
 			   immagineCaricata.setImage(new Image(getClass().getResource("../IMG/immaginiProgramma/no_image.png").toExternalForm()));
-			   this.fileSelezionato = null;
+			   controller.setFileOggettoAlternativo(null);
 			break;
 			
 			case 1:
@@ -482,7 +482,7 @@ public class PopupOfferteBoundary {
         if (selectedFile != null) {
             Image image = new Image(selectedFile.toURI().toString());
             immagineCaricata.setImage(image);
-            this.fileSelezionato = selectedFile;
+            controller.setFileOggettoAlternativo(selectedFile);
         }
     }
     
@@ -544,6 +544,5 @@ public class PopupOfferteBoundary {
     	PaneOfferteScambio.setVisible(true);
     	aggiungiOggetto.setVisible(true);
     	oggettiOffertiButton.setVisible(true);
-    	this.oggettiOffertiVisibili = true;
     }
 }

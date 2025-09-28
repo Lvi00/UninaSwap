@@ -132,9 +132,7 @@ public class LoginBoundary {
 		            FXMLLoader loader = new FXMLLoader(getClass().getResource("Prodotti.fxml"));
 		            Parent root = loader.load();
                     ProdottiBoundary prodottiCtrl = loader.getController();
-	                prodottiCtrl.CostruisciCatalogoProdotti(this.controller.getStudente());
-	                prodottiCtrl.setUsername(controller.getUsername(this.controller.getStudente()));
-                    prodottiCtrl.setImmagine(controller.getImmagineProfilo(this.controller.getStudente()));
+	                prodottiCtrl.CostruisciCatalogoProdotti();
                     prodottiCtrl.setFiltri();
                     Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		            Scene scene = new Scene(root);
