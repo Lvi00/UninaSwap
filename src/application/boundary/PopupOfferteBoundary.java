@@ -9,10 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -221,10 +218,10 @@ public class PopupOfferteBoundary {
 			   Oggetto nuovoOggetto = new Oggetto(percorsoImmagine, categoriaSelezionata.toString(), descrizione, controller.getStudente());
 			   
 			   if (this.listaOggettiOfferti.size() < 5) {
-				    ShowPopupAlert("Oggetto aggiunto!", "L'oggetto è stato aggiunto alla lista degli oggetti offerti da te.");
+				    sceneManager.showPopupAlert(containerOfferte, "Oggetto aggiunto!", "L'oggetto è stato aggiunto alla lista degli oggetti offerti da te.");
 				    this.listaOggettiOfferti.add(nuovoOggetto);
-			}
-			   else ShowPopupError("Troppi oggetti!", "Hai inserito il limite massimo di 5 oggetti scambiabili.");
+			   }
+			   else sceneManager.showPopupError(containerOfferte, "Troppi oggetti!", "Hai inserito il limite massimo di 5 oggetti scambiabili.");
 			   
 			   campoDescrizioneAnnuncioScambio.clear();
 			   campoCategoriaOggetto.getSelectionModel().selectFirst();
@@ -233,15 +230,15 @@ public class PopupOfferteBoundary {
 			break;
 			
 			case 1:
-				ShowPopupError("Errore nella categoria", "Seleziona una categoria valida.");
+				sceneManager.showPopupError(containerOfferte, "Errore nella categoria", "Seleziona una categoria valida.");
 			break;
 			
 			case 2:
-				ShowPopupError("Errore nella descrizione", "La descrizione deve essere compresa tra 1 e 255 caratteri.");
+				sceneManager.showPopupError(containerOfferte, "Errore nella descrizione", "La descrizione deve essere compresa tra 1 e 255 caratteri.");
 			break;
 			
 			case 3:
-				ShowPopupError("Errore nell'immagine", "Carica un'immagine valida.");
+				sceneManager.showPopupError(containerOfferte, "Errore nell'immagine", "Carica un'immagine valida.");
 			break;
     	}
     }
@@ -249,7 +246,7 @@ public class PopupOfferteBoundary {
     @FXML
     public void mostraOggettiOfferti(MouseEvent e) {
         if (this.listaOggettiOfferti.isEmpty()) {
-            ShowPopupError("Nessun oggetto aggiunto", "Non hai ancora aggiunto oggetti da offrire per lo scambio.");
+            sceneManager.showPopupError(containerOfferte, "Nessun oggetto aggiunto", "Non hai ancora aggiunto oggetti da offrire per lo scambio.");
             return;
         }
         
@@ -345,11 +342,11 @@ public class PopupOfferteBoundary {
     		switch(controller.inviaOffertaVendita(annuncio)) {
 	    		case 0:
 	    	        currentStage.close(); 
-	    	        ShowPopupAlert("Offerta inviata!", "Hai inviato correttamente un'offerta per questo annuncio.");
+	    	        sceneManager.showPopupAlert(containerOfferte, "Offerta inviata!", "Hai inviato correttamente un'offerta per questo annuncio.");
 	    		break;
 	    		
 	            case -1:
-	                ShowPopupError("Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
+	                sceneManager.showPopupError(containerOfferte, "Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
 	            break;
     		}
     	}
@@ -363,15 +360,15 @@ public class PopupOfferteBoundary {
     	    switch(controller.inviaOffertaRegalo(annuncio, messaggioMotivazionale)) {
     	        case 0: // offerta inviata correttamente
                     currentStage.close();
-    	            ShowPopupAlert("Richiesta inviata!",  "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
+    	            sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
     	        break;
 
     	        case 1: // errore generico
-    	            ShowPopupError("Errore nella richiesta", "La richiesta di " + annuncio.getTipologia() + " non è stata inviata a causa di un errore nei dati inseriti.");
+    	            sceneManager.showPopupError(containerOfferte, "Errore nella richiesta", "La richiesta di " + annuncio.getTipologia() + " non è stata inviata a causa di un errore nei dati inseriti.");
     	        break;
 
     	        case -1: // offerta duplicata
-    	            ShowPopupError("Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
+    	            sceneManager.showPopupError(containerOfferte, "Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
     	        break;
     	    }
     	}
@@ -381,20 +378,20 @@ public class PopupOfferteBoundary {
     	    switch(controller.inviaOffertaScambio(annuncio, this.listaOggettiOfferti)) {
 		        case 0: // offerta di scambio normale inviata correttamente
 	                currentStage.close();
-		            ShowPopupAlert("Richiesta inviata!",  "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
+		            sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
 		        break;
 	
 		        case 1: // offerta di scambio personalizzata inviata correttamente
 		        	currentStage.close();
-		            ShowPopupAlert("Richiesta personalizzata inviata!",  "La richiesta di " + annuncio.getTipologia() + " con gli oggetti inseriti è stata inviata con successo.");
+		            sceneManager.showPopupAlert(containerOfferte, "Richiesta personalizzata inviata!",  "La richiesta di " + annuncio.getTipologia() + " con gli oggetti inseriti è stata inviata con successo.");
 		        break;
 		        
 		        case -1: // offerta duplicata
-		            ShowPopupError("Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
+		            sceneManager.showPopupError(containerOfferte, "Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
 		        break;
 		        
 	            case -2:
-	                ShowPopupError("Oggetti offerti duplicati!","Hai inserito degli oggetti duplicati nella lista degli oggetti da offrire per lo scambio.");
+	                sceneManager.showPopupError(containerOfferte, "Oggetti offerti duplicati!","Hai inserito degli oggetti duplicati nella lista degli oggetti da offrire per lo scambio.");
 	                listaOggettiOfferti.clear();
 	            break;
     	    }
@@ -426,21 +423,21 @@ public class PopupOfferteBoundary {
         switch(controller.checkControfferta(annuncio, stringaPrezzo)) {
             case 0:
                 currentStage.close();
-                ShowPopupAlert("Controfferta inviata!", "La controfferta è stata inviata con successo.");
+                sceneManager.showPopupAlert(containerOfferte, "Controfferta inviata!", "La controfferta è stata inviata con successo.");
             break;
 
             case 1:
                 campoPrezzoIntero.clear();
                 campoPrezzoDecimale.clear();
-                ShowPopupError("Controfferta non valida!", "La controfferta deve avere max 3 cifre per la parte intera e max 2 cifre per quella decimale e (0 < controfferta < prezzo).");
+                sceneManager.showPopupError(containerOfferte, "Controfferta non valida!", "La controfferta deve avere max 3 cifre per la parte intera e max 2 cifre per quella decimale e (0 < controfferta < prezzo).");
             break;
 
             case -1:
-                ShowPopupError("Offerta già esistente!","Hai già effettuato un'offerta per questo annuncio.");
+                sceneManager.showPopupError(containerOfferte, "Offerta già esistente!","Hai già effettuato un'offerta per questo annuncio.");
             break;
             
             default:
-                ShowPopupError("Errore sconosciuto", "Si è verificato un errore imprevisto. Riprova.");
+                sceneManager.showPopupError(containerOfferte, "Errore sconosciuto", "Si è verificato un errore imprevisto. Riprova.");
             break;
         }
     }
@@ -485,58 +482,6 @@ public class PopupOfferteBoundary {
             controller.setFileOggettoAlternativo(selectedFile);
         }
     }
-    
-    private void ShowPopupAlert(String title, String message) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupAlert.fxml"));
-	        Parent root = loader.load();
-	        Stage mainStage = (Stage) containerOfferte.getScene().getWindow();
-	        Stage stage = new Stage();
-	        stage.initOwner(mainStage);
-	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
-	        Scene scene = new Scene(root);
-	        stage.setScene(scene);
-	        stage.setTitle("UninaSwap - " + title);
-	        stage.setResizable(false);
-	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-	        PopupErrorBoundary popupController = loader.getController();
-	        popupController.setLabels(title, message);
-	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
-	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
-	        stage.show();
-	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
-	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-    
-    private void ShowPopupError(String title, String message) {
-		try {
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
-	        Parent root = loader.load();
-	        Stage mainStage = (Stage) containerOfferte.getScene().getWindow();
-	        Stage stage = new Stage();
-	        stage.initOwner(mainStage);
-	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
-	        Scene scene = new Scene(root);
-	        stage.setScene(scene);
-	        stage.setTitle("UninaSwap - " + title);
-	        stage.setResizable(false);
-	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-	        PopupErrorBoundary popupController = loader.getController();
-	        popupController.setLabels(title, message);
-	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
-	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
-	        stage.show();
-	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
-	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-		}
-	}
     
     @FXML
     public void mostraCampiScambio(MouseEvent e) {

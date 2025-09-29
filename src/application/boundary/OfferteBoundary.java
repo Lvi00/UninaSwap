@@ -226,7 +226,7 @@ public class OfferteBoundary {
     public void eliminaOfferta(Offerta offerta) {
     	switch(controller.eliminaOfferta(offerta)){
     		case 0:
-    			ShowPopupAlert("Eliminazione offerta", "Offerta eliminata correttamente.");
+    			sceneManager.showPopupAlert(containerOfferte, "Eliminazione offerta", "Offerta eliminata correttamente.");
 				gridOfferte.getChildren().clear();
 				controller.SvuotaOfferteInviate();
 				CostruisciOfferteUtente(this.controller.getStudente());
@@ -274,34 +274,4 @@ public class OfferteBoundary {
     	OffertePane.setVisible(true);
     	containerModificaOfferta.setVisible(false);
     }
-    
-    private void ShowPopupAlert(String title, String message) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupAlert.fxml"));
-	        Parent root = loader.load();
-	        Stage mainStage = (Stage) containerOfferte.getScene().getWindow();
-	        Stage stage = new Stage();
-	        stage.initOwner(mainStage);
-	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
-	        Scene scene = new Scene(root);
-	        stage.setScene(scene);
-	        stage.setTitle("UninaSwap - " + title);
-	        stage.setResizable(false);
-	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-
-	        PopupErrorBoundary popupController = loader.getController();
-	        popupController.setLabels(title, message);
-	       
-	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
-	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
-
-	        stage.show();
-	        
-	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
-	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-		}
-	}
 }

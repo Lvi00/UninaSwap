@@ -185,32 +185,6 @@ public class CreaAnnuncioBoundary {
             controller.setFileOggettoAnnuncio(selectedFile);
         }
     }
-    
-    private void ShowPopupError(String title, String message) {
-		try {
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
-	        Parent root = loader.load();
-	        Stage mainStage = (Stage) paneCreaAnnuncio.getScene().getWindow();
-	        Stage stage = new Stage();
-	        stage.initOwner(mainStage);
-	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
-	        Scene scene = new Scene(root);
-	        stage.setScene(scene);
-	        stage.setTitle("UninaSwap - " + title);
-	        stage.setResizable(false);
-	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-	        PopupErrorBoundary popupController = loader.getController();
-	        popupController.setLabels(title, message);
-	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
-	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
-	        stage.show();
-	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
-	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-		}
-	}
 
     @FXML
     public void InviaDati(MouseEvent e) {
@@ -271,7 +245,7 @@ public class CreaAnnuncioBoundary {
         
         switch(controller.checkDatiAnnuncio(datiAnnuncio, fileOggettoAnnuncio, controller.getStudente(), controller.getListaOggettiDesiderati())) {
 	        case 0:
-	        	ShowPopupAlert("Annuncio creato con successo!", "Dati inseriti con successo in UninaSwap");
+	        	sceneManager.showPopupAlert(paneCreaAnnuncio, "Annuncio creato con successo!", "Dati inseriti con successo in UninaSwap");
 	        	controller.copiaFileCaricato(fileOggettoAnnuncio);
 	        	NascondiPaneScambio(e);
 	        	inizializzaCampi();
@@ -280,51 +254,51 @@ public class CreaAnnuncioBoundary {
 	        break;
 	        
         	case 1:
-        		ShowPopupError("Titolo non valido", "Il titolo dell'annuncio non può essere vuoto e deve contenere al massimo 50 caratteri.");
+        		sceneManager.showPopupError(paneCreaAnnuncio, "Titolo non valido", "Il titolo dell'annuncio non può essere vuoto e deve contenere al massimo 50 caratteri.");
         		campoTitoloAnnuncio.clear();
         	break;
         	
         	case 2:
-        		ShowPopupError("Categoria non valida", "La cateogira dell'annuncio non può essere vuota.");
+        		sceneManager.showPopupError(paneCreaAnnuncio, "Categoria non valida", "La cateogira dell'annuncio non può essere vuota.");
         	break;
         	
         	case 3:
-        		ShowPopupError("Fascia oraria non valida", "La fascia oraria della disponibilità non può essere vuota.");
+        		sceneManager.showPopupError(paneCreaAnnuncio, "Fascia oraria non valida", "La fascia oraria della disponibilità non può essere vuota.");
         	break;
         	
         	case 4:
-        		ShowPopupError("Giorni disponibilità non validi", "Specificare almeno un giorno della disponibilità.");
+        		sceneManager.showPopupError(paneCreaAnnuncio, "Giorni disponibilità non validi", "Specificare almeno un giorno della disponibilità.");
         	break;
         	
         	case 5:
-        		ShowPopupError("Descrizione non valida", "La descrizione dell'annuncio non può essere vuota e deve contenere al massimo 100 caratteri.");
+        		sceneManager.showPopupError(paneCreaAnnuncio, "Descrizione non valida", "La descrizione dell'annuncio non può essere vuota e deve contenere al massimo 100 caratteri.");
         		campoDescrizioneAnnuncio.clear();
         	break;
         	
         	case 6:
-        		ShowPopupError("Sede non valida", "I campi dell'indirizzo della sede sono possono essere vuoti e devono rispettare il formato corretto.");
+        		sceneManager.showPopupError(paneCreaAnnuncio, "Sede non valida", "I campi dell'indirizzo della sede sono possono essere vuoti e devono rispettare il formato corretto.");
         		campoIndirizzo2.clear();
         		campoIndirizzo3.clear();
         		campoCap.clear();
         	break;
         	
         	case 7:
-        		ShowPopupError("Tipologia non valida", "La tipologia dell'annuncio non può essere vuota.");
+        		sceneManager.showPopupError(paneCreaAnnuncio, "Tipologia non valida", "La tipologia dell'annuncio non può essere vuota.");
         	break;
         	
          	case 8:
-        		ShowPopupError("Prezzo non valido", "Il prezzo inserito non è valido");
+        		sceneManager.showPopupError(paneCreaAnnuncio, "Prezzo non valido", "Il prezzo inserito non è valido");
         	    campoPrezzoIntero.clear();
         	    campoPrezzoDecimale.clear();
 			break;
 			
         	case 9:
-        		ShowPopupError("Immagine non valida", "L'immagine inserita non è valida oppure non ha un nome valido.");
+        		sceneManager.showPopupError(paneCreaAnnuncio, "Immagine non valida", "L'immagine inserita non è valida oppure non ha un nome valido.");
 	        	controller.setFileOggettoAnnuncio(null);
 			break;
 			
         	case 10:
-				ShowPopupError("Oggetti desiderati non validi", "Gli oggetti desiderati non sono validi. Devi specificare minimo 1 o massimo 5 oggetti che desideri in cambio.");
+				sceneManager.showPopupError(paneCreaAnnuncio, "Oggetti desiderati non validi", "Gli oggetti desiderati non sono validi. Devi specificare minimo 1 o massimo 5 oggetti che desideri in cambio.");
 				controller.svuotaListaOggettiDesiderati();
 				campoAggiungiOggetto.clear();
 			break;
@@ -402,20 +376,20 @@ public class CreaAnnuncioBoundary {
     	
     	switch(controller.controllaOggettoDesiderato(nomeOggetto, listaOggettiDesiderati)) {
     		case 0:
-    			ShowPopupAlert("Oggetto desiderato aggiunto", "L'oggetto desiderato è stato aggiunto con successo.");
+    			sceneManager.showPopupAlert(paneCreaAnnuncio, "Oggetto desiderato aggiunto", "L'oggetto desiderato è stato aggiunto con successo.");
     			controller.aggiungiOggettoDesiderato(nomeOggetto);
     		break;
     		
     		case 1:
-    			ShowPopupError("Oggetto desiderato non valido", "Il nome dell'oggetto deve avere un formato valido, deve essere compreso tra 2 e 20 caratteri e non deve essere già presente nella lista.");
+    			sceneManager.showPopupError(paneCreaAnnuncio, "Oggetto desiderato non valido", "Il nome dell'oggetto deve avere un formato valido, deve essere compreso tra 2 e 20 caratteri e non deve essere già presente nella lista.");
     		break;
     		
     		case 2:
-    			ShowPopupError("Oggetto desiderato già esistente", "L'oggetto desiderato inserito già esiste, inserisci un oggetto diverso.");
+    			sceneManager.showPopupError(paneCreaAnnuncio, "Oggetto desiderato già esistente", "L'oggetto desiderato inserito già esiste, inserisci un oggetto diverso.");
     		break;
     		
     		case 3:
-    			ShowPopupError("Limite oggetti raggiunto", "L'oggetto desiderato non puo essere inserito.");
+    			sceneManager.showPopupError(paneCreaAnnuncio, "Limite oggetti raggiunto", "L'oggetto desiderato non puo essere inserito.");
     		break;
     	}
     	
@@ -425,7 +399,7 @@ public class CreaAnnuncioBoundary {
     @FXML
     public void mostraOggettiDesiderati(MouseEvent e) {
     	if(controller.getListaOggettiDesiderati().isEmpty()) {
-			ShowPopupError("Nessun oggetto inserito", "Non sono stati ancora aggiunti oggetti desiderati. Aggiungi almeno un oggetto per poter visualizzare la lista.");
+			sceneManager.showPopupError(paneCreaAnnuncio, "Nessun oggetto inserito", "Non sono stati ancora aggiunti oggetti desiderati. Aggiungi almeno un oggetto per poter visualizzare la lista.");
 			return;
 		}
     	

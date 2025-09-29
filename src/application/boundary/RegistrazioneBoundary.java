@@ -109,96 +109,63 @@ public class RegistrazioneBoundary {
         credenziali.add(passwordFieldReg.getText().trim());
         
         switch (controller.checkDatiRegistrazione(credenziali)) {
-        	case 0:
-        		System.out.println("Tutti i campi sono validi");
-        		controller.InserisciStudente(credenziali);
-        		MostraLogin(e);
-        	break;
-        	
-        	case 1:
-	        	ShowPopupError("Campi mancanti", "Mancano dei campi obbligatori. Compila tutti i campi per procedere.");
-	        break;
-	        
-            case 2:
-                nomeFieldReg.clear();
-                ShowPopupError("Errore nel nome", "Nome non valido. Deve essere lungo tra 2 e 40 caratteri e non contenere numeri o simboli.");
-            break;
-            
-            case 3:
-                cognomeFieldReg.clear();
-                ShowPopupError("Errore nel cognome", "Cognome non valido. Deve essere lungo tra 2 e 40 caratteri e non contenere numeri o simboli.");
-            break;
-            
-            case 4:
-                matricolaFieldReg.clear();
-                ShowPopupError("Errore nella matricola", "Matricola non valida. Deve essere lunga 9 caratteri e non contenere spazzi.");
-            break;
-            
-            case 5:
-                emailFieldReg.clear();
-                ShowPopupError("Errrore nell'email", "Email non valida. Non rispetta il formato standard.");
-            break;
-            
-            case 6:
-                usernameFieldReg.clear();
-                ShowPopupError("Errore nell'username", "Username non valido. Deve essere lungo al massimo 10 caratteri e non contenere spazzi.");
-            break;
-            
-            case 7:
-                passwordFieldReg.clear();
-                VisualizzaPasswordReg.clear();
-                ShowPopupError("Errore nella password", "Password non valida. Deve essere lunga tra 8 e 20 caratteri.");
-            break;
-            
-            case 8:
-            	matricolaFieldReg.clear();
-                nomeFieldReg.clear();
-                cognomeFieldReg.clear();
-                emailFieldReg.clear();
-                passwordFieldReg.clear();
-                VisualizzaPasswordReg.clear();
-                usernameFieldReg.clear();
-                ShowPopupError("Utente già esistente", "Un utente con la stessa matricola, email o username è già registrato.");
-            break;
-            
-            default:
-        		System.out.println("Errore sconosciuto durante la registrazione.");
-        	break;
-        }
-	}
+	        case 0:
+	            System.out.println("Tutti i campi sono validi");
+	            controller.InserisciStudente(credenziali);
+	            MostraLogin(e);
+	            break;
 	
-	private void ShowPopupError(String title, String message) {
-		try {
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupError.fxml"));
-	        Parent root = loader.load();
-
-	        Stage mainStage = (Stage) PaneRegistrazione.getScene().getWindow();
-	        Stage stage = new Stage();
-	        stage.initOwner(mainStage);
-	        stage.initModality(javafx.stage.Modality.WINDOW_MODAL);
-	        Scene scene = new Scene(root);
-	        stage.setScene(scene);
-	        stage.setTitle("UninaSwap - " + title);
-	        stage.centerOnScreen();
-	        stage.setResizable(false);
-	        stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-
-	        PopupErrorBoundary popupController = loader.getController();
-	        popupController.setLabels(title, message);
-	        
-	        mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
-	        stage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
-
-	        stage.show();
-	        
-	        stage.setX(mainStage.getX() + (mainStage.getWidth() - stage.getWidth()) / 2);
-	        stage.setY(mainStage.getY() + (mainStage.getHeight() - stage.getHeight()) / 2 - 50);
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-		}
-	}
+	        case 1:
+	            sceneManager.showPopupError(PaneRegistrazione, "Campi mancanti", "Mancano dei campi obbligatori. Compila tutti i campi per procedere.");
+	            break;
 	
+	        case 2:
+	            nomeFieldReg.clear();
+	            sceneManager.showPopupError(PaneRegistrazione, "Errore nel nome", "Nome non valido. Deve essere lungo tra 2 e 40 caratteri e non contenere numeri o simboli.");
+	            break;
+	
+	        case 3:
+	            cognomeFieldReg.clear();
+	            sceneManager.showPopupError(PaneRegistrazione, "Errore nel cognome", "Cognome non valido. Deve essere lungo tra 2 e 40 caratteri e non contenere numeri o simboli.");
+	            break;
+	
+	        case 4:
+	            matricolaFieldReg.clear();
+	            sceneManager.showPopupError(PaneRegistrazione, "Errore nella matricola", "Matricola non valida. Deve essere lunga 9 caratteri e non contenere spazzi.");
+	            break;
+	
+	        case 5:
+	            emailFieldReg.clear();
+	            sceneManager.showPopupError(PaneRegistrazione, "Errrore nell'email", "Email non valida. Non rispetta il formato standard.");
+	            break;
+	
+	        case 6:
+	            usernameFieldReg.clear();
+	            sceneManager.showPopupError(PaneRegistrazione, "Errore nell'username", "Username non valido. Deve essere lungo al massimo 10 caratteri e non contenere spazzi.");
+	            break;
+	
+	        case 7:
+	            passwordFieldReg.clear();
+	            VisualizzaPasswordReg.clear();
+	            sceneManager.showPopupError(PaneRegistrazione, "Errore nella password", "Password non valida. Deve essere lunga tra 8 e 20 caratteri.");
+	            break;
+	
+	        case 8:
+	            matricolaFieldReg.clear();
+	            nomeFieldReg.clear();
+	            cognomeFieldReg.clear();
+	            emailFieldReg.clear();
+	            passwordFieldReg.clear();
+	            VisualizzaPasswordReg.clear();
+	            usernameFieldReg.clear();
+	            sceneManager.showPopupError(PaneRegistrazione, "Utente già esistente", "Un utente con la stessa matricola, email o username è già registrato.");
+	            break;
+	
+	        default:
+	            System.out.println("Errore sconosciuto durante la registrazione.");
+	            break;
+	    }
+	}
 	
 	@FXML
 	public void LinkProfiloGithub(MouseEvent e) {
