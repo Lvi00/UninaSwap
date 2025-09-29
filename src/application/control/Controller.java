@@ -29,6 +29,7 @@ public class Controller {
 	private File fileOggettoAnnuncio = null;
 	private File fileOggettoOfferto = null;
     private File fileOggettoAlternativo = null;
+    private File immagineProfiloSelezionata = null;
 	private Annuncio annuncioSelezionato = null;
 	private ArrayList<Oggetto> listaOggettiOfferti = new ArrayList<Oggetto>();
     private ArrayList<String> listaOggettiDesiderati = new ArrayList<String>();
@@ -39,6 +40,17 @@ public class Controller {
         }
         return controller;
     }
+	
+	public void logout() {
+		this.studente = null;
+		this.fileOggettoAnnuncio = null;
+		this.fileOggettoOfferto = null;
+	    this.fileOggettoAlternativo = null;
+	    this.immagineProfiloSelezionata = null;
+		this.annuncioSelezionato = null;
+		this.listaOggettiOfferti.clear();
+	    this.listaOggettiDesiderati.clear();
+	}
 	
 	public void setStudente(Studente studente) {
 		this.studente = studente;
@@ -58,6 +70,14 @@ public class Controller {
 	
 	public File getFileOggettoAnnuncio() {
 		return fileOggettoAnnuncio;
+	}
+	
+	public File getImmagineProfiloSelezionata() {
+		return immagineProfiloSelezionata;
+	}
+	
+	public void setImmagineProfiloSelezionata(File immagineProfiloSelezionata) {
+		this.immagineProfiloSelezionata = immagineProfiloSelezionata;
 	}
 	
 	public void setFileOggettoAnnuncio(File fileOggettoAnnuncio) {
@@ -183,10 +203,14 @@ public class Controller {
         return 1;
 	}
 	
-	public Studente CheckLoginStudente(String username, String password){
+	public int CheckLoginStudente(String username, String password){
 		Studente studente = new StudenteDAO().LoginStudente(username, password);
-		this.studente = studente;
-		return this.studente;
+		if(studente != null) {
+			this.studente = studente;
+			return 0;
+		}
+		
+		return 1;
 	}
 	
 	public Oggetto getOggettoById(int idOggetto) {

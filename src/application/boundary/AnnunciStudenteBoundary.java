@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Offerta;
-import application.entity.Studente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -75,17 +74,20 @@ public class AnnunciStudenteBoundary {
         }
 	}
     
-    @FXML
+	@FXML
     public void SelezionaPagina(MouseEvent e) {
-    	sceneManager.SelezionaPagina(e);
+        Object source = e.getSource();
+        Label label = (Label) source;
+        String nomePagina = label.getText();
+    	sceneManager.SelezionaPagina(nomePagina, e);
     }
 
-    public boolean CostruisciProdottiUtente(Studente s) {
+    public boolean CostruisciProdottiUtente() {
         ArrayList<Annuncio> annunci;
         
         if(this.controller.getStudente().getAnnunciPubblicati().isEmpty()) 
         {
-        	annunci = controller.getAnnunciStudente(s);
+        	annunci = controller.getAnnunciStudente(controller.getStudente());
         	controller.setAnnunciPubblicati(annunci);
         }
 		else annunci = controller.getStudente().getAnnunciPubblicati();
@@ -95,7 +97,7 @@ public class AnnunciStudenteBoundary {
         if(annunci.size() == 0) titolo = "Non ci sono annunci attivi di ";
         else titolo = "Annunci attivi di ";
         
-        labelAnnunciPubblicati.setText(titolo + controller.getUsername(s));
+        labelAnnunciPubblicati.setText(titolo + controller.getUsername(controller.getStudente()));
         
         int column = 0;
         int row = 0;
@@ -402,7 +404,7 @@ public class AnnunciStudenteBoundary {
         if(controller.rimuoviAnnuncio(a) == 0) {
             gridProdotti.getChildren().clear();
             controller.SvuotaAnnunciPubblicati();
-            CostruisciProdottiUtente(controller.getStudente());
+            CostruisciProdottiUtente();
             sceneManager.showPopupAlert(containerAnnunciStudente, "Rimozione avvenuta", "L'annuncio è stato rimosso con successo.");
         }
         else {
@@ -415,7 +417,7 @@ public class AnnunciStudenteBoundary {
 		AnnunciPane.setVisible(true);
 		OfferteAnnunciPane.setVisible(false);
 		gridProdotti.getChildren().clear();
-		CostruisciProdottiUtente(controller.getStudente());
+		CostruisciProdottiUtente();
 	}
     
     public void showInfoOfferta(MouseEvent e, Offerta offerta) {

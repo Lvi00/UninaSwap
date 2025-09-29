@@ -8,7 +8,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Offerta;
-import application.entity.Studente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -77,15 +76,19 @@ public class OfferteBoundary {
         }
 	}
     
+    @FXML
     public void SelezionaPagina(MouseEvent e) {
-    	sceneManager.SelezionaPagina(e);
+        Object source = e.getSource();
+        Label label = (Label) source;
+        String nomePagina = label.getText();
+    	sceneManager.SelezionaPagina(nomePagina, e);
     }
     
-    public boolean CostruisciOfferteUtente(Studente s) {
+    public boolean CostruisciOfferteUtente() {
         ArrayList<Offerta> offerteInviate;
         
         if(controller.getStudente().getOfferteInviate().isEmpty()) {
-        	offerteInviate = controller.getOffertebyMatricola(s);
+        	offerteInviate = controller.getOffertebyMatricola(controller.getStudente());
         	controller.setOfferteInviate(offerteInviate);
         	controller.getStudente().setOfferteInviate(offerteInviate);
         }
@@ -99,7 +102,7 @@ public class OfferteBoundary {
         if(offerteInviate.size() == 0) titolo = "Non ci sono offerte inviate da ";
         else titolo = "Offerte inviate da ";
         
-        labelOffertePubblicate.setText(titolo + s.getUsername());
+        labelOffertePubblicate.setText(titolo + controller.getUsername(controller.getStudente()));
         
         int column = 0;
         int row = 0;
@@ -229,7 +232,7 @@ public class OfferteBoundary {
     			sceneManager.showPopupAlert(containerOfferte, "Eliminazione offerta", "Offerta eliminata correttamente.");
 				gridOfferte.getChildren().clear();
 				controller.SvuotaOfferteInviate();
-				CostruisciOfferteUtente(this.controller.getStudente());
+				CostruisciOfferteUtente();
 			break;
 			
     		case 1:

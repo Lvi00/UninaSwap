@@ -20,7 +20,6 @@ public class ProfiloBoundary {
 	
     private Controller controller = Controller.getController();
     private SceneManager sceneManager = SceneManager.sceneManager();
-	private File immagineSelezionata = null;
 	
     @FXML private Label usernameDashboard;
     @FXML private Label usernameProfilo;
@@ -78,7 +77,10 @@ public class ProfiloBoundary {
     
     @FXML
     public void SelezionaPagina(MouseEvent e) {
-        sceneManager.SelezionaPagina(e);
+        Object source = e.getSource();
+        Label label = (Label) source;
+        String nomePagina = label.getText();
+    	sceneManager.SelezionaPagina(nomePagina, e);
     }
     
     public void cambiaFoto(MouseEvent e)
@@ -97,14 +99,15 @@ public class ProfiloBoundary {
             Image image = new Image(selectedFile.toURI().toString());
             this.immagineProfilo.setImage(image);
             this.immagineNav.setImage(image);
-            this.immagineSelezionata = selectedFile;
-            controller.copiaImmagineProfiloCaricata(this.immagineSelezionata);
-            controller.caricaFileImmagine(this.immagineSelezionata.getName());
+            controller.setImmagineProfiloSelezionata(selectedFile);
+            controller.copiaImmagineProfiloCaricata(controller.getImmagineProfiloSelezionata());
+            controller.caricaFileImmagine(controller.getImmagineProfiloSelezionata().getName());
         }
     }
 	
     @FXML
-    public void logout(MouseEvent e) {   	
+    public void logout(MouseEvent e) { 
+    	controller.logout();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
             Parent root = loader.load();

@@ -122,30 +122,11 @@ public class LoginBoundary {
 		else {
 			String username = UsernameLogin.getText().trim();
 			String password = PasswordLogin.getText().trim();
-			Studente studente = controller.CheckLoginStudente(username, password);
 			
-			if(studente == null)
+			if(controller.CheckLoginStudente(username, password) == 1)
 				sceneManager.showPopupError(PaneLogin, "Utente non esistente", "Le credenziali inserite non sono corrette");
 			else {
-				this.controller.setStudente(studente);
-				try {
-		            FXMLLoader loader = new FXMLLoader(getClass().getResource("Prodotti.fxml"));
-		            Parent root = loader.load();
-                    ProdottiBoundary prodottiCtrl = loader.getController();
-	                prodottiCtrl.CostruisciCatalogoProdotti();
-                    prodottiCtrl.setFiltri();
-                    Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-		            Scene scene = new Scene(root);
-		            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-		            stage.setScene(scene);
-		            stage.setTitle("UninaSwap - Prodotti");
-		            stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-		            stage.setResizable(false);
-		            stage.show();
-				}
-				catch(Exception ex) {
-					ex.printStackTrace();
-				}
+				sceneManager.SelezionaPagina("Prodotti", e);
 			}
 		}
 	}

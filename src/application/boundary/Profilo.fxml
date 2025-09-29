@@ -55,11 +55,14 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" layoutX="719.0" layoutY="20.0" prefHeight="62.0" prefWidth="220.0" spacing="10.0">
                      <children>
-                        <ImageView fx:id="immagineNav" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="immagineNav" fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></ImageView>
                         <Label id="label-profilo" fx:id="usernameDashboard" textFill="WHITE">
                            <font><Font size="16.0" /></font>
                            <cursor>
-                              <Cursor fx:constant="DEFAULT" />
+                              <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
                      </children>

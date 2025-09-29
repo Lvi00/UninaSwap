@@ -49,6 +49,9 @@ public class InformazioniBoundary {
     
     @FXML
     public void SelezionaPagina(MouseEvent e) {
-    	sceneManager.SelezionaPagina(e);
+        Object source = e.getSource();
+        Label label = (Label) source;
+        String nomePagina = label.getText();
+    	sceneManager.SelezionaPagina(nomePagina, e);
     }
 }

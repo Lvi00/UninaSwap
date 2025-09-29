@@ -30,10 +30,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ProdottiBoundary {
-
-    private Controller controller = Controller.getController();
-    private SceneManager sceneManager = SceneManager.sceneManager();
-
     @FXML private HBox containerCatalogoProdotti;
     @FXML private Label usernameDashboard;
     @FXML private Label labelAnnunciTrovati;
@@ -43,6 +39,9 @@ public class ProdottiBoundary {
     @FXML private TextField campoRicerca;    
     @FXML private ChoiceBox<Categorie> campoCategoriaOggetto;
     @FXML private ChoiceBox<Tipologia> campoTipologia;
+    
+    private Controller controller = Controller.getController();
+    private SceneManager sceneManager = SceneManager.sceneManager();
     
     private String keyword = null;
     private String categoria = null;
@@ -95,7 +94,10 @@ public class ProdottiBoundary {
     
     @FXML
     public void SelezionaPagina(MouseEvent e) {
-        sceneManager.SelezionaPagina(e);
+        Object source = e.getSource();
+        Label label = (Label) source;
+        String nomePagina = label.getText();
+    	sceneManager.SelezionaPagina(nomePagina, e);
     }
     
     public void CostruisciCatalogoProdotti() {
