@@ -87,7 +87,7 @@ public class PopupOfferteBoundary {
     @FXML private TableColumn<Oggetto, String> colAzioni;
     private ObservableList<Oggetto> listaOggettiOfferti = FXCollections.observableArrayList();
     
-    public void setProdottiBoundary(ProdottiBoundary prodottiBoundary) {
+    public void setProdottiBoundary() {
         campoCategoriaOggetto.setItems(FXCollections.observableArrayList(Categorie.values()));
         campoCategoriaOggetto.getSelectionModel().selectFirst();
     }

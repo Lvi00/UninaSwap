@@ -421,33 +421,6 @@ public class AnnunciStudenteBoundary {
 	}
     
     public void showInfoOfferta(MouseEvent e, Offerta offerta) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOfferteAnnuncio.fxml"));
-            Parent root = loader.load();
-            PopupOfferteAnnuncioBoundary popupInfoController = loader.getController();
-            popupInfoController.setPopupInfoOfferta(offerta);
-            Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            Stage popupStage = new Stage();
-            popupStage.initOwner(mainStage);
-            popupStage.initModality(Modality.WINDOW_MODAL);
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-            popupStage.setScene(scene);
-            popupStage.setTitle("UninaSwap - Informazioni di " + controller.getTipologiaOfferta(offerta).toLowerCase());
-            popupStage.getIcons().add(
-                new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
-            );
-            popupStage.setResizable(false);
-            mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
-            popupStage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
-
-            popupStage.show();
-
-            popupStage.setX(mainStage.getX() + (mainStage.getWidth() - popupStage.getWidth()) / 2);
-            popupStage.setY(mainStage.getY() + (mainStage.getHeight() - popupStage.getHeight()) / 2 - 40);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        sceneManager.showInfoOfferta(e, offerta);
     }
 }

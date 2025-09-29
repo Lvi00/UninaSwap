@@ -108,20 +108,6 @@ public class ProfiloBoundary {
     @FXML
     public void logout(MouseEvent e) { 
     	controller.logout();
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-            stage.setScene(scene);
-            stage.setTitle("UninaSwap - Login");
-            stage.getIcons().add(new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm()));
-            stage.setResizable(false);
-            stage.show();
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        sceneManager.SelezionaPagina("Login", e);
     }
 }

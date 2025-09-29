@@ -8,13 +8,9 @@ import application.control.Controller;
 import application.entity.Annuncio;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -26,8 +22,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 public class ProdottiBoundary {
     @FXML private HBox containerCatalogoProdotti;
@@ -104,7 +98,7 @@ public class ProdottiBoundary {
 
         ArrayList<Annuncio> annunciVisibili;
     	
-    	if(controller.getStudente().getAnnunciVisibili().isEmpty()) 
+    	if(controller.getAnnunciVisibili().isEmpty())
     	{
     		annunciVisibili = controller.getInfoAnnunci(controller.getStudente());
     		controller.setAnnunciVisibili(annunciVisibili);
@@ -198,34 +192,7 @@ public class ProdottiBoundary {
     }
     
     public void showPopupOfferte(MouseEvent e, Annuncio annuncio) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOfferte.fxml"));
-            Parent root = loader.load();
-            PopupOfferteBoundary popupCtrl = loader.getController();
-            popupCtrl.setProdottiBoundary(this);
-            controller.setAnnuncioSelezionato(annuncio);
-            popupCtrl.costruisciPopup();
-            Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            Stage popupStage = new Stage();
-            popupStage.initOwner(mainStage);
-            popupStage.initModality(Modality.WINDOW_MODAL);
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
-            popupStage.setScene(scene);
-            popupStage.setTitle("UninaSwap - " + annuncio.getTipologia());
-            popupStage.getIcons().add(
-                new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
-            );
-            popupStage.setResizable(false);
-            mainStage.getScene().getRoot().setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
-            popupStage.setOnHidden(event -> mainStage.getScene().getRoot().setEffect(null));
-            popupStage.show();
-            popupStage.setX(mainStage.getX() + (mainStage.getWidth() - popupStage.getWidth()) / 2);
-            popupStage.setY(mainStage.getY() + (mainStage.getHeight() - popupStage.getHeight()) / 2 - 40);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        sceneManager.showPopupOfferte(e, annuncio);
     }
     
     @FXML
