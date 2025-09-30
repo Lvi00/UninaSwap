@@ -11,7 +11,7 @@ import application.entity.Annuncio;
 import application.resources.ConnessioneDB;
 
 public class OggettiOffertiDAO {
-	private Controller controller = new Controller();
+	private Controller controller = Controller.getController();
 
 	public void SaveOggettoOfferto(int idOfferta, int idOggetto) {
 		try {

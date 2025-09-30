@@ -5,10 +5,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import application.control.Controller;
 import application.entity.Sede;
 import application.resources.ConnessioneDB;
 
 public class SedeDAO {
+	
+	private Controller controller = Controller.getController();
 	
 	public void SaveSade(Sede sede) {
 		try {

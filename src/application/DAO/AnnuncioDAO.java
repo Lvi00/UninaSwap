@@ -11,7 +11,7 @@ import application.resources.ConnessioneDB;
 
 public class AnnuncioDAO {
 	
-	private Controller controller = new Controller();
+	private Controller controller = Controller.getController();
 
 	public void SaveAnnuncio(Annuncio annuncio) {
 		try {

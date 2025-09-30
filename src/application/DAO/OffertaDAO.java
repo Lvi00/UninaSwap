@@ -9,96 +9,81 @@ import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Offerta;
+import application.entity.OffertaRegalo;
+import application.entity.OffertaScambio;
+import application.entity.OffertaVendita;
 import application.entity.Oggetto;
 import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
 public class OffertaDAO {
 	
-	private Controller controller = new Controller();
+	private Controller controller = Controller.getController();
 
-    public int SaveOfferta(Offerta offerta, String matricola, String motivazione) {
-    	
-    	//Codici di ritorno:
-    	//-1: errore generico
-    	//0: tutto ok nel caso di offerta di tipo Regalo o Vendita
-    	//idOfferta: offerta di tipo Scambio inserita con successo
-    	
-        int returnValue = 0;
-        
-    	try {
-            String matStudente = matricola;
-            int idannuncio = new AnnuncioDAO().getIdByAnnuncio(offerta.getAnnuncio());
+	public int SaveOfferta(Offerta offerta) {
+	    try {
+	        String matStudente = controller.getMatricola(controller.getStudenteOfferta(offerta));
+	        int idannuncio = new AnnuncioDAO().getIdByAnnuncio(offerta.getAnnuncio());
 
-            Connection conn = ConnessioneDB.getConnection();
+	        Connection conn = ConnessioneDB.getConnection();
 
-            // Controllo duplicati: uno studente può fare solo un'offerta per annuncio
-            String queryDuplicate = "SELECT * FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
-            PreparedStatement dupStatement = conn.prepareStatement(queryDuplicate);
-            dupStatement.setString(1, matStudente);
-            dupStatement.setInt(2, idannuncio);
+	        // Controllo duplicati
+	        String queryDuplicate = "SELECT 1 FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
+	        PreparedStatement dupStatement = conn.prepareStatement(queryDuplicate);
+	        dupStatement.setString(1, matStudente);
+	        dupStatement.setInt(2, idannuncio);
+	        ResultSet dupResult = dupStatement.executeQuery();
+	        if (dupResult.next()) {
+	            return -1;
+	        }
 
-            ResultSet dupResult = dupStatement.executeQuery();
-            if (dupResult.next()) {
-                System.out.println("Offerta già esistente per questo annuncio.");
-                dupResult.close();
-                dupStatement.close();
-                return -1;
-            }
-            dupResult.close();
-            dupStatement.close();
+	        // Query di inserimento
+	        String insert = "INSERT INTO OFFERTA(statoofferta, prezzoofferta, tipologia, matstudente, idannuncio, motivazione, dataPubblicazione) "
+	                      + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-            // Imposta motivazione
-            if (!"Regalo".equalsIgnoreCase(offerta.getTipologia())) {
-                motivazione = "Nessuna";
-            }
+	        PreparedStatement statement = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS);
 
-            // Inserimento offerta
-            String insert = "INSERT INTO OFFERTA(statoofferta, prezzoofferta, tipologia, matstudente, idannuncio, motivazione, dataPubblicazione) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement statement = conn.prepareStatement(insert);
-            
-            if ("Scambio".equalsIgnoreCase(offerta.getTipologia())) {
-                // per Scambio, abilita il ritorno dell'ID generato
-                statement = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS);
-            } else {
-                statement = conn.prepareStatement(insert);
-            }
-            
-            statement.setString(1, offerta.getStatoOfferta());
-            statement.setDouble(2, offerta.getPrezzoOfferta());
-            statement.setString(3, offerta.getTipologia());
-            statement.setString(4, matStudente);
-            statement.setInt(5, idannuncio);
-            statement.setString(6, motivazione);
-            statement.setTimestamp(7, offerta.getDataPubblicazione());
+	        // Campi comuni
+	        statement.setString(1, offerta.getStatoOfferta());
+	        statement.setString(4, matStudente);
+	        statement.setInt(5, idannuncio);
+	        statement.setTimestamp(7, offerta.getDataPubblicazione());
 
-            int rowsInserted = statement.executeUpdate();
+	        // Campi specifici
+	        if (offerta instanceof OffertaVendita) {
+	            statement.setDouble(2, ((OffertaVendita) offerta).getPrezzoOfferta());
+	            statement.setString(3, "Vendita");
+	            statement.setString(6, null);
+	        } else if (offerta instanceof OffertaRegalo) {
+	            statement.setNull(2, java.sql.Types.DOUBLE);
+	            statement.setString(3, "Regalo");
+	            statement.setString(6, ((OffertaRegalo) offerta).getMotivazione());
+	        } else if (offerta instanceof OffertaScambio) {
+	            statement.setNull(2, java.sql.Types.DOUBLE);
+	            statement.setString(3, "Scambio");
+	            statement.setString(6, null);
+	        } else {
+	            return -1;
+	        }
 
-            if ("Scambio".equalsIgnoreCase(offerta.getTipologia())) {
-                ResultSet generatedKeys = statement.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    returnValue = generatedKeys.getInt(1);
-                }
-                generatedKeys.close();
-            }
-            
-            statement.close();
+	        int rowsInserted = statement.executeUpdate();
 
-            if (rowsInserted == 0) {
-                System.out.println("Errore: inserimento fallito.");
-                return -1;
-            }
+	        if (offerta instanceof OffertaScambio) {
+	            ResultSet generatedKeys = statement.getGeneratedKeys();
+	            if (generatedKeys.next()) {
+	                return generatedKeys.getInt(1);
+	            }
+	            return -1;
+	        }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return -1;
-        }
-        
-        if ("Scambio".equalsIgnoreCase(offerta.getTipologia())) return returnValue;
-        
-        return 0;
-    }
+	        return rowsInserted > 0 ? 0 : -1;
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return -1;
+	    }
+	}
+
     
     public int rimuoviOfferteByIdAnnuncio(int idAnnuncio) {
         try {
@@ -131,24 +116,56 @@ public class OffertaDAO {
         ArrayList<Offerta> offerte = new ArrayList<>();
 
         try {
-        	Connection conn = ConnessioneDB.getConnection();
+            Connection conn = ConnessioneDB.getConnection();
             String query = "SELECT * FROM OFFERTA WHERE idannuncio = ? ORDER BY statoofferta";
             PreparedStatement selectStmt = conn.prepareStatement(query);
-            selectStmt.setInt(1, controller.getIdByAnnuncio(a)); 
+            selectStmt.setInt(1, controller.getIdByAnnuncio(a));
             ResultSet rs = selectStmt.executeQuery();
+
             while (rs.next()) {
-                Offerta offerta = new Offerta(
-            		rs.getString("tipologia"),
-                    rs.getTimestamp("dataPubblicazione"),
-                    a
-                );
-                
-                offerta.setPrezzoOfferta(rs.getDouble("prezzoofferta"));
-                offerta.setStatoOfferta(rs.getString("statoofferta"));
-                offerta.setMotivazione(rs.getString("motivazione"));
-                offerta.setStudente(controller.getStudenteByMatricola(rs.getString("matstudente")));
-                
-                offerte.add(offerta);
+                String tipologia = rs.getString("tipologia");
+                Offerta offerta = null;
+
+                switch (tipologia) {
+                    case "Vendita":
+                        offerta = new OffertaVendita(
+                            rs.getTimestamp("dataPubblicazione"),
+                            controller.getStudenteByMatricola(rs.getString("matstudente")),
+                            a,
+                            rs.getDouble("prezzoofferta")
+                        );
+                        break;
+
+                    case "Regalo":
+                        offerta = new OffertaRegalo(
+                            rs.getTimestamp("dataPubblicazione"),
+                            controller.getStudenteByMatricola(rs.getString("matstudente")),
+                            a,
+                            rs.getString("motivazione")
+                        );
+                        break;
+
+                    case "Scambio":
+                        offerta = new OffertaScambio(
+                            rs.getTimestamp("dataPubblicazione"),
+                            controller.getStudenteByMatricola(rs.getString("matstudente")),
+                            a
+                        );
+                        // carico anche gli oggetti scambiati
+                        ((OffertaScambio) offerta).getOggettiOfferti().addAll(
+                            getOggettiOffertiByOfferta(offerta)
+                        );
+                        break;
+
+                    default:
+                        System.out.println("Tipologia non riconosciuta: " + tipologia);
+                        continue;
+                }
+
+                if (offerta != null) {
+                    offerta.setStatoOfferta(rs.getString("statoofferta"));
+                    offerte.add(offerta);
+                }
             }
 
         } catch (SQLException e) {
@@ -274,30 +291,63 @@ public class OffertaDAO {
     public ArrayList<Offerta> getOffertebyMatricola(Studente s) {	
         ArrayList<Offerta> offerte = new ArrayList<>();
 
-        try{
-        	Connection conn = ConnessioneDB.getConnection();
-            String queryOggettiOfferti = "SELECT * FROM Offerta WHERE matstudente = ? ORDER BY dataPubblicazione";
-            PreparedStatement stmtOggettiOfferti = conn.prepareStatement(queryOggettiOfferti);
-            stmtOggettiOfferti.setString(1, s.getMatricola());
+        try {
+            Connection conn = ConnessioneDB.getConnection();
+            String query = "SELECT * FROM Offerta WHERE matstudente = ? ORDER BY dataPubblicazione";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, s.getMatricola());
 
-            ResultSet rsOggettiOfferti = stmtOggettiOfferti.executeQuery();
-            
-            while (rsOggettiOfferti.next()) {	
-                Offerta offerta = new Offerta(
-            		rsOggettiOfferti.getString("tipologia"),
-            		rsOggettiOfferti.getTimestamp("dataPubblicazione"),
-            		controller.getAnnuncioById(rsOggettiOfferti.getInt("idannuncio"))
-                );
+            ResultSet rs = stmt.executeQuery();
 
-                offerta.setStatoOfferta(rsOggettiOfferti.getString("statoOfferta"));
-                offerta.setPrezzoOfferta(rsOggettiOfferti.getDouble("prezzoofferta"));
-                offerta.setMotivazione(rsOggettiOfferti.getString("motivazione"));
-                offerta.setStudente(controller.getStudenteByMatricola(rsOggettiOfferti.getString("matstudente")));
+            while (rs.next()) {
+                String tipologia = rs.getString("tipologia");
+                Annuncio annuncio = controller.getAnnuncioById(rs.getInt("idannuncio"));
+                Offerta offerta = null;
 
-                offerte.add(offerta);
+                switch (tipologia) {
+                    case "Vendita":
+                        offerta = new OffertaVendita(
+                            rs.getTimestamp("dataPubblicazione"),
+                            controller.getStudenteByMatricola(rs.getString("matstudente")),
+                            annuncio,
+                            rs.getDouble("prezzoofferta")
+                        );
+                        break;
+
+                    case "Regalo":
+                        offerta = new OffertaRegalo(
+                            rs.getTimestamp("dataPubblicazione"),
+                            controller.getStudenteByMatricola(rs.getString("matstudente")),
+                            annuncio,
+                            rs.getString("motivazione")
+                        );
+                        break;
+
+                    case "Scambio":
+                        offerta = new OffertaScambio(
+                            rs.getTimestamp("dataPubblicazione"),
+                            controller.getStudenteByMatricola(rs.getString("matstudente")),
+                            annuncio
+                        );
+                        // carico oggetti offerti per lo scambio
+                        ((OffertaScambio) offerta).getOggettiOfferti().addAll(
+                            getOggettiOffertiByOfferta(offerta)
+                        );
+                        break;
+
+                    default:
+                        System.out.println("Tipologia non riconosciuta: " + tipologia);
+                        continue;
+                }
+
+                if (offerta != null) {
+                    offerta.setStatoOfferta(rs.getString("statoofferta"));
+                    offerte.add(offerta);
+                }
             }
 
-            rsOggettiOfferti.close();
+            rs.close();
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -306,32 +356,34 @@ public class OffertaDAO {
     }
     
     public int eliminaOfferta(Offerta o) {
-		try {
-			Connection conn = ConnessioneDB.getConnection();
-			
-			if(o.getTipologia().equals("Scambio")) {
-				String eliminaOggettiOfferti = "DELETE FROM OGGETTIOFFERTI WHERE idOfferta = ?";
-				PreparedStatement stmtEliminaOggetti = conn.prepareStatement(eliminaOggettiOfferti);
-				stmtEliminaOggetti.setInt(1, controller.getIdByOfferta(o));
-				stmtEliminaOggetti.executeUpdate();
-			}
-			
-			String eliminaOfferta = "DELETE FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
-			PreparedStatement stmtEliminaOfferta = conn.prepareStatement(eliminaOfferta);
-			stmtEliminaOfferta.setString(1, o.getStudente().getMatricola());
-			stmtEliminaOfferta.setInt(2, controller.getIdByAnnuncio(o.getAnnuncio()));
-			
-			if (stmtEliminaOfferta.executeUpdate() > 0) {
-				System.out.println("Offerta eliminata con successo.");
-				return 0;
-			}
-			else {
-				System.out.println("Nessuna offerta eliminata.");
-				return 1;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return 1;
-		}
-	}
+        try{
+        	Connection conn = ConnessioneDB.getConnection();
+            if (o instanceof OffertaScambio) {
+                String eliminaOggettiOfferti = "DELETE FROM OGGETTIOFFERTI WHERE idOfferta = ?";
+                try (PreparedStatement stmtEliminaOggetti = conn.prepareStatement(eliminaOggettiOfferti)) {
+                    stmtEliminaOggetti.setInt(1, controller.getIdByOfferta(o));
+                    stmtEliminaOggetti.executeUpdate();
+                }
+            }
+
+            // Poi elimino l'offerta
+            String eliminaOfferta = "DELETE FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
+            try (PreparedStatement stmtEliminaOfferta = conn.prepareStatement(eliminaOfferta)) {
+                stmtEliminaOfferta.setString(1, o.getStudente().getMatricola());
+                stmtEliminaOfferta.setInt(2, controller.getIdByAnnuncio(o.getAnnuncio()));
+
+                int righeEliminate = stmtEliminaOfferta.executeUpdate();
+                if (righeEliminate > 0) {
+                    System.out.println("Offerta eliminata con successo.");
+                    return 0;
+                } else {
+                    System.out.println("Nessuna offerta eliminata.");
+                    return 1;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 1;
+        }
+    }
 }

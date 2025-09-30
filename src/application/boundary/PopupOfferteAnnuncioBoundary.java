@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 import application.control.Controller;
 import application.entity.Offerta;
+import application.entity.OffertaRegalo;
+import application.entity.OffertaScambio;
+import application.entity.OffertaVendita;
 import application.entity.Oggetto;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -34,58 +37,51 @@ public class PopupOfferteAnnuncioBoundary {
     private Controller controller = Controller.getController();
     private SceneManager sceneManager = SceneManager.sceneManager();
     
-    public void setPopupInfoOfferta(Offerta offerta) {
-    	switch(controller.getTipologiaOfferta(offerta)) {
-	    	case "Vendita":
-	    		paneInfoOffertaVendita.setVisible(true);
-	    		paneInfoOffertaRegalo.setVisible(false);
-	    		paneInfoOffertaVendita.setVisible(true);
-	    		String prezzoOfferta = String.format("%.2f", controller.getPrezzoOfferta(offerta));
-	    		labelControfferta.setText("Il prezzo offerto da " +  controller.getUsername(controller.getStudente()) +  " è di: €" + prezzoOfferta);
-	    	break;
-	    	
-	    	case "Scambio":
-	    	    paneInfoOffertaScambio.setVisible(true);
-	    	    paneInfoOffertaVendita.setVisible(false);
-	    	    paneInfoOffertaRegalo.setVisible(false);
-	    	    labelOffertaScambio.setVisible(false);
-	    	    gridPaneScambio.getChildren().clear();  
-	    	    
-	    	    ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(offerta);
-	    	    
-	    	    if(listaOggetti.isEmpty()) {
-	    	    	scrollPaneScambio.setVisible(false);
-	    	    	labelOffertaScambio.setVisible(true);
-	    	    }
-	    	    
-	    	    else {
-	    	    	scrollPaneScambio.setVisible(true);
-	    	    	ColumnConstraints col = new ColumnConstraints();
-	    	    	col.setHgrow(Priority.ALWAYS);
-	    	    	gridPaneScambio.getColumnConstraints().add(col);
-	    	    	
-		    	    int row = 0;
-		    	    
-		    	    for (Oggetto o : listaOggetti) {
-		    	        VBox card = creaCardOggettoOfferto(o);
-		    	        gridPaneScambio.add(card, 0, row);
-		    	        gridPaneScambio.setAlignment(Pos.TOP_CENTER);
-		    	        GridPane.setFillWidth(card, true);
-		    	        row++;
-		    	    }
-	    	    }
-    	    break;
-	    	
-	    	case "Regalo":
-	    		paneInfoOffertaRegalo.setVisible(true);
-	    		paneInfoOffertaVendita.setVisible(false);
-	    		paneInfoOffertaRegalo.setVisible(true);
-	    		if(controller.getMotivazioneOfferta(offerta).equals("Assente"))
-	    			labelMessaggioMotivazionale.setText("Non è stato inserito nessun messaggio motivazionale.");
-	    		else
-	    			labelMessaggioMotivazionale.setText(offerta.getMotivazione());
-	    	break;
-    	}
+    public void setPopupOffertaVendita(OffertaVendita offertaVendita) {
+    	paneInfoOffertaVendita.setVisible(true);
+        paneInfoOffertaRegalo.setVisible(false);
+        paneInfoOffertaScambio.setVisible(false);
+        String prezzoOfferta = String.format("%.2f", controller.getPrezzoOfferta(offertaVendita));
+        labelControfferta.setText("Il prezzo offerto da " + controller.getUsername(controller.getStudente()) + " è di: €" + prezzoOfferta);
+	}
+    
+    public void setPopupOffertaScambio(OffertaScambio offertaScambio) {
+    	paneInfoOffertaScambio.setVisible(true);
+        paneInfoOffertaVendita.setVisible(false);
+        paneInfoOffertaRegalo.setVisible(false);
+        labelOffertaScambio.setVisible(false);
+        gridPaneScambio.getChildren().clear();
+
+        ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(offertaScambio);
+
+        if(listaOggetti.isEmpty()) {
+            scrollPaneScambio.setVisible(false);
+            labelOffertaScambio.setVisible(true);
+        } else {
+            scrollPaneScambio.setVisible(true);
+            ColumnConstraints col = new ColumnConstraints();
+            col.setHgrow(Priority.ALWAYS);
+            gridPaneScambio.getColumnConstraints().add(col);
+
+            int row = 0;
+            for (Oggetto o : listaOggetti) {
+                VBox card = creaCardOggettoOfferto(o);
+                gridPaneScambio.add(card, 0, row);
+                gridPaneScambio.setAlignment(Pos.TOP_CENTER);
+                GridPane.setFillWidth(card, true);
+                row++;
+            }
+        }
+    }
+    
+    public void setPopupOffertaRegalo(OffertaRegalo offertaRegalo) {
+    	paneInfoOffertaRegalo.setVisible(true);
+        paneInfoOffertaVendita.setVisible(false);
+        paneInfoOffertaScambio.setVisible(false);
+        if(controller.getMotivazioneOfferta(offertaRegalo).equals("Assente"))
+            labelMessaggioMotivazionale.setText("Non è stato inserito nessun messaggio motivazionale.");
+        else
+            labelMessaggioMotivazionale.setText(offertaRegalo.getMotivazione());
     }
     
     private VBox creaCardOggettoOfferto(Oggetto oggetto) {

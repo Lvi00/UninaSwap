@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 import application.control.Controller;
 import application.entity.Offerta;
+import application.entity.OffertaRegalo;
+import application.entity.OffertaScambio;
+import application.entity.OffertaVendita;
 import application.entity.Oggetto;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -56,6 +59,7 @@ public class PopupEditOffertaBoundary {
     }
 
     public void CostruisciPopupEdit(Offerta offerta, Stage stage) {
+        // Nascondo tutto inizialmente
         paneOffertaVendita.setVisible(false);
         paneOffertaVendita.setManaged(false);
         paneOffertaScambio.setVisible(false);
@@ -63,86 +67,84 @@ public class PopupEditOffertaBoundary {
         paneOffertaRegalo.setVisible(false);
         paneOffertaRegalo.setManaged(false);
 
-        switch (controller.getTipologiaOfferta(offerta)) {
-            case "Vendita":
-                paneOffertaVendita.setVisible(true);
-                paneOffertaVendita.setManaged(true);
+        if (offerta instanceof OffertaVendita) {
+            paneOffertaVendita.setVisible(true);
+            paneOffertaVendita.setManaged(true);
 
-                // Imposta prezzo
-                double prezzo = controller.getPrezzoOfferta(offerta);
-                String prezzoString = String.format("%.2f", prezzo).replace(".", ",");
-                String[] parti = prezzoString.split(",");
-                campoPrezzoIntero.setText(parti[0]);
-                campoPrezzoDecimale.setText(parti[1]);
-                
-                VBox.setMargin(labelOffertaVendita, new Insets(20, 0, 0, 0));
+            // Imposta prezzo
+            double prezzo = ((OffertaVendita) offerta).getPrezzoOfferta();
+            String prezzoString = String.format("%.2f", prezzo).replace(".", ",");
+            String[] parti = prezzoString.split(",");
+            campoPrezzoIntero.setText(parti[0]);
+            campoPrezzoDecimale.setText(parti[1]);
 
+            VBox.setMargin(labelOffertaVendita, new Insets(20, 0, 0, 0));
+            stage.setWidth(450);
+            stage.setHeight(175);
+
+        } else if (offerta instanceof OffertaScambio) {
+            paneOffertaScambio.setVisible(true);
+            paneOffertaScambio.setManaged(true);
+
+            ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(offerta);
+            controller.setOggettiOfferti(listaOggetti);
+            gridOggettiOfferti.getChildren().clear();
+            gridOggettiOfferti.getColumnConstraints().clear();
+
+            if (!listaOggetti.isEmpty()) {
+                labelNessunOggettoOfferto.setVisible(false);
+                int numeroCol = listaOggetti.size();
+                int larghezzaCard = 300;
+                int altezzaCard = 400;
+
+                gridOggettiOfferti.setHgap(35);
+                gridOggettiOfferti.setVgap(10);
+                gridOggettiOfferti.setAlignment(Pos.CENTER);
+                VBox.setMargin(gridOggettiOfferti, new Insets(10));
+
+                int colonna = 0;
+                for (Oggetto oggetto : listaOggetti) {
+                    StackPane card = creaCardOggettoOfferto(oggetto, offerta);
+                    card.getStyleClass().add("card-annuncio");
+
+                    gridOggettiOfferti.add(card, colonna, 0);
+                    GridPane.setFillWidth(card, false);
+
+                    // colonna cresce automaticamente
+                    ColumnConstraints col = new ColumnConstraints();
+                    col.setHgrow(Priority.NEVER);
+                    gridOggettiOfferti.getColumnConstraints().add(col);
+
+                    colonna++;
+                }
+
+                double larghezzaTotaleCard = (larghezzaCard * numeroCol) / 1.2;
+                stage.setWidth(larghezzaTotaleCard);
+                stage.setHeight(altezzaCard);
+            } else {
                 stage.setWidth(450);
                 stage.setHeight(175);
-            break;
+                labelNessunOggettoOfferto.setVisible(true);
+            }
 
-            case "Scambio":
-                paneOffertaScambio.setVisible(true);
-                paneOffertaScambio.setManaged(true);
+        } else if (offerta instanceof OffertaRegalo) {
+            paneOffertaRegalo.setVisible(true);
+            paneOffertaRegalo.setManaged(true);
 
-                ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(offerta);
-                controller.setOggettiOfferti(listaOggetti);
-                gridOggettiOfferti.getChildren().clear();
-                gridOggettiOfferti.getColumnConstraints().clear();
+            String motivazione = ((OffertaRegalo) offerta).getMotivazione();
+            if (motivazione == null || motivazione.equalsIgnoreCase("Assente")) {
+                messaggioMotivazionale.setText("");
+            } else {
+                messaggioMotivazionale.setText(motivazione);
+            }
 
-                if(!listaOggetti.isEmpty()) {
-                    labelNessunOggettoOfferto.setVisible(false);
-	                int numeroCol = listaOggetti.size();
-	                int larghezzaCard = 300;
-	                int altezzaCard = 400;
-	
-	                gridOggettiOfferti.setHgap(35);
-	                gridOggettiOfferti.setVgap(10);
-	                gridOggettiOfferti.setAlignment(Pos.CENTER);
-	                VBox.setMargin(gridOggettiOfferti, new Insets(10));
-	                
-	                int colonna = 0;
-	                for (Oggetto oggetto : listaOggetti) {
-	                	StackPane card = creaCardOggettoOfferto(oggetto, offerta);
-	                    card.getStyleClass().add("card-annuncio");
-	
-	                    gridOggettiOfferti.add(card, colonna, 0);
-	                    GridPane.setFillWidth(card, false);
-	
-	                    // colonna cresce automaticamente
-	                    ColumnConstraints col = new ColumnConstraints();
-	                    col.setHgrow(Priority.NEVER);
-	                    gridOggettiOfferti.getColumnConstraints().add(col);
-	
-	                    colonna++;
-	                }
-	
-	                double larghezzaTotaleCard = (larghezzaCard * numeroCol) / 1.2;
-	                stage.setWidth(larghezzaTotaleCard);
-	                stage.setHeight(altezzaCard);
-                }
-                else {
-	                stage.setWidth(450);
-	                stage.setHeight(175);
-	                labelNessunOggettoOfferto.setVisible(true);
-                }
-            break;
-
-            case "Regalo":
-                paneOffertaRegalo.setVisible(true);
-                paneOffertaRegalo.setManaged(true);
-
-                if (controller.getMotivazioneOfferta(offerta).equals("Assente")) messaggioMotivazionale.setText("");
-                else messaggioMotivazionale.setText(controller.getMotivazioneOfferta(offerta));
-                
-                VBox.setMargin(labelOffertaRegalo, new Insets(20, 0, 0, 0));
-                stage.setWidth(450);
-                stage.setHeight(175);
-            break;
+            VBox.setMargin(labelOffertaRegalo, new Insets(20, 0, 0, 0));
+            stage.setWidth(450);
+            stage.setHeight(175);
         }
 
         inviaDatiOfferta.setOnAction(event -> prelevaDatiOfferta(offerta));
-        
+
         javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
         stage.setX(screenBounds.getMinX() + (screenBounds.getWidth() - stage.getWidth()) / 2);
         stage.setY(screenBounds.getMinY() + (screenBounds.getHeight() - stage.getHeight()) / 2);

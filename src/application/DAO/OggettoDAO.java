@@ -10,7 +10,7 @@ import application.entity.Oggetto;
 import application.resources.ConnessioneDB;
 
 public class OggettoDAO {
-	private Controller controller = new Controller();
+	private Controller controller = Controller.getController();
 	
 	public int SaveOggetto(Oggetto oggetto) {
 	    int idOggettoInserito = 0;

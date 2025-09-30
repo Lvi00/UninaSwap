@@ -3,6 +3,9 @@ package application.boundary;
 import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Offerta;
+import application.entity.OffertaRegalo;
+import application.entity.OffertaScambio;
+import application.entity.OffertaVendita;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -248,7 +251,15 @@ public class SceneManager {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupOfferteAnnuncio.fxml"));
             Parent root = loader.load();
             PopupOfferteAnnuncioBoundary popupInfoController = loader.getController();
-            popupInfoController.setPopupInfoOfferta(offerta);
+            if(offerta instanceof OffertaVendita) {
+				popupInfoController.setPopupOffertaVendita((OffertaVendita) offerta);
+			}
+			else if(offerta instanceof OffertaScambio) {
+				popupInfoController.setPopupOffertaScambio((OffertaScambio) offerta);
+			}
+			else if(offerta instanceof OffertaRegalo) {
+				popupInfoController.setPopupOffertaRegalo((OffertaRegalo) offerta);
+			}
             Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             Stage popupStage = new Stage();
             popupStage.initOwner(mainStage);
@@ -256,7 +267,7 @@ public class SceneManager {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("../resources/application.css").toExternalForm());
             popupStage.setScene(scene);
-            popupStage.setTitle("UninaSwap - Informazioni di " + controller.getTipologiaOfferta(offerta).toLowerCase());
+            popupStage.setTitle("UninaSwap - Informazioni di " + controller.getTipologiaAnnuncio(controller.getAnnuncioOfferta(offerta)).toLowerCase());
             popupStage.getIcons().add(
                 new Image(getClass().getResource("../IMG/immaginiProgramma/logoApp.png").toExternalForm())
             );

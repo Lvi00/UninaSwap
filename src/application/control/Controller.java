@@ -18,6 +18,9 @@ import application.DAO.SedeDAO;
 import application.DAO.StudenteDAO;
 import application.entity.Annuncio;
 import application.entity.Offerta;
+import application.entity.OffertaRegalo;
+import application.entity.OffertaScambio;
+import application.entity.OffertaVendita;
 import application.entity.Oggetto;
 import application.entity.Sede;
 import application.entity.Studente;
@@ -362,30 +365,25 @@ public class Controller {
 		new AnnuncioDAO().cambiaStatoAnnuncio(a);
 	}
 	
-	public int inviaOffertaVendita(Annuncio a) {
+	public int inviaOffertaVendita(Annuncio annuncio) {
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
-		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente, a);
-		offerta.setPrezzoOfferta(a.getPrezzo());
-		return new OffertaDAO().SaveOfferta(offerta, this.studente.getMatricola(), "");
+		OffertaVendita offertaVendita = new OffertaVendita(dataCorrente, this.studente, annuncio, annuncio.getPrezzo());
+		return new OffertaDAO().SaveOfferta(offertaVendita);
 	}
 	
-	public int inviaOffertaRegalo(Annuncio a, String Motivazione){
+	public int inviaOffertaRegalo(Annuncio annuncio, String motivazione){
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
-		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente, a);
-		return new OffertaDAO().SaveOfferta(offerta, this.studente.getMatricola(), Motivazione);
+		OffertaRegalo offertaRegalo = new OffertaRegalo(dataCorrente, this.studente, annuncio, motivazione);
+		return new OffertaDAO().SaveOfferta(offertaRegalo);
 	}
 	
-	public int inviaOffertaScambio(Annuncio a, ObservableList<Oggetto> listaOggettiOfferti)
-	{
+	public int inviaOffertaScambio(Annuncio annuncio, ObservableList<Oggetto> listaOggettiOfferti){
         OffertaDAO offertaDao = new OffertaDAO();
-        
         Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
         
-		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente, a);
+		OffertaScambio offertaScambio = new OffertaScambio(dataCorrente, this.studente, annuncio);
 		
-		int idOffertaInserita = 0;
-		
-        idOffertaInserita = offertaDao.SaveOfferta(offerta, this.studente.getMatricola(), "");
+		int idOffertaInserita = new OffertaDAO().SaveOfferta(offertaScambio);
         
         //Offerta già esistente
         if(idOffertaInserita == -1) return -1;
@@ -424,25 +422,26 @@ public class Controller {
         return 0;
 	}
 	
-	public int checkControfferta(Annuncio a, String stringaPrezzo) {
-	    String prezzoRegex = "^\\d{1,3}(\\.\\d{1,2})$";
+	public int checkControfferta(Annuncio annuncio, String stringaPrezzo) {
+	    String prezzoRegex = "^[0-9]+(\\.[0-9]{1,2})?$";
 	    
 	    if (!stringaPrezzo.matches(prezzoRegex)) {
 	        return 1;
 	    }
 
 	    double prezzo = Double.parseDouble(stringaPrezzo);
-		
-		if(prezzo <= 0 || prezzo >= a.getPrezzo()) return 1;
-		
-		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
-		
-		Offerta offerta = new Offerta(a.getTipologia(), dataCorrente, a);
-		offerta.setPrezzoOfferta(prezzo);
-		
-		int appoggio = new OffertaDAO().SaveOfferta(offerta, this.studente.getMatricola(), "");
-		
-		return appoggio;
+
+	    if (prezzo <= 0 || prezzo >= annuncio.getPrezzo()) {
+	        return 1;
+	    }
+
+	    Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
+
+	    OffertaVendita offerta = new OffertaVendita(dataCorrente, this.studente, annuncio, prezzo);
+
+	    int risultato = new OffertaDAO().SaveOfferta(offerta);
+
+	    return risultato;
 	}
 	
 	public int controllaCampiOggettoScambio(String descrizione, String categoriaSelezionata, String percorsoImmagine) {
@@ -514,8 +513,8 @@ public class Controller {
     	return new AnnuncioDAO().getAnnuncioById(idAnnuncio);
     }
     
-    public int eliminaOfferta(Offerta o) {
-		return new OffertaDAO().eliminaOfferta(o);
+    public int eliminaOfferta(Offerta offerta) {
+		return new OffertaDAO().eliminaOfferta(offerta);
 	}
     
     public void svuotaOfferteRicevute() {
@@ -656,6 +655,14 @@ public class Controller {
     	return annuncio.getTitoloAnnuncio();
     }
     
+    public double getPrezzoOfferta(OffertaVendita offertaVendita) {
+		return offertaVendita.getPrezzoOfferta();
+	}
+    
+    public String getMotivazioneOfferta(OffertaRegalo offertaRegalo) {
+    	return offertaRegalo.getMotivazione();
+    }
+    
     public boolean getStatoAnnuncio(Annuncio annuncio) {
     	return annuncio.isStatoAnnuncio();
     }
@@ -699,18 +706,6 @@ public class Controller {
     public Studente getStudenteOggetto(Oggetto oggetto) {
     	return oggetto.getStudente();
     }
-    
-    public String getTipologiaOfferta(Offerta offerta) {
-		return offerta.getTipologia();
-	}
-    
-    public double getPrezzoOfferta(Offerta offerta) {
-    	return offerta.getPrezzoOfferta();
-    }
-    
-    public String getMotivazioneOfferta(Offerta offerta) {
-		return offerta.getMotivazione();
-	}
     
     public String getDescrizioneOggetto(Oggetto oggetto) {
 		return oggetto.getDescrizione();

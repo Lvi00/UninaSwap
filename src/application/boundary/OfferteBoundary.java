@@ -147,7 +147,7 @@ public class OfferteBoundary {
         }
         VBox.setMargin(stato, new Insets(4, 0, 4, 0));
 
-        Label tipo = new Label(controller.getTipologiaOfferta(offerta));
+        Label tipo = new Label(controller.getTipologiaAnnuncio(controller.getAnnuncioOfferta(offerta)));
         tipo.setStyle("-fx-text-fill: gray;");
         
         HBox containerButton = new HBox(20);
