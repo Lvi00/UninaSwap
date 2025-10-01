@@ -210,7 +210,7 @@ public class ProdottiBoundary {
     
     @FXML
     public void getInfoFiltri() {
-        String newKeyword = campoRicerca.getText();
+        String newKeyword = campoRicerca.getText().trim();
         String newCategoria = campoCategoriaOggetto.getValue() != null ? campoCategoriaOggetto.getValue().name() : "Nessuno";
         String newTipologia = campoTipologia.getValue() != null ? campoTipologia.getValue().name() : "Nessuno";
 

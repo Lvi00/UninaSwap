@@ -203,7 +203,7 @@ public class PopupOfferteBoundary {
     
     @FXML
     public void aggiungiOggettoDaScambiare(MouseEvent e) {
-	    String descrizione = campoDescrizioneAnnuncioScambio.getText();
+	    String descrizione = campoDescrizioneAnnuncioScambio.getText().trim();
 	    String categoriaSelezionata = campoCategoriaOggetto.getValue().toString();
 	    String percorsoImmagine = null;
 	    
@@ -352,19 +352,18 @@ public class PopupOfferteBoundary {
     	}
     	
     	else if(controller.getTipologiaAnnuncio(annuncio).equals("Regalo")) {
-    	    String messaggioMotivazionale = campoDescrizioneAnnuncioRegalo.getText();
+    	    String messaggioMotivazionale = campoDescrizioneAnnuncioRegalo.getText().trim();
     	    
-    	    if (messaggioMotivazionale == null || messaggioMotivazionale.trim().isEmpty()) messaggioMotivazionale = "Assente";
-    	    else messaggioMotivazionale = messaggioMotivazionale.trim();
+    	    if (messaggioMotivazionale == null || messaggioMotivazionale.isEmpty()) messaggioMotivazionale = "Assente";
 
     	    switch(controller.inviaOffertaRegalo(annuncio, messaggioMotivazionale)) {
     	        case 0: // offerta inviata correttamente
                     currentStage.close();
-    	            sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
+    	            sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " è stata inviata con successo.");
     	        break;
 
     	        case 1: // errore generico
-    	            sceneManager.showPopupError(containerOfferte, "Errore nella richiesta", "La richiesta di " + annuncio.getTipologia() + " non è stata inviata a causa di un errore nei dati inseriti.");
+    	            sceneManager.showPopupError(containerOfferte, "Errore nella richiesta", "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " non è stata inviata a causa di un errore nei dati inseriti.");
     	        break;
 
     	        case -1: // offerta duplicata
@@ -378,12 +377,12 @@ public class PopupOfferteBoundary {
     	    switch(controller.inviaOffertaScambio(annuncio, this.listaOggettiOfferti)) {
 		        case 0: // offerta di scambio normale inviata correttamente
 	                currentStage.close();
-		            sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + annuncio.getTipologia() + " è stata inviata con successo.");
+		            sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " è stata inviata con successo.");
 		        break;
 	
 		        case 1: // offerta di scambio personalizzata inviata correttamente
 		        	currentStage.close();
-		            sceneManager.showPopupAlert(containerOfferte, "Richiesta personalizzata inviata!",  "La richiesta di " + annuncio.getTipologia() + " con gli oggetti inseriti è stata inviata con successo.");
+		            sceneManager.showPopupAlert(containerOfferte, "Richiesta personalizzata inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " con gli oggetti inseriti è stata inviata con successo.");
 		        break;
 		        
 		        case -1: // offerta duplicata

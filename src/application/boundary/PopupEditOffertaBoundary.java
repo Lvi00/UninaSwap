@@ -386,7 +386,9 @@ public class PopupEditOffertaBoundary {
     }
     
     public void editOggettiOfferti(Oggetto oggetto, Offerta offerta, String pathImmagine, String categoria, String descrizione, Label categoriaLabel, ChoiceBox<Categorie> choiceCategoria, Label descrizioneLabel, TextArea textDescrizione, Button btnDelete, Button btnEdit, Button btnBack, Button btnCheck) {
-	    int result = controller.editOffertaScambio(oggetto, offerta, pathImmagine, categoria, descrizione);
+    	descrizione = descrizione.trim();
+    	
+    	int result = controller.editOffertaScambio(oggetto, offerta, pathImmagine, categoria, descrizione);
 
 	    switch(result) {
 	        case 0:
@@ -402,7 +404,7 @@ public class PopupEditOffertaBoundary {
             break;
             
 	        case 3:
-	            sceneManager.showPopupError(GeneralOffersPane, "Errore di modifica", "Nessun record aggiornato (ID non trovato)");
+	            sceneManager.showPopupError(GeneralOffersPane, "Errore di modifica", "L'offerta non è stata modificata");
             break;
 	    }
 

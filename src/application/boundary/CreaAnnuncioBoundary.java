@@ -339,7 +339,7 @@ public class CreaAnnuncioBoundary {
     
     @FXML
     public void aggiungiOggettoDesiderato() {
-    	String nomeOggetto = campoAggiungiOggetto.getText();
+    	String nomeOggetto = campoAggiungiOggetto.getText().trim();
     	ArrayList<String> listaOggettiDesiderati = controller.getListaOggettiDesiderati();
     	
     	switch(controller.controllaOggettoDesiderato(nomeOggetto, listaOggettiDesiderati)) {

@@ -240,31 +240,30 @@ public class Controller {
 	
 	public int checkDatiAnnuncio(ArrayList<String> datiAnnuncio, File fileSelezionato, Studente studente, ArrayList<String> listaOggettiDesiderati) {
 		
-		String titolo = datiAnnuncio.get(0);
+		String titolo = datiAnnuncio.get(0).trim();
 		if(titolo == "" || titolo.length() > 50) return 1;
 		
 		String categoria = datiAnnuncio.get(1);
 		if(categoria.equals("")) return 2;
 		
-		String inizioOrarioDisponibilità = datiAnnuncio.get(2);
-		String fineOrarioDisponibilità = datiAnnuncio.get(3);
+		String inizioOrarioDisponibilità = datiAnnuncio.get(2).trim();
+		String fineOrarioDisponibilità = datiAnnuncio.get(3).trim();
 		
 		//trasforma le stringe in oggetti LocalTime e le confronta
 		if (!LocalTime.parse(inizioOrarioDisponibilità).isBefore(LocalTime.parse(fineOrarioDisponibilità))) {
 		    return 3; // inizio >= fine, fascia oraria non valida
 		}
 		
-		String giorniDisponibilità = datiAnnuncio.get(4).replaceAll("-$", "");
-		System.out.println(giorniDisponibilità);
+		String giorniDisponibilità = datiAnnuncio.get(4).replaceAll("-$", "").trim();
 		if(giorniDisponibilità == "") return 4;
 		
-		String descrizione = datiAnnuncio.get(5);
+		String descrizione = datiAnnuncio.get(5).trim();
 		if(descrizione.equals("") || descrizione.length() > 100) return 5;
 		
-		String particellatoponomastica = datiAnnuncio.get(6);
-		String descrizioneIndirizzo = datiAnnuncio.get(7);
-		String civico = datiAnnuncio.get(8);
-		String cap = datiAnnuncio.get(9);
+		String particellatoponomastica = datiAnnuncio.get(6).trim();
+		String descrizioneIndirizzo = datiAnnuncio.get(7).trim();
+		String civico = datiAnnuncio.get(8).trim();
+		String cap = datiAnnuncio.get(9).trim();
 		//Evita lettere nel CAP
 		String capRegex = "^[0-9]{5}$";
 		
@@ -292,10 +291,10 @@ public class Controller {
 		
 		if(fileSelezionato == null || fileSelezionato.getName().isEmpty() || fileSelezionato.getName().startsWith("no_image")) return 9;
 		
+		String appoggioDescrizione = descrizione;
+		
 		if(tipologia.equals("Scambio")) {
 			if(listaOggettiDesiderati.size() < 1 || listaOggettiDesiderati.size() > 5) return 10;
-			
-			String appoggioDescrizione = descrizione;
 			
 			descrizione = "Oggetti desiderati: ";
 			
@@ -305,12 +304,13 @@ public class Controller {
 			}
 			
 			descrizione += "\n" + appoggioDescrizione;
+			descrizione = descrizione.trim();
 		}
 		Sede sede = new Sede(particellatoponomastica, descrizioneIndirizzo, civico, cap);
 		new SedeDAO().SaveSade(sede);
 		
 		String percorso = fileSelezionato.getAbsolutePath();
-		Oggetto oggetto = new Oggetto(percorso, categoria, descrizione, studente);
+		Oggetto oggetto = new Oggetto(percorso, categoria, appoggioDescrizione, studente);
 		new OggettoDAO().SaveOggetto(oggetto);
 		
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
@@ -376,7 +376,6 @@ public class Controller {
 	}
 	
 	public int inviaOffertaScambio(Annuncio annuncio, ObservableList<Oggetto> listaOggettiOfferti){
-        OffertaDAO offertaDao = new OffertaDAO();
         Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
         
 		OffertaScambio offertaScambio = new OffertaScambio(dataCorrente, this.studente, annuncio);
