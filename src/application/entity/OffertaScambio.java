@@ -14,4 +14,8 @@ public class OffertaScambio extends Offerta {
 	public ArrayList<Oggetto> getOggettiOfferti() {
 		return oggettiOfferti;
 	}
+	
+	public void setOggettiOfferti(ArrayList<Oggetto> oggettiOfferti) {
+		this.oggettiOfferti = oggettiOfferti;
+	}
 }

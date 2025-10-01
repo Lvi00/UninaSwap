@@ -82,12 +82,13 @@ public class PopupEditOffertaBoundary {
             stage.setWidth(450);
             stage.setHeight(175);
 
-        } else if (offerta instanceof OffertaScambio) {
+        }
+        else if (offerta instanceof OffertaScambio) {
+        	OffertaScambio offertaScambio = (OffertaScambio) offerta;
             paneOffertaScambio.setVisible(true);
             paneOffertaScambio.setManaged(true);
-
             ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(offerta);
-            controller.setOggettiOfferti(listaOggetti);
+            controller.setOggettiOfferti(offertaScambio, listaOggetti);
             gridOggettiOfferti.getChildren().clear();
             gridOggettiOfferti.getColumnConstraints().clear();
 

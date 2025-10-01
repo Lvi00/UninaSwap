@@ -34,7 +34,6 @@ public class Controller {
     private File fileOggettoAlternativo = null;
     private File immagineProfiloSelezionata = null;
 	private Annuncio annuncioSelezionato = null;
-	private ArrayList<Oggetto> listaOggettiOfferti = new ArrayList<Oggetto>();
     private ArrayList<String> listaOggettiDesiderati = new ArrayList<String>();
 	
 	public static Controller getController() {
@@ -51,7 +50,6 @@ public class Controller {
 	    this.fileOggettoAlternativo = null;
 	    this.immagineProfiloSelezionata = null;
 		this.annuncioSelezionato = null;
-		this.listaOggettiOfferti.clear();
 	    this.listaOggettiDesiderati.clear();
 	}
 	
@@ -115,12 +113,12 @@ public class Controller {
 		return annuncioSelezionato;
 	}
 	
-	public void setOggettiOfferti(ArrayList<Oggetto> listaOggettiOfferti) {
-		this.listaOggettiOfferti = listaOggettiOfferti;
+	public void setOggettiOfferti(OffertaScambio offertaScambio, ArrayList<Oggetto> listaOggettiOfferti) {
+		offertaScambio.setOggettiOfferti(listaOggettiOfferti);
 	}
 	
-	public ArrayList<Oggetto> getOggettiOfferti() {
-		return listaOggettiOfferti;
+	public ArrayList<Oggetto> getOggettiOfferti(OffertaScambio offertaScambio) {
+		return offertaScambio.getOggettiOfferti();
 	}
 	
 	public int checkDatiRegistrazione(ArrayList<String> credenziali) {
@@ -639,6 +637,10 @@ public class Controller {
 		return studente.getCognome();
 	}
     
+    public void svuotaListaOggettiOfferti(OffertaScambio offertaScambio) {
+		offertaScambio.getOggettiOfferti().clear();
+	}
+    
     public String getImmagineProfilo(Studente studente) {
 		return studente.getImmagineProfilo();
 	}
@@ -670,6 +672,10 @@ public class Controller {
     public double getPrezzoAnnuncio(Annuncio annuncio) {
     	return annuncio.getPrezzo();
     }
+    
+    public void setStatoOfferta(Offerta offerta, String statoOfferta) {
+		offerta.setStatoOfferta(statoOfferta);
+	}
     
     public String getTipologiaAnnuncio(Annuncio annuncio) {
     	return annuncio.getTipologia();
@@ -725,6 +731,10 @@ public class Controller {
     
     public Sede getSedeAnnuncio(Annuncio annuncio) {
 		return annuncio.getSede();
+	}
+    
+    public String getGiorniAnnuncio(Annuncio annuncio) {
+		return annuncio.getGiorni();
 	}
     
     public String getParticellaToponomasticaSede(Sede sede) {

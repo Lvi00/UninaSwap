@@ -17,12 +17,12 @@ public class OggettoDAO {
 
 	    try {
 	        Connection conn = ConnessioneDB.getConnection();
-	        String matStudente = oggetto.getStudente().getMatricola();
+	        String matStudente = controller.getMatricola(controller.getStudenteOggetto(oggetto));
 	        String queryCheck = "SELECT * FROM OGGETTO WHERE immagineoggetto = ? AND categoria = ? AND descrizione = ? AND matstudente = ?";
 	        PreparedStatement checkStatement = conn.prepareStatement(queryCheck);
-	        checkStatement.setString(1, oggetto.getImmagineOggetto());
-	        checkStatement.setString(2, oggetto.getCategoria());
-	        checkStatement.setString(3, oggetto.getDescrizione());
+	        checkStatement.setString(1, controller.getImmagineOggetto(oggetto));
+	        checkStatement.setString(2, controller.getCategoriaOggetto(oggetto));
+	        checkStatement.setString(3, controller.getDescrizioneOggetto(oggetto));
 	        checkStatement.setString(4, matStudente);
 
 	        ResultSet resultSet = checkStatement.executeQuery();
@@ -33,9 +33,9 @@ public class OggettoDAO {
 	        } else {
 	            String query = "INSERT INTO OGGETTO(immagineoggetto,categoria,descrizione,matstudente) VALUES (?,?,?,?)";
 	            PreparedStatement statement = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
-	            statement.setString(1, oggetto.getImmagineOggetto());
-	            statement.setString(2, oggetto.getCategoria());
-	            statement.setString(3, oggetto.getDescrizione());
+	            statement.setString(1, controller.getImmagineOggetto(oggetto));
+	            statement.setString(2, controller.getCategoriaOggetto(oggetto));
+	            statement.setString(3, controller.getDescrizioneOggetto(oggetto));
 	            statement.setString(4, matStudente);
 
 	            int rowsInserted = statement.executeUpdate();
@@ -94,14 +94,14 @@ public class OggettoDAO {
     public int getIdByOggetto(Oggetto oggetto) {
     	int id = 0;
     	try {
-		    String matStudente = oggetto.getStudente().getMatricola();
+		    String matStudente = controller.getMatricola(controller.getStudenteOggetto(oggetto));
 	        String query = "SELECT idoggetto FROM OGGETTO WHERE immagineoggetto = ? AND categoria = ? AND descrizione = ? AND matstudente = ?";
 	        
         	Connection conn = ConnessioneDB.getConnection();
             PreparedStatement statement = conn.prepareStatement(query);
-            statement.setString(1, oggetto.getImmagineOggetto());
-            statement.setString(2, oggetto.getCategoria());
-            statement.setString(3, oggetto.getDescrizione());
+            statement.setString(1, controller.getImmagineOggetto(oggetto));
+            statement.setString(2, controller.getCategoriaOggetto(oggetto));
+            statement.setString(3, controller.getDescrizioneOggetto(oggetto));
             statement.setString(4, matStudente);
 
             ResultSet rs = statement.executeQuery();

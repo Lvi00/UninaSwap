@@ -23,7 +23,7 @@ public class OffertaDAO {
 	public int SaveOfferta(Offerta offerta) {
 	    try {
 	        String matStudente = controller.getMatricola(controller.getStudenteOfferta(offerta));
-	        int idannuncio = new AnnuncioDAO().getIdByAnnuncio(offerta.getAnnuncio());
+	        int idannuncio = new AnnuncioDAO().getIdByAnnuncio(controller.getAnnuncioOfferta(offerta));
 
 	        Connection conn = ConnessioneDB.getConnection();
 
@@ -44,20 +44,21 @@ public class OffertaDAO {
 	        PreparedStatement statement = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS);
 
 	        // Campi comuni
-	        statement.setString(1, offerta.getStatoOfferta());
+	        statement.setString(1, controller.getStatoOfferta(offerta));
 	        statement.setString(4, matStudente);
 	        statement.setInt(5, idannuncio);
-	        statement.setTimestamp(7, offerta.getDataPubblicazione());
+	        statement.setTimestamp(7, controller.getDataPubblicazioneOfferta(offerta));
 
-	        // Campi specifici
 	        if (offerta instanceof OffertaVendita) {
-	            statement.setDouble(2, ((OffertaVendita) offerta).getPrezzoOfferta());
+	        	OffertaVendita offertaVendita = (OffertaVendita) offerta;
+	            statement.setDouble(2, controller.getPrezzoOfferta(offertaVendita));
 	            statement.setString(3, "Vendita");
 	            statement.setString(6, null);
 	        } else if (offerta instanceof OffertaRegalo) {
+	        	OffertaRegalo offertaRegalo = (OffertaRegalo) offerta;
 	            statement.setNull(2, java.sql.Types.DOUBLE);
 	            statement.setString(3, "Regalo");
-	            statement.setString(6, ((OffertaRegalo) offerta).getMotivazione());
+	            statement.setString(6, controller.getMotivazioneOfferta(offertaRegalo));
 	        } else if (offerta instanceof OffertaScambio) {
 	            statement.setNull(2, java.sql.Types.DOUBLE);
 	            statement.setString(3, "Scambio");
@@ -65,6 +66,7 @@ public class OffertaDAO {
 	        } else {
 	            return -1;
 	        }
+
 
 	        int rowsInserted = statement.executeUpdate();
 
@@ -113,7 +115,7 @@ public class OffertaDAO {
     }
     
     public ArrayList<Offerta> getOffertebyAnnuncio(Annuncio a) {
-        ArrayList<Offerta> offerte = new ArrayList<>();
+        ArrayList<Offerta> offerte = new ArrayList<Offerta>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
@@ -174,13 +176,13 @@ public class OffertaDAO {
         return offerte;
     }
     
-    public int accettaOfferta(Offerta o) {
+    public int accettaOfferta(Offerta offerta) {
     	try {
 			Connection conn = ConnessioneDB.getConnection();
 			String accettaOfferta = "UPDATE OFFERTA SET statoofferta = 'Accettata' WHERE matstudente = ? AND idannuncio = ? RETURNING idofferta";
 			PreparedStatement stmtAccettaOfferta = conn.prepareStatement(accettaOfferta);
-			stmtAccettaOfferta.setString(1, o.getStudente().getMatricola());
-			stmtAccettaOfferta.setInt(2, controller.getIdByAnnuncio(o.getAnnuncio()));
+			stmtAccettaOfferta.setString(1, controller.getMatricola(offerta.getStudente()));
+			stmtAccettaOfferta.setInt(2, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
 			
 			ResultSet rs = stmtAccettaOfferta.executeQuery();
 			
@@ -189,12 +191,12 @@ public class OffertaDAO {
 				String rifiutaOfferteRestanti = "UPDATE OFFERTA SET statoofferta = 'Rifiutata' WHERE idofferta <> ? AND idannuncio = ?";
 				PreparedStatement stmtRifiutaOfferte = conn.prepareStatement(rifiutaOfferteRestanti);
 				stmtRifiutaOfferte.setInt(1, idOffertaModificata);
-				stmtRifiutaOfferte.setInt(2, controller.getIdByAnnuncio(o.getAnnuncio()));
+				stmtRifiutaOfferte.setInt(2, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
 				stmtRifiutaOfferte.executeUpdate();
 				
 				String chiudiAnnuncio = "UPDATE ANNUNCIO SET statoannuncio = false WHERE idannuncio = ?";
 				PreparedStatement stmtChiudiAnnuncio = conn.prepareStatement(chiudiAnnuncio);
-				int idAnnuncio = controller.getIdByAnnuncio(o.getAnnuncio());
+				int idAnnuncio = controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta));
 				System.out.println("ID Annuncio da chiudere: " + idAnnuncio);
 				stmtChiudiAnnuncio.setInt(1, idAnnuncio);
 				stmtChiudiAnnuncio.executeUpdate();
@@ -211,13 +213,13 @@ public class OffertaDAO {
 		}
     }
     
-    public int rifiutaOfferta(Offerta o) {
+    public int rifiutaOfferta(Offerta offerta) {
     	try {
 			Connection conn = ConnessioneDB.getConnection();
 			String accettaOfferta = "UPDATE OFFERTA SET statoofferta = 'Rifiutata' WHERE matstudente = ? AND idannuncio = ?";
 			PreparedStatement stmtAccettaOfferta = conn.prepareStatement(accettaOfferta);
-			stmtAccettaOfferta.setString(1, o.getStudente().getMatricola());
-			stmtAccettaOfferta.setInt(2, controller.getIdByAnnuncio(o.getAnnuncio()));
+			stmtAccettaOfferta.setString(1, controller.getMatricola(controller.getStudenteOfferta(offerta)));
+			stmtAccettaOfferta.setInt(2, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
 			
 			if (stmtAccettaOfferta.executeUpdate() > 0) {
 				System.out.println("Offerta rifiutata con successo.");
@@ -233,7 +235,7 @@ public class OffertaDAO {
 		}
     }
     
-    public int getIdByOfferta(Offerta o) {
+    public int getIdByOfferta(Offerta offerta) {
         int idOfferta = -1;
 
         try {
@@ -241,8 +243,8 @@ public class OffertaDAO {
 
             String query = "SELECT idOfferta FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, o.getStudente().getMatricola());
-            stmt.setInt(2, controller.getIdByAnnuncio(o.getAnnuncio()));
+            stmt.setString(1, controller.getMatricola(controller.getStudenteOfferta(offerta)));
+            stmt.setInt(2, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -258,15 +260,15 @@ public class OffertaDAO {
         return idOfferta;
     }
     
-    public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta o) {
+    public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta offerta) {
         ArrayList<Oggetto> oggetti = new ArrayList<Oggetto>();
         
         try {
             Connection conn = ConnessioneDB.getConnection();
             String queryOggettiOfferti = "SELECT * FROM OGGETTIOFFERTI AS OO NATURAL JOIN OGGETTO AS OG NATURAL JOIN OFFERTA AS OF WHERE OO.idOfferta = ? AND OF.idannuncio = ?";
             PreparedStatement stmtOggettiOfferti = conn.prepareStatement(queryOggettiOfferti);
-            stmtOggettiOfferti.setInt(1, controller.getIdByOfferta(o));
-            stmtOggettiOfferti.setInt(2, controller.getIdByAnnuncio(o.getAnnuncio()));
+            stmtOggettiOfferti.setInt(1, controller.getIdByOfferta(offerta));
+            stmtOggettiOfferti.setInt(2, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
 
             ResultSet rsOggettiOfferti = stmtOggettiOfferti.executeQuery();
             while (rsOggettiOfferti.next()) {
@@ -288,14 +290,14 @@ public class OffertaDAO {
         return oggetti;
     }
     
-    public ArrayList<Offerta> getOffertebyMatricola(Studente s) {	
+    public ArrayList<Offerta> getOffertebyMatricola(Studente studente) {	
         ArrayList<Offerta> offerte = new ArrayList<>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
             String query = "SELECT * FROM Offerta WHERE matstudente = ? ORDER BY dataPubblicazione";
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, s.getMatricola());
+            stmt.setString(1, controller.getMatricola(studente));
 
             ResultSet rs = stmt.executeQuery();
 
@@ -341,7 +343,7 @@ public class OffertaDAO {
                 }
 
                 if (offerta != null) {
-                    offerta.setStatoOfferta(rs.getString("statoofferta"));
+                    controller.setStatoOfferta(offerta, rs.getString("statoofferta"));
                     offerte.add(offerta);
                 }
             }
@@ -355,13 +357,13 @@ public class OffertaDAO {
         return offerte;
     }
     
-    public int eliminaOfferta(Offerta o) {
+    public int eliminaOfferta(Offerta offerta) {
         try{
         	Connection conn = ConnessioneDB.getConnection();
-            if (o instanceof OffertaScambio) {
+            if (offerta instanceof OffertaScambio) {
                 String eliminaOggettiOfferti = "DELETE FROM OGGETTIOFFERTI WHERE idOfferta = ?";
                 try (PreparedStatement stmtEliminaOggetti = conn.prepareStatement(eliminaOggettiOfferti)) {
-                    stmtEliminaOggetti.setInt(1, controller.getIdByOfferta(o));
+                    stmtEliminaOggetti.setInt(1, controller.getIdByOfferta(offerta));
                     stmtEliminaOggetti.executeUpdate();
                 }
             }
@@ -369,8 +371,8 @@ public class OffertaDAO {
             // Poi elimino l'offerta
             String eliminaOfferta = "DELETE FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
             try (PreparedStatement stmtEliminaOfferta = conn.prepareStatement(eliminaOfferta)) {
-                stmtEliminaOfferta.setString(1, o.getStudente().getMatricola());
-                stmtEliminaOfferta.setInt(2, controller.getIdByAnnuncio(o.getAnnuncio()));
+                stmtEliminaOfferta.setString(1, controller.getMatricola(controller.getStudenteOfferta(offerta)));
+                stmtEliminaOfferta.setInt(2, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
 
                 int righeEliminate = stmtEliminaOfferta.executeUpdate();
                 if (righeEliminate > 0) {

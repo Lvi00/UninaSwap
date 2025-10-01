@@ -19,10 +19,10 @@ public class SedeDAO {
 		    Connection conn = ConnessioneDB.getConnection();
 		    String queryCheck = "SELECT * FROM SEDE WHERE ptop = ? AND descrizione = ? AND civico = ? AND cap = ?";
 		    PreparedStatement checkStatement = conn.prepareStatement(queryCheck);
-		    checkStatement.setString(1, sede.getParticellaToponomastica());
-		    checkStatement.setString(2, sede.getDescrizioneIndirizzo());
-		    checkStatement.setString(3, sede.getCivico());
-		    checkStatement.setString(4, sede.getCap());
+		    checkStatement.setString(1, controller.getParticellaToponomasticaSede(sede));
+		    checkStatement.setString(2, controller.getDescrizioneIndirizzo(sede));
+		    checkStatement.setString(3, controller.getCivicoSede(sede));
+		    checkStatement.setString(4, controller.getCapSede(sede));
 		    
 		    ResultSet resultSet = checkStatement.executeQuery();
 		    
@@ -35,10 +35,10 @@ public class SedeDAO {
 		    else {
 			    String query = "INSERT INTO SEDE(ptop,descrizione,civico,cap) VALUES (?,?,?,?)";
 			    PreparedStatement statement = conn.prepareStatement(query);
-			    statement.setString(1, sede.getParticellaToponomastica());
-			    statement.setString(2, sede.getDescrizioneIndirizzo());
-			    statement.setString(3, sede.getCivico());
-			    statement.setString(4, sede.getCap());
+			    statement.setString(1, controller.getParticellaToponomasticaSede(sede));
+			    statement.setString(2, controller.getDescrizioneIndirizzo(sede));
+			    statement.setString(3, controller.getCivicoSede(sede));
+			    statement.setString(4, controller.getCapSede(sede));
 			    int rowsInserted = statement.executeUpdate();
 			    statement.close();
 			    
@@ -91,10 +91,10 @@ public class SedeDAO {
 		    	Connection conn = ConnessioneDB.getConnection();
 		        PreparedStatement statement = conn.prepareStatement(query);
 
-		        statement.setString(1, sede.getParticellaToponomastica());
-		        statement.setString(2, sede.getDescrizioneIndirizzo());
-		        statement.setString(3, sede.getCivico());
-		        statement.setString(4, sede.getCap());
+		        statement.setString(1, controller.getParticellaToponomasticaSede(sede));
+		        statement.setString(2, controller.getDescrizioneIndirizzo(sede));
+		        statement.setString(3, controller.getCivicoSede(sede));
+		        statement.setString(4, controller.getCapSede(sede));
 
 		       ResultSet rs = statement.executeQuery();
 	            if (rs.next()) {

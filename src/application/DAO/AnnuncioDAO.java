@@ -15,7 +15,7 @@ public class AnnuncioDAO {
 
 	public void SaveAnnuncio(Annuncio annuncio) {
 		try {
-			String matStudente = annuncio.getOggetto().getStudente().getMatricola();
+			String matStudente = controller.getMatricola(controller.getStudente());
 			int idoggetto = controller.getIdByOggetto(annuncio.getOggetto());
 			int idsede = controller.getIdBySede(annuncio.getSede());
 			
@@ -48,22 +48,22 @@ public class AnnuncioDAO {
 	            String insert = "INSERT INTO ANNUNCIO(titoloannuncio, statoannuncio, fasciaorariainizio, fasciaorariafine, " +
                         "prezzo, tipologia, descrizioneannuncio, matstudente, idoggetto, idsede, giorni, dataPubblicazione) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		        PreparedStatement statement = conn.prepareStatement(insert);
-		        statement.setString(1, annuncio.getTitoloAnnuncio());
-		        statement.setBoolean(2, annuncio.isStatoAnnuncio());
-		        statement.setString(3, annuncio.getFasciaOrariaInizio());
-		        statement.setString(4, annuncio.getFasciaOrariaFine());
-		        statement.setDouble(5, annuncio.getPrezzo());
-		        statement.setString(6, annuncio.getTipologia());
-		        statement.setString(7, annuncio.getDescrizioneAnnuncio());
-		        statement.setString(8, matStudente);
-		        statement.setInt(9, idoggetto);
-		        statement.setInt(10, idsede);
-		        statement.setString(11, annuncio.getGiorni());
-		        statement.setTimestamp(12, annuncio.getDataPubblicazione());
-		        
-			    int rowsInserted = statement.executeUpdate();
-			    statement.close();
+	            PreparedStatement statement = conn.prepareStatement(insert);
+	            statement.setString(1, controller.getTitoloAnnuncio(annuncio));
+	            statement.setBoolean(2, controller.getStatoAnnuncio(annuncio));
+	            statement.setString(3, controller.getFasciaInizioAnnuncio(annuncio));
+	            statement.setString(4, controller.getFasciaFineAnnuncio(annuncio));
+	            statement.setDouble(5, controller.getPrezzoAnnuncio(annuncio));
+	            statement.setString(6, controller.getTipologiaAnnuncio(annuncio));
+	            statement.setString(7, controller.getDescrizioneAnnuncio(annuncio));
+	            statement.setString(8, matStudente);
+	            statement.setInt(9, idoggetto);
+	            statement.setInt(10, idsede);		    
+	            statement.setString(11, controller.getGiorniAnnuncio(annuncio));
+	            statement.setTimestamp(12, controller.getDataPubblicazioneAnnuncio(annuncio));
+
+	            int rowsInserted = statement.executeUpdate();
+	            statement.close();
 			    
 	            if (rowsInserted == 0) {
 	                System.out.println("Errore: inserimento fallito.");
@@ -221,18 +221,18 @@ public class AnnuncioDAO {
 		    String query = "UPDATE ANNUNCIO SET statoannuncio = false WHERE titoloannuncio = ? AND statoannuncio = ? AND fasciaorariainizio = ? AND fasciaorariafine = ? "
 		    		+ "AND prezzo = ? AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? AND idoggetto = ? AND idsede = ? AND giorni = ? AND dataPubblicazione = ?";
 	        PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, annuncio.getTitoloAnnuncio());
-            ps.setBoolean(2, annuncio.isStatoAnnuncio());
-            ps.setString(3, annuncio.getFasciaOrariaInizio());
-            ps.setString(4, annuncio.getFasciaOrariaFine());
-            ps.setDouble(5, annuncio.getPrezzo());
-            ps.setString(6, annuncio.getTipologia());
-            ps.setString(7, annuncio.getDescrizioneAnnuncio());
-            ps.setString(8, matStudente);
-            ps.setInt(9, idOggetto);
-            ps.setInt(10, idSede);
-            ps.setString(11, annuncio.getGiorni());
-            ps.setTimestamp(12, annuncio.getDataPubblicazione());
+	        ps.setString(1, controller.getTitoloAnnuncio(annuncio));
+	        ps.setBoolean(2, controller.getStatoAnnuncio(annuncio));
+	        ps.setString(3, controller.getFasciaInizioAnnuncio(annuncio));
+	        ps.setString(4, controller.getFasciaFineAnnuncio(annuncio));
+	        ps.setDouble(5, controller.getPrezzoAnnuncio(annuncio));
+	        ps.setString(6, controller.getTipologiaAnnuncio(annuncio));
+	        ps.setString(7, controller.getDescrizioneAnnuncio(annuncio));
+	        ps.setString(8, matStudente);
+	        ps.setInt(9, idOggetto);
+	        ps.setInt(10, idSede);
+	        ps.setString(11, controller.getGiorniAnnuncio(annuncio));
+	        ps.setTimestamp(12, controller.getDataPubblicazioneAnnuncio(annuncio));
 
             int updatedRows = ps.executeUpdate();
             if (updatedRows > 0) {
@@ -262,18 +262,18 @@ public class AnnuncioDAO {
 	    	Connection conn = ConnessioneDB.getConnection();
 	        PreparedStatement statement = conn.prepareStatement(query);
 	
-	        statement.setString(1, annuncio.getTitoloAnnuncio());
-	        statement.setBoolean(2, annuncio.isStatoAnnuncio());
-	        statement.setString(3, annuncio.getFasciaOrariaInizio());
-	        statement.setString(4, annuncio.getFasciaOrariaFine());
-	        statement.setDouble(5, annuncio.getPrezzo());
-	        statement.setString(6, annuncio.getTipologia());
-	        statement.setString(7, annuncio.getDescrizioneAnnuncio());
+	        statement.setString(1, controller.getTitoloAnnuncio(annuncio));
+	        statement.setBoolean(2, controller.getStatoAnnuncio(annuncio));
+	        statement.setString(3, controller.getFasciaInizioAnnuncio(annuncio));
+	        statement.setString(4, controller.getFasciaFineAnnuncio(annuncio));
+	        statement.setDouble(5, controller.getPrezzoAnnuncio(annuncio));
+	        statement.setString(6, controller.getTipologiaAnnuncio(annuncio));
+	        statement.setString(7, controller.getDescrizioneAnnuncio(annuncio));
 	        statement.setString(8, matStudente);
 	        statement.setInt(9, idOggetto);
 	        statement.setInt(10, idSede);
-	        statement.setString(11, annuncio.getGiorni());
-	        statement.setTimestamp(12, annuncio.getDataPubblicazione());
+	        statement.setString(11, controller.getGiorniAnnuncio(annuncio));
+	        statement.setTimestamp(12, controller.getDataPubblicazioneAnnuncio(annuncio));
 	
 	        ResultSet rs = statement.executeQuery();
 	        if (rs.next()) {
@@ -298,18 +298,18 @@ public class AnnuncioDAO {
 	        String queryCheck = "SELECT idannuncio FROM ANNUNCIO WHERE titoloannuncio = ? AND statoannuncio = ? AND fasciaorariainizio = ? AND fasciaorariafine = ? "
 	                + "AND prezzo = ? AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? AND idoggetto = ? AND idsede = ? AND giorni = ? AND dataPubblicazione = ?";
 	        PreparedStatement checkStatement = conn.prepareStatement(queryCheck);
-	        checkStatement.setString(1, annuncio.getTitoloAnnuncio());
-	        checkStatement.setBoolean(2, annuncio.isStatoAnnuncio());
-	        checkStatement.setString(3, annuncio.getFasciaOrariaInizio());
-	        checkStatement.setString(4, annuncio.getFasciaOrariaFine());
-	        checkStatement.setDouble(5, annuncio.getPrezzo());
-	        checkStatement.setString(6, annuncio.getTipologia());
-	        checkStatement.setString(7, annuncio.getDescrizioneAnnuncio());
+	        checkStatement.setString(1, controller.getTitoloAnnuncio(annuncio));
+	        checkStatement.setBoolean(2, controller.getStatoAnnuncio(annuncio));
+	        checkStatement.setString(3, controller.getFasciaInizioAnnuncio(annuncio));
+	        checkStatement.setString(4, controller.getFasciaFineAnnuncio(annuncio));
+	        checkStatement.setDouble(5, controller.getPrezzoAnnuncio(annuncio));
+	        checkStatement.setString(6, controller.getTipologiaAnnuncio(annuncio));
+	        checkStatement.setString(7, controller.getDescrizioneAnnuncio(annuncio));
 	        checkStatement.setString(8, matStudente);
 	        checkStatement.setInt(9, idOggetto);
 	        checkStatement.setInt(10, idSede);
-	        checkStatement.setString(11, annuncio.getGiorni());
-	        checkStatement.setTimestamp(12, annuncio.getDataPubblicazione());
+	        checkStatement.setString(11, controller.getGiorniAnnuncio(annuncio));
+	        checkStatement.setTimestamp(12, controller.getDataPubblicazioneAnnuncio(annuncio));
 
 	        ResultSet resultSet = checkStatement.executeQuery();
 

@@ -17,12 +17,12 @@ public class StudenteDAO{
 	        Connection conn = ConnessioneDB.getConnection();
 	        String query = "INSERT INTO STUDENTE(matricola,email,nome,cognome,passkey,username,immagineProfilo) VALUES (?,?,?,?,?,?,?)";
 	        PreparedStatement statement = conn.prepareStatement(query);
-	        statement.setString(1, studente.getMatricola());
-	        statement.setString(2, studente.getEmail());
-	        statement.setString(3, studente.getNome());
-	        statement.setString(4, studente.getCognome());
+	        statement.setString(1, controller.getMatricola(studente));
+	        statement.setString(2, controller.getEmail(studente));
+	        statement.setString(3, controller.getNome(studente));
+	        statement.setString(4, controller.getCognome(studente));
 	        statement.setString(5, password);
-	        statement.setString(6, studente.getUsername());
+	        statement.setString(6, controller.getUsername(studente));
 
 	        String defaultImage = "../IMG/immaginiProfilo/account1.png"; 
 	        statement.setString(7, defaultImage);
