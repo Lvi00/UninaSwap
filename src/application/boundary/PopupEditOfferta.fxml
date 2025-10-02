@@ -21,7 +21,7 @@
 	    
 	    <HBox alignment="CENTER" spacing="10">
 	        <TextArea fx:id="messaggioMotivazionale" maxWidth="300.0" prefHeight="69.0" prefRowCount="3" style="-fx-padding: -10px;" wrapText="true" HBox.hgrow="ALWAYS" />
-	        <Button fx:id="inviaDatiOfferta" styleClass="tasto-secondario" text="Modifica" />
+	        <Button fx:id="inviaMotivazioneOfferta" styleClass="tasto-secondario" text="Modifica" />
 	    </HBox>
 	</VBox>
 

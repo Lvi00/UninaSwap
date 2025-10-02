@@ -81,7 +81,7 @@ public class OfferteBoundary {
     public boolean CostruisciOfferteUtente() {
         ArrayList<Offerta> offerteInviate;
         
-        if(controller.getStudente().getOfferteInviate().isEmpty()) {
+        if(this.controller.getStudente().getOfferteInviate().isEmpty()) {
         	offerteInviate = controller.getOffertebyMatricola(controller.getStudente());
         	controller.setOfferteInviate(offerteInviate);
         	controller.getStudente().setOfferteInviate(offerteInviate);
@@ -89,6 +89,11 @@ public class OfferteBoundary {
         else{
         	System.out.println("offerte inviate già caricate");
         	offerteInviate = controller.getStudente().getOfferteInviate();
+            for(Offerta o: offerteInviate)
+            {
+            	System.out.println(o.getAnnuncio().getTitoloAnnuncio());
+            }
+            
         }
         
         String titolo = "";

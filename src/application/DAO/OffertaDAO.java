@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import application.control.Controller;
@@ -53,7 +54,7 @@ public class OffertaDAO {
 	        	OffertaVendita offertaVendita = (OffertaVendita) offerta;
 	            statement.setDouble(2, controller.getPrezzoOfferta(offertaVendita));
 	            statement.setString(3, "Vendita");
-	            statement.setString(6, null);
+	            statement.setString(6, "Assente");
 	        } else if (offerta instanceof OffertaRegalo) {
 	        	OffertaRegalo offertaRegalo = (OffertaRegalo) offerta;
 	            statement.setNull(2, java.sql.Types.DOUBLE);
@@ -62,7 +63,7 @@ public class OffertaDAO {
 	        } else if (offerta instanceof OffertaScambio) {
 	            statement.setNull(2, java.sql.Types.DOUBLE);
 	            statement.setString(3, "Scambio");
-	            statement.setString(6, null);
+	            statement.setString(6, "Assente");
 	        } else {
 	            return -1;
 	        }
@@ -85,8 +86,60 @@ public class OffertaDAO {
 	        return -1;
 	    }
 	}
+	public int UpdateOffertaVendita(Timestamp dataCorrente, double prezzo, Studente studente, Annuncio annuncio) {
 
+	    try {
+	        Connection conn = ConnessioneDB.getConnection();
+			String modificaOfferta = "UPDATE offerta SET prezzoofferta = ?, datapubblicazione = ? WHERE matstudente = ? AND idannuncio = ?";
+			PreparedStatement stmtModificaAccettaOfferta = conn.prepareStatement(modificaOfferta);
+	        stmtModificaAccettaOfferta.setDouble(1, prezzo);
+	        stmtModificaAccettaOfferta.setTimestamp(2, dataCorrente);
+			stmtModificaAccettaOfferta.setString(3, controller.getMatricola(studente));
+			stmtModificaAccettaOfferta.setInt(4, controller.getIdByAnnuncio(annuncio));
+			
+
+	        int righeAggiornate = stmtModificaAccettaOfferta.executeUpdate();
+
+	        if (righeAggiornate == 0) {
+	            return 2;
+	        }
+	        
+			stmtModificaAccettaOfferta.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return 2;
+	    } 
+	    
+	    return 0;
+	}
     
+	public int UpdateOffertaRegalo(Timestamp dataCorrente, String motivazione, Studente studente, Annuncio annuncio) {
+
+	    try {
+	        Connection conn = ConnessioneDB.getConnection();
+			String modificaOfferta = "UPDATE offerta SET motivazione = ?, datapubblicazione = ? WHERE matstudente = ? AND idannuncio = ?";
+			PreparedStatement stmtModificaAccettaOfferta = conn.prepareStatement(modificaOfferta);
+	        stmtModificaAccettaOfferta.setString(1, motivazione);
+	        stmtModificaAccettaOfferta.setTimestamp(2, dataCorrente);
+			stmtModificaAccettaOfferta.setString(3, controller.getMatricola(studente));
+			stmtModificaAccettaOfferta.setInt(4, controller.getIdByAnnuncio(annuncio));
+			
+
+	        int righeAggiornate = stmtModificaAccettaOfferta.executeUpdate();
+
+	        if (righeAggiornate == 0) {
+	            return 2;
+	        }
+	        
+			stmtModificaAccettaOfferta.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return 2;
+	    } 
+	    
+	    return 0;
+	}
+	
     public int rimuoviOfferteByIdAnnuncio(int idAnnuncio) {
         try {
             Connection conn = ConnessioneDB.getConnection();

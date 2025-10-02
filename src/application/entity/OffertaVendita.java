@@ -13,4 +13,9 @@ public class OffertaVendita extends Offerta {
     public double getPrezzoOfferta() {
         return prezzoOfferta;
     }
+    
+    public void setPrezzoOfferta(double Prezzo)
+    {
+    	this.prezzoOfferta = Prezzo;
+    }
 }

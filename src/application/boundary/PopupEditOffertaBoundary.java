@@ -9,6 +9,7 @@ import application.entity.OffertaRegalo;
 import application.entity.OffertaScambio;
 import application.entity.OffertaVendita;
 import application.entity.Oggetto;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -45,6 +46,7 @@ public class PopupEditOffertaBoundary {
     @FXML private Label labelOffertaVendita;
     @FXML private Label labelOffertaRegalo;
     @FXML private Button inviaDatiOfferta;
+    @FXML private Button inviaMotivazioneOfferta;
     @FXML private GridPane gridOggettiOfferti;
     private Controller controller = Controller.getController();
     private SceneManager sceneManager = SceneManager.sceneManager();
@@ -80,8 +82,9 @@ public class PopupEditOffertaBoundary {
 
             VBox.setMargin(labelOffertaVendita, new Insets(20, 0, 0, 0));
             stage.setWidth(450);
-            stage.setHeight(175);
-
+            stage.setHeight(175);       
+            
+            inviaDatiOfferta.setOnMouseClicked(event -> prelevaDatiOfferta(offerta, event));
         }
         else if (offerta instanceof OffertaScambio) {
         	OffertaScambio offertaScambio = (OffertaScambio) offerta;
@@ -142,17 +145,87 @@ public class PopupEditOffertaBoundary {
             VBox.setMargin(labelOffertaRegalo, new Insets(20, 0, 0, 0));
             stage.setWidth(450);
             stage.setHeight(175);
+            
+            inviaMotivazioneOfferta.setOnMouseClicked(event -> prelevaDatiOffertaRegalo(offerta, event));
         }
-
-        inviaDatiOfferta.setOnAction(event -> prelevaDatiOfferta(offerta));
 
         javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
         stage.setX(screenBounds.getMinX() + (screenBounds.getWidth() - stage.getWidth()) / 2);
         stage.setY(screenBounds.getMinY() + (screenBounds.getHeight() - stage.getHeight()) / 2);
     }
 
-    private void prelevaDatiOfferta(Offerta offerta) {
+    private void prelevaDatiOfferta(Offerta offerta, MouseEvent e) {
+    	Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
+    	if(offerta instanceof OffertaVendita)
+    	{
+    		OffertaVendita offertaVendita = (OffertaVendita) offerta;
+        	String intero = campoPrezzoIntero.getText().trim();
+            String decimale = campoPrezzoDecimale.getText().trim();
+
+            // Se intero è vuoto, aggiungi "0"
+            if (intero.isEmpty()) {
+            	intero = "0";
+            }
+            
+            // Se decimale è vuoto, aggiungi "00"
+            if (decimale.isEmpty()) {
+                decimale = "00";
+            }
+
+            // Costruisci il prezzo finale
+            String stringaPrezzo = intero + "." + decimale;
+            
+            switch(controller.checkModificaControffertaVendita(offertaVendita, stringaPrezzo))
+            {
+	    		case 0:
+	                currentStage.close();
+	                offertaVendita.setPrezzoOfferta(Double.parseDouble(stringaPrezzo));
+	                campoPrezzoIntero.setText(intero);
+	                campoPrezzoDecimale.setText(decimale);
+	                sceneManager.showPopupAlert(GeneralOffersPane, "Modifica effetuata", "La modifica dell'offerta è avvenuta con successo");
+				break;
+				
+	    		case 1:
+	    			sceneManager.showPopupError(GeneralOffersPane, "Errore nella modifica dell'offerta", "Offerta troppo bassa, superiore all'importo dell'annuncio o identica all'offerta corrente");
+				break;
+				
+	    		case 2:
+	    			sceneManager.showPopupError(GeneralOffersPane, "Errore inaspettato!!!", "Impossibile modificare l'offerta");
+	    		break;
+            }
+    	}
+    }
+    
+    private void prelevaDatiOffertaRegalo(Offerta offerta, MouseEvent e) {
+    	Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+
+    	if(offerta instanceof OffertaRegalo)
+    	{
+            String motivazione = messaggioMotivazionale.getText().trim();
+            OffertaRegalo offertaRegalo = (OffertaRegalo) offerta; // Evita motivazioni vuote o "Assente"
+	        if (motivazione.isEmpty()) {
+	            motivazione = "Assente";
+	        }
+	        
+	        switch(controller.editOffertaRegaloMotivazione(offertaRegalo, motivazione))
+	        {
+	    		case 0:
+	                currentStage.close();
+	                offertaRegalo.setMotivazione(motivazione);
+	                messaggioMotivazionale.setText(motivazione);
+	                sceneManager.showPopupAlert(GeneralOffersPane, "Modifica effetuata", "La modifica dell'offerta è avvenuta con successo");
+				break;
+				
+	    		case 1:
+	    			sceneManager.showPopupError(GeneralOffersPane, "Errore nella modifica dell'offerta", "Offerta troppo lunga, superiore al limite di caratteri consentiti o identica all'offerta corrente");
+				break;
+				
+	    		case 2:
+	    			sceneManager.showPopupError(GeneralOffersPane, "Errore inaspettato!!!", "Impossibile modificare l'offerta");
+	    		break;
+	        }
+    	}
     }
     
     private StackPane creaCardOggettoOfferto(Oggetto oggetto, Offerta offerta) {

@@ -13,4 +13,8 @@ public class OffertaRegalo extends Offerta {
     public String getMotivazione() {
         return motivazione;
     }
+    
+    public void setMotivazione(String motivazione) {
+        this.motivazione = motivazione;
+    }
 }

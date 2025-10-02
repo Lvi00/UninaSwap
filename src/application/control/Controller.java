@@ -370,6 +370,8 @@ public class Controller {
 	}
 	
 	public int inviaOffertaRegalo(Annuncio annuncio, String motivazione){
+	    if (motivazione == null || motivazione.isEmpty()) motivazione = "Assente";
+	    if(motivazione.length()>255) return 1;
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
 		OffertaRegalo offertaRegalo = new OffertaRegalo(dataCorrente, this.studente, annuncio, motivazione);
 		return new OffertaDAO().SaveOfferta(offertaRegalo);
@@ -379,7 +381,6 @@ public class Controller {
         Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
         
 		OffertaScambio offertaScambio = new OffertaScambio(dataCorrente, this.studente, annuncio);
-		
 		int idOffertaInserita = new OffertaDAO().SaveOfferta(offertaScambio);
         
         //Offerta già esistente
@@ -419,7 +420,7 @@ public class Controller {
         return 0;
 	}
 	
-	public int checkControfferta(Annuncio annuncio, String stringaPrezzo) {
+	public int checkControffertaVendita(Annuncio annuncio, String stringaPrezzo) {
 	    String prezzoRegex = "^[0-9]+(\\.[0-9]{1,2})?$";
 	    
 	    if (!stringaPrezzo.matches(prezzoRegex)) {
@@ -437,6 +438,57 @@ public class Controller {
 	    OffertaVendita offerta = new OffertaVendita(dataCorrente, this.studente, annuncio, prezzo);
 
 	    int risultato = new OffertaDAO().SaveOfferta(offerta);
+
+	    return risultato;
+	}
+	
+	public int checkModificaControffertaVendita(OffertaVendita offerta, String stringaPrezzo) 
+	{
+		
+	    String prezzoRegex = "^[0-9]+(\\.[0-9]{1,2})?$";
+	    if (!stringaPrezzo.matches(prezzoRegex)) {
+	        return 1;
+	    }
+	    System.out.println(stringaPrezzo);
+	    double prezzo = Double.parseDouble(stringaPrezzo);
+
+	    if (prezzo <= 0 || prezzo == offerta.getPrezzoOfferta() || prezzo >= offerta.getAnnuncio().getPrezzo()) {
+	        return 1;
+	    }
+	    
+	    Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
+
+	    int risultato = new OffertaDAO().UpdateOffertaVendita(dataCorrente, prezzo, offerta.getStudente(),  offerta.getAnnuncio());
+
+	    return risultato;
+	}
+	
+	public int editOffertaRegaloMotivazione(OffertaRegalo offerta, String motivazione) {
+	    if (motivazione == null) motivazione = "";
+	    motivazione = motivazione.trim().replaceAll("\\s{2,}", " ");
+	    String motivazioneRegex = "^[\\p{L}0-9,.!?;:'\"()\\s-]*$";
+	    
+	    if (!motivazione.matches(motivazioneRegex) || motivazione.length()>255) {
+	        return 1; // motivazione non valida
+	    }
+	    
+	    if (motivazione.isEmpty()) {
+	        motivazione = "Assente";
+	    }
+	    
+	    String vecchiaMotivazione = offerta.getMotivazione();
+	    if (vecchiaMotivazione == null || vecchiaMotivazione.trim().isEmpty()) {
+	        vecchiaMotivazione = "Assente";
+	    }
+
+	    if (vecchiaMotivazione.equals(motivazione)) {
+	        return 1; // motivazione identica a prima
+	    }
+
+	    offerta.setMotivazione(motivazione);
+
+	    Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
+	    int risultato = new OffertaDAO().UpdateOffertaRegalo(dataCorrente, motivazione, offerta.getStudente(), offerta.getAnnuncio());
 
 	    return risultato;
 	}
@@ -605,14 +657,14 @@ public class Controller {
     	
     }
     
-    //End logica di modifica offerta
-    
     public void rimuoviOggettoOfferto(Oggetto oggetto, Offerta offerta) {
     	int idOggetto = new OggettoDAO().getIdByOggetto(oggetto);
     	int idOfferta = new OffertaDAO().getIdByOfferta(offerta);
     	new OggettiOffertiDAO().rimuoviOggettoOffertoById(idOggetto, idOfferta);
     	new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
     }
+    
+    //End logica di modifica offerta
     
     //Metodi per l'ottenimento dei dati
     

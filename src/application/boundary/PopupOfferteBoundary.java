@@ -2,6 +2,7 @@ package application.boundary;
 
 import application.control.Controller;
 import application.entity.Annuncio;
+import application.entity.Offerta;
 import application.entity.Oggetto;
 import application.entity.Sede;
 import javafx.beans.property.SimpleStringProperty;
@@ -342,6 +343,7 @@ public class PopupOfferteBoundary {
     		switch(controller.inviaOffertaVendita(annuncio)) {
 	    		case 0:
 	    	        currentStage.close(); 
+	                controller.SvuotaOfferteInviate();
 	    	        sceneManager.showPopupAlert(containerOfferte, "Offerta inviata!", "Hai inviato correttamente un'offerta per questo annuncio.");
 	    		break;
 	    		
@@ -354,12 +356,11 @@ public class PopupOfferteBoundary {
     	else if(controller.getTipologiaAnnuncio(annuncio).equals("Regalo")) {
     	    String messaggioMotivazionale = campoDescrizioneAnnuncioRegalo.getText().trim();
     	    
-    	    if (messaggioMotivazionale == null || messaggioMotivazionale.isEmpty()) messaggioMotivazionale = "Assente";
-
     	    switch(controller.inviaOffertaRegalo(annuncio, messaggioMotivazionale)) {
     	        case 0: // offerta inviata correttamente
                     currentStage.close();
-    	            sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " è stata inviata con successo.");
+                    controller.SvuotaOfferteInviate();
+                    sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " è stata inviata con successo.");
     	        break;
 
     	        case 1: // errore generico
@@ -377,11 +378,13 @@ public class PopupOfferteBoundary {
     	    switch(controller.inviaOffertaScambio(annuncio, this.listaOggettiOfferti)) {
 		        case 0: // offerta di scambio normale inviata correttamente
 	                currentStage.close();
+	                controller.SvuotaOfferteInviate();
 		            sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " è stata inviata con successo.");
 		        break;
 	
 		        case 1: // offerta di scambio personalizzata inviata correttamente
 		        	currentStage.close();
+		        	controller.SvuotaOfferteInviate();
 		            sceneManager.showPopupAlert(containerOfferte, "Richiesta personalizzata inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " con gli oggetti inseriti è stata inviata con successo.");
 		        break;
 		        
@@ -403,8 +406,8 @@ public class PopupOfferteBoundary {
     	Annuncio annuncio = controller.getAnnuncioSelezionato();
     	
     	Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-    	String intero = campoPrezzoIntero.getText();
-        String decimale = campoPrezzoDecimale.getText();
+    	String intero = campoPrezzoIntero.getText().trim();
+        String decimale = campoPrezzoDecimale.getText().trim();
 
         // Se intero è vuoto, aggiungi "0"
         if (intero.isEmpty()) {
@@ -419,9 +422,10 @@ public class PopupOfferteBoundary {
         // Costruisci il prezzo finale
         String stringaPrezzo = intero + "." + decimale;
         
-        switch(controller.checkControfferta(annuncio, stringaPrezzo)) {
+        switch(controller.checkControffertaVendita(annuncio, stringaPrezzo)) {
             case 0:
                 currentStage.close();
+                controller.SvuotaOfferteInviate();
                 sceneManager.showPopupAlert(containerOfferte, "Controfferta inviata!", "La controfferta è stata inviata con successo.");
             break;
 
