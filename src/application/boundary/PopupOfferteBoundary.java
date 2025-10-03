@@ -2,7 +2,6 @@ package application.boundary;
 
 import application.control.Controller;
 import application.entity.Annuncio;
-import application.entity.Offerta;
 import application.entity.Oggetto;
 import application.entity.Sede;
 import javafx.beans.property.SimpleStringProperty;
@@ -377,9 +376,9 @@ public class PopupOfferteBoundary {
     	{
     	    switch(controller.inviaOffertaScambio(annuncio, this.listaOggettiOfferti)) {
 		        case 0: // offerta di scambio normale inviata correttamente
-	                currentStage.close();
 	                controller.SvuotaOfferteInviate();
 		            sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " è stata inviata con successo.");
+	                currentStage.close();
 		        break;
 	
 		        case 1: // offerta di scambio personalizzata inviata correttamente
@@ -424,9 +423,9 @@ public class PopupOfferteBoundary {
         
         switch(controller.checkControffertaVendita(annuncio, stringaPrezzo)) {
             case 0:
-                currentStage.close();
                 controller.SvuotaOfferteInviate();
                 sceneManager.showPopupAlert(containerOfferte, "Controfferta inviata!", "La controfferta è stata inviata con successo.");
+                currentStage.close();
             break;
 
             case 1:

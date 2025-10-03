@@ -441,4 +441,85 @@ public class OffertaDAO {
             return 1;
         }
     }
+    
+    public int getNumeroOfferteInviate(Studente studente, String tipologia) {
+		int count = 0;
+				
+		try {
+			Connection conn = ConnessioneDB.getConnection();
+			String query = "SELECT COUNT(*) AS numeroOfferteInviate FROM OFFERTA WHERE matstudente = ?";
+			
+			switch(tipologia) {
+				case "Vendita":
+					query += " AND tipologia = 'Vendita'";
+				break;
+				
+				case "Scambio":
+					query += " AND tipologia = 'Scambio'";
+				break;
+					
+				case "Regalo":
+					query += " AND tipologia = 'Regalo'";
+				break;
+					
+				default:
+					System.out.println("Nessuna tipologia specificata");
+				break;
+			}
+			
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, controller.getMatricola(studente));
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				count = rs.getInt("numeroOfferteInviate");
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+    
+    public int getNumeroOfferteAccettate(Studente studente, String tipologia) {
+		int count = 0;
+		try {
+			Connection conn = ConnessioneDB.getConnection();
+			String query = "SELECT COUNT(*) AS numeroOfferteAccettate FROM OFFERTA WHERE matstudente = ? AND statoofferta = 'Accettata'";
+			
+			switch(tipologia) {
+				case "Vendita":
+					query += " AND tipologia = 'Vendita'";
+				break;
+				
+				case "Scambio":
+					query += " AND tipologia = 'Scambio'";
+				break;
+					
+				case "Regalo":
+					query += " AND tipologia = 'Regalo'";
+				break;
+					
+				default:
+					System.out.println("Nessuna tipologia specificata");
+				break;
+			}
+			
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, controller.getMatricola(studente));
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				count = rs.getInt("numeroOfferteAccettate");
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
 }

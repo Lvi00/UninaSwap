@@ -452,7 +452,7 @@ public class Controller {
 	    System.out.println(stringaPrezzo);
 	    double prezzo = Double.parseDouble(stringaPrezzo);
 
-	    if (prezzo <= 0 || prezzo == offerta.getPrezzoOfferta() || prezzo >= offerta.getAnnuncio().getPrezzo()) {
+	    if (prezzo <= 0 || prezzo == offerta.getPrezzoOfferta() || prezzo > offerta.getAnnuncio().getPrezzo()) {
 	        return 1;
 	    }
 	    
@@ -649,14 +649,6 @@ public class Controller {
     	return 0;
     }
     
-    public void editOffertaRegalo(Offerta o, String motivazione) {
-    	
-    }
-    
-    public void editOffertaVendita(Offerta o, String prezzoIntero, String prezzoDecimale) {
-    	
-    }
-    
     public void rimuoviOggettoOfferto(Oggetto oggetto, Offerta offerta) {
     	int idOggetto = new OggettoDAO().getIdByOggetto(oggetto);
     	int idOfferta = new OffertaDAO().getIdByOfferta(offerta);
@@ -665,6 +657,18 @@ public class Controller {
     }
     
     //End logica di modifica offerta
+    
+    //Metodi ottenimento dati per i grafici
+    
+    public int getNumeroOfferteInviate(Studente studente, String tipologia) {
+		return new OffertaDAO().getNumeroOfferteInviate(studente, tipologia);
+	}
+    
+    public int getNumeroOfferteAccettate(Studente studente, String tipologia) {
+		return new OffertaDAO().getNumeroOfferteAccettate(studente, tipologia);
+	}
+    
+    //End metodi ottenimento dati per i grafici
     
     //Metodi per l'ottenimento dei dati
     
@@ -714,6 +718,14 @@ public class Controller {
     
     public String getMotivazioneOfferta(OffertaRegalo offertaRegalo) {
     	return offertaRegalo.getMotivazione();
+    }
+    
+    public void setMotivazioneOfferta(OffertaRegalo offertaRegalo, String motivazione) {
+		offertaRegalo.setMotivazione(motivazione);
+	}
+    
+    public void setPrezzoOfferta(OffertaVendita offertaVendita, double prezzo) {
+    	offertaVendita.setPrezzoOfferta(prezzo);
     }
     
     public boolean getStatoAnnuncio(Annuncio annuncio) {

@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import application.control.Controller;
-import application.entity.Offerta;
 import application.entity.OffertaRegalo;
 import application.entity.OffertaScambio;
 import application.entity.OffertaVendita;

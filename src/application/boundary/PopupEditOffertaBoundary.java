@@ -9,7 +9,6 @@ import application.entity.OffertaRegalo;
 import application.entity.OffertaScambio;
 import application.entity.OffertaVendita;
 import application.entity.Oggetto;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -70,11 +69,13 @@ public class PopupEditOffertaBoundary {
         paneOffertaRegalo.setManaged(false);
 
         if (offerta instanceof OffertaVendita) {
+            OffertaVendita offertaVendita = (OffertaVendita) offerta;
+            
             paneOffertaVendita.setVisible(true);
             paneOffertaVendita.setManaged(true);
-
+            
             // Imposta prezzo
-            double prezzo = ((OffertaVendita) offerta).getPrezzoOfferta();
+            double prezzo = controller.getPrezzoOfferta(offertaVendita);
             String prezzoString = String.format("%.2f", prezzo).replace(".", ",");
             String[] parti = prezzoString.split(",");
             campoPrezzoIntero.setText(parti[0]);
@@ -132,10 +133,11 @@ public class PopupEditOffertaBoundary {
             }
 
         } else if (offerta instanceof OffertaRegalo) {
+        	OffertaRegalo offertaRegalo = (OffertaRegalo) offerta;
             paneOffertaRegalo.setVisible(true);
             paneOffertaRegalo.setManaged(true);
 
-            String motivazione = ((OffertaRegalo) offerta).getMotivazione();
+            String motivazione = controller.getMotivazioneOfferta(offertaRegalo);
             if (motivazione == null || motivazione.equalsIgnoreCase("Assente")) {
                 messaggioMotivazionale.setText("");
             } else {
@@ -180,18 +182,18 @@ public class PopupEditOffertaBoundary {
             {
 	    		case 0:
 	                currentStage.close();
-	                offertaVendita.setPrezzoOfferta(Double.parseDouble(stringaPrezzo));
+	                controller.setPrezzoOfferta(offertaVendita, Double.parseDouble(stringaPrezzo));
 	                campoPrezzoIntero.setText(intero);
 	                campoPrezzoDecimale.setText(decimale);
 	                sceneManager.showPopupAlert(GeneralOffersPane, "Modifica effetuata", "La modifica dell'offerta è avvenuta con successo");
 				break;
 				
 	    		case 1:
-	    			sceneManager.showPopupError(GeneralOffersPane, "Errore nella modifica dell'offerta", "Offerta troppo bassa, superiore all'importo dell'annuncio o identica all'offerta corrente");
+	    			sceneManager.showPopupError(GeneralOffersPane, "Errore nella modifica dell'offerta", "La controfferta non è valida, o è maggiore del prezzo dell'annuncio o è uguale alla controfferta precedente");
 				break;
 				
 	    		case 2:
-	    			sceneManager.showPopupError(GeneralOffersPane, "Errore inaspettato!!!", "Impossibile modificare l'offerta");
+	    			sceneManager.showPopupError(GeneralOffersPane, "Errore inaspettato", "Impossibile modificare l'offerta");
 	    		break;
             }
     	}
@@ -203,7 +205,7 @@ public class PopupEditOffertaBoundary {
     	if(offerta instanceof OffertaRegalo)
     	{
             String motivazione = messaggioMotivazionale.getText().trim();
-            OffertaRegalo offertaRegalo = (OffertaRegalo) offerta; // Evita motivazioni vuote o "Assente"
+            OffertaRegalo offertaRegalo = (OffertaRegalo) offerta;
 	        if (motivazione.isEmpty()) {
 	            motivazione = "Assente";
 	        }
@@ -212,7 +214,7 @@ public class PopupEditOffertaBoundary {
 	        {
 	    		case 0:
 	                currentStage.close();
-	                offertaRegalo.setMotivazione(motivazione);
+	                controller.setMotivazioneOfferta(offertaRegalo, motivazione);
 	                messaggioMotivazionale.setText(motivazione);
 	                sceneManager.showPopupAlert(GeneralOffersPane, "Modifica effetuata", "La modifica dell'offerta è avvenuta con successo");
 				break;
