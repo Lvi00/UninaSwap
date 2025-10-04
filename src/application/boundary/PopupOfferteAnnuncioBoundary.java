@@ -1,13 +1,13 @@
 package application.boundary;
 
 import java.io.File;
-import java.util.ArrayList;
-
 import application.control.Controller;
 import application.entity.OffertaRegalo;
 import application.entity.OffertaScambio;
 import application.entity.OffertaVendita;
 import application.entity.Oggetto;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -35,18 +35,7 @@ public class PopupOfferteAnnuncioBoundary {
 
     private Controller controller = Controller.getController();
     
-    private void hideAllPanes() {
-        paneInfoOffertaVendita.setVisible(false);
-        paneInfoOffertaVendita.setManaged(false);
-        paneInfoOffertaScambio.setVisible(false);
-        paneInfoOffertaScambio.setManaged(false);
-        paneInfoOffertaRegalo.setVisible(false);
-        paneInfoOffertaRegalo.setManaged(false);
-    }
-
-    
     public void setPopupOffertaVendita(OffertaVendita offertaVendita) {
-    	hideAllPanes();
     	paneInfoOffertaVendita.setVisible(true);
         paneInfoOffertaRegalo.setVisible(false);
         paneInfoOffertaScambio.setVisible(false);
@@ -55,16 +44,15 @@ public class PopupOfferteAnnuncioBoundary {
 	}
     
     public void setPopupOffertaScambio(OffertaScambio offertaScambio) {
-    	hideAllPanes();
     	paneInfoOffertaScambio.setVisible(true);
         paneInfoOffertaVendita.setVisible(false);
         paneInfoOffertaRegalo.setVisible(false);
         labelOffertaScambio.setVisible(false);
         gridPaneScambio.getChildren().clear();
 
-        ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(offertaScambio);
+    	ObservableList<Oggetto> listaOggettiOfferti = FXCollections.observableArrayList(controller.getOggettiOfferti(offertaScambio));
 
-        if(listaOggetti.isEmpty()) {
+        if(listaOggettiOfferti.isEmpty()) {
             scrollPaneScambio.setVisible(false);
             labelOffertaScambio.setVisible(true);
         } else {
@@ -74,7 +62,7 @@ public class PopupOfferteAnnuncioBoundary {
             gridPaneScambio.getColumnConstraints().add(col);
 
             int row = 0;
-            for (Oggetto o : listaOggetti) {
+            for (Oggetto o : listaOggettiOfferti) {
                 VBox card = creaCardOggettoOfferto(o);
                 gridPaneScambio.add(card, 0, row);
                 gridPaneScambio.setAlignment(Pos.TOP_CENTER);
@@ -85,7 +73,6 @@ public class PopupOfferteAnnuncioBoundary {
     }
     
     public void setPopupOffertaRegalo(OffertaRegalo offertaRegalo) {
-    	hideAllPanes();
     	paneInfoOffertaRegalo.setVisible(true);
         paneInfoOffertaVendita.setVisible(false);
         paneInfoOffertaScambio.setVisible(false);

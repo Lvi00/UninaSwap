@@ -85,7 +85,6 @@ public class PopupOfferteBoundary {
     @FXML private TableColumn<Oggetto, String> colDescrizione;
     @FXML private TableColumn<Oggetto, String> colPercorsoImmagine;
     @FXML private TableColumn<Oggetto, String> colAzioni;
-    private ObservableList<Oggetto> listaOggettiOfferti = FXCollections.observableArrayList();
     
     public void setProdottiBoundary() {
         campoCategoriaOggetto.setItems(FXCollections.observableArrayList(Categorie.values()));
@@ -217,9 +216,9 @@ public class PopupOfferteBoundary {
 			case 0:
 			   Oggetto nuovoOggetto = new Oggetto(percorsoImmagine, categoriaSelezionata.toString(), descrizione, controller.getStudente());
 			   
-			   if (this.listaOggettiOfferti.size() < 5) {
-				    sceneManager.showPopupAlert(containerOfferte, "Oggetto aggiunto!", "L'oggetto è stato aggiunto alla lista degli oggetti offerti da te.");
-				    this.listaOggettiOfferti.add(nuovoOggetto);
+			   if (controller.getListaOggettiOfferti().size() < 5) {
+				   controller.aggiungiOggettoOfferto(nuovoOggetto);
+				   sceneManager.showPopupAlert(containerOfferte, "Oggetto aggiunto!", "L'oggetto è stato aggiunto alla lista degli oggetti offerti da te.");
 			   }
 			   else sceneManager.showPopupError(containerOfferte, "Troppi oggetti!", "Hai inserito il limite massimo di 5 oggetti scambiabili.");
 			   
@@ -242,21 +241,10 @@ public class PopupOfferteBoundary {
 			break;
     	}
     }
-    
-    @FXML
-    public void mostraOggettiOfferti(MouseEvent e) {
-        if (this.listaOggettiOfferti.isEmpty()) {
-            sceneManager.showPopupError(containerOfferte, "Nessun oggetto aggiunto", "Non hai ancora aggiunto oggetti da offrire per lo scambio.");
-            return;
-        }
-        
-        paneOfferta.setVisible(false);
-        paneOggettiOfferti.setVisible(true);
-    }
 
-    //Chiamato automaticamente da JavaFX dopo il caricamento dell'FXML
     @FXML
     public void initialize() {
+    	ObservableList<Oggetto> listaOggettiOfferti = FXCollections.observableArrayList(controller.getListaOggettiOfferti());
         tabellaOggetti.setItems(listaOggettiOfferti);
         colCategoria.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategoria()));
         colDescrizione.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDescrizione()));
@@ -377,13 +365,11 @@ public class PopupOfferteBoundary {
     	    switch(controller.inviaOffertaScambio(annuncio)) {
 		        case 0: // offerta di scambio normale inviata correttamente
 	                currentStage.close();
-	                controller.SvuotaOfferteInviate();
 		            sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " è stata inviata con successo.");
 		        break;
 	
 		        case 1: // offerta di scambio personalizzata inviata correttamente
 		        	currentStage.close();
-		        	controller.SvuotaOfferteInviate();
 		            sceneManager.showPopupAlert(containerOfferte, "Richiesta personalizzata inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " con gli oggetti inseriti è stata inviata con successo.");
 		        break;
 		        
@@ -393,15 +379,24 @@ public class PopupOfferteBoundary {
 		        
 	            case -2:
 	                sceneManager.showPopupError(containerOfferte, "Oggetti offerti duplicati!","Hai inserito degli oggetti duplicati nella lista degli oggetti da offrire per lo scambio.");
-	                listaOggettiOfferti.clear();
 	            break;
     	    }
     	}
     }
     
     @FXML
+    public void mostraOggettiOfferti(MouseEvent e) {
+        if (controller.getListaOggettiOfferti().isEmpty()) {
+            sceneManager.showPopupError(containerOfferte, "Nessun oggetto aggiunto", "Non hai ancora aggiunto oggetti da offrire per lo scambio.");
+            return;
+        }
+        
+        paneOfferta.setVisible(false);
+        paneOggettiOfferti.setVisible(true);
+    }
+    
+    @FXML
     public void checkControfferta(MouseEvent e) {
-    	
     	Annuncio annuncio = controller.getAnnuncioSelezionato();
     	
     	Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -424,7 +419,6 @@ public class PopupOfferteBoundary {
         switch(controller.checkControffertaVendita(annuncio, stringaPrezzo)) {
             case 0:
                 currentStage.close();
-                controller.SvuotaOfferteInviate();
                 sceneManager.showPopupAlert(containerOfferte, "Controfferta inviata!", "La controfferta è stata inviata con successo.");
             break;
 

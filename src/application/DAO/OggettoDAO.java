@@ -150,10 +150,9 @@ public class OggettoDAO {
 		}
         return 0;
     }
-    public int UpdateOggetto(Oggetto oggetto, String pathImmagine, String categoria, String descrizione) 
-    {
-        try 
-        {
+    
+    public int UpdateOggetto(Oggetto oggetto, String pathImmagine, String categoria, String descrizione) {
+        try {
         	Connection conn = ConnessioneDB.getConnection();
         	String query = "UPDATE OGGETTO SET immagineoggetto = ?, categoria = ?, descrizione = ? WHERE idoggetto = ?";
         	PreparedStatement statement = conn.prepareStatement(query); 

@@ -8,7 +8,7 @@ public class OffertaScambio extends Offerta {
 	
 	public OffertaScambio(Timestamp dataPubblicazione, Studente studente, Annuncio annuncio) {
 		super(dataPubblicazione, studente, annuncio);
-		this.oggettiOfferti = new ArrayList<Oggetto>();
+		oggettiOfferti = new ArrayList<Oggetto>();
 	}
 	
 	public ArrayList<Oggetto> getOggettiOfferti() {

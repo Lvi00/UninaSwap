@@ -91,7 +91,9 @@ public class PopupEditOffertaBoundary {
         	OffertaScambio offertaScambio = (OffertaScambio) offerta;
             paneOffertaScambio.setVisible(true);
             paneOffertaScambio.setManaged(true);
-            ArrayList<Oggetto> listaOggetti = controller.getOggettiOffertiByOfferta(offerta);
+            
+            ArrayList<Oggetto> listaOggetti = controller.getOggettiOfferti(offertaScambio);
+            
             controller.setOggettiOfferti(offertaScambio, listaOggetti);
             gridOggettiOfferti.getChildren().clear();
             gridOggettiOfferti.getColumnConstraints().clear();
@@ -152,8 +154,6 @@ public class PopupEditOffertaBoundary {
         }
 
         javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
-        stage.setX(screenBounds.getMinX() + (screenBounds.getWidth() - stage.getWidth()) / 2);
-        stage.setY(screenBounds.getMinY() + (screenBounds.getHeight() - stage.getHeight()) / 2);
     }
 
     private void prelevaDatiOfferta(Offerta offerta, MouseEvent e) {
@@ -408,7 +408,13 @@ public class PopupEditOffertaBoundary {
     }
 
     private void rimuoviOggettoOfferto(Oggetto oggetto, Offerta offerta) {
-    	controller.rimuoviOggettoOfferto(oggetto, offerta);
+    	if(controller.rimuoviOggettoOfferto(oggetto, offerta) == 0) {
+    		sceneManager.showPopupAlert(GeneralOffersPane, "Oggetto rimosso", "L'oggetto è stato rimosso con successo dall'offerta di scambio");
+    	}
+    	else {
+			sceneManager.showPopupError(GeneralOffersPane, "Errore nella rimozione", "Impossibile rimuovere l'oggetto dall'offerta di scambio");
+		}
+    	
     	CostruisciPopupEdit(offerta, (Stage) GeneralOffersPane.getScene().getWindow());
     }
     
@@ -478,6 +484,10 @@ public class PopupEditOffertaBoundary {
 	        case 3:
 	            sceneManager.showPopupError(GeneralOffersPane, "Errore di modifica", "L'offerta non è stata modificata");
             break;
+            
+	        case -1:
+	        	sceneManager.showPopupError(GeneralOffersPane, "Errore inaspettato", "Impossibile modificare l'offerta");
+			break;
 	    }
 
 	    showCampiModifica(oggetto, categoriaLabel, choiceCategoria, descrizioneLabel, textDescrizione, btnDelete, btnEdit, btnBack, btnCheck);

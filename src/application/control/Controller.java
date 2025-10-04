@@ -117,10 +117,6 @@ public class Controller {
 		offertaScambio.setOggettiOfferti(listaOggettiOfferti);
 	}
 	
-	public ArrayList<Oggetto> getOggettiOfferti(OffertaScambio offertaScambio) {
-		return offertaScambio.getOggettiOfferti();
-	}
-	
 	public int checkDatiRegistrazione(ArrayList<String> credenziali) {
 		String nome = credenziali.get(0);
 		String cognome = credenziali.get(1);
@@ -393,9 +389,9 @@ public class Controller {
         Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
         
 		OffertaScambio offertaScambio = new OffertaScambio(dataCorrente, this.studente, annuncio);
+		
 		int idOffertaInserita = new OffertaDAO().SaveOfferta(offertaScambio);
         
-        //Offerta già esistente
         if(idOffertaInserita == -1) {
             controller.svuotaListaOggettiOfferti();
         	return -1;
@@ -430,14 +426,13 @@ public class Controller {
 	        	oggettiOffertiDao.SaveOggettoOfferto(idOffertaInserita, idOggettoInserito);
 	        }
 	        
+	        setOggettiOfferti(offertaScambio, listaOggettiOfferti);
         	SvuotaOfferteInviate();
-            svuotaListaOggettiOfferti();
 	        
 			return 1;
         }
         
     	SvuotaOfferteInviate();
-        svuotaListaOggettiOfferti();
 
         return 0;
 	}
@@ -591,8 +586,13 @@ public class Controller {
 		return new OffertaDAO().getIdByOfferta(o);
 	}
 	
-	public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta o) {
-		return new OffertaDAO().getOggettiOffertiByOfferta(o);
+	public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta offerta) {
+		if(offerta instanceof OffertaScambio) {
+			OffertaScambio offertaScambio = (OffertaScambio) offerta;
+			return new OffertaDAO().getOggettiOffertiByOfferta(offerta);
+		}
+		
+		return null;
 	}
 	
 	public ArrayList<Offerta> getOffertebyMatricola(Studente s)
@@ -656,33 +656,50 @@ public class Controller {
     
     //Logica di modifica offerta
 
-    public int editOffertaScambio(Oggetto oggetto, Offerta offerta, String pathImmagine , String categoria, String descrizione) {
-    	if(getImmagineOggetto(oggetto).equals(pathImmagine) && getCategoriaOggetto(oggetto).equals(categoria) && getDescrizioneOggetto(oggetto).equals(descrizione) ) 
-    	{
-    		return 1;
+    public int editOffertaScambio(Oggetto oggetto, Offerta offerta, String pathImmagine , String categoria, String descrizione) {   	
+    	if(offerta instanceof OffertaScambio) {
+    		OffertaScambio offertaScambio = (OffertaScambio) offerta;
+    		
+	    	if(getImmagineOggetto(oggetto).equals(pathImmagine) && getCategoriaOggetto(oggetto).equals(categoria) && getDescrizioneOggetto(oggetto).equals(descrizione) ) 
+	    	{
+	    		return 1;
+	    	}
+	    	
+	    	ArrayList<Oggetto> listaOggettiOfferti = offertaScambio.getOggettiOfferti();
+	    	
+	    	for(Oggetto o : listaOggettiOfferti) {
+	        	if(getImmagineOggetto(o).equals(pathImmagine) && getCategoriaOggetto(o).equals(categoria) && getDescrizioneOggetto(o).equals(descrizione) ) 
+	        	{
+	        		return 2;
+	        	}
+	    	}
+	    	OggettoDAO oggettoDAO = new OggettoDAO();
+	    	
+	    	if(oggettoDAO.UpdateOggetto(oggetto,pathImmagine, categoria, descrizione) == 1)
+	    	{
+	    		return 3;
+	    	}
+	    	
+	    	offertaScambio.setOggettiOfferti(getOggettiOffertiByOfferta(offertaScambio));
+	    	
+	    	return 0;
     	}
-    	ArrayList<Oggetto> listaOggettiOfferti = getOggettiOffertiByOfferta(offerta);
-    	for(Oggetto o : listaOggettiOfferti) {
-        	if(getImmagineOggetto(o).equals(pathImmagine) && getCategoriaOggetto(o).equals(categoria) && getDescrizioneOggetto(o).equals(descrizione) ) 
-        	{
-        		return 2;
-        	}
-    	}
-    	OggettoDAO dao = new OggettoDAO();
     	
-    	if(dao.UpdateOggetto(oggetto,pathImmagine, categoria, descrizione)==1)
-    	{
-    		return 3;
-    	}
-    	
-    	return 0;
+    	return -1;
     }
     
-    public void rimuoviOggettoOfferto(Oggetto oggetto, Offerta offerta) {
-    	int idOggetto = new OggettoDAO().getIdByOggetto(oggetto);
-    	int idOfferta = new OffertaDAO().getIdByOfferta(offerta);
-    	new OggettiOffertiDAO().rimuoviOggettoOffertoById(idOggetto, idOfferta);
-    	new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
+    public int rimuoviOggettoOfferto(Oggetto oggetto, Offerta offerta) {
+    	if(offerta instanceof OffertaScambio) {
+    		OffertaScambio offertaScambio = (OffertaScambio) offerta;
+	    	int idOggetto = new OggettoDAO().getIdByOggetto(oggetto);
+	    	int idOfferta = new OffertaDAO().getIdByOfferta(offertaScambio);
+	    	new OggettiOffertiDAO().rimuoviOggettoOffertoById(idOggetto, idOfferta);
+	    	new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
+	    	offertaScambio.setOggettiOfferti(getOggettiOffertiByOfferta(offertaScambio));
+	    	return 0;
+    	}
+    	
+    	return 1;
     }
     
     //End logica di modifica offerta
@@ -876,6 +893,10 @@ public class Controller {
     public void setDataPubblicazioneOfferta(Offerta offerta, Timestamp data) {
     	offerta.setDataPubblicazione(data);
     }
+    
+	public ArrayList<Oggetto> getOggettiOfferti(OffertaScambio offertaScambio) {
+		return offertaScambio.getOggettiOfferti();
+	}
     
     //End metodi per l'ottenimento dei dati
 }

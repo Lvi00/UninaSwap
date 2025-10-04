@@ -1,4 +1,4 @@
-	package application.DAO;
+package application.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,12 +51,12 @@ public class OffertaDAO {
 	        statement.setTimestamp(7, controller.getDataPubblicazioneOfferta(offerta));
 
 	        if (offerta instanceof OffertaVendita) {
-	        	OffertaVendita offertaVendita = (OffertaVendita) offerta;
+	            OffertaVendita offertaVendita = (OffertaVendita) offerta;
 	            statement.setDouble(2, controller.getPrezzoOfferta(offertaVendita));
 	            statement.setString(3, "Vendita");
 	            statement.setString(6, "Assente");
 	        } else if (offerta instanceof OffertaRegalo) {
-	        	OffertaRegalo offertaRegalo = (OffertaRegalo) offerta;
+	            OffertaRegalo offertaRegalo = (OffertaRegalo) offerta;
 	            statement.setNull(2, java.sql.Types.DOUBLE);
 	            statement.setString(3, "Regalo");
 	            statement.setString(6, controller.getMotivazioneOfferta(offertaRegalo));
@@ -68,13 +68,27 @@ public class OffertaDAO {
 	            return -1;
 	        }
 
-
 	        int rowsInserted = statement.executeUpdate();
 
 	        if (offerta instanceof OffertaScambio) {
 	            ResultSet generatedKeys = statement.getGeneratedKeys();
 	            if (generatedKeys.next()) {
-	                return generatedKeys.getInt(1);
+	                int idOfferta = generatedKeys.getInt(1);
+
+	                // Inserimento oggetti collegati
+	                OffertaScambio offertaScambio = (OffertaScambio) offerta;
+	                for (Oggetto ogg : offertaScambio.getOggettiOfferti()) {
+	                    String insertOggetto = "INSERT INTO OGGETTIOFFERTI (idOfferta, immagineoggetto, categoria, descrizione, matstudente) VALUES (?, ?, ?, ?, ?)";
+	                    PreparedStatement stmtOggetto = conn.prepareStatement(insertOggetto);
+	                    stmtOggetto.setInt(1, idOfferta);
+	                    stmtOggetto.setString(2, ogg.getImmagineOggetto());
+	                    stmtOggetto.setString(3, ogg.getCategoria());
+	                    stmtOggetto.setString(4, ogg.getDescrizione());
+	                    stmtOggetto.setString(5, ogg.getStudente().getMatricola());
+	                    stmtOggetto.executeUpdate();
+	                }
+
+	                return idOfferta; // ritorno l'id generato
 	            }
 	            return -1;
 	        }
@@ -86,6 +100,7 @@ public class OffertaDAO {
 	        return -1;
 	    }
 	}
+	
 	public int UpdateOffertaVendita(Timestamp dataCorrente, double prezzo, Studente studente, Annuncio annuncio) {
 
 	    try {
@@ -207,10 +222,7 @@ public class OffertaDAO {
                             controller.getStudenteByMatricola(rs.getString("matstudente")),
                             annuncio
                         );
-                        
-                        ((OffertaScambio) offerta).getOggettiOfferti().addAll(
-                            getOggettiOffertiByOfferta(offerta)
-                        );
+                        controller.setOggettiOfferti((OffertaScambio) offerta, controller.getOggettiOffertiByOfferta(offerta));
                     break;
 
                     default:
@@ -369,7 +381,7 @@ public class OffertaDAO {
                             annuncio,
                             rs.getDouble("prezzoofferta")
                         );
-                        break;
+                    break;
 
                     case "Regalo":
                         offerta = new OffertaRegalo(
@@ -378,7 +390,7 @@ public class OffertaDAO {
                             annuncio,
                             rs.getString("motivazione")
                         );
-                        break;
+                    break;
 
                     case "Scambio":
                         offerta = new OffertaScambio(
@@ -386,15 +398,12 @@ public class OffertaDAO {
                             controller.getStudenteByMatricola(rs.getString("matstudente")),
                             annuncio
                         );
-                        // carico oggetti offerti per lo scambio
-                        ((OffertaScambio) offerta).getOggettiOfferti().addAll(
-                            getOggettiOffertiByOfferta(offerta)
-                        );
-                        break;
+                        controller.setOggettiOfferti((OffertaScambio) offerta, controller.getOggettiOffertiByOfferta(offerta));
+                    break;
 
                     default:
                         System.out.println("Tipologia non riconosciuta: " + tipologia);
-                        continue;
+                    break;
                 }
 
                 if (offerta != null) {
