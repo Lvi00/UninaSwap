@@ -114,10 +114,10 @@ public class PopupOfferteBoundary {
             descrizioneAnnuncio.setText(controller.getDescrizioneAnnuncio(annuncio));
 
             if (annuncio.getTipologia().equals("Vendita")) {
-                prezzoAnnuncio.setText(String.format("€ %.2f", controller.getPrezzoAnnuncio(annuncio)));
+                prezzoAnnuncio.setText("Prezzo: " + String.format("€ %.2f", controller.getPrezzoAnnuncio(annuncio)));
             }
 
-            categoriaAnnuncio.setText(controller.getCategoriaOggetto(controller.getOggettoAnnuncio(annuncio)));
+            categoriaAnnuncio.setText("Categoria: " + controller.getCategoriaOggetto(controller.getOggettoAnnuncio(annuncio)));
             
             Timestamp data = controller.getDataPubblicazioneAnnuncio(annuncio);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

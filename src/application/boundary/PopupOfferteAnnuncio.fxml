@@ -40,7 +40,7 @@
                 </AnchorPane>
 
                 <!-- ALTRI POPUP -->
-                <AnchorPane fx:id="paneInfoOffertaRegalo" layoutX="71.0" layoutY="57.0" prefHeight="185.0" prefWidth="357.0" styleClass="form">
+                <AnchorPane fx:id="paneInfoOffertaRegalo" layoutX="71.0" layoutY="57.0" prefHeight="185.0" prefWidth="357.0" styleClass="form" visible="false">
                     <children>
                         <Label layoutX="89.0" layoutY="22.0" text="Messaggio motivazionale">
                             <font>

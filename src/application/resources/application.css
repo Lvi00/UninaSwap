@@ -523,3 +523,7 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0.2, 0, 2);
     -fx-cursor: hand;
 }
+
+.sfondoPopupOfferte{
+	-fx-background-color: rgba(255, 255, 255, 0.8);
+}
