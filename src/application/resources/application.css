@@ -476,3 +476,50 @@
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
+
+/* Stile base del BarChart */
+.chart {
+    -fx-background-color: transparent;
+    -fx-legend-visible: false;
+}
+
+.chart-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d3436;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.axis {
+    -fx-tick-label-fill: #2d3436;
+    -fx-font-size: 11px;
+}
+
+.axis-label {
+    -fx-text-fill: #2d3436;
+    -fx-font-weight: bold;
+}
+
+/* Serie con colori moderni */
+.default-color0.chart-bar {
+    -fx-bar-fill: #6a11cb;   /* viola */
+}
+.default-color1.chart-bar {
+    -fx-bar-fill: #2575fc;   /* blu */
+}
+.default-color2.chart-bar {
+    -fx-bar-fill: #ff6a00;   /* arancio */
+}
+.default-color3.chart-bar {
+    -fx-bar-fill: #43e97b;   /* verde */
+}
+
+/* Effetto hover */
+.chart-bar:hover {
+    -fx-opacity: 0.8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0.2, 0, 2);
+    -fx-cursor: hand;
+}

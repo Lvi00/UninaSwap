@@ -1,4 +1,4 @@
-package application.DAO;
+	package application.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -167,18 +167,19 @@ public class OffertaDAO {
         return 0;
     }
     
-    public ArrayList<Offerta> getOffertebyAnnuncio(Annuncio a) {
+    public ArrayList<Offerta> getOffertebyAnnuncio(Annuncio annuncio) {
         ArrayList<Offerta> offerte = new ArrayList<Offerta>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
             String query = "SELECT * FROM OFFERTA WHERE idannuncio = ? ORDER BY statoofferta";
             PreparedStatement selectStmt = conn.prepareStatement(query);
-            selectStmt.setInt(1, controller.getIdByAnnuncio(a));
+            selectStmt.setInt(1, controller.getIdByAnnuncio(annuncio));
             ResultSet rs = selectStmt.executeQuery();
 
             while (rs.next()) {
                 String tipologia = rs.getString("tipologia");
+                System.out.println("Tipologia offerta: " + tipologia);
                 Offerta offerta = null;
 
                 switch (tipologia) {
@@ -186,35 +187,35 @@ public class OffertaDAO {
                         offerta = new OffertaVendita(
                             rs.getTimestamp("dataPubblicazione"),
                             controller.getStudenteByMatricola(rs.getString("matstudente")),
-                            a,
+                            annuncio,
                             rs.getDouble("prezzoofferta")
                         );
-                        break;
+                    break;
 
                     case "Regalo":
                         offerta = new OffertaRegalo(
                             rs.getTimestamp("dataPubblicazione"),
                             controller.getStudenteByMatricola(rs.getString("matstudente")),
-                            a,
+                            annuncio,
                             rs.getString("motivazione")
                         );
-                        break;
+                    break;
 
                     case "Scambio":
                         offerta = new OffertaScambio(
                             rs.getTimestamp("dataPubblicazione"),
                             controller.getStudenteByMatricola(rs.getString("matstudente")),
-                            a
+                            annuncio
                         );
-                        // carico anche gli oggetti scambiati
+                        
                         ((OffertaScambio) offerta).getOggettiOfferti().addAll(
                             getOggettiOffertiByOfferta(offerta)
                         );
-                        break;
+                    break;
 
                     default:
                         System.out.println("Tipologia non riconosciuta: " + tipologia);
-                        continue;
+                    continue;
                 }
 
                 if (offerta != null) {
@@ -226,6 +227,7 @@ public class OffertaDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
         return offerte;
     }
     
@@ -521,5 +523,44 @@ public class OffertaDAO {
 			e.printStackTrace();
 		}
 		return count;
+	}
+    
+    public double getPrezzoMinimoOfferte(Studente studente, String tipoFunzione) {
+		double result = 0.0;
+		try {
+			Connection conn = ConnessioneDB.getConnection();
+			String query = "SELECT MIN(prezzoofferta), MAX(prezzoofferta), AVG(prezzoofferta) FROM ANNUNCIO AS A "
+					+ "INNER JOIN OFFERTA AS O ON A.idannuncio = O.idannuncio "
+					+ "WHERE A.tipologia = ? AND O.statoofferta = ? AND A.matstudente = ?";
+			
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, "Vendita");
+			stmt.setString(2, "Accettata");
+			stmt.setString(3, controller.getMatricola(studente));
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				switch(tipoFunzione) {
+					case "Minimo":
+						result = rs.getDouble(1);
+					break;
+					
+					case "Massimo":
+						result = rs.getDouble(2);
+					break;
+						
+					case "Media":
+						result = rs.getDouble(3);
+					break;
+				}
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }

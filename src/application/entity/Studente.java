@@ -11,7 +11,6 @@ public class Studente {
 	private String immagineProfilo;
 	private ArrayList<Annuncio> annunciPubblicati = new ArrayList<Annuncio>();
 	private ArrayList<Annuncio> annunciVisibili = new ArrayList<Annuncio>();
-	private ArrayList<Offerta> offerteRicevute = new ArrayList<Offerta>();
 	private ArrayList<Offerta> offerteInviate = new ArrayList<Offerta>();
 
 	public Studente(String matricola, String email, String nome, String cognome, String username) {
@@ -64,14 +63,6 @@ public class Studente {
 	
 	public void setAnnunciVisibili(ArrayList<Annuncio> annunciVisibili) {
 		this.annunciVisibili = annunciVisibili;
-	}
-	
-    public ArrayList<Offerta> getOfferteRicevute() {
-		return offerteRicevute;
-	}
-	
-	public void setOfferteRicevute(ArrayList<Offerta> offerteRicevute) {
-		this.offerteRicevute = offerteRicevute;
 	}
 	
     public ArrayList<Offerta> getOfferteInviate() {

@@ -178,11 +178,9 @@ public class PopupEditOffertaBoundary {
             // Costruisci il prezzo finale
             String stringaPrezzo = intero + "." + decimale;
             
-            switch(controller.checkModificaControffertaVendita(offertaVendita, stringaPrezzo))
-            {
+            switch(controller.checkModificaControffertaVendita(offertaVendita, stringaPrezzo)) {
 	    		case 0:
 	                currentStage.close();
-	                controller.setPrezzoOfferta(offertaVendita, Double.parseDouble(stringaPrezzo));
 	                campoPrezzoIntero.setText(intero);
 	                campoPrezzoDecimale.setText(decimale);
 	                sceneManager.showPopupAlert(GeneralOffersPane, "Modifica effetuata", "La modifica dell'offerta è avvenuta con successo");
@@ -202,19 +200,18 @@ public class PopupEditOffertaBoundary {
     private void prelevaDatiOffertaRegalo(Offerta offerta, MouseEvent e) {
     	Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-    	if(offerta instanceof OffertaRegalo)
-    	{
+    	if(offerta instanceof OffertaRegalo) {
             String motivazione = messaggioMotivazionale.getText().trim();
+            
             OffertaRegalo offertaRegalo = (OffertaRegalo) offerta;
+            
 	        if (motivazione.isEmpty()) {
 	            motivazione = "Assente";
 	        }
 	        
-	        switch(controller.editOffertaRegaloMotivazione(offertaRegalo, motivazione))
-	        {
+	        switch(controller.editOffertaRegaloMotivazione(offertaRegalo, motivazione)){
 	    		case 0:
 	                currentStage.close();
-	                controller.setMotivazioneOfferta(offertaRegalo, motivazione);
 	                messaggioMotivazionale.setText(motivazione);
 	                sceneManager.showPopupAlert(GeneralOffersPane, "Modifica effetuata", "La modifica dell'offerta è avvenuta con successo");
 				break;

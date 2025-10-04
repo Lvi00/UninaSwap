@@ -38,4 +38,8 @@ public class Offerta {
     public Annuncio getAnnuncio() {
 		return annuncio;
 	}
+    
+    public void setDataPubblicazione(Timestamp dataPubblicazione) {
+		this.dataPubblicazione = dataPubblicazione;
+	}
 }

@@ -34,9 +34,19 @@ public class PopupOfferteAnnuncioBoundary {
     @FXML private Label labelOffertaScambio;
 
     private Controller controller = Controller.getController();
-    private SceneManager sceneManager = SceneManager.sceneManager();
+    
+    private void hideAllPanes() {
+        paneInfoOffertaVendita.setVisible(false);
+        paneInfoOffertaVendita.setManaged(false);
+        paneInfoOffertaScambio.setVisible(false);
+        paneInfoOffertaScambio.setManaged(false);
+        paneInfoOffertaRegalo.setVisible(false);
+        paneInfoOffertaRegalo.setManaged(false);
+    }
+
     
     public void setPopupOffertaVendita(OffertaVendita offertaVendita) {
+    	hideAllPanes();
     	paneInfoOffertaVendita.setVisible(true);
         paneInfoOffertaRegalo.setVisible(false);
         paneInfoOffertaScambio.setVisible(false);
@@ -45,6 +55,7 @@ public class PopupOfferteAnnuncioBoundary {
 	}
     
     public void setPopupOffertaScambio(OffertaScambio offertaScambio) {
+    	hideAllPanes();
     	paneInfoOffertaScambio.setVisible(true);
         paneInfoOffertaVendita.setVisible(false);
         paneInfoOffertaRegalo.setVisible(false);
@@ -74,6 +85,7 @@ public class PopupOfferteAnnuncioBoundary {
     }
     
     public void setPopupOffertaRegalo(OffertaRegalo offertaRegalo) {
+    	hideAllPanes();
     	paneInfoOffertaRegalo.setVisible(true);
         paneInfoOffertaVendita.setVisible(false);
         paneInfoOffertaScambio.setVisible(false);

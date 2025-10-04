@@ -24,7 +24,6 @@ import application.entity.OffertaVendita;
 import application.entity.Oggetto;
 import application.entity.Sede;
 import application.entity.Studente;
-import javafx.collections.ObservableList;
 
 public class Controller {
 	private static Controller controller = null;
@@ -35,6 +34,7 @@ public class Controller {
     private File immagineProfiloSelezionata = null;
 	private Annuncio annuncioSelezionato = null;
     private ArrayList<String> listaOggettiDesiderati = new ArrayList<String>();
+    private ArrayList<Oggetto> listaOggettiOfferti = new ArrayList<Oggetto>();
 	
 	public static Controller getController() {
         if (controller == null) {
@@ -316,7 +316,9 @@ public class Controller {
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
 		
 		Annuncio annuncio = new Annuncio(titolo, true, inizioOrarioDisponibilità, fineOrarioDisponibilità, prezzo, tipologia, descrizione, oggetto, sede, giorniDisponibilità, dataCorrente);
+		
 		this.studente.getAnnunciPubblicati().clear();
+		
 		new AnnuncioDAO().SaveAnnuncio(annuncio);
 		
 		return 0;
@@ -366,7 +368,12 @@ public class Controller {
 	public int inviaOffertaVendita(Annuncio annuncio) {
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
 		OffertaVendita offertaVendita = new OffertaVendita(dataCorrente, this.studente, annuncio, annuncio.getPrezzo());
-		return new OffertaDAO().SaveOfferta(offertaVendita);
+		
+		int result = new OffertaDAO().SaveOfferta(offertaVendita);
+		
+        if(result == 0) controller.SvuotaOfferteInviate();
+        
+		return result;
 	}
 	
 	public int inviaOffertaRegalo(Annuncio annuncio, String motivazione){
@@ -374,17 +381,25 @@ public class Controller {
 	    if(motivazione.length()>255) return 1;
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
 		OffertaRegalo offertaRegalo = new OffertaRegalo(dataCorrente, this.studente, annuncio, motivazione);
-		return new OffertaDAO().SaveOfferta(offertaRegalo);
+		
+		int result = new OffertaDAO().SaveOfferta(offertaRegalo);
+		
+		if(result == 0) SvuotaOfferteInviate();
+		
+		return result;
 	}
 	
-	public int inviaOffertaScambio(Annuncio annuncio, ObservableList<Oggetto> listaOggettiOfferti){
+	public int inviaOffertaScambio(Annuncio annuncio){
         Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
         
 		OffertaScambio offertaScambio = new OffertaScambio(dataCorrente, this.studente, annuncio);
 		int idOffertaInserita = new OffertaDAO().SaveOfferta(offertaScambio);
         
         //Offerta già esistente
-        if(idOffertaInserita == -1) return -1;
+        if(idOffertaInserita == -1) {
+            controller.svuotaListaOggettiOfferti();
+        	return -1;
+        }
         
         if(!listaOggettiOfferti.isEmpty()) {
         	
@@ -402,6 +417,7 @@ public class Controller {
             		&& oggettoPrimario.getStudente().getMatricola().equals(oggettoSecondario.getStudente().getMatricola())
             		&& oggettoPrimario.getImmagineOggetto().equals(oggettoSecondario.getImmagineOggetto())){
         				System.out.println("Oggetti duplicati");
+    	                controller.svuotaListaOggettiOfferti();
             			return -2;
             		}
         		}
@@ -414,8 +430,14 @@ public class Controller {
 	        	oggettiOffertiDao.SaveOggettoOfferto(idOffertaInserita, idOggettoInserito);
 	        }
 	        
+        	SvuotaOfferteInviate();
+            svuotaListaOggettiOfferti();
+	        
 			return 1;
         }
+        
+    	SvuotaOfferteInviate();
+        svuotaListaOggettiOfferti();
 
         return 0;
 	}
@@ -438,13 +460,14 @@ public class Controller {
 	    OffertaVendita offerta = new OffertaVendita(dataCorrente, this.studente, annuncio, prezzo);
 
 	    int risultato = new OffertaDAO().SaveOfferta(offerta);
+	    
+	    if(risultato == 0) SvuotaOfferteInviate();
 
 	    return risultato;
 	}
 	
 	public int checkModificaControffertaVendita(OffertaVendita offerta, String stringaPrezzo) 
 	{
-		
 	    String prezzoRegex = "^[0-9]+(\\.[0-9]{1,2})?$";
 	    if (!stringaPrezzo.matches(prezzoRegex)) {
 	        return 1;
@@ -459,7 +482,9 @@ public class Controller {
 	    Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
 
 	    int risultato = new OffertaDAO().UpdateOffertaVendita(dataCorrente, prezzo, offerta.getStudente(),  offerta.getAnnuncio());
-
+	    
+	    if(risultato == 0) controller.setPrezzoOfferta(offerta, Double.parseDouble(stringaPrezzo));
+	    
 	    return risultato;
 	}
 	
@@ -482,13 +507,19 @@ public class Controller {
 	    }
 
 	    if (vecchiaMotivazione.equals(motivazione)) {
-	        return 1; // motivazione identica a prima
+	        return 1;
 	    }
 
 	    offerta.setMotivazione(motivazione);
 
 	    Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
+	    
 	    int risultato = new OffertaDAO().UpdateOffertaRegalo(dataCorrente, motivazione, offerta.getStudente(), offerta.getAnnuncio());
+	    
+	    if(risultato == 0) {
+            offerta.setMotivazione(motivazione);
+            offerta.setDataPubblicazione(dataCorrente);
+	    }
 
 	    return risultato;
 	}
@@ -512,8 +543,12 @@ public class Controller {
 		return new SedeDAO().getSedeById(idSede);
 	}
 	
-	public int rimuoviAnnuncio(Annuncio a) {
-		return new AnnuncioDAO().rimuoviAnnuncio(a);
+	public int rimuoviAnnuncio(Annuncio annuncio) {
+		int risultato = new AnnuncioDAO().rimuoviAnnuncio(annuncio);
+		if(risultato == 0) {
+			this.studente.getAnnunciPubblicati().clear();
+		}
+		return risultato;
 	}
 	
 	public int rimuoviOfferte(int idAnnuncio) {
@@ -532,17 +567,24 @@ public class Controller {
 		return new AnnuncioDAO().getIdByAnnuncio(a);
 	}
 	
-	public ArrayList<Offerta> getOffertebyAnnuncio (Annuncio a)
-	{
+	public ArrayList<Offerta> getOffertebyAnnuncio (Annuncio a) {
 		return new OffertaDAO().getOffertebyAnnuncio(a);
 	}
 	
 	public int accettaOfferta(Offerta o) {
-		return new OffertaDAO().accettaOfferta(o);
+		int risultato = new OffertaDAO().accettaOfferta(o);
+		
+		if(risultato == 0) controller.SvuotaAnnunciPubblicati();
+		
+		return risultato;
 	}
 	
 	public int rifiutaOfferta(Offerta o) {
-		return new OffertaDAO().rifiutaOfferta(o);
+		int risultato = new OffertaDAO().rifiutaOfferta(o);
+		
+		if(risultato == 0) this.studente.getAnnunciPubblicati().clear();
+		
+		return risultato;
 	}
 	
 	public int getIdByOfferta(Offerta o) {
@@ -566,17 +608,9 @@ public class Controller {
 		return new OffertaDAO().eliminaOfferta(offerta);
 	}
     
-    public void svuotaOfferteRicevute() {
-    	this.studente.getOfferteRicevute().clear();
-    }
-    
     public void SvuotaAnnunciPubblicati() {
         this.studente.getAnnunciPubblicati().clear();
     }
-    
-    public void SvuotaOfferteRicevute() {
-		this.studente.getOfferteRicevute().clear();
-	}
     
     public void SvuotaOfferteInviate() {
     	this.studente.getOfferteInviate().clear();
@@ -610,11 +644,6 @@ public class Controller {
     {
     	this.studente.setAnnunciPubblicati(lista);
     }
-    
-    public void setOfferteRicevute(ArrayList<Offerta> lista)
-	{
-		this.studente.setOfferteRicevute(lista);
-	}
     
     public void setOfferteInviate(ArrayList<Offerta> lista)
 	{
@@ -667,6 +696,10 @@ public class Controller {
     public int getNumeroOfferteAccettate(Studente studente, String tipologia) {
 		return new OffertaDAO().getNumeroOfferteAccettate(studente, tipologia);
 	}
+    
+    public double getInformazioniOfferteVendita(Studente studente, String tipoFunzione) {
+    	return new OffertaDAO().getPrezzoMinimoOfferte(studente, tipoFunzione);
+    }
     
     //End metodi ottenimento dati per i grafici
     
@@ -827,6 +860,22 @@ public class Controller {
     public ArrayList<Annuncio> getAnnunciVisibili(){
 		return this.studente.getAnnunciVisibili();
 	}
+    
+    public ArrayList<Oggetto> getListaOggettiOfferti(){
+    	return this.listaOggettiOfferti;
+    }
+    
+    public void aggiungiOggettoOfferto(Oggetto oggetto) {
+		this.listaOggettiOfferti.add(oggetto);
+	}
+    
+    public void svuotaListaOggettiOfferti(){
+		this.listaOggettiOfferti.clear();
+	}
+    
+    public void setDataPubblicazioneOfferta(Offerta offerta, Timestamp data) {
+    	offerta.setDataPubblicazione(data);
+    }
     
     //End metodi per l'ottenimento dei dati
 }

@@ -226,22 +226,18 @@ public class AnnunciStudenteBoundary {
         return box;
     }
 
-    public void mostraOfferteAnnuncio(Annuncio a)
-    {
+    public void mostraOfferteAnnuncio(Annuncio annuncio){
     	AnnunciPane.setVisible(false);
     	OfferteAnnunciPane.setVisible(true);
+    	gridOfferte.getChildren().clear();
 
-    	ArrayList<Offerta> offerteRicevute;
+    	ArrayList<Offerta> offerteRicevute = controller.getOffertebyAnnuncio(annuncio);
     	
-    	if(controller.getStudente().getOfferteRicevute().isEmpty()) {
-    		offerteRicevute = controller.getOffertebyAnnuncio(a);
-    		controller.setOfferteRicevute(offerteRicevute);
-        	labelOfferteAnnuncio.setText("Non ci sono offerte per l'annuncio: " + a.getTitoloAnnuncio());
+    	if(offerteRicevute.isEmpty()) {
+    		labelOfferteAnnuncio.setText("Non ci sono offerte per l'annuncio: " + annuncio.getTitoloAnnuncio());
     	}
-    	else{
-    		offerteRicevute = controller.getStudente().getOfferteRicevute();
-        	labelOfferteAnnuncio.setText("Queste sono le offerte dell'annuncio: " + a.getTitoloAnnuncio());
-        	System.out.println("Offerte ricevute già caricate.");
+    	else {
+    		labelOfferteAnnuncio.setText("Queste sono le offerte dell'annuncio: " + annuncio.getTitoloAnnuncio());
     	}
         
         int column = 0;
@@ -364,12 +360,10 @@ public class AnnunciStudenteBoundary {
         return button;
     }
     
-    public void accettaOfferta(Offerta o) {
-		switch(controller.accettaOfferta(o)) {
+    public void accettaOfferta(Offerta offerta) {
+		switch(controller.accettaOfferta(offerta)) {
 			case 0:
 				gridOfferte.getChildren().clear();
-				controller.svuotaOfferteRicevute();
-				controller.SvuotaAnnunciPubblicati();
 				tornaIndietroAnnunci();
 			break;
 			
@@ -379,13 +373,11 @@ public class AnnunciStudenteBoundary {
 		}
 	}
     
-    public void rifiutaOfferta(Offerta o) {
-    	switch(controller.rifiutaOfferta(o)) {
+    public void rifiutaOfferta(Offerta offerta) {
+    	switch(controller.rifiutaOfferta(offerta)) {
 	    	case 0:
 				gridOfferte.getChildren().clear();
-				controller.svuotaOfferteRicevute();
-				controller.SvuotaAnnunciPubblicati();
-				mostraOfferteAnnuncio(o.getAnnuncio());
+				mostraOfferteAnnuncio(offerta.getAnnuncio());
 	    	break;
 	    	
 	    	case 1:
@@ -394,10 +386,9 @@ public class AnnunciStudenteBoundary {
     	}
     }
     
-    private void rimuoviAnnuncio(Annuncio a) {
-        if(controller.rimuoviAnnuncio(a) == 0) {
+    private void rimuoviAnnuncio(Annuncio annuncio) {
+        if(controller.rimuoviAnnuncio(annuncio) == 0) {
             gridProdotti.getChildren().clear();
-            controller.SvuotaAnnunciPubblicati();
             CostruisciProdottiUtente();
             sceneManager.showPopupAlert(containerAnnunciStudente, "Rimozione avvenuta", "L'annuncio è stato rimosso con successo.");
         }
