@@ -29,7 +29,9 @@ public class CreaAnnuncioBoundary {
         Elettronica,
         Cancelleria,
         Cultura,
-        Musica
+        Musica,
+        Cibo,
+        Altro,
     }
     
     enum ParticellaToponomastica{

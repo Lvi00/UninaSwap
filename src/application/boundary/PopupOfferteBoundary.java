@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class PopupOfferteBoundary {
 	
@@ -40,7 +41,10 @@ public class PopupOfferteBoundary {
         Informatica,
         Elettronica,
         Cancelleria,
-        Musica
+        Cultura,
+        Musica,
+        Cibo,
+        Altro,
     }
 
     private Controller controller = Controller.getController();
@@ -85,11 +89,17 @@ public class PopupOfferteBoundary {
     @FXML private TableColumn<Oggetto, String> colDescrizione;
     @FXML private TableColumn<Oggetto, String> colPercorsoImmagine;
     @FXML private TableColumn<Oggetto, String> colAzioni;
+    private final ObservableList<Oggetto> listaOggettiOfferti = FXCollections.observableArrayList();
     
     public void setProdottiBoundary() {
         campoCategoriaOggetto.setItems(FXCollections.observableArrayList(Categorie.values()));
         campoCategoriaOggetto.getSelectionModel().selectFirst();
     }
+    
+    public void addOggettoOfferto(Oggetto oggetto) {
+		listaOggettiOfferti.add(oggetto);
+		tabellaOggetti.setItems(listaOggettiOfferti);
+	}
 
     public void costruisciPopup() {
     	Annuncio annuncio = controller.getAnnuncioSelezionato();
@@ -216,8 +226,8 @@ public class PopupOfferteBoundary {
 			case 0:
 			   Oggetto nuovoOggetto = new Oggetto(percorsoImmagine, categoriaSelezionata.toString(), descrizione, controller.getStudente());
 			   
-			   if (controller.getListaOggettiOfferti().size() < 5) {
-				   controller.aggiungiOggettoOfferto(nuovoOggetto);
+			   if (this.listaOggettiOfferti.size() < 5) {
+				   addOggettoOfferto(nuovoOggetto);
 				   sceneManager.showPopupAlert(containerOfferte, "Oggetto aggiunto!", "L'oggetto è stato aggiunto alla lista degli oggetti offerti da te.");
 			   }
 			   else sceneManager.showPopupError(containerOfferte, "Troppi oggetti!", "Hai inserito il limite massimo di 5 oggetti scambiabili.");
@@ -244,8 +254,7 @@ public class PopupOfferteBoundary {
 
     @FXML
     public void initialize() {
-    	ObservableList<Oggetto> listaOggettiOfferti = FXCollections.observableArrayList(controller.getListaOggettiOfferti());
-        tabellaOggetti.setItems(listaOggettiOfferti);
+        tabellaOggetti.setItems(this.listaOggettiOfferti);
         colCategoria.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategoria()));
         colDescrizione.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDescrizione()));
         colPercorsoImmagine.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getImmagineOggetto()));
@@ -266,7 +275,7 @@ public class PopupOfferteBoundary {
                 removeButton.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-cursor: hand;");
                 removeButton.setOnAction(e -> {
                     Oggetto oggetto = getTableView().getItems().get(getIndex());
-                    listaOggettiOfferti.remove(oggetto); // basta rimuovere dalla lista
+                    listaOggettiOfferti.remove(oggetto);
                 });
             }
             @Override
@@ -362,13 +371,14 @@ public class PopupOfferteBoundary {
     	
     	else if(controller.getTipologiaAnnuncio(annuncio).equals("Scambio"))
     	{
-    	    switch(controller.inviaOffertaScambio(annuncio)) {
+    	    switch(controller.inviaOffertaScambio(annuncio, new ArrayList<>(this.listaOggettiOfferti))) {
 		        case 0: // offerta di scambio normale inviata correttamente
 	                currentStage.close();
 		            sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " è stata inviata con successo.");
 		        break;
 	
 		        case 1: // offerta di scambio personalizzata inviata correttamente
+		        	this.listaOggettiOfferti.clear();
 		        	currentStage.close();
 		            sceneManager.showPopupAlert(containerOfferte, "Richiesta personalizzata inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " con gli oggetti inseriti è stata inviata con successo.");
 		        break;
@@ -386,7 +396,7 @@ public class PopupOfferteBoundary {
     
     @FXML
     public void mostraOggettiOfferti(MouseEvent e) {
-        if (controller.getListaOggettiOfferti().isEmpty()) {
+        if (this.listaOggettiOfferti.isEmpty()) {
             sceneManager.showPopupError(containerOfferte, "Nessun oggetto aggiunto", "Non hai ancora aggiunto oggetti da offrire per lo scambio.");
             return;
         }

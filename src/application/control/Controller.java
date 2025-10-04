@@ -34,7 +34,6 @@ public class Controller {
     private File immagineProfiloSelezionata = null;
 	private Annuncio annuncioSelezionato = null;
     private ArrayList<String> listaOggettiDesiderati = new ArrayList<String>();
-    private ArrayList<Oggetto> listaOggettiOfferti = new ArrayList<Oggetto>();
 	
 	public static Controller getController() {
         if (controller == null) {
@@ -385,7 +384,7 @@ public class Controller {
 		return result;
 	}
 	
-	public int inviaOffertaScambio(Annuncio annuncio){
+	public int inviaOffertaScambio(Annuncio annuncio, ArrayList<Oggetto> listaOggettiOfferti){
         Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
         
 		OffertaScambio offertaScambio = new OffertaScambio(dataCorrente, this.studente, annuncio);
@@ -393,7 +392,6 @@ public class Controller {
 		int idOffertaInserita = new OffertaDAO().SaveOfferta(offertaScambio);
         
         if(idOffertaInserita == -1) {
-            controller.svuotaListaOggettiOfferti();
         	return -1;
         }
         
@@ -413,7 +411,6 @@ public class Controller {
             		&& oggettoPrimario.getStudente().getMatricola().equals(oggettoSecondario.getStudente().getMatricola())
             		&& oggettoPrimario.getImmagineOggetto().equals(oggettoSecondario.getImmagineOggetto())){
         				System.out.println("Oggetti duplicati");
-    	                controller.svuotaListaOggettiOfferti();
             			return -2;
             		}
         		}
@@ -876,18 +873,6 @@ public class Controller {
     
     public ArrayList<Annuncio> getAnnunciVisibili(){
 		return this.studente.getAnnunciVisibili();
-	}
-    
-    public ArrayList<Oggetto> getListaOggettiOfferti(){
-    	return this.listaOggettiOfferti;
-    }
-    
-    public void aggiungiOggettoOfferto(Oggetto oggetto) {
-		this.listaOggettiOfferti.add(oggetto);
-	}
-    
-    public void svuotaListaOggettiOfferti(){
-		this.listaOggettiOfferti.clear();
 	}
     
     public void setDataPubblicazioneOfferta(Offerta offerta, Timestamp data) {
