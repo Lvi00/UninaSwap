@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Offerta;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -79,21 +81,15 @@ public class OfferteBoundary {
     }
     
     public boolean CostruisciOfferteUtente() {
-        ArrayList<Offerta> offerteInviate;
+        ObservableList<Offerta> offerteInviate;
         
-        if(this.controller.getStudente().getOfferteInviate().isEmpty()) {
-        	offerteInviate = controller.getOffertebyMatricola(controller.getStudente());
-        	controller.setOfferteInviate(offerteInviate);
-        	controller.getStudente().setOfferteInviate(offerteInviate);
+        if(controller.getStudente().getOfferteInviate().isEmpty()) {
+        	offerteInviate = FXCollections.observableArrayList(controller.getOffertebyMatricola(controller.getStudente()));
+        	controller.setOfferteInviate(new ArrayList<>(offerteInviate));
         }
         else{
         	System.out.println("offerte inviate già caricate");
-        	offerteInviate = controller.getStudente().getOfferteInviate();
-            for(Offerta o: offerteInviate)
-            {
-            	System.out.println(o.getAnnuncio().getTitoloAnnuncio());
-            }
-            
+        	offerteInviate = FXCollections.observableArrayList(controller.getOfferteInviate(controller.getStudente()));
         }
         
         String titolo = "";

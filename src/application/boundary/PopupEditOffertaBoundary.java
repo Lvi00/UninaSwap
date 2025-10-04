@@ -9,6 +9,8 @@ import application.entity.OffertaRegalo;
 import application.entity.OffertaScambio;
 import application.entity.OffertaVendita;
 import application.entity.Oggetto;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -92,15 +94,15 @@ public class PopupEditOffertaBoundary {
             paneOffertaScambio.setVisible(true);
             paneOffertaScambio.setManaged(true);
             
-            ArrayList<Oggetto> listaOggetti = controller.getOggettiOfferti(offertaScambio);
+            ObservableList<Oggetto> listaOggettiOfferti = FXCollections.observableArrayList(controller.getOggettiOfferti(offertaScambio));
             
-            controller.setOggettiOfferti(offertaScambio, listaOggetti);
+            controller.setOggettiOfferti(offertaScambio, new ArrayList<>(listaOggettiOfferti));
             gridOggettiOfferti.getChildren().clear();
             gridOggettiOfferti.getColumnConstraints().clear();
 
-            if (!listaOggetti.isEmpty()) {
+            if (!listaOggettiOfferti.isEmpty()) {
                 labelNessunOggettoOfferto.setVisible(false);
-                int numeroCol = listaOggetti.size();
+                int numeroCol = listaOggettiOfferti.size();
                 int larghezzaCard = 300;
                 int altezzaCard = 400;
 
@@ -110,7 +112,7 @@ public class PopupEditOffertaBoundary {
                 VBox.setMargin(gridOggettiOfferti, new Insets(10));
 
                 int colonna = 0;
-                for (Oggetto oggetto : listaOggetti) {
+                for (Oggetto oggetto : listaOggettiOfferti) {
                     StackPane card = creaCardOggettoOfferto(oggetto, offerta);
                     card.getStyleClass().add("card-annuncio");
 

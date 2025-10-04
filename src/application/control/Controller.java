@@ -897,6 +897,10 @@ public class Controller {
 	public ArrayList<Oggetto> getOggettiOfferti(OffertaScambio offertaScambio) {
 		return offertaScambio.getOggettiOfferti();
 	}
+	
+	public ArrayList<Offerta> getOfferteInviate(Studente studente){
+		return this.studente.getOfferteInviate();
+	}
     
     //End metodi per l'ottenimento dei dati
 }

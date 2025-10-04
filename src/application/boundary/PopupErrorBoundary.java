@@ -6,7 +6,6 @@ import javafx.scene.control.Label;
 
 public class PopupErrorBoundary {
 	private Controller controller = Controller.getController();
-    private SceneManager sceneManager = SceneManager.sceneManager();
     @FXML private Label LabelErrore;
     @FXML private Label LabelDescrizioneErrore;
 

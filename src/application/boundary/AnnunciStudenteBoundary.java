@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Offerta;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -77,14 +79,14 @@ public class AnnunciStudenteBoundary {
     }
 
     public boolean CostruisciProdottiUtente() {
-        ArrayList<Annuncio> annunci;
+    	ObservableList<Annuncio> annunci;
         
-        if(this.controller.getStudente().getAnnunciPubblicati().isEmpty()) 
-        {
-        	annunci = controller.getAnnunciStudente(controller.getStudente());
-        	controller.setAnnunciPubblicati(annunci);
+        if (controller.getStudente().getAnnunciPubblicati().isEmpty()) {
+            annunci = FXCollections.observableArrayList(controller.getAnnunciStudente(controller.getStudente()));
+            controller.setAnnunciPubblicati(new ArrayList<>(annunci));
+        } else {
+            annunci = FXCollections.observableArrayList(controller.getStudente().getAnnunciPubblicati());
         }
-		else annunci = controller.getStudente().getAnnunciPubblicati();
         
         String titolo = "";
         
@@ -226,31 +228,32 @@ public class AnnunciStudenteBoundary {
         return box;
     }
 
-    public void mostraOfferteAnnuncio(Annuncio annuncio){
-    	AnnunciPane.setVisible(false);
-    	OfferteAnnunciPane.setVisible(true);
-    	gridOfferte.getChildren().clear();
+    public void mostraOfferteAnnuncio(Annuncio annuncio) {
+        AnnunciPane.setVisible(false);
+        OfferteAnnunciPane.setVisible(true);
+        gridOfferte.getChildren().clear();
 
-    	ArrayList<Offerta> offerteRicevute = controller.getOffertebyAnnuncio(annuncio);
-    	
-    	if(offerteRicevute.isEmpty()) {
-    		labelOfferteAnnuncio.setText("Non ci sono offerte per l'annuncio: " + annuncio.getTitoloAnnuncio());
-    	}
-    	else {
-    		labelOfferteAnnuncio.setText("Queste sono le offerte dell'annuncio: " + annuncio.getTitoloAnnuncio());
-    	}
-        
+        ObservableList<Offerta> offerteRicevute = FXCollections.observableArrayList(controller.getOffertebyAnnuncio(annuncio));
+
+        if (offerteRicevute.isEmpty()) {
+            labelOfferteAnnuncio.setText("Non ci sono offerte per l'annuncio: " + annuncio.getTitoloAnnuncio());
+        } else {
+            labelOfferteAnnuncio.setText("Queste sono le offerte dell'annuncio: " + annuncio.getTitoloAnnuncio());
+        }
+
         int column = 0;
         int row = 0;
         boolean abilitaTasti = true;
-        
-        for(Offerta o : offerteRicevute) if(controller.getStatoOfferta(o).equals("Accettata")) abilitaTasti = false;
-        
-    	for(Offerta o : offerteRicevute) {
-    		HBox rigaOfferta = creaRigaOfferta(o, abilitaTasti);
-    		gridOfferte.add(rigaOfferta, column, row);
-    		row++;
-    	}
+
+        for (Offerta o : offerteRicevute) {
+            if (controller.getStatoOfferta(o).equals("Accettata")) abilitaTasti = false;
+        }
+
+        for (Offerta o : offerteRicevute) {
+            HBox rigaOfferta = creaRigaOfferta(o, abilitaTasti);
+            gridOfferte.add(rigaOfferta, column, row);
+            row++;
+        }
     }
     
     private HBox creaRigaOfferta(Offerta o, boolean abilitaTasti) {
@@ -377,7 +380,7 @@ public class AnnunciStudenteBoundary {
     	switch(controller.rifiutaOfferta(offerta)) {
 	    	case 0:
 				gridOfferte.getChildren().clear();
-				mostraOfferteAnnuncio(offerta.getAnnuncio());
+				mostraOfferteAnnuncio(controller.getAnnuncioOfferta(offerta));
 	    	break;
 	    	
 	    	case 1:

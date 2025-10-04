@@ -17,7 +17,6 @@ import javafx.scene.layout.StackPane;
 public class PopupOggettiDesideratiBoundary {
 
     private Controller controller = Controller.getController();
-    private SceneManager sceneManager = SceneManager.sceneManager();
     @FXML private AnchorPane paneOggettiOfferti;
     @FXML private TableView<String> tabellaOggettiDesiderati;
     @FXML private TableColumn<String, String> colNome;

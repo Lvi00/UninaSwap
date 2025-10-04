@@ -6,7 +6,6 @@ import javafx.scene.control.Label;
 
 public class PopupAlertBoundary {
 	private Controller controller = Controller.getController();
-	private SceneManager sceneManager = SceneManager.sceneManager();
     @FXML private Label LabelAlert;
     @FXML private Label LabelDescrizioneAlert;
 
