@@ -7,58 +7,69 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="containerOffertaAnnuncio" prefHeight="300.0" prefWidth="400.0" style="-fx-background-color: #F2EFEA;" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.PopupOfferteAnnuncioBoundary">
-   <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <AnchorPane fx:id="paneInfoOffertaRegalo" prefHeight="310.0" prefWidth="509.0" visible="false">
-               <children>
-                  <Label layoutX="165.0" layoutY="43.0" text="Messaggio motivazionale">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="labelMessaggioMotivazionale" layoutX="105.0" layoutY="81.0" prefHeight="89.0" prefWidth="299.0" style="-fx-alignment: center;" wrapText="true">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Label>
-               </children>
-            </AnchorPane>
+<HBox fx:id="containerOffertaAnnuncio" alignment="CENTER" prefHeight="300.0" prefWidth="500.0" styleClass="sfondo" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.PopupOfferteAnnuncioBoundary">
 
-            <AnchorPane fx:id="paneInfoOffertaVendita" prefHeight="310.0" prefWidth="509.0" visible="false">
-               <children>
-                  <Label layoutX="187.0" layoutY="45.0" text="Prezzo controfferta">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="labelControfferta" layoutX="105.0" layoutY="80.0" prefHeight="89.0" prefWidth="299.0" style="-fx-alignment: center;" wrapText="true">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Label>
-               </children>
-            </AnchorPane>
+    <children>
+        <AnchorPane prefHeight="300.0" prefWidth="509.0">
+            <children>
 
-            <AnchorPane fx:id="paneInfoOffertaScambio" prefHeight="310.0" prefWidth="509.0" visible="false">
-               <children>
-                  <Label layoutX="187.0" layoutY="20.0" text="Lista oggetti offerti">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <ScrollPane fx:id="scrollPaneScambio" fitToHeight="true" fitToWidth="true" style="-fx-background: #F2EFEA; -fx-background-color: #F2EFEA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
-				    <content>
-				        <GridPane fx:id="gridPaneScambio" alignment="CENTER" hgap="10" style="-fx-background-color: #F2EFEA;" vgap="10" />
-				    </content>
-				</ScrollPane>
-                  <Label fx:id="labelOffertaScambio" layoutX="114.0" layoutY="80.0" text="L'utente non ha specificato oggetti alternativi" visible="false">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-         </children>
-      </AnchorPane>
-   </children>
+                <!-- POPUP SCAMBIO -->
+                <AnchorPane fx:id="paneInfoOffertaScambio" layoutX="35.0" layoutY="24.0" prefHeight="251.0" prefWidth="430.0" styleClass="form" visible="false">
+
+                    <children>
+                        <Label layoutX="147.0" layoutY="14.0" text="Lista oggetti offerti">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Label>
+
+                        <ScrollPane fx:id="scrollPaneScambio" fitToHeight="true" fitToWidth="true" prefHeight="201.0" prefWidth="419.0" styleClass="scrollPaneOfferta" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
+
+                            <content>
+                                <GridPane fx:id="gridPaneScambio" alignment="CENTER" gridLinesVisible="false" hgap="15" style="-fx-padding: 10;" vgap="15">
+                                </GridPane>
+                            </content>
+                        </ScrollPane>
+
+                                    <Label fx:id="labelOffertaScambio" layoutX="80.0" layoutY="100.0" text="L'utente non ha specificato oggetti alternativi" visible="false">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+
+                <!-- ALTRI POPUP -->
+                <AnchorPane fx:id="paneInfoOffertaRegalo" layoutX="71.0" layoutY="57.0" prefHeight="185.0" prefWidth="357.0" styleClass="form">
+                    <children>
+                        <Label layoutX="89.0" layoutY="22.0" text="Messaggio motivazionale">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="labelMessaggioMotivazionale" alignment="TOP_CENTER" layoutX="29.0" layoutY="68.0" prefHeight="89.0" prefWidth="299.0" wrapText="true">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+
+                <AnchorPane fx:id="paneInfoOffertaVendita" layoutX="71.0" layoutY="57.0" prefHeight="185.0" prefWidth="357.0" styleClass="form" visible="false">
+                    <children>
+                        <Label layoutX="111.0" layoutY="26.0" text="Prezzo controfferta">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="labelControfferta" layoutX="50.0" layoutY="71.0" prefHeight="75.0" prefWidth="258.0" style="-fx-alignment: center;" wrapText="true">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+    </children>
 </HBox>

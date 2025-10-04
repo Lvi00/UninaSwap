@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -31,6 +32,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class PopupEditOffertaBoundary {
@@ -153,9 +155,11 @@ public class PopupEditOffertaBoundary {
             stage.setHeight(175);
             
             inviaMotivazioneOfferta.setOnMouseClicked(event -> prelevaDatiOffertaRegalo(offerta, event));
+            Screen screen = Screen.getPrimary();
+            Rectangle2D bounds = screen.getVisualBounds();
+            stage.setX(bounds.getMinX() + (bounds.getWidth() - stage.getWidth()) / 2);
+            stage.setY(bounds.getMinY() + (bounds.getHeight() - stage.getHeight()) / 2);
         }
-
-        javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
     }
 
     private void prelevaDatiOfferta(Offerta offerta, MouseEvent e) {
