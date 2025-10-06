@@ -51,6 +51,7 @@ public class PopupEditOffertaBoundary {
     @FXML private Button inviaDatiOfferta;
     @FXML private Button inviaMotivazioneOfferta;
     @FXML private GridPane gridOggettiOfferti;
+    private OfferteBoundary offerteBoundary;
     private Controller controller = Controller.getController();
     private SceneManager sceneManager = SceneManager.sceneManager();
     
@@ -61,6 +62,10 @@ public class PopupEditOffertaBoundary {
         Cancelleria,
         Cultura,
         Musica
+    }
+    
+    public void setOfferteBoundary(OfferteBoundary offerteBoundary) {
+        this.offerteBoundary = offerteBoundary;
     }
 
     public void CostruisciPopupEdit(Offerta offerta, Stage stage) {
@@ -89,7 +94,7 @@ public class PopupEditOffertaBoundary {
             stage.setWidth(450);
             stage.setHeight(175);       
             
-            inviaDatiOfferta.setOnMouseClicked(event -> prelevaDatiOfferta(offerta, event));
+            inviaDatiOfferta.setOnMouseClicked(event -> modificaOffertaVendita(offerta, event));
         }
         else if (offerta instanceof OffertaScambio) {
         	OffertaScambio offertaScambio = (OffertaScambio) offerta;
@@ -154,7 +159,7 @@ public class PopupEditOffertaBoundary {
             stage.setWidth(450);
             stage.setHeight(175);
             
-            inviaMotivazioneOfferta.setOnMouseClicked(event -> prelevaDatiOffertaRegalo(offerta, event));
+            inviaMotivazioneOfferta.setOnMouseClicked(event -> modificaOffertaRegalo(offerta, event));
             Screen screen = Screen.getPrimary();
             Rectangle2D bounds = screen.getVisualBounds();
             stage.setX(bounds.getMinX() + (bounds.getWidth() - stage.getWidth()) / 2);
@@ -162,48 +167,45 @@ public class PopupEditOffertaBoundary {
         }
     }
 
-    private void prelevaDatiOfferta(Offerta offerta, MouseEvent e) {
-    	Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+    private void modificaOffertaVendita(Offerta offerta, MouseEvent e) {
+        Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-    	if(offerta instanceof OffertaVendita)
-    	{
-    		OffertaVendita offertaVendita = (OffertaVendita) offerta;
-        	String intero = campoPrezzoIntero.getText().trim();
+        if (offerta instanceof OffertaVendita) {
+            OffertaVendita offertaVendita = (OffertaVendita) offerta;
+            String intero = campoPrezzoIntero.getText().trim();
             String decimale = campoPrezzoDecimale.getText().trim();
 
-            // Se intero è vuoto, aggiungi "0"
             if (intero.isEmpty()) {
-            	intero = "0";
+                intero = "0";
             }
-            
-            // Se decimale è vuoto, aggiungi "00"
             if (decimale.isEmpty()) {
                 decimale = "00";
             }
 
-            // Costruisci il prezzo finale
             String stringaPrezzo = intero + "." + decimale;
-            
-            switch(controller.checkModificaControffertaVendita(offertaVendita, stringaPrezzo)) {
-	    		case 0:
-	                currentStage.close();
-	                campoPrezzoIntero.setText(intero);
-	                campoPrezzoDecimale.setText(decimale);
-	                sceneManager.showPopupAlert(GeneralOffersPane, "Modifica effetuata", "La modifica dell'offerta è avvenuta con successo");
-				break;
-				
-	    		case 1:
-	    			sceneManager.showPopupError(GeneralOffersPane, "Errore nella modifica dell'offerta", "La controfferta non è valida, o è maggiore del prezzo dell'annuncio o è uguale alla controfferta precedente");
-				break;
-				
-	    		case 2:
-	    			sceneManager.showPopupError(GeneralOffersPane, "Errore inaspettato", "Impossibile modificare l'offerta");
-	    		break;
+
+            switch (controller.checkModificaControffertaVendita(offertaVendita, stringaPrezzo)) {
+                case 0:
+                    currentStage.close();
+                    campoPrezzoIntero.setText(intero);
+                    campoPrezzoDecimale.setText(decimale);
+                    sceneManager.showPopupAlert(GeneralOffersPane, "Modifica effetuata", "La modifica dell'offerta è avvenuta con successo");
+                break;
+                
+                case 1:
+                    sceneManager.showPopupError(GeneralOffersPane, "Errore nella modifica dell'offerta", "La controfferta non è valida, o è maggiore del prezzo dell'annuncio o è uguale alla controfferta precedente");
+                break;
+                
+                case 2:
+                    sceneManager.showPopupError(GeneralOffersPane, "Errore inaspettato", "Impossibile modificare l'offerta");
+                break;
             }
-    	}
+        }
+        
+        this.offerteBoundary.CostruisciOfferteUtente();
     }
     
-    private void prelevaDatiOffertaRegalo(Offerta offerta, MouseEvent e) {
+    private void modificaOffertaRegalo(Offerta offerta, MouseEvent e) {
     	Stage currentStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
     	if(offerta instanceof OffertaRegalo) {
@@ -231,6 +233,8 @@ public class PopupEditOffertaBoundary {
 	    		break;
 	        }
     	}
+    	
+        this.offerteBoundary.CostruisciOfferteUtente();
     }
     
     private StackPane creaCardOggettoOfferto(Oggetto oggetto, Offerta offerta) {
@@ -255,7 +259,7 @@ public class PopupEditOffertaBoundary {
     	localImageView.setPreserveRatio(false); 
     	localImageView.setClip(new Rectangle(150, 100)); 
     	localImageView.setImage(img); localImageView.setStyle("-fx-cursor: hand;"); 
-    	localImageView.setOnMouseClicked(event -> showFileChooser(event, oggetto, localImageView));
+    	localImageView.setOnMouseClicked(event -> showFileChooser(event, offerta, oggetto, localImageView));
 
         
         Label categoria = new Label(controller.getCategoriaOggetto(oggetto));
@@ -416,6 +420,7 @@ public class PopupEditOffertaBoundary {
     private void rimuoviOggettoOfferto(Oggetto oggetto, Offerta offerta) {
     	if(controller.rimuoviOggettoOfferto(oggetto, offerta) == 0) {
     		sceneManager.showPopupAlert(GeneralOffersPane, "Oggetto rimosso", "L'oggetto è stato rimosso con successo dall'offerta di scambio");
+    		this.offerteBoundary.CostruisciOfferteUtente();
     	}
     	else {
 			sceneManager.showPopupError(GeneralOffersPane, "Errore nella rimozione", "Impossibile rimuovere l'oggetto dall'offerta di scambio");
@@ -498,9 +503,10 @@ public class PopupEditOffertaBoundary {
 
 	    showCampiModifica(oggetto, categoriaLabel, choiceCategoria, descrizioneLabel, textDescrizione, btnDelete, btnEdit, btnBack, btnCheck);
 	    CostruisciPopupEdit(offerta, (Stage) GeneralOffersPane.getScene().getWindow());
+        this.offerteBoundary.CostruisciOfferteUtente();
     }
     
-    public void showFileChooser( MouseEvent e, Oggetto oggetto, ImageView targetImageView) {
+    public void showFileChooser(MouseEvent e, Offerta offerta, Oggetto oggetto, ImageView targetImageView) {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
         FileChooser fileChooser = new FileChooser();
@@ -512,9 +518,35 @@ public class PopupEditOffertaBoundary {
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
-            Image image = new Image(selectedFile.toURI().toString());
-            targetImageView.setImage(image);
+            String oldPath = controller.getImmagineOggetto(controller.getOggettoAnnuncio(controller.getAnnuncioOfferta(offerta)));
+            Image oldImage;
+            File oldFile = new File(oldPath);
+            if (oldFile.exists()) {
+                oldImage = new Image(oldFile.toURI().toString());
+            } else {
+                oldImage = new Image(getClass().getResource(oldPath).toExternalForm());
+            }
+
+            Image newImage = new Image(selectedFile.toURI().toString());
             controller.setFileOggettoOfferto(selectedFile);
+            int result = controller.editImmagineOggettoOfferto(offerta, oggetto, selectedFile.getAbsolutePath());
+
+            targetImageView.setCache(false);
+            targetImageView.setSmooth(true);
+            
+            switch (result) {
+                case 0:
+                	targetImageView.setImage(newImage);
+                    sceneManager.showPopupAlert(GeneralOffersPane, "Modifica Effettuata", "L'immagine è stata modificata con successo");
+                    this.offerteBoundary.CostruisciOfferteUtente();
+                break;
+
+                case 1:
+                    targetImageView.setImage(oldImage);
+                    sceneManager.showPopupError(GeneralOffersPane, "Errore di modifica", "Nessuna modifica apportata all'immagine. Verrà ripristinata l'immagine precedente.");
+                    controller.setFileOggettoOfferto(new File(oldPath));
+                break;
+            }
         }
     }
 }

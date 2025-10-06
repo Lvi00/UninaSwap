@@ -83,7 +83,7 @@ public class OfferteBoundary {
     public boolean CostruisciOfferteUtente() {
         ObservableList<Offerta> offerteInviate;
         
-        if(controller.getStudente().getOfferteInviate().isEmpty()) {
+        if(controller.getOfferteInviate(controller.getStudente()).isEmpty()) {
         	offerteInviate = FXCollections.observableArrayList(controller.getOffertebyMatricola(controller.getStudente()));
         	controller.setOfferteInviate(new ArrayList<>(offerteInviate));
         }
@@ -237,7 +237,7 @@ public class OfferteBoundary {
     }
     
     public void mostraEditOfferta(MouseEvent e, Offerta offerta) {
-		sceneManager.mostraEditOfferta(e, offerta);
+		sceneManager.mostraEditOfferta(e, offerta, this);
     }
     
     @FXML

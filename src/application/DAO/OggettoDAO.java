@@ -180,5 +180,32 @@ public class OggettoDAO {
         
         return 0;
     }
+    
+    public int UpdateImmagineOggetto(Oggetto oggetto, String path) {
+    	try {
+			Connection conn = ConnessioneDB.getConnection();
+			String query = "UPDATE OGGETTO SET immagineoggetto = ? WHERE idoggetto = ?";
+			PreparedStatement statement = conn.prepareStatement(query); 
 
+			int id = getIdByOggetto(oggetto);
+
+			statement.setString(1, path);
+			statement.setInt(2, id);
+
+			int rowsAffected = statement.executeUpdate();
+			if (rowsAffected > 0) {
+				System.out.println("Aggiornamento immagine completato con successo!");
+				
+			} else {
+				System.out.println("Nessun record aggiornato (ID non trovato).");
+				return 1;
+			}
+			
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return 1;
+		}
+		
+		return 0;
+    }
 }

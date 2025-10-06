@@ -101,14 +101,13 @@ public class OffertaDAO {
 	    }
 	}
 	
-	public int UpdateOffertaVendita(Timestamp dataCorrente, double prezzo, Studente studente, Annuncio annuncio) {
-
+	public int UpdateOffertaVendita(double prezzo, Studente studente, Annuncio annuncio) {
 	    try {
 	        Connection conn = ConnessioneDB.getConnection();
-			String modificaOfferta = "UPDATE offerta SET prezzoofferta = ?, datapubblicazione = ? WHERE matstudente = ? AND idannuncio = ?";
+			String modificaOfferta = "UPDATE offerta SET prezzoofferta = ?, statoofferta = ? WHERE matstudente = ? AND idannuncio = ?";
 			PreparedStatement stmtModificaAccettaOfferta = conn.prepareStatement(modificaOfferta);
 	        stmtModificaAccettaOfferta.setDouble(1, prezzo);
-	        stmtModificaAccettaOfferta.setTimestamp(2, dataCorrente);
+	        stmtModificaAccettaOfferta.setString(2, "Attesa");
 			stmtModificaAccettaOfferta.setString(3, controller.getMatricola(studente));
 			stmtModificaAccettaOfferta.setInt(4, controller.getIdByAnnuncio(annuncio));
 			
@@ -128,14 +127,14 @@ public class OffertaDAO {
 	    return 0;
 	}
     
-	public int UpdateOffertaRegalo(Timestamp dataCorrente, String motivazione, Studente studente, Annuncio annuncio) {
+	public int UpdateOffertaRegalo(String motivazione, Studente studente, Annuncio annuncio) {
 
 	    try {
 	        Connection conn = ConnessioneDB.getConnection();
-			String modificaOfferta = "UPDATE offerta SET motivazione = ?, datapubblicazione = ? WHERE matstudente = ? AND idannuncio = ?";
+			String modificaOfferta = "UPDATE offerta SET motivazione = ?, statoofferta = ? WHERE matstudente = ? AND idannuncio = ?";
 			PreparedStatement stmtModificaAccettaOfferta = conn.prepareStatement(modificaOfferta);
 	        stmtModificaAccettaOfferta.setString(1, motivazione);
-	        stmtModificaAccettaOfferta.setTimestamp(2, dataCorrente);
+	        stmtModificaAccettaOfferta.setString(2, "Attesa");
 			stmtModificaAccettaOfferta.setString(3, controller.getMatricola(studente));
 			stmtModificaAccettaOfferta.setInt(4, controller.getIdByAnnuncio(annuncio));
 			
@@ -153,6 +152,31 @@ public class OffertaDAO {
 	    } 
 	    
 	    return 0;
+	}
+	
+	public int UpdateStatoOfferta(Offerta offerta) {
+	    try {
+	        Connection conn = ConnessioneDB.getConnection();
+			String modificaOfferta = "UPDATE offerta SET statoofferta = ? WHERE matstudente = ? AND idannuncio = ?";
+			PreparedStatement stmtModificaAccettaOfferta = conn.prepareStatement(modificaOfferta);
+	        stmtModificaAccettaOfferta.setString(1, "Attesa");
+			stmtModificaAccettaOfferta.setString(2, controller.getMatricola(controller.getStudenteOfferta(offerta)));
+			stmtModificaAccettaOfferta.setInt(3, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
+			
+	        int righeAggiornate = stmtModificaAccettaOfferta.executeUpdate();
+
+	        if (righeAggiornate == 0) {
+	            return 1;
+	        }
+	        
+			stmtModificaAccettaOfferta.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return 1;
+	    } 
+	    
+	    return 0;
+		
 	}
 	
     public int rimuoviOfferteByIdAnnuncio(int idAnnuncio) {

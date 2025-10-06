@@ -470,12 +470,13 @@ public class Controller {
 	    if (prezzo <= 0 || prezzo == offerta.getPrezzoOfferta() || prezzo > offerta.getAnnuncio().getPrezzo()) {
 	        return 1;
 	    }
-	    
-	    Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
 
-	    int risultato = new OffertaDAO().UpdateOffertaVendita(dataCorrente, prezzo, offerta.getStudente(),  offerta.getAnnuncio());
+	    int risultato = new OffertaDAO().UpdateOffertaVendita(prezzo, offerta.getStudente(),  offerta.getAnnuncio());
 	    
-	    if(risultato == 0) controller.setPrezzoOfferta(offerta, Double.parseDouble(stringaPrezzo));
+	    if(risultato == 0) {
+	    	controller.setPrezzoOfferta(offerta, Double.parseDouble(stringaPrezzo));
+	    	controller.SvuotaOfferteInviate();
+	    }
 	    
 	    return risultato;
 	}
@@ -503,17 +504,41 @@ public class Controller {
 	    }
 
 	    offerta.setMotivazione(motivazione);
-
-	    Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
 	    
-	    int risultato = new OffertaDAO().UpdateOffertaRegalo(dataCorrente, motivazione, offerta.getStudente(), offerta.getAnnuncio());
+	    int risultato = new OffertaDAO().UpdateOffertaRegalo(motivazione, offerta.getStudente(), offerta.getAnnuncio());
 	    
 	    if(risultato == 0) {
             offerta.setMotivazione(motivazione);
-            offerta.setDataPubblicazione(dataCorrente);
+	    	controller.SvuotaOfferteInviate();
 	    }
 
 	    return risultato;
+	}
+	
+	public int editImmagineOggettoOfferto(Offerta offerta, Oggetto oggetto, String path) {
+		if(offerta instanceof OffertaScambio) {
+			OffertaScambio offertaScambio = (OffertaScambio) offerta;
+			
+			for (Oggetto o : offertaScambio.getOggettiOfferti()) {
+			    if (o.getImmagineOggetto().equals(path) &&
+			        o.getCategoria().equals(oggetto.getCategoria()) &&
+			        o.getDescrizione().equals(oggetto.getDescrizione()) &&
+			        o.getStudente().getMatricola().equals(oggetto.getStudente().getMatricola())) {
+			        return 1;
+			    }
+			}
+			
+			int risultato = new OggettoDAO().UpdateImmagineOggetto(oggetto, path);
+			
+			if(risultato == 0) {
+				new OffertaDAO().UpdateStatoOfferta(offerta);
+				SvuotaOfferteInviate();
+			}
+			
+			return risultato;
+		}
+		
+		return 1;
 	}
 	
 	public int controllaCampiOggettoScambio(String descrizione, String categoriaSelezionata, String percorsoImmagine) {
@@ -677,7 +702,11 @@ public class Controller {
 	    		return 3;
 	    	}
 	    	
+	    	new OffertaDAO().UpdateStatoOfferta(offertaScambio);
+	    	
 	    	offertaScambio.setOggettiOfferti(getOggettiOffertiByOfferta(offertaScambio));
+	    	
+	    	SvuotaOfferteInviate();
 	    	
 	    	return 0;
     	}
@@ -693,6 +722,8 @@ public class Controller {
 	    	new OggettiOffertiDAO().rimuoviOggettoOffertoById(idOggetto, idOfferta);
 	    	new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
 	    	offertaScambio.setOggettiOfferti(getOggettiOffertiByOfferta(offertaScambio));
+	    	new OffertaDAO().UpdateStatoOfferta(offerta);
+	    	SvuotaOfferteInviate();
 	    	return 0;
     	}
     	

@@ -313,11 +313,12 @@ public class SceneManager {
         }
 	}
 	
-	public void mostraEditOfferta(MouseEvent e, Offerta offerta) {
+	public void mostraEditOfferta(MouseEvent e, Offerta offerta, OfferteBoundary offerteCtrl) {
 		try {
 		   FXMLLoader loader = new FXMLLoader(getClass().getResource("PopupEditOfferta.fxml"));
 		   Parent root = loader.load();
 		   PopupEditOffertaBoundary popupEditController = loader.getController();
+		   popupEditController.setOfferteBoundary(offerteCtrl);
 		   Stage mainStage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		   Stage popupStage = new Stage();
 		   popupStage.initOwner(mainStage);
