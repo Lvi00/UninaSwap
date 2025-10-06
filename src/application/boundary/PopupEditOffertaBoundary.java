@@ -61,7 +61,9 @@ public class PopupEditOffertaBoundary {
         Elettronica,
         Cancelleria,
         Cultura,
-        Musica
+        Musica,
+        Cibo,
+        Altro,
     }
     
     public void setOfferteBoundary(OfferteBoundary offerteBoundary) {
