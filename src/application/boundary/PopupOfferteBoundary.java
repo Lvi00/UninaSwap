@@ -353,17 +353,17 @@ public class PopupOfferteBoundary {
     	    String messaggioMotivazionale = campoDescrizioneAnnuncioRegalo.getText().trim();
     	    
     	    switch(controller.inviaOffertaRegalo(annuncio, messaggioMotivazionale)) {
-    	        case 0: // offerta inviata correttamente
+    	        case 0:
                     currentStage.close();
                     controller.SvuotaOfferteInviate();
                     sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " è stata inviata con successo.");
     	        break;
 
-    	        case 1: // errore generico
+    	        case 1:
     	            sceneManager.showPopupError(containerOfferte, "Errore nella richiesta", "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " non è stata inviata a causa di un errore nei dati inseriti.");
     	        break;
 
-    	        case -1: // offerta duplicata
+    	        case -1:
     	            sceneManager.showPopupError(containerOfferte, "Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
     	        break;
     	    }
@@ -372,18 +372,18 @@ public class PopupOfferteBoundary {
     	else if(controller.getTipologiaAnnuncio(annuncio).equals("Scambio"))
     	{
     	    switch(controller.inviaOffertaScambio(annuncio, new ArrayList<>(this.listaOggettiOfferti))) {
-		        case 0: // offerta di scambio normale inviata correttamente
+		        case 0:
 	                currentStage.close();
 		            sceneManager.showPopupAlert(containerOfferte, "Richiesta inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " è stata inviata con successo.");
 		        break;
 	
-		        case 1: // offerta di scambio personalizzata inviata correttamente
+		        case 1:
 		        	this.listaOggettiOfferti.clear();
 		        	currentStage.close();
 		            sceneManager.showPopupAlert(containerOfferte, "Richiesta personalizzata inviata!",  "La richiesta di " + controller.getTipologiaAnnuncio(annuncio) + " con gli oggetti inseriti è stata inviata con successo.");
 		        break;
 		        
-		        case -1: // offerta duplicata
+		        case -1:
 		            sceneManager.showPopupError(containerOfferte, "Offerta già esistente!", "Hai già effettuato un'offerta per questo annuncio.");
 		        break;
 		        
@@ -413,17 +413,14 @@ public class PopupOfferteBoundary {
     	String intero = campoPrezzoIntero.getText().trim();
         String decimale = campoPrezzoDecimale.getText().trim();
 
-        // Se intero è vuoto, aggiungi "0"
         if (intero.isEmpty()) {
         	intero = "0";
         }
         
-        // Se decimale è vuoto, aggiungi "00"
         if (decimale.isEmpty()) {
             decimale = "00";
         }
 
-        // Costruisci il prezzo finale
         String stringaPrezzo = intero + "." + decimale;
         
         switch(controller.checkControffertaVendita(annuncio, stringaPrezzo)) {

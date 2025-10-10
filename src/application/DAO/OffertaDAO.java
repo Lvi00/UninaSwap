@@ -28,7 +28,6 @@ public class OffertaDAO {
 
 	        Connection conn = ConnessioneDB.getConnection();
 
-	        // Controllo duplicati
 	        String queryDuplicate = "SELECT 1 FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
 	        PreparedStatement dupStatement = conn.prepareStatement(queryDuplicate);
 	        dupStatement.setString(1, matStudente);
@@ -38,13 +37,11 @@ public class OffertaDAO {
 	            return -1;
 	        }
 
-	        // Query di inserimento
 	        String insert = "INSERT INTO OFFERTA(statoofferta, prezzoofferta, tipologia, matstudente, idannuncio, motivazione, dataPubblicazione) "
 	                      + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 	        PreparedStatement statement = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS);
 
-	        // Campi comuni
 	        statement.setString(1, controller.getStatoOfferta(offerta));
 	        statement.setString(4, matStudente);
 	        statement.setInt(5, idannuncio);
@@ -75,7 +72,6 @@ public class OffertaDAO {
 	            if (generatedKeys.next()) {
 	                int idOfferta = generatedKeys.getInt(1);
 
-	                // Inserimento oggetti collegati
 	                OffertaScambio offertaScambio = (OffertaScambio) offerta;
 	                for (Oggetto ogg : offertaScambio.getOggettiOfferti()) {
 	                    String insertOggetto = "INSERT INTO OGGETTIOFFERTI (idOfferta, immagineoggetto, categoria, descrizione, matstudente) VALUES (?, ?, ?, ?, ?)";
@@ -88,12 +84,14 @@ public class OffertaDAO {
 	                    stmtOggetto.executeUpdate();
 	                }
 
-	                return idOfferta; // ritorno l'id generato
+	                return idOfferta;
 	            }
 	            return -1;
 	        }
 
-	        return rowsInserted > 0 ? 0 : -1;
+	        if(rowsInserted > 0) return 0;
+	        
+	        return -1;
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -456,7 +454,6 @@ public class OffertaDAO {
                 }
             }
 
-            // Poi elimino l'offerta
             String eliminaOfferta = "DELETE FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
             try (PreparedStatement stmtEliminaOfferta = conn.prepareStatement(eliminaOfferta)) {
                 stmtEliminaOfferta.setString(1, controller.getMatricola(controller.getStudenteOfferta(offerta)));

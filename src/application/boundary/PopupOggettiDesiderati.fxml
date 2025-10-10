@@ -8,7 +8,6 @@
 <?import javafx.scene.text.Font?>
 
 <HBox fx:id="containerOfferte" prefHeight="300.0" prefWidth="400.0" style="-fx-background-color: #F2EFEA;" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.PopupOggettiDesideratiBoundary">
-
     <children>
       <AnchorPane fx:id="paneOggettiOfferti" prefHeight="450.0" prefWidth="815.0">
          <children>

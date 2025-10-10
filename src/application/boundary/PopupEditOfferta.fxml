@@ -11,27 +11,21 @@
 <?import javafx.scene.text.Font?>
 
 <VBox fx:id="GeneralOffersPane" alignment="TOP_CENTER" spacing="15" style="-fx-background-color: #F2EFEA;" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.PopupEditOffertaBoundary">
-
-    <!-- PANE REGALO -->
 	<VBox fx:id="paneOffertaRegalo" alignment="CENTER" spacing="10" visible="false">
 	    <Label fx:id="labelOffertaRegalo" style="-fx-font-weight: bold;" text="Messaggio motivazionale">
          <font>
             <Font size="14.0" />
          </font></Label>
-	    
 	    <HBox alignment="CENTER" spacing="10">
 	        <TextArea fx:id="messaggioMotivazionale" maxWidth="300.0" prefHeight="69.0" prefRowCount="3" style="-fx-padding: -10px;" wrapText="true" HBox.hgrow="ALWAYS" />
 	        <Button fx:id="inviaMotivazioneOfferta" styleClass="tasto-secondario" text="Modifica" />
 	    </HBox>
 	</VBox>
-
-    <!-- PANE VENDITA -->
     <VBox fx:id="paneOffertaVendita" alignment="CENTER" spacing="10" visible="false">
         <Label fx:id="labelOffertaVendita" style="-fx-font-weight: bold;" text="Prezzo controfferta">
          <font>
             <Font size="14.0" />
          </font></Label>
-        
         <HBox alignment="CENTER" spacing="10">
             <Label style="-fx-font-weight: bold;" text="€">
             <font>
@@ -46,8 +40,6 @@
             <Button fx:id="inviaDatiOfferta" styleClass="tasto-secondario" text="Modifica" />
         </HBox>
     </VBox>
-
-    <!-- PANE SCAMBIO -->
     <VBox fx:id="paneOffertaScambio" alignment="TOP_CENTER" spacing="10" visible="false">
         <Label style="-fx-font-weight: bold;" text="Lista oggetti offerti">
          <font>
@@ -65,5 +57,4 @@
             <Insets bottom="10.0" />
          </VBox.margin></Label>
     </VBox>
-    
 </VBox>

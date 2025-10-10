@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import application.DAO.OggettiOffertiDAO;
 import application.DAO.AnnuncioDAO;
 import application.DAO.OffertaDAO;
+import application.DAO.OggettiOffertiDAO;
 import application.DAO.OggettoDAO;
 import application.DAO.SedeDAO;
 import application.DAO.StudenteDAO;
@@ -127,37 +127,31 @@ public class Controller {
 		if(nome == "" || cognome == "" ||  matricola == "" || email == "" || username ==  "" || password ==  "") {
 			return 1;
 		}
-		//Controllo nome
+		
 	    if ((nome.length() > 40 || nome.length() < 2) || isValidNameSurname(nome) == 1) {
 	        return 2;
 	    }
 
-	  //Controllo cognome
 	    if ((cognome.length() > 40 || cognome.length() < 2) || isValidNameSurname(cognome) == 1) {
 	        return 3;
 	    }
 	    
-	    //Controllo matricola
 	    if (matricola.length() != 9 || matricola.contains(" ") || matricola.contains("\t")) {
 	        return 4;
 	    }
 	    
-	    //Controllo email
 	    if(isValidEmail(email) == 1) {
 	    	 return 5;
 	    } 
 	    
-	    //Controllo username
 	    if (username.length() > 10 || username.contains(" ") || username.contains("\t")) {
 	        return 6;
 	    }
 	    
-	    //Controllo password
 	    if (password.length() < 8 || password.length() > 20) {
 	        return 7;
 	    }
 	    
-	    //Controllo se l'utente esiste già
 	    if(new StudenteDAO().CheckStudenteEsistente(matricola, email, username) == 1) {
 	    	return 8;
 	    }
@@ -166,7 +160,6 @@ public class Controller {
 	}
 	
 	public void InserisciStudente(ArrayList<String> credenziali){
-	    // Se arrivi qui, tutti i campi sono validi
 	    StudenteDAO studenteDAO = new StudenteDAO();
 	    studenteDAO.Save(new Studente(credenziali.get(2), credenziali.get(3), credenziali.get(0), credenziali.get(1), credenziali.get(4)), credenziali.get(5));	
 	    
@@ -174,7 +167,7 @@ public class Controller {
 	
 	private int isValidEmail(String email) {
 	    if (email == null || email.contains(" ") || email.contains("\t")) {
-	        return 1; // email non valida per spazi o null
+	        return 1;
 	    }
 
 		String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
@@ -244,9 +237,8 @@ public class Controller {
 		String inizioOrarioDisponibilità = datiAnnuncio.get(2).trim();
 		String fineOrarioDisponibilità = datiAnnuncio.get(3).trim();
 		
-		//trasforma le stringe in oggetti LocalTime e le confronta
 		if (!LocalTime.parse(inizioOrarioDisponibilità).isBefore(LocalTime.parse(fineOrarioDisponibilità))) {
-		    return 3; // inizio >= fine, fascia oraria non valida
+		    return 3;
 		}
 		
 		String giorniDisponibilità = datiAnnuncio.get(4).replaceAll("-$", "").trim();
@@ -259,7 +251,7 @@ public class Controller {
 		String descrizioneIndirizzo = datiAnnuncio.get(7).trim();
 		String civico = datiAnnuncio.get(8).trim();
 		String cap = datiAnnuncio.get(9).trim();
-		//Evita lettere nel CAP
+		
 		String capRegex = "^[0-9]{5}$";
 		
 		if(particellatoponomastica == "" || descrizioneIndirizzo == "" || descrizioneIndirizzo.length() > 100 || civico == "" ||
@@ -269,13 +261,11 @@ public class Controller {
 		
 		if(tipologia == "") return 7;
 		
-		//Rimane cosi in caso di Scambio o Regalo
 		double prezzo = 0.0;
 		
 		if(tipologia.equals("Vendita")){
 			String stringaPrezzo = datiAnnuncio.get(11);
 			
-			//Evita i caratteri speciali e le lettere, max un punto, max 3 cifre prima e 2 dopo, niente negativi
 			String prezzoRegex = "^\\d{1,3}(\\.\\d{1,2})?$";
 		    if (!stringaPrezzo.matches(prezzoRegex)) return 8;
 		    
@@ -324,7 +314,6 @@ public class Controller {
     		File destinationDir = new File(System.getProperty("user.dir"), "src/application/IMG/uploads");
     		if (!destinationDir.exists()) destinationDir.mkdirs();
     		File destinationFile = new File(destinationDir, fileSelezionato.getName());
-    		//non carica file con lo stesso nome
     		Files.copy(fileSelezionato.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
     	catch (IOException ex) {
@@ -487,7 +476,7 @@ public class Controller {
 	    String motivazioneRegex = "^[\\p{L}0-9,.!?;:'\"()\\s-]*$";
 	    
 	    if (!motivazione.matches(motivazioneRegex) || motivazione.length()>255) {
-	        return 1; // motivazione non valida
+	        return 1;
 	    }
 	    
 	    if (motivazione.isEmpty()) {
@@ -675,8 +664,6 @@ public class Controller {
     public void rimuoviOggettoDesideratoDaLista(ArrayList<String> listaOggetti, String nomeOggetto) {
         listaOggetti.remove(nomeOggetto);
     }
-    
-    //Logica di modifica offerta
 
     public int editOffertaScambio(Oggetto oggetto, Offerta offerta, String pathImmagine , String categoria, String descrizione) {   	
     	if(offerta instanceof OffertaScambio) {
@@ -730,10 +717,6 @@ public class Controller {
     	return 1;
     }
     
-    //End logica di modifica offerta
-    
-    //Metodi ottenimento dati per i grafici
-    
     public int getNumeroOfferteInviate(Studente studente, String tipologia) {
 		return new OffertaDAO().getNumeroOfferteInviate(studente, tipologia);
 	}
@@ -745,10 +728,6 @@ public class Controller {
     public double getInformazioniOfferteVendita(Studente studente, String tipoFunzione) {
     	return new OffertaDAO().getPrezzoMinimoOfferte(studente, tipoFunzione);
     }
-    
-    //End metodi ottenimento dati per i grafici
-    
-    //Metodi per l'ottenimento dei dati
     
     public String getUsername(Studente studente) {
     	return studente.getUsername();
@@ -917,6 +896,4 @@ public class Controller {
 	public ArrayList<Offerta> getOfferteInviate(Studente studente){
 		return this.studente.getOfferteInviate();
 	}
-    
-    //End metodi per l'ottenimento dei dati
 }

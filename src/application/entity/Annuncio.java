@@ -2,7 +2,7 @@ package application.entity;
 
 import java.sql.Timestamp;
 
-public class Annuncio {	
+public class Annuncio {
     private String titoloAnnuncio;
     private boolean statoAnnuncio;
     private String fasciaOrariaInizio;

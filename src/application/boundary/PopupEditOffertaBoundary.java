@@ -71,7 +71,6 @@ public class PopupEditOffertaBoundary {
     }
 
     public void CostruisciPopupEdit(Offerta offerta, Stage stage) {
-        // Nascondo tutto inizialmente
         paneOffertaVendita.setVisible(false);
         paneOffertaVendita.setManaged(false);
         paneOffertaScambio.setVisible(false);
@@ -85,7 +84,6 @@ public class PopupEditOffertaBoundary {
             paneOffertaVendita.setVisible(true);
             paneOffertaVendita.setManaged(true);
             
-            // Imposta prezzo
             double prezzo = controller.getPrezzoOfferta(offertaVendita);
             String prezzoString = String.format("%.2f", prezzo).replace(".", ",");
             String[] parti = prezzoString.split(",");
@@ -128,7 +126,6 @@ public class PopupEditOffertaBoundary {
                     gridOggettiOfferti.add(card, colonna, 0);
                     GridPane.setFillWidth(card, false);
 
-                    // colonna cresce automaticamente
                     ColumnConstraints col = new ColumnConstraints();
                     col.setHgrow(Priority.NEVER);
                     gridOggettiOfferti.getColumnConstraints().add(col);

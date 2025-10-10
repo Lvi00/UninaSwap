@@ -49,10 +49,8 @@ public class AnnunciStudenteBoundary {
             File file = new File(immagineP);
             Image image;
             if (file.exists()) {
-                // Se esiste come file nel file system, caricalo da file
                 image = new Image(file.toURI().toString());
             } else {
-                // Altrimenti prova a caricare da risorsa classpath
                 image = new Image(getClass().getResource(immagineP).toExternalForm());
             }
             
@@ -263,7 +261,6 @@ public class AnnunciStudenteBoundary {
         riga.setAlignment(Pos.CENTER_LEFT);
         riga.getStyleClass().add("card-annuncio");
 
-        // Stato Offerta
         Label statoOfferta = new Label(controller.getStatoOfferta(o));
         statoOfferta.setPrefWidth(90);
         statoOfferta.setAlignment(Pos.CENTER);
@@ -289,7 +286,6 @@ public class AnnunciStudenteBoundary {
         dataPubblicazioneBox.setAlignment(Pos.CENTER);
         dataPubblicazioneBox.setPrefWidth(150);
 
-        // Info Studente
         HBox infoBox = new HBox(10);
         infoBox.setPrefWidth(200);
         infoBox.setAlignment(Pos.CENTER_LEFT);
@@ -297,9 +293,15 @@ public class AnnunciStudenteBoundary {
         ImageView iconInfo = new ImageView();
         try {
             File file = new File(controller.getImmagineProfilo(controller.getStudenteOfferta(o)));
-            Image img = file.exists()
-                    ? new Image(file.toURI().toString())
-                    : new Image(getClass().getResource(controller.getImmagineProfilo(controller.getStudenteOfferta(o))).toExternalForm());
+            Image img;
+            
+            if(file.exists()) {
+            	img = new Image(file.toURI().toString());
+            }
+            
+            else {
+            	img = new Image(getClass().getResource(controller.getImmagineProfilo(controller.getStudenteOfferta(o))).toExternalForm());
+            }
 
             iconInfo.setImage(img);
             iconInfo.setFitWidth(33);
@@ -314,11 +316,9 @@ public class AnnunciStudenteBoundary {
         autoreOfferta.setStyle("-fx-font-weight: bold;");
         infoBox.getChildren().addAll(iconInfo, autoreOfferta);
 
-        // Spacer
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        // Bottoni
         HBox containerButtons = new HBox(15);
         containerButtons.setAlignment(Pos.CENTER);
        

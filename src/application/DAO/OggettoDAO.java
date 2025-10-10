@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import application.control.Controller;
-import application.entity.Offerta;
 import application.entity.Oggetto;
 import application.resources.ConnessioneDB;
 
@@ -125,21 +124,18 @@ public class OggettoDAO {
             checkStmt.setInt(1, idOggetto);
             ResultSet rs = checkStmt.executeQuery();
 
-            // Se l'oggetto ha almeno un annuncio associato, non lo rimuovere
             if (rs.next()) {
                 rs.close();
                 checkStmt.close();
                 return 1; 
             }
 
-            // Se non ci sono annunci, cancella l'oggetto
             String deleteOfferte = "DELETE FROM OGGETTO WHERE idoggetto = ?";
             PreparedStatement deleteOfferteStmt = conn.prepareStatement(deleteOfferte);
             deleteOfferteStmt.setInt(1, idOggetto);
             int rowsAffected = deleteOfferteStmt.executeUpdate();
             deleteOfferteStmt.close();
             
-            //Nessun oggetto trovato con quell'ID
             if (rowsAffected == 0) {
                 return 1; 
             }
@@ -165,6 +161,7 @@ public class OggettoDAO {
             statement.setInt(4, id);
 
             int rowsAffected = statement.executeUpdate();
+            
             if (rowsAffected > 0) {
                 System.out.println("Aggiornamento completato con successo!");
                 

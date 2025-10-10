@@ -19,7 +19,6 @@
 <?import javafx.scene.text.Font?>
 
 <HBox fx:id="containerOfferte" alignment="CENTER" prefHeight="450.0" prefWidth="800.0" styleClass="sfondo" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.PopupOfferteBoundary">
-
     <children>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="sfondoPopupOfferte">
             <children>
@@ -42,24 +41,19 @@
                                 <Label fx:id="descrizioneAnnuncio" alignment="TOP_LEFT" layoutX="7.0" layoutY="5.0" prefHeight="129.0" prefWidth="227.0" wrapText="true" />
                             </children>
                         </Pane>
-      
       				<VBox alignment="TOP_CENTER" layoutX="683.0" layoutY="13.0" prefHeight="425.0" prefWidth="100.0" spacing="8">
-      				
       				    <children>
       				        <Pane prefHeight="100.0" prefWidth="100.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-border-color: black; -fx-border-width: 3;">
       				            <children>
       				                <ImageView fx:id="immagineProfilo" fitHeight="94.0" fitWidth="94.0" layoutX="3.0" layoutY="3.0" preserveRatio="true" />
       				            </children>
       				        </Pane>
-      				
       				        <Label fx:id="usernameAnnuncio" style="-fx-font-weight: bold;">
       				            <font>
       				                <Font size="16.0" />
       				            </font>
       				        </Label>
-      				
       				        <Region prefWidth="100.0" VBox.vgrow="ALWAYS" />
-      				
             				        <Button fx:id="buttonOfferta" mnemonicParsing="false" prefHeight="31.0" styleClass="tasto-secondario">
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -112,31 +106,24 @@
                         </ImageView>
                      </children>
                   </AnchorPane>
-                  
-                                    
-                  
-                        				<AnchorPane fx:id="PaneOfferteVendita" layoutX="475.0" layoutY="190.0" prefHeight="175.0" prefWidth="300.0" visible="false">
-      			    <!-- Label prezzo centrata un po' in alto -->
+        				<AnchorPane fx:id="PaneOfferteVendita" layoutX="475.0" layoutY="190.0" prefHeight="175.0" prefWidth="300.0" visible="false">
       			    <Label alignment="CENTER" layoutX="88.0" layoutY="88.0" prefHeight="20.0" prefWidth="115.0" styleClass="label-login-registrazione" text="Prezzo della controfferta" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="38.666666666666686">
       			        <font>
       			            <Font size="14.0" />
       			        </font>
       			    </Label>
-      			            <Label layoutX="52.0" layoutY="129.0" style="-fx-alignment: center; -fx-font-weight: bold;" text="€">
-      			                <font>
-      			                    <Font size="18.0" />
-      			                </font>
-      			            </Label>
-      			
-                  			            <TextField fx:id="campoPrezzoIntero" layoutX="72.0" layoutY="125.0" prefHeight="36.0" prefWidth="100.0" styleClass="campi" />
-      			
-                  			            <Label layoutX="178.0" layoutY="128.0" style="-fx-alignment: center; -fx-font-weight: bold;" text=".">
-      			                <font>
-      			                    <Font size="20.0" />
-      			                </font>
-      			            </Label>
-      			
-                  			            <TextField fx:id="campoPrezzoDecimale" layoutX="189.0" layoutY="125.0" prefHeight="36.0" prefWidth="100.0" styleClass="campi" />
+    			   <Label layoutX="52.0" layoutY="129.0" style="-fx-alignment: center; -fx-font-weight: bold;" text="€">
+    			   	<font>
+    			      <Font size="18.0" />
+  			       	</font>
+    			   </Label>
+         		<TextField fx:id="campoPrezzoIntero" layoutX="72.0" layoutY="125.0" prefHeight="36.0" prefWidth="100.0" styleClass="campi" />
+            		<Label layoutX="178.0" layoutY="128.0" style="-fx-alignment: center; -fx-font-weight: bold;" text=".">
+     		            <font>
+      			            <Font size="20.0" />
+      			         </font>
+      			    </Label>
+            	<TextField fx:id="campoPrezzoDecimale" layoutX="189.0" layoutY="125.0" prefHeight="36.0" prefWidth="100.0" styleClass="campi" />
       			</AnchorPane>
                   <AnchorPane fx:id="PaneOfferteRegalo" layoutX="429.0" layoutY="175.0" prefHeight="206.0" prefWidth="356.0" visible="false">
                      <children>
@@ -152,8 +139,6 @@
                         </TextArea>
                      </children>
                   </AnchorPane>
-                  
-                  
                   <Button fx:id="controffertaButton" layoutX="577.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#MostraControfferta" style="-fx-background-color: CA0F0F;" styleClass="tasto-terziario" text="Controfferta" visible="false" />
                   <Button fx:id="backButton" layoutX="589.0" layoutY="376.0" mnemonicParsing="false" onMouseClicked="#MostraControfferta" prefHeight="40.0" prefWidth="46.0" style="-fx-background-color: CA0F0F;" styleClass="tasto-terziario" visible="false" />
                   <ImageView fx:id="backImage" fitHeight="36.0" fitWidth="30.0" layoutX="596.0" layoutY="381.0" onMouseClicked="#MostraControfferta" pickOnBounds="true" preserveRatio="true" visible="false">
@@ -176,7 +161,6 @@
                   <Button fx:id="aggiungiOggetto" layoutX="545.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#aggiungiOggettoDaScambiare" styleClass="tasto-secondario" text="Aggiungi oggetto" visible="false" />
                   <Button fx:id="oggettiOffertiButton" layoutX="409.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#mostraOggettiOfferti" styleClass="tasto-terziario" text="Oggetti offerti" visible="false" />
                   <Button fx:id="mostraCampiScambio" layoutX="574.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#mostraCampiScambio" styleClass="tasto-secondario" text="Offri oggetti" visible="false" />
-      
                       <Label layoutX="35.0" layoutY="388.0" prefHeight="17.0" prefWidth="74.0" text="Disponibilità:" wrapText="true" />
                       <Label fx:id="disponibilitàAnnuncio" layoutX="111.0" layoutY="388.0" />
                   <Label layoutX="35.0" layoutY="407.0" prefHeight="17.0" prefWidth="53.0" text="Indirizzo:" wrapText="true" />

@@ -82,10 +82,8 @@ public class CreaAnnuncioBoundary {
             File file = new File(immagineP);
             Image image;
             if (file.exists()) {
-                // Se esiste come file nel file system, caricalo da file
                 image = new Image(file.toURI().toString());
             } else {
-                // Altrimenti prova a caricare da risorsa classpath
                 image = new Image(getClass().getResource(immagineP).toExternalForm());
             }
             
@@ -181,7 +179,6 @@ public class CreaAnnuncioBoundary {
     	
         if (selectedFile != null) {
             Image image = new Image(selectedFile.toURI().toString());
-            //Carica sull'imaggine di defoult la nuova immagine
             immagineCaricata.setImage(image);
             controller.setFileOggettoAnnuncio(selectedFile);
         }
@@ -189,7 +186,6 @@ public class CreaAnnuncioBoundary {
 
     @FXML
     public void InviaDati(MouseEvent e) {
-    	
     	ArrayList<String> datiAnnuncio = new ArrayList<String>();
     	
     	datiAnnuncio.add(campoTitoloAnnuncio.getText());
@@ -226,20 +222,16 @@ public class CreaAnnuncioBoundary {
         {
         	String intero = campoPrezzoIntero.getText();
 	        String decimale = campoPrezzoDecimale.getText();
-	
-	        // Se intero è vuoto, aggiungi "0"
+	        
 	        if (intero.isEmpty()) {
 	        	intero = "0";
 	        }
-	        // Se decimale è vuoto, aggiungi "00"
 	        if (decimale.isEmpty()) {
 	            decimale = "00";
 	        }
-	
-	        // Costruisci il prezzo finale
+	        
 	        String stringaPrezzo = intero + "." + decimale;
 	        datiAnnuncio.add(stringaPrezzo);
-	        
     	}
     
         File fileOggettoAnnuncio = controller.getFileOggettoAnnuncio();

@@ -13,11 +13,8 @@
 
 <HBox prefHeight="600.0" prefWidth="1100.0" stylesheets="@../resources/application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boundary.InformazioniBoundary">
    <children>
-      <!-- Root AnchorPane -->
       <AnchorPane prefHeight="600.0" prefWidth="1100.0">
          <children>
-
-                  <!-- Sidebar -->
             <AnchorPane id="sidebar" prefHeight="600.0" prefWidth="118.0">
                <children>
                   <ImageView fitHeight="102.0" fitWidth="112.0" layoutX="26.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
@@ -25,8 +22,6 @@
                         <Image url="@../IMG/immaginiProgramma/logo2.png" />
                      </image>
                   </ImageView>
-
-                        <!-- Sezioni -->
                   <Label layoutX="19.0" layoutY="140.0" onMouseClicked="#SelezionaPagina" prefHeight="50.0" prefWidth="112.0" styleClass="label-sidebar" text="Prodotti" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -69,8 +64,6 @@
                   </Label>
                </children>
             </AnchorPane>
-
-                  <!-- Navbar -->
             <AnchorPane id="navbar" layoutX="148.0" prefHeight="102.0" prefWidth="952.0">
                <children>
                   <HBox alignment="CENTER_RIGHT" layoutX="719.0" layoutY="20.0" prefHeight="62.0" prefWidth="220.0" spacing="10.0">
@@ -88,8 +81,6 @@
                   </HBox>
                </children>
             </AnchorPane>
-
-                  <!-- Contenuto principale -->
             <HBox layoutX="149.0" layoutY="102.0" prefHeight="498.0" prefWidth="949.0" style="-fx-background-color: #F2EFEA;">
                <children>
                   <AnchorPane prefHeight="498.0" prefWidth="949.0">

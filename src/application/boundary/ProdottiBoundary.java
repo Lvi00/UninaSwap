@@ -65,10 +65,8 @@ public class ProdottiBoundary {
             File file = new File(immagineP);
             Image image;
             if (file.exists()) {
-                // Se esiste come file nel file system, caricalo da file
                 image = new Image(file.toURI().toString());
             } else {
-                // Altrimenti prova a caricare da risorsa classpath
                 image = new Image(getClass().getResource(immagineP).toExternalForm());
             }
             
@@ -214,17 +212,14 @@ public class ProdottiBoundary {
         String newCategoria = campoCategoriaOggetto.getValue() != null ? campoCategoriaOggetto.getValue().name() : "Nessuno";
         String newTipologia = campoTipologia.getValue() != null ? campoTipologia.getValue().name() : "Nessuno";
 
-        // Controllo campi vuoti
         if ((newKeyword == null || newKeyword.isEmpty()) && newCategoria.equals("Nessuno") && newTipologia.equals("Nessuno")) {
         	resetFiltri();
         }
 
-        // Controllo se i filtri sono uguali ai precedenti
         if (newKeyword.equals(this.keyword) && newCategoria.equals(this.categoria) && newTipologia.equals(this.tipologia)) {
             return;
         }
 
-        // Salvo i nuovi filtri
         this.keyword = newKeyword;
         this.categoria = newCategoria;
         this.tipologia = newTipologia;

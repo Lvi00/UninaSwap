@@ -48,7 +48,6 @@ public class InformazioniBoundary {
         String immagineP = controller.getImmagineProfilo(controller.getStudente());
         
         try {
-            // Gestione immagine profilo
             File file = new File(immagineP);
             Image image;
             if (file.exists()) {
@@ -115,7 +114,6 @@ public class InformazioniBoundary {
         XYChart.Data<String, Number> data = new XYChart.Data<>(nome, valore);
         serie.getData().add(data);
 
-        // Tooltip installato quando il nodo è pronto
         data.nodeProperty().addListener((obs, oldNode, newNode) -> {
             if (newNode != null) {
                 Tooltip.install(newNode, new Tooltip(nome + ": " + valore));

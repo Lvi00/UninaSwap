@@ -51,10 +51,8 @@ public class OfferteBoundary {
             File file = new File(immagineP);
             Image image;
             if (file.exists()) {
-                // Se esiste come file nel file system, caricalo da file
                 image = new Image(file.toURI().toString());
             } else {
-                // Altrimenti prova a caricare da risorsa classpath
                 image = new Image(getClass().getResource(immagineP).toExternalForm());
             }
             

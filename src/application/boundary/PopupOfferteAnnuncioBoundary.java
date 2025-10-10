@@ -89,7 +89,6 @@ public class PopupOfferteAnnuncioBoundary {
         card.setAlignment(Pos.CENTER_LEFT);
         card.getStyleClass().add("card-annuncio");
 
-        // immagine oggetto
         ImageView imageView = new ImageView();
         try {
             String path = controller.getImmagineOggetto(oggetto);
@@ -118,7 +117,6 @@ public class PopupOfferteAnnuncioBoundary {
             System.out.println("Immagine non trovata: " + controller.getImmagineOggetto(oggetto));
         }
 
-        // contenuto orizzontale: immagine + testo
         HBox content = new HBox(15);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setMaxWidth(Double.MAX_VALUE);

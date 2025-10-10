@@ -83,29 +83,29 @@ public class SedeDAO {
 
 	 
 	 public int getIdBySede(Sede sede) {
-		    int idSede = 0;
+	    int idSede = 0;
 
-		    String query = "SELECT idsede FROM SEDE WHERE ptop = ? AND descrizione = ? AND civico = ? AND cap = ?";
+	    String query = "SELECT idsede FROM SEDE WHERE ptop = ? AND descrizione = ? AND civico = ? AND cap = ?";
 
-		    try {
-		    	Connection conn = ConnessioneDB.getConnection();
-		        PreparedStatement statement = conn.prepareStatement(query);
+	    try {
+	    	Connection conn = ConnessioneDB.getConnection();
+	        PreparedStatement statement = conn.prepareStatement(query);
 
-		        statement.setString(1, controller.getParticellaToponomasticaSede(sede));
-		        statement.setString(2, controller.getDescrizioneIndirizzo(sede));
-		        statement.setString(3, controller.getCivicoSede(sede));
-		        statement.setString(4, controller.getCapSede(sede));
+	        statement.setString(1, controller.getParticellaToponomasticaSede(sede));
+	        statement.setString(2, controller.getDescrizioneIndirizzo(sede));
+	        statement.setString(3, controller.getCivicoSede(sede));
+	        statement.setString(4, controller.getCapSede(sede));
 
-		       ResultSet rs = statement.executeQuery();
-	            if (rs.next()) {
-	                idSede = rs.getInt("idsede");
-	            }
-		        
+	       ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                idSede = rs.getInt("idsede");
+            }
+	        
 
-		    } catch (SQLException ex) {
-		        ex.printStackTrace();
-		    }
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	    }
 
-		    return idSede;
-		}
+	    return idSede;
+	}
 }
