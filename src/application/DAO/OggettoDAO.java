@@ -4,24 +4,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import application.control.Controller;
 import application.entity.Oggetto;
+import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
-public class OggettoDAO {
-	private Controller controller = Controller.getController();
-	
+public class OggettoDAO {	
 	public int SaveOggetto(Oggetto oggetto) {
 	    int idOggettoInserito = -1;
 
 	    try {
 	        Connection conn = ConnessioneDB.getConnection();
-	        String matStudente = controller.getMatricola(controller.getStudenteOggetto(oggetto));
+	        String matStudente = oggetto.getStudente().getMatricola();
 	        String queryCheck = "SELECT * FROM OGGETTO WHERE immagineoggetto = ? AND categoria = ? AND descrizione = ? AND matstudente = ?";
 	        PreparedStatement checkStatement = conn.prepareStatement(queryCheck);
-	        checkStatement.setString(1, controller.getImmagineOggetto(oggetto));
-	        checkStatement.setString(2, controller.getCategoriaOggetto(oggetto));
-	        checkStatement.setString(3, controller.getDescrizioneOggetto(oggetto));
+	        checkStatement.setString(1, oggetto.getImmagineOggetto());
+	        checkStatement.setString(2, oggetto.getCategoria());
+	        checkStatement.setString(3, oggetto.getDescrizione());
 	        checkStatement.setString(4, matStudente);
 
 	        ResultSet resultSet = checkStatement.executeQuery();
@@ -35,9 +33,9 @@ public class OggettoDAO {
 	        	String queryInsert = "INSERT INTO OGGETTO (immagineoggetto, categoria, descrizione, matstudente) VALUES (?, ?, ?, ?) RETURNING idoggetto";
 	        	
 	            PreparedStatement insertStatement = conn.prepareStatement(queryInsert);
-	            insertStatement.setString(1, controller.getImmagineOggetto(oggetto));
-	            insertStatement.setString(2, controller.getCategoriaOggetto(oggetto));
-	            insertStatement.setString(3, controller.getDescrizioneOggetto(oggetto));
+	            insertStatement.setString(1, oggetto.getImmagineOggetto());
+	            insertStatement.setString(2, oggetto.getCategoria());
+	            insertStatement.setString(3, oggetto.getDescrizione());
 	            insertStatement.setString(4, matStudente);
 	
 	            ResultSet rsInsert = insertStatement.executeQuery();
@@ -63,17 +61,25 @@ public class OggettoDAO {
     	
         try {        	
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM OGGETTO WHERE idoggetto = ?";
+            String query = "SELECT * FROM OGGETTO AS O INNER JOIN STUDENTE AS S ON O.matstudente = S.matricola WHERE idoggetto = ?";
             PreparedStatement statement = conn.prepareStatement(query);
 		    statement.setInt(1, idOggetto);
             ResultSet rs = statement.executeQuery();
             
-            if(rs.next()) {            	
-            	oggetto = new Oggetto(
+            if(rs.next()) {
+                Studente studente = new Studente(
+					rs.getString("matricola"),
+					rs.getString("email"),
+					rs.getString("nome"),
+					rs.getString("cognome"),
+					rs.getString("username")
+        		);
+                
+                oggetto = new Oggetto(
 					rs.getString("immagineoggetto"),
 					rs.getString("categoria"),
 					rs.getString("descrizione"),
-	            	controller.getStudenteByMatricola(rs.getString("matstudente"))
+					studente
 				);
             }
 
@@ -85,32 +91,6 @@ public class OggettoDAO {
         }
 
         return oggetto;
-    }
-    
-    public int getIdByOggetto(Oggetto oggetto) {
-    	int id = 0;
-    	try {
-		    String matStudente = controller.getMatricola(controller.getStudenteOggetto(oggetto));
-	        String query = "SELECT idoggetto FROM OGGETTO WHERE immagineoggetto = ? AND categoria = ? AND descrizione = ? AND matstudente = ?";
-	        
-        	Connection conn = ConnessioneDB.getConnection();
-            PreparedStatement statement = conn.prepareStatement(query);
-            statement.setString(1, controller.getImmagineOggetto(oggetto));
-            statement.setString(2, controller.getCategoriaOggetto(oggetto));
-            statement.setString(3, controller.getDescrizioneOggetto(oggetto));
-            statement.setString(4, matStudente);
-
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                id = rs.getInt("idoggetto");
-            }
-        
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-
-        return id;
     }
     
     public int rimuoviOggettoByIdOggetto(int idOggetto) {
@@ -148,14 +128,12 @@ public class OggettoDAO {
         try {
         	Connection conn = ConnessioneDB.getConnection();
         	String query = "UPDATE OGGETTO SET immagineoggetto = ?, categoria = ?, descrizione = ? WHERE idoggetto = ?";
-        	PreparedStatement statement = conn.prepareStatement(query); 
-
-            int id = getIdByOggetto(oggetto);
+        	PreparedStatement statement = conn.prepareStatement(query);
 
             statement.setString(1, pathImmagine);
             statement.setString(2, categoria);
             statement.setString(3, descrizione);
-            statement.setInt(4, id);
+            statement.setInt(4, oggetto.getIdOggetto());
 
             int rowsAffected = statement.executeUpdate();
             
@@ -181,10 +159,8 @@ public class OggettoDAO {
 			String query = "UPDATE OGGETTO SET immagineoggetto = ? WHERE idoggetto = ?";
 			PreparedStatement statement = conn.prepareStatement(query); 
 
-			int id = getIdByOggetto(oggetto);
-
 			statement.setString(1, path);
-			statement.setInt(2, id);
+			statement.setInt(2, oggetto.getIdOggetto());
 
 			int rowsAffected = statement.executeUpdate();
 			if (rowsAffected > 0) {

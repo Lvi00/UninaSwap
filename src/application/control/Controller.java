@@ -205,10 +205,7 @@ public class Controller {
 	public Oggetto getOggettoById(int idOggetto) {
 		return new OggettoDAO().getOggettoById(idOggetto);
 	}
-	
-	public int getIdByOggetto(Oggetto oggetto) {
-		return new OggettoDAO().getIdByOggetto(oggetto);
-	}
+
 	
 	public int getIdBySede(Sede sede) {
 		return new SedeDAO().getIdBySede(sede);
@@ -568,7 +565,16 @@ public class Controller {
 	}
 	
 	public int rimuoviOggettiOfferti(int idOfferta) {
-		return new OggettiOffertiDAO().rimuoviOggettiOffertiByIdOfferta(idOfferta);
+		ArrayList<Integer> oggettiDaRimuovere = new OggettiOffertiDAO().rimuoviOggettiOffertiByIdOfferta(idOfferta);
+		
+		if(oggettiDaRimuovere != null) {
+	        for (Integer idOggetto : oggettiDaRimuovere) {
+	            controller.rimuoviOggetto(idOggetto);
+	        }
+	        return 0;
+		}
+		
+		return 1;
 	}
 	
 	public int rimuoviSede(int idSede) {
@@ -738,8 +744,8 @@ public class Controller {
     public int rimuoviOggettoOfferto(Oggetto oggetto, Offerta offerta) {
     	if(offerta instanceof OffertaScambio) {
     		OffertaScambio offertaScambio = (OffertaScambio) offerta;
-	    	int idOggetto = new OggettoDAO().getIdByOggetto(oggetto);
-	    	int idOfferta = new OffertaDAO().getIdByOfferta(offertaScambio);
+	    	int idOggetto = oggetto.getIdOggetto();
+	    	int idOfferta = offerta.getIdOfferta();
 	    	new OggettiOffertiDAO().rimuoviOggettoOffertoById(idOggetto, idOfferta);
 	    	new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
 	    	offertaScambio.setOggettiOfferti(getOggettiOffertiByOfferta(offertaScambio));

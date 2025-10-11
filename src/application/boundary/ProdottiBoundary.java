@@ -42,13 +42,14 @@ public class ProdottiBoundary {
     private String tipologia = null;
 
     enum Categorie {
-    	Nessuno,
         Abbigliamento,
         Informatica,
         Elettronica,
         Cancelleria,
         Cultura,
-        Musica
+        Musica,
+        Cibo,
+        Altro,
     }
     
     enum Tipologia {

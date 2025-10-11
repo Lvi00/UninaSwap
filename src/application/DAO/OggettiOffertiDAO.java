@@ -6,12 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import application.control.Controller;
 import application.resources.ConnessioneDB;
 
 public class OggettiOffertiDAO {
-	private Controller controller = Controller.getController();
-
 	public void SaveOggettoOfferto(int idOfferta, int idOggetto) {
 		try {
 			Connection conn = ConnessioneDB.getConnection();
@@ -29,7 +26,7 @@ public class OggettiOffertiDAO {
 		}
 	}
 	
-	public int rimuoviOggettiOffertiByIdOfferta(int idOfferta) {
+	public ArrayList<Integer> rimuoviOggettiOffertiByIdOfferta(int idOfferta) {
 	    try {
 	        Connection conn = ConnessioneDB.getConnection();
 
@@ -51,16 +48,13 @@ public class OggettiOffertiDAO {
 	        deleteOfferteStmt.setInt(1, idOfferta);
 	        deleteOfferteStmt.executeUpdate();
 	        deleteOfferteStmt.close();
-
-	        for (Integer idOggetto : oggettiDaRimuovere) {
-	            controller.rimuoviOggetto(idOggetto);
-	        }
+	        
+	        return oggettiDaRimuovere;
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	        return 1;
+	        return null;
 	    }
-	    return 0;
 	}
 	
 	public void rimuoviOggettoOffertoById(int idOggetto, int idOfferta) {
