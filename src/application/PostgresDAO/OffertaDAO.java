@@ -1,4 +1,4 @@
-package application.DAO;
+package application.PostgresDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,58 +17,101 @@ import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
 public class OffertaDAO {
-	public int SaveOfferta(Offerta offerta) {
+	public int SaveOffertaVendita(OffertaVendita offertaVendita) {
 	    try {
-	        String matStudente = offerta.getStudente().getMatricola();
-	        int idannuncio = offerta.getAnnuncio().getIdAnnuncio();
-
 	        Connection conn = ConnessioneDB.getConnection();
-
 	        String queryDuplicate = "SELECT 1 FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
 	        PreparedStatement dupStatement = conn.prepareStatement(queryDuplicate);
-	        dupStatement.setString(1, matStudente);
-	        dupStatement.setInt(2, idannuncio);
+	        dupStatement.setString(1, offertaVendita.getStudente().getMatricola());
+	        dupStatement.setInt(2, offertaVendita.getAnnuncio().getIdAnnuncio());
 	        ResultSet dupResult = dupStatement.executeQuery();
-	        if (dupResult.next()) {
-	            return -1;
-	        }
-
+	        if (dupResult.next()) return -1;
+	        
 	        String insert = "INSERT INTO OFFERTA(statoofferta, prezzoofferta, tipologia, matstudente, idannuncio, motivazione, dataPubblicazione) "
 	                      + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
 	        PreparedStatement statement = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS);
-
-	        statement.setString(1, offerta.getStatoOfferta());
-	        statement.setString(4, matStudente);
-	        statement.setInt(5, idannuncio);
-	        statement.setTimestamp(7, offerta.getDataPubblicazione());
-
-	        if (offerta instanceof OffertaVendita) {
-	            OffertaVendita offertaVendita = (OffertaVendita) offerta;
-	            statement.setDouble(2, offertaVendita.getPrezzoOfferta());
-	            statement.setString(3, "Vendita");
-	            statement.setString(6, "Assente");
-	        } else if (offerta instanceof OffertaRegalo) {
-	            OffertaRegalo offertaRegalo = (OffertaRegalo) offerta;
-	            statement.setNull(2, java.sql.Types.DOUBLE);
-	            statement.setString(3, "Regalo");
-	            statement.setString(6, offertaRegalo.getMotivazione());
-	        } else if (offerta instanceof OffertaScambio) {
-	            statement.setNull(2, java.sql.Types.DOUBLE);
-	            statement.setString(3, "Scambio");
-	            statement.setString(6, "Assente");
+	        statement.setString(1, offertaVendita.getStatoOfferta());
+	        statement.setDouble(2, offertaVendita.getPrezzoOfferta());
+	        statement.setString(3, "Vendita");
+	        statement.setString(4, offertaVendita.getStudente().getMatricola());
+	        statement.setInt(5, offertaVendita.getAnnuncio().getIdAnnuncio());
+	        statement.setString(6, "Assente");
+	        statement.setTimestamp(7, offertaVendita.getDataPubblicazione());
+	        
+	        int rowsInserted = statement.executeUpdate();
+	        
+	        if (rowsInserted > 0) {
+	            return 0;
 	        } else {
 	            return -1;
 	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return -1;
+	    }
+	}
+
+	public int SaveOffertaRegalo(OffertaRegalo offertaRegalo) {
+	    try {
+	        Connection conn = ConnessioneDB.getConnection();
+	        String queryDuplicate = "SELECT 1 FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
+	        PreparedStatement dupStatement = conn.prepareStatement(queryDuplicate);
+	        dupStatement.setString(1, offertaRegalo.getStudente().getMatricola());
+	        dupStatement.setInt(2, offertaRegalo.getAnnuncio().getIdAnnuncio());
+	        ResultSet dupResult = dupStatement.executeQuery();
+	        if (dupResult.next()) return -1;
+
+	        String insert = "INSERT INTO OFFERTA(statoofferta, prezzoofferta, tipologia, matstudente, idannuncio, motivazione, dataPubblicazione) "
+	                      + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+	        PreparedStatement statement = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS);
+	        statement.setString(1, offertaRegalo.getStatoOfferta());
+	        statement.setNull(2, java.sql.Types.DOUBLE);
+	        statement.setString(3, "Regalo");
+	        statement.setString(4, offertaRegalo.getStudente().getMatricola());
+	        statement.setInt(5, offertaRegalo.getAnnuncio().getIdAnnuncio());
+	        statement.setString(6, offertaRegalo.getMotivazione());
+	        statement.setTimestamp(7, offertaRegalo.getDataPubblicazione());
 
 	        int rowsInserted = statement.executeUpdate();
+	        
+	        if (rowsInserted > 0) {
+	            return 0;
+	        } else {
+	            return -1;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return -1;
+	    }
+	}
 
-	        if (offerta instanceof OffertaScambio) {
+	public int SaveOffertaScambio(OffertaScambio offertaScambio) {
+	    try {
+	        Connection conn = ConnessioneDB.getConnection();
+	        String queryDuplicate = "SELECT 1 FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
+	        PreparedStatement dupStatement = conn.prepareStatement(queryDuplicate);
+	        dupStatement.setString(1, offertaScambio.getStudente().getMatricola());
+	        dupStatement.setInt(2, offertaScambio.getAnnuncio().getIdAnnuncio());
+	        ResultSet dupResult = dupStatement.executeQuery();
+	        if (dupResult.next()) return -1;
+
+	        String insert = "INSERT INTO OFFERTA(statoofferta, prezzoofferta, tipologia, matstudente, idannuncio, motivazione, dataPubblicazione) "
+	                      + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+	        PreparedStatement statement = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS);
+	        statement.setString(1, offertaScambio.getStatoOfferta());
+	        statement.setNull(2, java.sql.Types.DOUBLE);
+	        statement.setString(3, "Scambio");
+	        statement.setString(4, offertaScambio.getStudente().getMatricola());
+	        statement.setInt(5, offertaScambio.getAnnuncio().getIdAnnuncio());
+	        statement.setString(6, "Assente");
+	        statement.setTimestamp(7, offertaScambio.getDataPubblicazione());
+
+	        int rowsInserted = statement.executeUpdate();
+	        if (rowsInserted > 0) {
 	            ResultSet generatedKeys = statement.getGeneratedKeys();
 	            if (generatedKeys.next()) {
 	                int idOfferta = generatedKeys.getInt(1);
 
-	                OffertaScambio offertaScambio = (OffertaScambio) offerta;
 	                for (Oggetto ogg : offertaScambio.getOggettiOfferti()) {
 	                    String insertOggetto = "INSERT INTO OGGETTIOFFERTI (idOfferta, immagineoggetto, categoria, descrizione, matstudente) VALUES (?, ?, ?, ?, ?)";
 	                    PreparedStatement stmtOggetto = conn.prepareStatement(insertOggetto);
@@ -82,11 +125,8 @@ public class OffertaDAO {
 
 	                return idOfferta;
 	            }
-	            return -1;
 	        }
 
-	        if(rowsInserted > 0) return 0;
-	        
 	        return -1;
 
 	    } catch (SQLException e) {

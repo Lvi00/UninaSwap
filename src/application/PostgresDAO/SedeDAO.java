@@ -1,5 +1,5 @@
 
-package application.DAO;
+package application.PostgresDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

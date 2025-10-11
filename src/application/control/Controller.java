@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import application.DAO.AnnuncioDAO;
-import application.DAO.OffertaDAO;
-import application.DAO.OggettiOffertiDAO;
-import application.DAO.OggettoDAO;
-import application.DAO.SedeDAO;
-import application.DAO.StudenteDAO;
+import application.PostgresDAO.AnnuncioDAO;
+import application.PostgresDAO.OffertaDAO;
+import application.PostgresDAO.OggettiOffertiDAO;
+import application.PostgresDAO.OggettoDAO;
+import application.PostgresDAO.SedeDAO;
+import application.PostgresDAO.StudenteDAO;
 import application.entity.Annuncio;
 import application.entity.Offerta;
 import application.entity.OffertaRegalo;
@@ -353,7 +353,7 @@ public class Controller {
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
 		OffertaVendita offertaVendita = new OffertaVendita(dataCorrente, this.studente, annuncio, annuncio.getPrezzo());
 		
-		int result = new OffertaDAO().SaveOfferta(offertaVendita);
+		int result = new OffertaDAO().SaveOffertaVendita(offertaVendita);
 		
         if(result == 0) controller.SvuotaOfferteInviate();
         
@@ -366,7 +366,7 @@ public class Controller {
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
 		OffertaRegalo offertaRegalo = new OffertaRegalo(dataCorrente, this.studente, annuncio, motivazione);
 		
-		int result = new OffertaDAO().SaveOfferta(offertaRegalo);
+		int result = new OffertaDAO().SaveOffertaRegalo(offertaRegalo);
 		
 		if(result == 0) SvuotaOfferteInviate();
 		
@@ -378,7 +378,7 @@ public class Controller {
         
 		OffertaScambio offertaScambio = new OffertaScambio(dataCorrente, this.studente, annuncio);
 		
-		int idOffertaInserita = new OffertaDAO().SaveOfferta(offertaScambio);
+		int idOffertaInserita = new OffertaDAO().SaveOffertaScambio(offertaScambio);
         
         if(idOffertaInserita == -1) {
         	return -1;
@@ -442,7 +442,7 @@ public class Controller {
 
 	    OffertaVendita offerta = new OffertaVendita(dataCorrente, this.studente, annuncio, prezzo);
 
-	    int risultato = new OffertaDAO().SaveOfferta(offerta);
+	    int risultato = new OffertaDAO().SaveOffertaVendita(offerta);
 	    
 	    if(risultato == 0) SvuotaOfferteInviate();
 
