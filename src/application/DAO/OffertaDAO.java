@@ -364,7 +364,6 @@ public class OffertaDAO implements InterfaceOffertaDAO {
 				String chiudiAnnuncio = "UPDATE ANNUNCIO SET statoannuncio = false WHERE idannuncio = ?";
 				PreparedStatement stmtChiudiAnnuncio = conn.prepareStatement(chiudiAnnuncio);
 				int idAnnuncio = offerta.getAnnuncio().getIdAnnuncio();
-				System.out.println("ID Annuncio da chiudere: " + idAnnuncio);
 				stmtChiudiAnnuncio.setInt(1, idAnnuncio);
 				stmtChiudiAnnuncio.executeUpdate();
 				

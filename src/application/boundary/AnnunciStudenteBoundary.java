@@ -291,9 +291,7 @@ public class AnnunciStudenteBoundary {
         infoBox.setAlignment(Pos.CENTER_LEFT);
 
         ImageView iconInfo = new ImageView();
-        try {
-        	System.out.println(controller.getImmagineProfilo(controller.getStudenteOfferta(o)));
-        	
+        try {        	
             File file = new File(controller.getImmagineProfilo(controller.getStudenteOfferta(o)));
             Image img;
             
