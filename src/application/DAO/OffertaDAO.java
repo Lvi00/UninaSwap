@@ -207,10 +207,12 @@ public class OffertaDAO {
             PreparedStatement selectStmt = conn.prepareStatement(query);
             selectStmt.setInt(1, annuncio.getIdAnnuncio());
             ResultSet rs = selectStmt.executeQuery();
+            
+            Offerta offerta = null;
 
             while (rs.next()) {
+            	
                 String tipologia = rs.getString("tipologia");
-                Offerta offerta = null;
                 
                 Studente studente = new Studente(
 					rs.getString("matricola"),
@@ -219,6 +221,8 @@ public class OffertaDAO {
 					rs.getString("cognome"),
 					rs.getString("username")
         		);
+                
+                studente.setImmagine(rs.getString("immagineprofilo"));
 
                 switch (tipologia) {
                     case "Vendita":
@@ -244,13 +248,48 @@ public class OffertaDAO {
                     break;
 
                     case "Scambio":
-                        offerta = new OffertaScambio(
+                    	offerta = new OffertaScambio(
                             rs.getTimestamp("dataPubblicazione"),
                             studente,
                             annuncio
                         );
+                    	
+                    	offerta.setIdOfferta(rs.getInt("idofferta"));
+                    	
+                    	System.out.println("Recupero oggetti offerti per l'offerta di scambio (ID Offerta: " + offerta.getIdOfferta() + ")");
+
+                        ArrayList<Oggetto> oggettiOfferti = new ArrayList<Oggetto>();
+                        String queryOggetti = "SELECT * FROM OGGETTIOFFERTI AS OO INNER JOIN OGGETTO AS O ON OO.idOggetto = O.idOggetto WHERE OO.idOfferta = ?";
                         
-                        offerta.setIdOfferta(rs.getInt("idofferta"));
+                        PreparedStatement stmtOggetti = conn.prepareStatement(queryOggetti);
+                        stmtOggetti.setInt(1, offerta.getIdOfferta());
+                        
+                        ResultSet rsOggetti = stmtOggetti.executeQuery();
+                        
+                        while (rsOggetti.next()) {
+                        	Oggetto oggetto = new Oggetto(
+								rsOggetti.getString("immagineoggetto"),
+								rsOggetti.getString("categoria"),
+								rsOggetti.getString("descrizione"),
+								studente
+							);
+                        	
+                        	oggetto.setIdOggetto(rsOggetti.getInt("idOggetto"));
+                        			
+                			oggettiOfferti.add(oggetto);
+                        }
+                        
+                        rsOggetti.close();
+                        stmtOggetti.close();
+
+                        OffertaScambio offertaScambio = (OffertaScambio) offerta;
+                        offertaScambio.setOggettiOfferti(oggettiOfferti);
+                        
+                        System.out.println("Oggetti offerti per l'offerta di scambio (ID Offerta: " + offerta.getIdOfferta() + "):");
+                        
+                        for (Oggetto ogg : oggettiOfferti) {
+							System.out.println("Oggetto offerto: " + ogg.getDescrizione());
+						}
                     break;
 
                     default:
@@ -356,12 +395,12 @@ public class OffertaDAO {
     }
     
     public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta offerta) {
-        ArrayList<Oggetto> oggetti = new ArrayList<Oggetto>();
-        
+    	ArrayList<Oggetto> oggetti = null;
+    	
         try {
             Connection conn = ConnessioneDB.getConnection();
             String queryOggettiOfferti = "SELECT * FROM OGGETTIOFFERTI AS OO "
-    		+ "NATURAL JOIN OGGETTO AS OG NATURAL JOIN OFFERTA AS OF INNER JOIN STUDENTE AS S ON O.matstudente = S.matricola "
+    		+ "INNER JOIN OGGETTO AS OG ON OO.idOggetto = OG.idOggetto INNER JOIN OFFERTA AS OF ON OO.idOfferta = OF.idOfferta INNER JOIN STUDENTE AS S ON OF.matstudente = S.matricola "
     		+ "WHERE OO.idOfferta = ? AND OF.idannuncio = ?";
             
             PreparedStatement stmtOggettiOfferti = conn.prepareStatement(queryOggettiOfferti);
@@ -369,6 +408,9 @@ public class OffertaDAO {
             stmtOggettiOfferti.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
 
             ResultSet rsOggettiOfferti = stmtOggettiOfferti.executeQuery();
+            
+            oggetti = new ArrayList<Oggetto>();
+            
             while (rsOggettiOfferti.next()) {
                 Studente studente = new Studente(
             		rsOggettiOfferti.getString("matricola"),
@@ -384,6 +426,9 @@ public class OffertaDAO {
         			rsOggettiOfferti.getString("descrizione"),
 					studente
 				);
+            	
+            	oggetto.setIdOggetto(rsOggettiOfferti.getInt("idOggetto"));
+            	
                 oggetti.add(oggetto);
             }
 
@@ -397,12 +442,16 @@ public class OffertaDAO {
     }
     
     public ArrayList<Offerta> getOffertebyMatricola(Studente studente) {	
-        ArrayList<Offerta> offerte = new ArrayList<Offerta>();
+        ArrayList<Offerta> offerte = new ArrayList<>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM OFFERTA AS O INNER JOIN ANNUNCIO AS A ON O.idannuncio = A.idannuncio "
-    		+ "INNER JOIN OGGETTO AS OG ON A.idoggetto = OG.idoggetto WHERE O.matstudente = ? ORDER BY O.dataPubblicazione";
+            String query = "SELECT * FROM OFFERTA AS O " +
+           "INNER JOIN ANNUNCIO AS A ON O.idannuncio = A.idannuncio " +
+           "INNER JOIN OGGETTO AS OG ON A.idoggetto = OG.idoggetto " +
+           "INNER JOIN SEDE AS S ON A.idSede = S.idSede " +
+           "INNER JOIN STUDENTE AS ST ON O.matstudente = ST.matricola " +
+           "WHERE O.matstudente = ? ORDER BY O.dataPubblicazione";
             
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, studente.getMatricola());
@@ -411,79 +460,75 @@ public class OffertaDAO {
 
             while (rs.next()) {
                 String tipologia = rs.getString("tipologia");
-                
+
                 Sede sede = new Sede(
-					rs.getString("ptop"),
-					rs.getString("descrizione"),
-					rs.getString("civico"),
-					rs.getString("cap")
-				);
-                
-            	sede.setIdSede(rs.getInt("idSede"));
-            	
-            	Oggetto oggetto = new Oggetto(
-        			rs.getString("immagineoggetto"),
-        			rs.getString("categoria"),
-        			rs.getString("descrizione"),
-					studente
-				);
-            	
-            	Annuncio annuncio = new Annuncio(
-					rs.getString("titoloannuncio"),
-					rs.getBoolean("statoannuncio"),
-					rs.getString("fasciaOrariaInizio"),
-					rs.getString("fasciaOrariaFine"),
-					rs.getDouble("prezzo"),
-					rs.getString("tipologia"),
-					rs.getString("descrizioneAnnuncio"),
-					oggetto,
-					sede,
-					rs.getString("giorni"),
-					rs.getTimestamp("dataPubblicazione")
-				);
-            	
-            	annuncio.setIdAnnuncio(rs.getInt("idannuncio"));
-                	
+                    rs.getString("ptop"),
+                    rs.getString("descrizione"),
+                    rs.getString("civico"),
+                    rs.getString("cap")
+                );
+                sede.setIdSede(rs.getInt("idSede"));
+
+                Oggetto oggettoAnnuncio = new Oggetto(
+                    rs.getString("immagineoggetto"),
+                    rs.getString("categoria"),
+                    rs.getString("descrizione"),
+                    studente
+                );
+
+                Annuncio annuncio = new Annuncio(
+                    rs.getString("titoloannuncio"),
+                    rs.getBoolean("statoannuncio"),
+                    rs.getString("fasciaOrariaInizio"),
+                    rs.getString("fasciaOrariaFine"),
+                    rs.getDouble("prezzo"),
+                    rs.getString("tipologia"),
+                    rs.getString("descrizioneAnnuncio"),
+                    oggettoAnnuncio,
+                    sede,
+                    rs.getString("giorni"),
+                    rs.getTimestamp("dataPubblicazione")
+                );
+                annuncio.setIdAnnuncio(rs.getInt("idannuncio"));
+
                 Offerta offerta = null;
-                
-                Studente s = new Studente(
-            		rs.getString("matricola"),
-            		rs.getString("email"),
-            		rs.getString("nome"),
-            		rs.getString("cognome"),
-            		rs.getString("username")
-        		);
 
                 switch (tipologia) {
                     case "Vendita":
                         offerta = new OffertaVendita(
                             rs.getTimestamp("dataPubblicazione"),
-                            s,
+                            studente,
                             annuncio,
                             rs.getDouble("prezzoofferta")
                         );
-                    break;
+                        break;
 
                     case "Regalo":
                         offerta = new OffertaRegalo(
                             rs.getTimestamp("dataPubblicazione"),
-                            s,
+                            studente,
                             annuncio,
                             rs.getString("motivazione")
                         );
-                    break;
+                        break;
 
                     case "Scambio":
-                        offerta = new OffertaScambio(
+                        OffertaScambio offertaScambio = new OffertaScambio(
                             rs.getTimestamp("dataPubblicazione"),
-                            s,
+                            studente,
                             annuncio
                         );
-                    break;
+                        offertaScambio.setIdOfferta(rs.getInt("idOfferta"));
+                        
+                        ArrayList<Oggetto> oggettiOfferti = getOggettiOffertiByOfferta(offertaScambio);
+                        offertaScambio.setOggettiOfferti(oggettiOfferti);
+                        
+                        offerta = offertaScambio;
+                        break;
 
                     default:
                         System.out.println("Tipologia non riconosciuta: " + tipologia);
-                    break;
+                    continue;
                 }
 
                 if (offerta != null) {

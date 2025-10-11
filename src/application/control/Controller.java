@@ -386,6 +386,8 @@ public class Controller {
         
         if(!listaOggettiOfferti.isEmpty()) {
         	
+    		offertaScambio.setOggettiOfferti(listaOggettiOfferti);
+        	
             OggettoDAO oggettoDao = new OggettoDAO();
             OggettiOffertiDAO oggettiOffertiDao = new OggettiOffertiDAO();
     		
@@ -588,16 +590,9 @@ public class Controller {
 	public ArrayList<Offerta> getOffertebyAnnuncio(Annuncio annuncio) {
 	    ArrayList<Offerta> offerte = new OffertaDAO().getOffertebyAnnuncio(annuncio);
 
-	    boolean verificaOfferteScambio = true;
-
 	    for (Offerta offerta : offerte) {
-	        if (!(offerta instanceof OffertaScambio)) {
-	            verificaOfferteScambio = false;
-	        }
-	    }
-
-	    if (verificaOfferteScambio) {
-	        for (Offerta offerta : offerte) {
+	        if (offerta instanceof OffertaScambio) {
+	            System.out.println("Chiamo getOggettiOffertiByOfferta per offerta ID " + offerta.getIdOfferta());
 	            setOggettiOfferti((OffertaScambio) offerta, getOggettiOffertiByOfferta(offerta));
 	        }
 	    }
@@ -628,7 +623,6 @@ public class Controller {
 	public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta offerta) {
 		if(offerta instanceof OffertaScambio) {
 			OffertaScambio offertaScambio = (OffertaScambio) offerta;
-			//modificato
 			return new OffertaDAO().getOggettiOffertiByOfferta(offertaScambio);
 		}
 		
@@ -638,17 +632,10 @@ public class Controller {
 	public ArrayList<Offerta> getOffertebyMatricola(Studente studente) {
 	    ArrayList<Offerta> offerte = new OffertaDAO().getOffertebyMatricola(studente);
 
-	    boolean verificaOfferteScambio = true;
-
 	    for (Offerta offerta : offerte) {
-	        if (!(offerta instanceof OffertaScambio)) {
-	            verificaOfferteScambio = false;
-	        }
-	    }
-
-	    if (verificaOfferteScambio) {
-	        for (Offerta offerta : offerte) {
-	            setOggettiOfferti((OffertaScambio) offerta, getOggettiOffertiByOfferta(offerta));
+	        if (offerta instanceof OffertaScambio) {
+	            ArrayList<Oggetto> oggettiOfferti = getOggettiOffertiByOfferta(offerta);
+	            setOggettiOfferti((OffertaScambio) offerta, oggettiOfferti);
 	        }
 	    }
 

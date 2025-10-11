@@ -103,10 +103,11 @@ public class PopupEditOffertaBoundary {
             
             ObservableList<Oggetto> listaOggettiOfferti = FXCollections.observableArrayList(controller.getOggettiOfferti(offertaScambio));
             
-            controller.setOggettiOfferti(offertaScambio, new ArrayList<>(listaOggettiOfferti));
             gridOggettiOfferti.getChildren().clear();
             gridOggettiOfferti.getColumnConstraints().clear();
 
+            System.out.println("Numero oggetti offerti: " + listaOggettiOfferti.size());
+            
             if (!listaOggettiOfferti.isEmpty()) {
                 labelNessunOggettoOfferto.setVisible(false);
                 int numeroCol = listaOggettiOfferti.size();

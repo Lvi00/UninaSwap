@@ -233,7 +233,7 @@ public class AnnunciStudenteBoundary {
 
         ObservableList<Offerta> offerteRicevute = FXCollections.observableArrayList(controller.getOffertebyAnnuncio(annuncio));
 
-        if (offerteRicevute.isEmpty()) {
+        if (offerteRicevute == null || offerteRicevute.isEmpty()) {
             labelOfferteAnnuncio.setText("Non ci sono offerte per l'annuncio: " + annuncio.getTitoloAnnuncio());
         } else {
             labelOfferteAnnuncio.setText("Queste sono le offerte dell'annuncio: " + annuncio.getTitoloAnnuncio());
@@ -292,6 +292,8 @@ public class AnnunciStudenteBoundary {
 
         ImageView iconInfo = new ImageView();
         try {
+        	System.out.println(controller.getImmagineProfilo(controller.getStudenteOfferta(o)));
+        	
             File file = new File(controller.getImmagineProfilo(controller.getStudenteOfferta(o)));
             Image img;
             
