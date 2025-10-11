@@ -1,6 +1,7 @@
 package application.entity;
 
 public class Sede {
+	private int idSede;
 	private String particellaToponomastica;
 	private String descrizioneIndirizzo;
 	private String civico;
@@ -11,6 +12,18 @@ public class Sede {
 		this.descrizioneIndirizzo = descrizioneIndirizzo;
 		this.civico = civico;
 		this.cap = cap;
+	}
+	
+	public int getIdSede() {
+		return idSede;
+	}
+	
+	public void setIdSede(Integer idSede) {
+		this.idSede = idSede;
+	}
+	
+	public void setIdSede(int idSede) {
+		this.idSede = idSede;
 	}
 	
 	public String getParticellaToponomastica() {

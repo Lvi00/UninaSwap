@@ -5,23 +5,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import application.control.Controller;
 import application.entity.Annuncio;
+import application.entity.Oggetto;
+import application.entity.Sede;
+import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
 public class AnnuncioDAO {
-	
-	private Controller controller = Controller.getController();
-
-	public void SaveAnnuncio(Annuncio annuncio) {
-		try {
-			String matStudente = controller.getMatricola(controller.getStudente());
-			int idoggetto = controller.getIdByOggetto(annuncio.getOggetto());
-			int idsede = controller.getIdBySede(annuncio.getSede());
-			
+	public void SaveAnnuncio(Annuncio annuncio, Oggetto oggetto, Sede sede) {
+		try {			
 		    Connection conn = ConnessioneDB.getConnection();
-		    String queryCheck = "SELECT * FROM ANNUNCIO WHERE titoloannuncio = ? AND statoannuncio = ? AND fasciaorariainizio = ? AND fasciaorariafine = ? "
-		    		+ "AND prezzo = ? AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? AND idoggetto = ? AND idsede = ? AND giorni = ? AND dataPubblicazione = ?";
+		    
+		    String queryCheck = "SELECT * FROM ANNUNCIO AS A NATURAL JOIN SEDE AS S NATURAL JOIN OGGETTO AS O WHERE A.titoloannuncio = ? AND A.statoannuncio = ? AND A.fasciaorariainizio = ? AND A.fasciaorariafine = ? "
+    		+ "AND A.prezzo = ? AND A.tipologia = ? AND A.descrizioneannuncio = ? AND O.matstudente = ? AND O.idoggetto = ? AND S.idsede = ? AND A.giorni = ? AND A.dataPubblicazione = ?";
+		    
 		    PreparedStatement checkStatement = conn.prepareStatement(queryCheck);
 		    checkStatement.setString(1, annuncio.getTitoloAnnuncio());
 		    checkStatement.setBoolean(2, annuncio.isStatoAnnuncio());
@@ -30,9 +27,9 @@ public class AnnuncioDAO {
 		    checkStatement.setDouble(5, annuncio.getPrezzo());
 		    checkStatement.setString(6, annuncio.getTipologia());
 		    checkStatement.setString(7, annuncio.getDescrizioneAnnuncio());
-		    checkStatement.setString(8, matStudente);
-		    checkStatement.setInt(9, idoggetto);
-		    checkStatement.setInt(10, idsede);		    
+		    checkStatement.setString(8, oggetto.getStudente().getMatricola());
+		    checkStatement.setInt(9, oggetto.getIdOggetto());
+		    checkStatement.setInt(10, sede.getIdSede());		    
 		    checkStatement.setString(11, annuncio.getGiorni());
 		    checkStatement.setTimestamp(12, annuncio.getDataPubblicazione());
 		    
@@ -49,18 +46,18 @@ public class AnnuncioDAO {
                         "prezzo, tipologia, descrizioneannuncio, matstudente, idoggetto, idsede, giorni, dataPubblicazione) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	            PreparedStatement statement = conn.prepareStatement(insert);
-	            statement.setString(1, controller.getTitoloAnnuncio(annuncio));
-	            statement.setBoolean(2, controller.getStatoAnnuncio(annuncio));
-	            statement.setString(3, controller.getFasciaInizioAnnuncio(annuncio));
-	            statement.setString(4, controller.getFasciaFineAnnuncio(annuncio));
-	            statement.setDouble(5, controller.getPrezzoAnnuncio(annuncio));
-	            statement.setString(6, controller.getTipologiaAnnuncio(annuncio));
-	            statement.setString(7, controller.getDescrizioneAnnuncio(annuncio));
-	            statement.setString(8, matStudente);
-	            statement.setInt(9, idoggetto);
-	            statement.setInt(10, idsede);		    
-	            statement.setString(11, controller.getGiorniAnnuncio(annuncio));
-	            statement.setTimestamp(12, controller.getDataPubblicazioneAnnuncio(annuncio));
+	            statement.setString(1, annuncio.getTitoloAnnuncio());
+	            statement.setBoolean(2, annuncio.isStatoAnnuncio());
+	            statement.setString(3, annuncio.getFasciaOrariaInizio());
+	            statement.setString(4, annuncio.getFasciaOrariaFine());
+	            statement.setDouble(5, annuncio.getPrezzo());
+	            statement.setString(6, annuncio.getTipologia());
+	            statement.setString(7, annuncio.getDescrizioneAnnuncio());
+	            statement.setString(8, oggetto.getStudente().getMatricola());
+	            statement.setInt(9, oggetto.getIdOggetto());
+	            statement.setInt(10, sede.getIdSede());		    
+	            statement.setString(11, annuncio.getGiorni());
+	            statement.setTimestamp(12, annuncio.getDataPubblicazione());
 
 	            int rowsInserted = statement.executeUpdate();
 	            statement.close();
@@ -75,30 +72,52 @@ public class AnnuncioDAO {
 		}
 	}
 	
-    public ArrayList<Annuncio> getAnnunci(String matricola) {
+    public ArrayList<Annuncio> getAnnunci(Studente studente) {
         ArrayList<Annuncio> annunci = new ArrayList<Annuncio>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM ANNUNCIO WHERE matstudente <> ? AND statoannuncio = ? LIMIT 100";
+            String query = "SELECT * FROM ANNUNCIO AS A NATURAL JOIN SEDE AS S NATURAL JOIN OGGETTO AS O WHERE O.matstudente <> ? AND A.statoannuncio = ? LIMIT 100";
             PreparedStatement statement = conn.prepareStatement(query);
-            statement.setString(1, matricola);
+            statement.setString(1, studente.getMatricola());
             statement.setBoolean(2, true);
             ResultSet rs = statement.executeQuery();
+            
             while (rs.next()) {
-                annunci.add(new Annuncio(
-                    rs.getString("titoloannuncio"),
-                    rs.getBoolean("statoannuncio"),
-                    rs.getString("fasciaOrariaInizio"),
-                    rs.getString("fasciaOrariaFine"),
-                    rs.getDouble("prezzo"),
-                    rs.getString("tipologia"),
-                    rs.getString("descrizioneAnnuncio"),
-                    controller.getOggettoById(rs.getInt("idoggetto")),
-                    controller.getSedeById(rs.getInt("idSede")),
-                    rs.getString("giorni"),
-                    rs.getTimestamp("dataPubblicazione")
-                ));
+            	Oggetto oggetto = new Oggetto(
+					rs.getString("immagineoggetto"),
+					rs.getString("categoria"),
+					rs.getString("descrizione"),
+					studente
+    			);
+            	
+            	oggetto.setIdOggetto(rs.getInt("idOggetto"));
+            	
+            	Sede sede = new Sede(
+					rs.getString("ptop"),
+					rs.getString("descrizione"),
+					rs.getString("civico"),
+					rs.getString("cap")
+				);
+            	sede.setIdSede(rs.getInt("idSede"));
+            	
+            	Annuncio annuncio = new Annuncio(
+					rs.getString("titoloannuncio"),
+					rs.getBoolean("statoannuncio"),
+					rs.getString("fasciaOrariaInizio"),
+					rs.getString("fasciaOrariaFine"),
+					rs.getDouble("prezzo"),
+					rs.getString("tipologia"),
+					rs.getString("descrizioneAnnuncio"),
+					oggetto,
+					sede,
+					rs.getString("giorni"),
+					rs.getTimestamp("dataPubblicazione")
+				);
+            	
+            	annuncio.setIdAnnuncio(rs.getInt("idannuncio"));
+            	
+            	annunci.add(annuncio);
             }
 
             rs.close();
@@ -111,29 +130,51 @@ public class AnnuncioDAO {
         return annunci;
     }
     
-    public ArrayList<Annuncio> getAnnunciStudente(String matricola) {
+    public ArrayList<Annuncio> getAnnunciStudente(Studente studente) {
         ArrayList<Annuncio> annunci = new ArrayList<Annuncio>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM ANNUNCIO WHERE matstudente = ? ORDER BY statoannuncio DESC LIMIT 100";
+            String query = "SELECT * FROM ANNUNCIO AS A NATURAL JOIN SEDE AS S NATURAL JOIN OGGETTO AS O WHERE O.matstudente = ? ORDER BY A.statoannuncio DESC LIMIT 100";
             PreparedStatement statement = conn.prepareStatement(query);
-            statement.setString(1, matricola);
+            statement.setString(1, studente.getMatricola());
             ResultSet rs = statement.executeQuery();
+            
             while (rs.next()) {
-                annunci.add(new Annuncio(
-                    rs.getString("titoloannuncio"),
-                    rs.getBoolean("statoannuncio"),
-                    rs.getString("fasciaOrariaInizio"),
-                    rs.getString("fasciaOrariaFine"),
-                    rs.getDouble("prezzo"),
-                    rs.getString("tipologia"),
-                    rs.getString("descrizioneAnnuncio"),
-                    controller.getOggettoById(rs.getInt("idoggetto")),
-                    controller.getSedeById(rs.getInt("idSede")),
-                    rs.getString("giorni"),
-                    rs.getTimestamp("dataPubblicazione")
-                ));
+            	Oggetto oggetto = new Oggetto(
+					rs.getString("immagineoggetto"),
+					rs.getString("categoria"),
+					rs.getString("descrizione"),
+					studente
+    			);
+            	
+            	oggetto.setIdOggetto(rs.getInt("idOggetto"));
+            	
+            	Sede sede = new Sede(
+					rs.getString("ptop"),
+					rs.getString("descrizione"),
+					rs.getString("civico"),
+					rs.getString("cap")
+				);
+            	sede.setIdSede(rs.getInt("idSede"));
+            	
+            	Annuncio annuncio = new Annuncio(
+					rs.getString("titoloannuncio"),
+					rs.getBoolean("statoannuncio"),
+					rs.getString("fasciaOrariaInizio"),
+					rs.getString("fasciaOrariaFine"),
+					rs.getDouble("prezzo"),
+					rs.getString("tipologia"),
+					rs.getString("descrizioneAnnuncio"),
+					oggetto,
+					sede,
+					rs.getString("giorni"),
+					rs.getTimestamp("dataPubblicazione")
+				);
+            	
+            	annuncio.setIdAnnuncio(rs.getInt("idannuncio"));
+            	
+            	annunci.add(annuncio);
             }
 
             rs.close();
@@ -146,12 +187,12 @@ public class AnnuncioDAO {
         return annunci;
     }
     
-    public ArrayList<Annuncio> getAnnunciByFiltri(String matricola, String keyword, String categoria, String tipologia) {
+    public ArrayList<Annuncio> getAnnunciByFiltri(Studente studente, String keyword, String categoria, String tipologia) {
         ArrayList<Annuncio> annunci = new ArrayList<Annuncio>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query1 = "SELECT * FROM ANNUNCIO NATURAL JOIN OGGETTO WHERE statoannuncio = ? AND matstudente <> ? ";
+            String query1 = "SELECT * FROM ANNUNCIO AS A NATURAL JOIN SEDE AS S NATURAL JOIN OGGETTO AS O WHERE A.statoannuncio = ? AND O.matstudente <> ? ";
             String query2 = "";
             String query3 = "";
             String query4 = "";
@@ -171,12 +212,12 @@ public class AnnuncioDAO {
             PreparedStatement statement = conn.prepareStatement(query);
 
             int index = 1;
-            //index++ ritorna prima il valore corrente, poi incrementa la variabile.
+            
             statement.setBoolean(index++, true);
-            statement.setString(index++, matricola);
+            statement.setString(index++, studente.getMatricola());
 
             if (!query2.isEmpty()) {
-                statement.setString(index++, keyword + "%"); // LIKE con wildcard
+                statement.setString(index++, keyword + "%");
             }
             if (!query3.isEmpty()) {
                 statement.setString(index++, categoria);
@@ -186,20 +227,42 @@ public class AnnuncioDAO {
             }
 
             ResultSet rs = statement.executeQuery();
+            
             while (rs.next()) {
-                annunci.add(new Annuncio(
-                    rs.getString("titoloannuncio"),
-                    rs.getBoolean("statoannuncio"),
-                    rs.getString("fasciaOrariaInizio"),
-                    rs.getString("fasciaOrariaFine"),
-                    rs.getDouble("prezzo"),
-                    rs.getString("tipologia"),
-                    rs.getString("descrizioneAnnuncio"),
-                    controller.getOggettoById(rs.getInt("idoggetto")),
-                    controller.getSedeById(rs.getInt("idSede")),
-                    rs.getString("giorni"),
-                    rs.getTimestamp("dataPubblicazione")
-                ));
+            	Oggetto oggetto = new Oggetto(
+					rs.getString("immagineoggetto"),
+					rs.getString("categoria"),
+					rs.getString("descrizione"),
+					studente
+    			);
+            	
+            	oggetto.setIdOggetto(rs.getInt("idOggetto"));
+            	
+            	Sede sede = new Sede(
+					rs.getString("ptop"),
+					rs.getString("descrizione"),
+					rs.getString("civico"),
+					rs.getString("cap")
+				);
+            	sede.setIdSede(rs.getInt("idSede"));
+            	
+            	Annuncio annuncio = new Annuncio(
+					rs.getString("titoloannuncio"),
+					rs.getBoolean("statoannuncio"),
+					rs.getString("fasciaOrariaInizio"),
+					rs.getString("fasciaOrariaFine"),
+					rs.getDouble("prezzo"),
+					rs.getString("tipologia"),
+					rs.getString("descrizioneAnnuncio"),
+					oggetto,
+					sede,
+					rs.getString("giorni"),
+					rs.getTimestamp("dataPubblicazione")
+				);
+            	
+            	annuncio.setIdAnnuncio(rs.getInt("idannuncio"));
+            	
+            	annunci.add(annuncio);
             }
 
             rs.close();
@@ -213,28 +276,13 @@ public class AnnuncioDAO {
    
    public void cambiaStatoAnnuncio(Annuncio annuncio) {
 	    try {
-	        String matStudente = annuncio.getOggetto().getStudente().getMatricola();
-	        int idOggetto = controller.getIdByOggetto(annuncio.getOggetto());
-	        int idSede = controller.getIdBySede(annuncio.getSede());
-
 	        Connection conn = ConnessioneDB.getConnection();
-		    String query = "UPDATE ANNUNCIO SET statoannuncio = false WHERE titoloannuncio = ? AND statoannuncio = ? AND fasciaorariainizio = ? AND fasciaorariafine = ? "
-		    		+ "AND prezzo = ? AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? AND idoggetto = ? AND idsede = ? AND giorni = ? AND dataPubblicazione = ?";
+		    String query = "UPDATE ANNUNCIO SET statoannuncio = false WHERE idAnnuncio = ?";
 	        PreparedStatement ps = conn.prepareStatement(query);
-	        ps.setString(1, controller.getTitoloAnnuncio(annuncio));
-	        ps.setBoolean(2, controller.getStatoAnnuncio(annuncio));
-	        ps.setString(3, controller.getFasciaInizioAnnuncio(annuncio));
-	        ps.setString(4, controller.getFasciaFineAnnuncio(annuncio));
-	        ps.setDouble(5, controller.getPrezzoAnnuncio(annuncio));
-	        ps.setString(6, controller.getTipologiaAnnuncio(annuncio));
-	        ps.setString(7, controller.getDescrizioneAnnuncio(annuncio));
-	        ps.setString(8, matStudente);
-	        ps.setInt(9, idOggetto);
-	        ps.setInt(10, idSede);
-	        ps.setString(11, controller.getGiorniAnnuncio(annuncio));
-	        ps.setTimestamp(12, controller.getDataPubblicazioneAnnuncio(annuncio));
+	        ps.setInt(1, annuncio.getIdAnnuncio());
 
             int updatedRows = ps.executeUpdate();
+            
             if (updatedRows > 0) {
                 System.out.println("Annuncio aggiornato con successo.");
             } else {
@@ -246,89 +294,14 @@ public class AnnuncioDAO {
 	    }
 	}
    
-   public int getIdByAnnuncio(Annuncio annuncio) {
-	   int id = 0;
-	   
-	   try {
-		    String matStudente = annuncio.getOggetto().getStudente().getMatricola();
-		    int idOggetto = controller.getIdByOggetto(annuncio.getOggetto());
-		    int idSede = controller.getIdBySede(annuncio.getSede());
-	
-		    String query = "SELECT idannuncio FROM ANNUNCIO WHERE titoloannuncio = ? AND statoannuncio = ? "
-		            + "AND fasciaorariainizio = ? AND fasciaorariafine = ? AND prezzo = ? "
-		            + "AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? "
-		            + "AND idoggetto = ? AND idsede = ? AND giorni = ? AND dataPubblicazione = ?";
-	
-	    	Connection conn = ConnessioneDB.getConnection();
-	        PreparedStatement statement = conn.prepareStatement(query);
-	
-	        statement.setString(1, controller.getTitoloAnnuncio(annuncio));
-	        statement.setBoolean(2, controller.getStatoAnnuncio(annuncio));
-	        statement.setString(3, controller.getFasciaInizioAnnuncio(annuncio));
-	        statement.setString(4, controller.getFasciaFineAnnuncio(annuncio));
-	        statement.setDouble(5, controller.getPrezzoAnnuncio(annuncio));
-	        statement.setString(6, controller.getTipologiaAnnuncio(annuncio));
-	        statement.setString(7, controller.getDescrizioneAnnuncio(annuncio));
-	        statement.setString(8, matStudente);
-	        statement.setInt(9, idOggetto);
-	        statement.setInt(10, idSede);
-	        statement.setString(11, controller.getGiorniAnnuncio(annuncio));
-	        statement.setTimestamp(12, controller.getDataPubblicazioneAnnuncio(annuncio));
-	
-	        ResultSet rs = statement.executeQuery();
-	        if (rs.next()) {
-	            id = rs.getInt("idannuncio");
-	        }
-	    } catch (SQLException ex) {
-	        ex.printStackTrace();
-	    }
-
-	    return id;
-	}
-   
    public int rimuoviAnnuncio(Annuncio annuncio) {
 	    try {
-	        String matStudente = annuncio.getOggetto().getStudente().getMatricola();
-	        int idOggetto = controller.getIdByOggetto(annuncio.getOggetto());
-	        int idSede = controller.getIdBySede(annuncio.getSede());
-
-	        Connection conn = ConnessioneDB.getConnection();
-
-	        // Trova l'id dell'annuncio
-	        String queryCheck = "SELECT idannuncio FROM ANNUNCIO WHERE titoloannuncio = ? AND statoannuncio = ? AND fasciaorariainizio = ? AND fasciaorariafine = ? "
-	                + "AND prezzo = ? AND tipologia = ? AND descrizioneannuncio = ? AND matstudente = ? AND idoggetto = ? AND idsede = ? AND giorni = ? AND dataPubblicazione = ?";
-	        PreparedStatement checkStatement = conn.prepareStatement(queryCheck);
-	        checkStatement.setString(1, controller.getTitoloAnnuncio(annuncio));
-	        checkStatement.setBoolean(2, controller.getStatoAnnuncio(annuncio));
-	        checkStatement.setString(3, controller.getFasciaInizioAnnuncio(annuncio));
-	        checkStatement.setString(4, controller.getFasciaFineAnnuncio(annuncio));
-	        checkStatement.setDouble(5, controller.getPrezzoAnnuncio(annuncio));
-	        checkStatement.setString(6, controller.getTipologiaAnnuncio(annuncio));
-	        checkStatement.setString(7, controller.getDescrizioneAnnuncio(annuncio));
-	        checkStatement.setString(8, matStudente);
-	        checkStatement.setInt(9, idOggetto);
-	        checkStatement.setInt(10, idSede);
-	        checkStatement.setString(11, controller.getGiorniAnnuncio(annuncio));
-	        checkStatement.setTimestamp(12, controller.getDataPubblicazioneAnnuncio(annuncio));
-
-	        ResultSet resultSet = checkStatement.executeQuery();
-
-	        if (!resultSet.next()) {
-	            System.out.println("Errore: annuncio non trovato.");
-	            resultSet.close();
-	            checkStatement.close();
-	            return 1;
-	        }
-
-	        int idAnnuncio = resultSet.getInt("idannuncio");
-	        resultSet.close();
-	        checkStatement.close();
-	        
-	        controller.rimuoviOfferte(idAnnuncio);
+	    	Connection conn = ConnessioneDB.getConnection();
 	        	        	        	        
 	        String deleteAnnuncio = "DELETE FROM ANNUNCIO WHERE idAnnuncio = ?";
 	        PreparedStatement deleteAnnuncioStmt = conn.prepareStatement(deleteAnnuncio);
-	        deleteAnnuncioStmt.setInt(1, idAnnuncio);
+	        deleteAnnuncioStmt.setInt(1, annuncio.getIdAnnuncio());
+	        
 	        int deletedRows = deleteAnnuncioStmt.executeUpdate();
 	        deleteAnnuncioStmt.close();
 
@@ -336,8 +309,7 @@ public class AnnuncioDAO {
 	            System.out.println("Errore: eliminazione annuncio fallita.");
 	            return 1;
 	        }
-	        
-	        controller.rimuoviOggetto(idOggetto);
+
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -346,14 +318,31 @@ public class AnnuncioDAO {
 	    return 0;
 	}
    
-   public Annuncio getAnnuncioById(int idAnnuncio) {
+   public Annuncio getAnnuncioById(Studente studente, int idAnnuncio) {
 	   try {
 	        Connection conn = ConnessioneDB.getConnection();
-	        String query = "SELECT * FROM ANNUNCIO WHERE idannuncio = ?";
+	        String query = "SELECT * FROM ANNUNCIO AS A NATURAL JOIN SEDE AS S NATURAL JOIN OGGETTO AS O WHERE A.idannuncio = ?";
 	        PreparedStatement statement = conn.prepareStatement(query);
 	        statement.setInt(1, idAnnuncio);
 	        ResultSet rs = statement.executeQuery();
 	        if (rs.next()) {
+            	Oggetto oggetto = new Oggetto(
+					rs.getString("immagineoggetto"),
+					rs.getString("categoria"),
+					rs.getString("descrizione"),
+					studente
+    			);
+            	
+            	oggetto.setIdOggetto(rs.getInt("idOggetto"));
+            	
+        		Sede sede = new Sede(
+					rs.getString("ptop"),
+					rs.getString("descrizione"),
+					rs.getString("civico"),
+					rs.getString("cap")
+				);
+            	sede.setIdSede(rs.getInt("idSede"));
+	            	
 	            Annuncio annuncio = new Annuncio(
 	                rs.getString("titoloannuncio"),
 	                rs.getBoolean("statoannuncio"),
@@ -362,11 +351,13 @@ public class AnnuncioDAO {
 	                rs.getDouble("prezzo"),
 	                rs.getString("tipologia"),
 	                rs.getString("descrizioneAnnuncio"),
-	                controller.getOggettoById(rs.getInt("idoggetto")),
-	                controller.getSedeById(rs.getInt("idSede")),
+	                oggetto,
+	                sede,
 	                rs.getString("giorni"),
 	                rs.getTimestamp("dataPubblicazione")
 	            );
+	            
+	            annuncio.setIdAnnuncio(rs.getInt("idannuncio"));
 	            
 	            return annuncio;
 	        }

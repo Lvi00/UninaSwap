@@ -1,6 +1,7 @@
 package application.entity;
 
 public class Oggetto {
+	private int idOggetto;
     private String immagineOggetto;
     private String categoria;
     private String descrizione;
@@ -11,6 +12,14 @@ public class Oggetto {
         this.categoria = categoria;
         this.descrizione = descrizione;
         this.studente = studente;
+    }
+    
+    public int getIdOggetto() {
+		return idOggetto;
+	}
+    
+    public void setIdOggetto(int idOggetto) {
+    	this.idOggetto = idOggetto;
     }
     
     public String getImmagineOggetto() {

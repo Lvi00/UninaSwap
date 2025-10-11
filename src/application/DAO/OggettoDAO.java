@@ -12,7 +12,7 @@ public class OggettoDAO {
 	private Controller controller = Controller.getController();
 	
 	public int SaveOggetto(Oggetto oggetto) {
-	    int idOggettoInserito = 0;
+	    int idOggettoInserito = -1;
 
 	    try {
 	        Connection conn = ConnessioneDB.getConnection();
@@ -29,26 +29,23 @@ public class OggettoDAO {
 	        if (resultSet.next()) {
 	            System.out.println("Oggetto già esistente.");
 	            idOggettoInserito = resultSet.getInt("idoggetto");
-	        } else {
-	            String query = "INSERT INTO OGGETTO(immagineoggetto,categoria,descrizione,matstudente) VALUES (?,?,?,?)";
-	            PreparedStatement statement = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
-	            statement.setString(1, controller.getImmagineOggetto(oggetto));
-	            statement.setString(2, controller.getCategoriaOggetto(oggetto));
-	            statement.setString(3, controller.getDescrizioneOggetto(oggetto));
-	            statement.setString(4, matStudente);
-
-	            int rowsInserted = statement.executeUpdate();
-
-	            if (rowsInserted == 0) {
-	                System.out.println("Errore: inserimento fallito.");
-	            } else {
-	                ResultSet generatedKeys = statement.getGeneratedKeys();
-	                if (generatedKeys.next()) {
-	                    idOggettoInserito = generatedKeys.getInt(1);
-	                }
-	                generatedKeys.close();
-	            }
-	            statement.close();
+	        }
+	        
+	        else{
+	        	String queryInsert = "INSERT INTO OGGETTO (immagineoggetto, categoria, descrizione, matstudente) VALUES (?, ?, ?, ?) RETURNING idoggetto";
+	        	
+	            PreparedStatement insertStatement = conn.prepareStatement(queryInsert);
+	            insertStatement.setString(1, controller.getImmagineOggetto(oggetto));
+	            insertStatement.setString(2, controller.getCategoriaOggetto(oggetto));
+	            insertStatement.setString(3, controller.getDescrizioneOggetto(oggetto));
+	            insertStatement.setString(4, matStudente);
+	
+	            ResultSet rsInsert = insertStatement.executeQuery();
+	            if (rsInsert.next()) {
+	                idOggettoInserito = rsInsert.getInt("idoggetto");
+		        }
+	            
+            	insertStatement.close();
 	        }
 
 	        resultSet.close();

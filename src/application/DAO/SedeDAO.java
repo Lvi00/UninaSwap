@@ -14,7 +14,9 @@ public class SedeDAO {
 	
 	private Controller controller = Controller.getController();
 	
-	public void SaveSade(Sede sede) {
+	public int SaveSade(Sede sede) {
+		int idSedeInserita = -1;
+		
 		try {
 		    Connection conn = ConnessioneDB.getConnection();
 		    String queryCheck = "SELECT * FROM SEDE WHERE ptop = ? AND descrizione = ? AND civico = ? AND cap = ?";
@@ -27,85 +29,66 @@ public class SedeDAO {
 		    ResultSet resultSet = checkStatement.executeQuery();
 		    
 		    if (resultSet.next()) {
-		        System.out.println("Sede già esistente.");
+		    	System.out.println("Sede già esistente.");
+		        idSedeInserita = resultSet.getInt("idSede");
 		        resultSet.close();
 		        checkStatement.close();
 		    }
 		    
 		    else {
-			    String query = "INSERT INTO SEDE(ptop,descrizione,civico,cap) VALUES (?,?,?,?)";
-			    PreparedStatement statement = conn.prepareStatement(query);
-			    statement.setString(1, controller.getParticellaToponomasticaSede(sede));
-			    statement.setString(2, controller.getDescrizioneIndirizzo(sede));
-			    statement.setString(3, controller.getCivicoSede(sede));
-			    statement.setString(4, controller.getCapSede(sede));
-			    int rowsInserted = statement.executeUpdate();
-			    statement.close();
-			    
-	            if (rowsInserted == 0) {
-	                System.out.println("Errore: inserimento fallito.");
+			    String query = "INSERT INTO SEDE(ptop,descrizione,civico,cap) VALUES (?,?,?,?) RETURNING idSede";
+			    PreparedStatement insertStatement = conn.prepareStatement(query);
+	            insertStatement.setString(1, controller.getParticellaToponomasticaSede(sede));
+	            insertStatement.setString(2, controller.getDescrizioneIndirizzo(sede));
+	            insertStatement.setString(3, controller.getCivicoSede(sede));
+	            insertStatement.setString(4, controller.getCapSede(sede));
+
+	            ResultSet rsInsert = insertStatement.executeQuery();
+	            
+	            if (rsInsert.next()) {
+	                idSedeInserita = rsInsert.getInt("idSede");
+	                System.out.println("Nuova sede inserita con ID: " + idSedeInserita);
+	            }
+	            else {
+	                System.out.println("Errore: nessun ID restituito.");
 	            }
 		    }
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
+			return -1;
 		}
+		
+		return idSedeInserita;
 	}
-	 
-	public Sede getSedeById(int idSede) {
-	    Sede sede = null;
-
-	    String query = "SELECT * FROM SEDE WHERE idsede = ?";
-
-	    try {
-	    	Connection conn = ConnessioneDB.getConnection();
-	        PreparedStatement statement = conn.prepareStatement(query);
-	        statement.setInt(1, idSede);
-	        ResultSet rs = statement.executeQuery();
-
-	        if (rs.next()) {
-	            sede = new Sede(
-	                rs.getString("ptop"),
-	                rs.getString("descrizione"),
-	                rs.getString("civico"),
-	                rs.getString("cap")
-	            );
-	        }
-	        
-	        rs.close();
-	    }
-	    catch (SQLException ex) {
-	        ex.printStackTrace();
-	    }
-
-	    return sede;
-	}
-
-	 
-	 public int getIdBySede(Sede sede) {
-	    int idSede = 0;
-
-	    String query = "SELECT idsede FROM SEDE WHERE ptop = ? AND descrizione = ? AND civico = ? AND cap = ?";
-
-	    try {
-	    	Connection conn = ConnessioneDB.getConnection();
-	        PreparedStatement statement = conn.prepareStatement(query);
-
-	        statement.setString(1, controller.getParticellaToponomasticaSede(sede));
-	        statement.setString(2, controller.getDescrizioneIndirizzo(sede));
-	        statement.setString(3, controller.getCivicoSede(sede));
-	        statement.setString(4, controller.getCapSede(sede));
-
-	       ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                idSede = rs.getInt("idsede");
-            }
-	        
-
-	    } catch (SQLException ex) {
-	        ex.printStackTrace();
-	    }
-
-	    return idSede;
+	
+	public int getIdBySede(Sede sede) {
+		int idSede = -1;
+		try {
+		    Connection conn = ConnessioneDB.getConnection();
+		    String query = "SELECT idSede FROM SEDE WHERE ptop = ? AND descrizione = ? AND civico = ? AND cap = ?";
+		    PreparedStatement statement = conn.prepareStatement(query);
+		    statement.setString(1, controller.getParticellaToponomasticaSede(sede));
+		    statement.setString(2, controller.getDescrizioneIndirizzo(sede));
+		    statement.setString(3, controller.getCivicoSede(sede));
+		    statement.setString(4, controller.getCapSede(sede));
+		    
+		    ResultSet resultSet = statement.executeQuery();
+		    
+		    if (resultSet.next()) {
+		    	idSede = resultSet.getInt("idSede");
+		    	sede.setIdSede(idSede);
+		    } else {
+		        System.out.println("Nessuna sede trovata con i criteri specificati.");
+		    }
+		    
+		    resultSet.close();
+		    statement.close();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return idSede;
 	}
 }

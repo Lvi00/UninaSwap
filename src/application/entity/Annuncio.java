@@ -3,6 +3,7 @@ package application.entity;
 import java.sql.Timestamp;
 
 public class Annuncio {
+	private int idAnnuncio;
     private String titoloAnnuncio;
     private boolean statoAnnuncio;
     private String fasciaOrariaInizio;
@@ -25,7 +26,7 @@ public class Annuncio {
                     Oggetto oggetto,
                     Sede sede,
                     String giorni,
-                    Timestamp dataPubblicazione) { 
+                    Timestamp dataPubblicazione) {
         this.titoloAnnuncio = titoloAnnuncio;
         this.statoAnnuncio = statoAnnuncio;
         this.fasciaOrariaInizio = fasciaOrariaInizio;
@@ -38,6 +39,14 @@ public class Annuncio {
         this.giorni = giorni;
         this.dataPubblicazione = dataPubblicazione;
     }
+    
+    public int getIdAnnuncio() {
+    	return idAnnuncio;
+    }
+    
+    public void setIdAnnuncio(int idAnnuncio) {
+		this.idAnnuncio = idAnnuncio;
+	}
 
     public String getTitoloAnnuncio() {
         return titoloAnnuncio;

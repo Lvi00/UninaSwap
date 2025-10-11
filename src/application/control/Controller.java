@@ -214,12 +214,12 @@ public class Controller {
 		return new SedeDAO().getIdBySede(sede);
 	}
 	
-	public ArrayList<Annuncio> getInfoAnnunci(Studente s) {
-	    return new AnnuncioDAO().getAnnunci(s.getMatricola());
+	public ArrayList<Annuncio> getInfoAnnunci(Studente studente) {
+	    return new AnnuncioDAO().getAnnunci(studente);
 	}
 	
-	public ArrayList<Annuncio> getAnnunciStudente(Studente s) {
-	    return new AnnuncioDAO().getAnnunciStudente(s.getMatricola());
+	public ArrayList<Annuncio> getAnnunciStudente(Studente studente) {
+	    return new AnnuncioDAO().getAnnunciStudente(studente);
 	}
 	
 	public Studente getStudente() {
@@ -292,11 +292,14 @@ public class Controller {
 			descrizione = descrizione.trim();
 		}
 		Sede sede = new Sede(particellatoponomastica, descrizioneIndirizzo, civico, cap);
-		new SedeDAO().SaveSade(sede);
+		int idSede = new SedeDAO().SaveSade(sede);
+		sede.setIdSede(idSede);
 		
 		String percorso = fileSelezionato.getAbsolutePath();
+		
 		Oggetto oggetto = new Oggetto(percorso, categoria, appoggioDescrizione, studente);
-		new OggettoDAO().SaveOggetto(oggetto);
+		int idOggetto = new OggettoDAO().SaveOggetto(oggetto);
+		oggetto.setIdOggetto(idOggetto);
 		
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
 		
@@ -304,7 +307,7 @@ public class Controller {
 		
 		this.studente.getAnnunciPubblicati().clear();
 		
-		new AnnuncioDAO().SaveAnnuncio(annuncio);
+		new AnnuncioDAO().SaveAnnuncio(annuncio, oggetto, sede);
 		
 		return 0;
 	}
@@ -342,7 +345,7 @@ public class Controller {
 	}
 	
 	public ArrayList<Annuncio> getAnnunciByFiltri(String keyword, String categoria, String tipologia) {
-	    return new AnnuncioDAO().getAnnunciByFiltri(this.studente.getMatricola(), keyword, categoria, tipologia);
+	    return new AnnuncioDAO().getAnnunciByFiltri(this.studente, keyword, categoria, tipologia);
 	}
 	
 	public void AcquistaOggetto(Annuncio a){
@@ -361,7 +364,7 @@ public class Controller {
 	}
 	
 	public int inviaOffertaRegalo(Annuncio annuncio, String motivazione){
-	    if (motivazione == null || motivazione.isEmpty()) motivazione = "Assente";
+	    if(motivazione == null || motivazione.isEmpty()) motivazione = "Assente";
 	    if(motivazione.length()>255) return 1;
 		Timestamp dataCorrente = new Timestamp(System.currentTimeMillis());
 		OffertaRegalo offertaRegalo = new OffertaRegalo(dataCorrente, this.studente, annuncio, motivazione);
@@ -545,12 +548,13 @@ public class Controller {
 		return new StudenteDAO().getStudenteByMatricola(matricola);
 	}
 	
-	public Sede getSedeById(int idSede) {
-		return new SedeDAO().getSedeById(idSede);
-	}
-	
 	public int rimuoviAnnuncio(Annuncio annuncio) {
 		int risultato = new AnnuncioDAO().rimuoviAnnuncio(annuncio);
+        
+		//rimuoviOfferte(idAnnuncio);
+        //rimuoviOggetto(annuncio.getOggetto().getIdOggetto);
+        //rimuoviSede(annuncio.getSede().getIdSede());
+		
 		if(risultato == 0) {
 			this.studente.getAnnunciPubblicati().clear();
 		}
@@ -567,10 +571,6 @@ public class Controller {
 	
 	public int rimuoviOggetto(int idOggetto) {
 		return new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
-	}
-	
-	public int getIdByAnnuncio(Annuncio a) {
-		return new AnnuncioDAO().getIdByAnnuncio(a);
 	}
 	
 	public ArrayList<Offerta> getOffertebyAnnuncio (Annuncio a) {
@@ -600,7 +600,8 @@ public class Controller {
 	public ArrayList<Oggetto> getOggettiOffertiByOfferta(Offerta offerta) {
 		if(offerta instanceof OffertaScambio) {
 			OffertaScambio offertaScambio = (OffertaScambio) offerta;
-			return new OffertaDAO().getOggettiOffertiByOfferta(offerta);
+			//modificato
+			return new OffertaDAO().getOggettiOffertiByOfferta(offertaScambio);
 		}
 		
 		return null;
@@ -610,10 +611,6 @@ public class Controller {
 	{
 		return new OffertaDAO().getOffertebyMatricola(s);
 	}
-	
-    public Annuncio getAnnuncioById(int idAnnuncio) {
-    	return new AnnuncioDAO().getAnnuncioById(idAnnuncio);
-    }
     
     public int eliminaOfferta(Offerta offerta) {
 		return new OffertaDAO().eliminaOfferta(offerta);

@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import application.control.Controller;
@@ -14,6 +13,7 @@ import application.entity.OffertaRegalo;
 import application.entity.OffertaScambio;
 import application.entity.OffertaVendita;
 import application.entity.Oggetto;
+import application.entity.Sede;
 import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
@@ -23,8 +23,8 @@ public class OffertaDAO {
 
 	public int SaveOfferta(Offerta offerta) {
 	    try {
-	        String matStudente = controller.getMatricola(controller.getStudenteOfferta(offerta));
-	        int idannuncio = new AnnuncioDAO().getIdByAnnuncio(controller.getAnnuncioOfferta(offerta));
+	        String matStudente = offerta.getStudente().getMatricola();
+	        int idannuncio = offerta.getAnnuncio().getIdAnnuncio();
 
 	        Connection conn = ConnessioneDB.getConnection();
 
@@ -107,7 +107,7 @@ public class OffertaDAO {
 	        stmtModificaAccettaOfferta.setDouble(1, prezzo);
 	        stmtModificaAccettaOfferta.setString(2, "Attesa");
 			stmtModificaAccettaOfferta.setString(3, controller.getMatricola(studente));
-			stmtModificaAccettaOfferta.setInt(4, controller.getIdByAnnuncio(annuncio));
+			stmtModificaAccettaOfferta.setInt(4, annuncio.getIdAnnuncio());
 			
 
 	        int righeAggiornate = stmtModificaAccettaOfferta.executeUpdate();
@@ -134,7 +134,7 @@ public class OffertaDAO {
 	        stmtModificaAccettaOfferta.setString(1, motivazione);
 	        stmtModificaAccettaOfferta.setString(2, "Attesa");
 			stmtModificaAccettaOfferta.setString(3, controller.getMatricola(studente));
-			stmtModificaAccettaOfferta.setInt(4, controller.getIdByAnnuncio(annuncio));
+			stmtModificaAccettaOfferta.setInt(4, annuncio.getIdAnnuncio());
 			
 
 	        int righeAggiornate = stmtModificaAccettaOfferta.executeUpdate();
@@ -159,7 +159,7 @@ public class OffertaDAO {
 			PreparedStatement stmtModificaAccettaOfferta = conn.prepareStatement(modificaOfferta);
 	        stmtModificaAccettaOfferta.setString(1, "Attesa");
 			stmtModificaAccettaOfferta.setString(2, controller.getMatricola(controller.getStudenteOfferta(offerta)));
-			stmtModificaAccettaOfferta.setInt(3, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
+			stmtModificaAccettaOfferta.setInt(3, offerta.getAnnuncio().getIdAnnuncio());
 			
 	        int righeAggiornate = stmtModificaAccettaOfferta.executeUpdate();
 
@@ -211,7 +211,7 @@ public class OffertaDAO {
             Connection conn = ConnessioneDB.getConnection();
             String query = "SELECT * FROM OFFERTA WHERE idannuncio = ? ORDER BY statoofferta";
             PreparedStatement selectStmt = conn.prepareStatement(query);
-            selectStmt.setInt(1, controller.getIdByAnnuncio(annuncio));
+            selectStmt.setInt(1, annuncio.getIdAnnuncio());
             ResultSet rs = selectStmt.executeQuery();
 
             while (rs.next()) {
@@ -227,6 +227,8 @@ public class OffertaDAO {
                             annuncio,
                             rs.getDouble("prezzoofferta")
                         );
+                        
+                        offerta.setIdOfferta(rs.getInt("idofferta"));
                     break;
 
                     case "Regalo":
@@ -236,6 +238,8 @@ public class OffertaDAO {
                             annuncio,
                             rs.getString("motivazione")
                         );
+                        
+                        offerta.setIdOfferta(rs.getInt("idofferta"));
                     break;
 
                     case "Scambio":
@@ -244,6 +248,8 @@ public class OffertaDAO {
                             controller.getStudenteByMatricola(rs.getString("matstudente")),
                             annuncio
                         );
+                        
+                        offerta.setIdOfferta(rs.getInt("idofferta"));
                         controller.setOggettiOfferti((OffertaScambio) offerta, controller.getOggettiOffertiByOfferta(offerta));
                     break;
 
@@ -271,7 +277,7 @@ public class OffertaDAO {
 			String accettaOfferta = "UPDATE OFFERTA SET statoofferta = 'Accettata' WHERE matstudente = ? AND idannuncio = ? RETURNING idofferta";
 			PreparedStatement stmtAccettaOfferta = conn.prepareStatement(accettaOfferta);
 			stmtAccettaOfferta.setString(1, controller.getMatricola(offerta.getStudente()));
-			stmtAccettaOfferta.setInt(2, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
+			stmtAccettaOfferta.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
 			
 			ResultSet rs = stmtAccettaOfferta.executeQuery();
 			
@@ -280,12 +286,12 @@ public class OffertaDAO {
 				String rifiutaOfferteRestanti = "UPDATE OFFERTA SET statoofferta = 'Rifiutata' WHERE idofferta <> ? AND idannuncio = ?";
 				PreparedStatement stmtRifiutaOfferte = conn.prepareStatement(rifiutaOfferteRestanti);
 				stmtRifiutaOfferte.setInt(1, idOffertaModificata);
-				stmtRifiutaOfferte.setInt(2, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
+				stmtRifiutaOfferte.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
 				stmtRifiutaOfferte.executeUpdate();
 				
 				String chiudiAnnuncio = "UPDATE ANNUNCIO SET statoannuncio = false WHERE idannuncio = ?";
 				PreparedStatement stmtChiudiAnnuncio = conn.prepareStatement(chiudiAnnuncio);
-				int idAnnuncio = controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta));
+				int idAnnuncio = offerta.getAnnuncio().getIdAnnuncio();
 				System.out.println("ID Annuncio da chiudere: " + idAnnuncio);
 				stmtChiudiAnnuncio.setInt(1, idAnnuncio);
 				stmtChiudiAnnuncio.executeUpdate();
@@ -308,7 +314,7 @@ public class OffertaDAO {
 			String accettaOfferta = "UPDATE OFFERTA SET statoofferta = 'Rifiutata' WHERE matstudente = ? AND idannuncio = ?";
 			PreparedStatement stmtAccettaOfferta = conn.prepareStatement(accettaOfferta);
 			stmtAccettaOfferta.setString(1, controller.getMatricola(controller.getStudenteOfferta(offerta)));
-			stmtAccettaOfferta.setInt(2, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
+			stmtAccettaOfferta.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
 			
 			if (stmtAccettaOfferta.executeUpdate() > 0) {
 				System.out.println("Offerta rifiutata con successo.");
@@ -333,7 +339,7 @@ public class OffertaDAO {
             String query = "SELECT idOfferta FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, controller.getMatricola(controller.getStudenteOfferta(offerta)));
-            stmt.setInt(2, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
+            stmt.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -357,7 +363,7 @@ public class OffertaDAO {
             String queryOggettiOfferti = "SELECT * FROM OGGETTIOFFERTI AS OO NATURAL JOIN OGGETTO AS OG NATURAL JOIN OFFERTA AS OF WHERE OO.idOfferta = ? AND OF.idannuncio = ?";
             PreparedStatement stmtOggettiOfferti = conn.prepareStatement(queryOggettiOfferti);
             stmtOggettiOfferti.setInt(1, controller.getIdByOfferta(offerta));
-            stmtOggettiOfferti.setInt(2, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
+            stmtOggettiOfferti.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
 
             ResultSet rsOggettiOfferti = stmtOggettiOfferti.executeQuery();
             while (rsOggettiOfferti.next()) {
@@ -380,11 +386,11 @@ public class OffertaDAO {
     }
     
     public ArrayList<Offerta> getOffertebyMatricola(Studente studente) {	
-        ArrayList<Offerta> offerte = new ArrayList<>();
+        ArrayList<Offerta> offerte = new ArrayList<Offerta>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM Offerta WHERE matstudente = ? ORDER BY dataPubblicazione";
+            String query = "SELECT * FROM OFFERTA AS O INNER JOIN ANNUNCIO AS A ON O.idannuncio = A.idannuncio WHERE O.matstudente = ? ORDER BY O.dataPubblicazione";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, controller.getMatricola(studente));
 
@@ -392,7 +398,30 @@ public class OffertaDAO {
 
             while (rs.next()) {
                 String tipologia = rs.getString("tipologia");
-                Annuncio annuncio = controller.getAnnuncioById(rs.getInt("idannuncio"));
+                Sede sede = new Sede(
+    					rs.getString("ptop"),
+    					rs.getString("descrizione"),
+    					rs.getString("civico"),
+    					rs.getString("cap")
+				);
+            	sede.setIdSede(rs.getInt("idSede"));
+            	
+            	Annuncio annuncio = new Annuncio(
+					rs.getString("titoloannuncio"),
+					rs.getBoolean("statoannuncio"),
+					rs.getString("fasciaOrariaInizio"),
+					rs.getString("fasciaOrariaFine"),
+					rs.getDouble("prezzo"),
+					rs.getString("tipologia"),
+					rs.getString("descrizioneAnnuncio"),
+					controller.getOggettoById(rs.getInt("idoggetto")),
+					sede,
+					rs.getString("giorni"),
+					rs.getTimestamp("dataPubblicazione")
+				);
+            	
+            	annuncio.setIdAnnuncio(rs.getInt("idannuncio"));
+                	
                 Offerta offerta = null;
 
                 switch (tipologia) {
@@ -457,7 +486,7 @@ public class OffertaDAO {
             String eliminaOfferta = "DELETE FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
             try (PreparedStatement stmtEliminaOfferta = conn.prepareStatement(eliminaOfferta)) {
                 stmtEliminaOfferta.setString(1, controller.getMatricola(controller.getStudenteOfferta(offerta)));
-                stmtEliminaOfferta.setInt(2, controller.getIdByAnnuncio(controller.getAnnuncioOfferta(offerta)));
+                stmtEliminaOfferta.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
 
                 int righeEliminate = stmtEliminaOfferta.executeUpdate();
                 if (righeEliminate > 0) {
