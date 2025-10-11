@@ -295,6 +295,10 @@ public class CreaAnnuncioBoundary {
 				controller.svuotaListaOggettiDesiderati();
 				campoAggiungiOggetto.clear();
 			break;
+			
+        	case 11:
+        		sceneManager.showPopupError(paneCreaAnnuncio, "Annuncio già esistente", "L'annuncio che stai cercando di creare è già presente nel sistema.");
+        	break;
         	
         	default:
         		System.out.println("Dati dell'annuncio non validi.");

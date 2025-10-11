@@ -91,4 +91,43 @@ public class SedeDAO {
 		
 		return idSede;
 	}
+	
+	public int rimuoviSede(int idSede) {		
+		try {
+			Connection conn = ConnessioneDB.getConnection();
+	        String queryCount = "SELECT COUNT(*) AS totale FROM SEDE AS S INNER JOIN ANNUNCIO AS A ON S.idSede = A.idSede WHERE S.idsede = ?";
+	        PreparedStatement countStatement = conn.prepareStatement(queryCount);
+	        countStatement.setInt(1, idSede);
+	        ResultSet rs = countStatement.executeQuery();
+
+	        int totaleAnnunci = 0;
+	        
+	        if (rs.next()) {
+	            totaleAnnunci = rs.getInt("totale");
+	        }
+	        
+	        if(totaleAnnunci > 0) {
+	        	return 1;
+	        }
+	        
+	        String queryDelete = "DELETE FROM SEDE WHERE idSede = ?";
+	        PreparedStatement deleteStatement = conn.prepareStatement(queryDelete);
+	        deleteStatement.setInt(1, idSede);
+
+	        int righeEliminate = deleteStatement.executeUpdate();
+	        
+	        deleteStatement.close();
+
+	        if (righeEliminate > 0) {
+	            System.out.println("Sede con ID " + idSede + " eliminata con successo.");
+	            return 0;
+	        } else {
+	            System.out.println("Nessuna sede trovata con ID " + idSede + ".");
+	            return 1;
+	        }
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+	}
 }

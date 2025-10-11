@@ -307,7 +307,7 @@ public class Controller {
 		
 		this.studente.getAnnunciPubblicati().clear();
 		
-		new AnnuncioDAO().SaveAnnuncio(annuncio, oggetto, sede);
+		if(new AnnuncioDAO().SaveAnnuncio(annuncio, oggetto, sede) == 1) return 11;
 		
 		return 0;
 	}
@@ -549,16 +549,18 @@ public class Controller {
 	}
 	
 	public int rimuoviAnnuncio(Annuncio annuncio) {
-		int risultato = new AnnuncioDAO().rimuoviAnnuncio(annuncio);
-        
-		//rimuoviOfferte(idAnnuncio);
-        //rimuoviOggetto(annuncio.getOggetto().getIdOggetto);
-        //rimuoviSede(annuncio.getSede().getIdSede());
+		int risultatoRimozioneAnnuncio = new AnnuncioDAO().rimuoviAnnuncio(annuncio);
+		int risultatoRimozioneOfferte = rimuoviOfferte(annuncio.getIdAnnuncio());
+		int risultatoRimozioneOggettiOfferti = rimuoviOggettiOfferti(annuncio.getOggetto().getIdOggetto());
+        int risultatoRimozioneOggetto = (annuncio.getOggetto().getIdOggetto());
+        int risultatoRimozioneSede = rimuoviSede(annuncio.getSede().getIdSede());
 		
-		if(risultato == 0) {
+		if(risultatoRimozioneAnnuncio >= 0 && risultatoRimozioneOfferte >= 0 && risultatoRimozioneOggettiOfferti >= 0 && risultatoRimozioneOggetto >= 0 && risultatoRimozioneSede >= 0) {
 			this.studente.getAnnunciPubblicati().clear();
+			return 0;
 		}
-		return risultato;
+		
+		return 1;
 	}
 	
 	public int rimuoviOfferte(int idAnnuncio) {
@@ -569,12 +571,32 @@ public class Controller {
 		return new OggettiOffertiDAO().rimuoviOggettiOffertiByIdOfferta(idOfferta);
 	}
 	
+	public int rimuoviSede(int idSede) {
+		return new SedeDAO().rimuoviSede(idSede);
+	}
+	
 	public int rimuoviOggetto(int idOggetto) {
 		return new OggettoDAO().rimuoviOggettoByIdOggetto(idOggetto);
 	}
 	
-	public ArrayList<Offerta> getOffertebyAnnuncio (Annuncio a) {
-		return new OffertaDAO().getOffertebyAnnuncio(a);
+	public ArrayList<Offerta> getOffertebyAnnuncio(Annuncio annuncio) {
+	    ArrayList<Offerta> offerte = new OffertaDAO().getOffertebyAnnuncio(annuncio);
+
+	    boolean verificaOfferteScambio = true;
+
+	    for (Offerta offerta : offerte) {
+	        if (!(offerta instanceof OffertaScambio)) {
+	            verificaOfferteScambio = false;
+	        }
+	    }
+
+	    if (verificaOfferteScambio) {
+	        for (Offerta offerta : offerte) {
+	            setOggettiOfferti((OffertaScambio) offerta, getOggettiOffertiByOfferta(offerta));
+	        }
+	    }
+
+	    return offerte;
 	}
 	
 	public int accettaOfferta(Offerta o) {
@@ -607,9 +629,24 @@ public class Controller {
 		return null;
 	}
 	
-	public ArrayList<Offerta> getOffertebyMatricola(Studente s)
-	{
-		return new OffertaDAO().getOffertebyMatricola(s);
+	public ArrayList<Offerta> getOffertebyMatricola(Studente studente) {
+	    ArrayList<Offerta> offerte = new OffertaDAO().getOffertebyMatricola(studente);
+
+	    boolean verificaOfferteScambio = true;
+
+	    for (Offerta offerta : offerte) {
+	        if (!(offerta instanceof OffertaScambio)) {
+	            verificaOfferteScambio = false;
+	        }
+	    }
+
+	    if (verificaOfferteScambio) {
+	        for (Offerta offerta : offerte) {
+	            setOggettiOfferti((OffertaScambio) offerta, getOggettiOffertiByOfferta(offerta));
+	        }
+	    }
+
+	    return offerte;
 	}
     
     public int eliminaOfferta(Offerta offerta) {

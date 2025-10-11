@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import application.control.Controller;
 import application.entity.Annuncio;
 import application.entity.Offerta;
 import application.entity.OffertaRegalo;
@@ -18,9 +17,6 @@ import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
 public class OffertaDAO {
-	
-	private Controller controller = Controller.getController();
-
 	public int SaveOfferta(Offerta offerta) {
 	    try {
 	        String matStudente = offerta.getStudente().getMatricola();
@@ -42,21 +38,21 @@ public class OffertaDAO {
 
 	        PreparedStatement statement = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS);
 
-	        statement.setString(1, controller.getStatoOfferta(offerta));
+	        statement.setString(1, offerta.getStatoOfferta());
 	        statement.setString(4, matStudente);
 	        statement.setInt(5, idannuncio);
-	        statement.setTimestamp(7, controller.getDataPubblicazioneOfferta(offerta));
+	        statement.setTimestamp(7, offerta.getDataPubblicazione());
 
 	        if (offerta instanceof OffertaVendita) {
 	            OffertaVendita offertaVendita = (OffertaVendita) offerta;
-	            statement.setDouble(2, controller.getPrezzoOfferta(offertaVendita));
+	            statement.setDouble(2, offertaVendita.getPrezzoOfferta());
 	            statement.setString(3, "Vendita");
 	            statement.setString(6, "Assente");
 	        } else if (offerta instanceof OffertaRegalo) {
 	            OffertaRegalo offertaRegalo = (OffertaRegalo) offerta;
 	            statement.setNull(2, java.sql.Types.DOUBLE);
 	            statement.setString(3, "Regalo");
-	            statement.setString(6, controller.getMotivazioneOfferta(offertaRegalo));
+	            statement.setString(6, offertaRegalo.getMotivazione());
 	        } else if (offerta instanceof OffertaScambio) {
 	            statement.setNull(2, java.sql.Types.DOUBLE);
 	            statement.setString(3, "Scambio");
@@ -106,7 +102,7 @@ public class OffertaDAO {
 			PreparedStatement stmtModificaAccettaOfferta = conn.prepareStatement(modificaOfferta);
 	        stmtModificaAccettaOfferta.setDouble(1, prezzo);
 	        stmtModificaAccettaOfferta.setString(2, "Attesa");
-			stmtModificaAccettaOfferta.setString(3, controller.getMatricola(studente));
+			stmtModificaAccettaOfferta.setString(3, studente.getMatricola());
 			stmtModificaAccettaOfferta.setInt(4, annuncio.getIdAnnuncio());
 			
 
@@ -133,7 +129,7 @@ public class OffertaDAO {
 			PreparedStatement stmtModificaAccettaOfferta = conn.prepareStatement(modificaOfferta);
 	        stmtModificaAccettaOfferta.setString(1, motivazione);
 	        stmtModificaAccettaOfferta.setString(2, "Attesa");
-			stmtModificaAccettaOfferta.setString(3, controller.getMatricola(studente));
+			stmtModificaAccettaOfferta.setString(3, studente.getMatricola());
 			stmtModificaAccettaOfferta.setInt(4, annuncio.getIdAnnuncio());
 			
 
@@ -158,7 +154,7 @@ public class OffertaDAO {
 			String modificaOfferta = "UPDATE offerta SET statoofferta = ? WHERE matstudente = ? AND idannuncio = ?";
 			PreparedStatement stmtModificaAccettaOfferta = conn.prepareStatement(modificaOfferta);
 	        stmtModificaAccettaOfferta.setString(1, "Attesa");
-			stmtModificaAccettaOfferta.setString(2, controller.getMatricola(controller.getStudenteOfferta(offerta)));
+			stmtModificaAccettaOfferta.setString(2, offerta.getStudente().getMatricola());
 			stmtModificaAccettaOfferta.setInt(3, offerta.getAnnuncio().getIdAnnuncio());
 			
 	        int righeAggiornate = stmtModificaAccettaOfferta.executeUpdate();
@@ -185,17 +181,15 @@ public class OffertaDAO {
             PreparedStatement selectStmt = conn.prepareStatement(selectOfferte);
             selectStmt.setInt(1, idAnnuncio);
             ResultSet rs = selectStmt.executeQuery();
-            while (rs.next()) {
-                controller.rimuoviOggettiOfferti(rs.getInt("idOfferta"));
+            if(rs.next()) {
+                String deleteOfferte = "DELETE FROM OFFERTA WHERE idAnnuncio = ?";
+                PreparedStatement deleteOfferteStmt = conn.prepareStatement(deleteOfferte);
+                deleteOfferteStmt.setInt(1, idAnnuncio);
+                deleteOfferteStmt.executeUpdate();
+                deleteOfferteStmt.close();
             }
             rs.close();
             selectStmt.close();
-            
-            String deleteOfferte = "DELETE FROM OFFERTA WHERE idAnnuncio = ?";
-            PreparedStatement deleteOfferteStmt = conn.prepareStatement(deleteOfferte);
-            deleteOfferteStmt.setInt(1, idAnnuncio);
-            deleteOfferteStmt.executeUpdate();
-            deleteOfferteStmt.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -209,21 +203,28 @@ public class OffertaDAO {
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM OFFERTA WHERE idannuncio = ? ORDER BY statoofferta";
+            String query = "SELECT * FROM OFFERTA AS O INNER JOIN STUDENTE AS S ON O.matstudente = S.matricola WHERE idannuncio = ? ORDER BY statoofferta";
             PreparedStatement selectStmt = conn.prepareStatement(query);
             selectStmt.setInt(1, annuncio.getIdAnnuncio());
             ResultSet rs = selectStmt.executeQuery();
 
             while (rs.next()) {
                 String tipologia = rs.getString("tipologia");
-                System.out.println("Tipologia offerta: " + tipologia);
                 Offerta offerta = null;
+                
+                Studente studente = new Studente(
+					rs.getString("matricola"),
+					rs.getString("email"),
+					rs.getString("nome"),
+					rs.getString("cognome"),
+					rs.getString("username")
+        		);
 
                 switch (tipologia) {
                     case "Vendita":
                         offerta = new OffertaVendita(
                             rs.getTimestamp("dataPubblicazione"),
-                            controller.getStudenteByMatricola(rs.getString("matstudente")),
+                            studente,
                             annuncio,
                             rs.getDouble("prezzoofferta")
                         );
@@ -234,7 +235,7 @@ public class OffertaDAO {
                     case "Regalo":
                         offerta = new OffertaRegalo(
                             rs.getTimestamp("dataPubblicazione"),
-                            controller.getStudenteByMatricola(rs.getString("matstudente")),
+                            studente,
                             annuncio,
                             rs.getString("motivazione")
                         );
@@ -245,12 +246,11 @@ public class OffertaDAO {
                     case "Scambio":
                         offerta = new OffertaScambio(
                             rs.getTimestamp("dataPubblicazione"),
-                            controller.getStudenteByMatricola(rs.getString("matstudente")),
+                            studente,
                             annuncio
                         );
                         
                         offerta.setIdOfferta(rs.getInt("idofferta"));
-                        controller.setOggettiOfferti((OffertaScambio) offerta, controller.getOggettiOffertiByOfferta(offerta));
                     break;
 
                     default:
@@ -276,7 +276,7 @@ public class OffertaDAO {
 			Connection conn = ConnessioneDB.getConnection();
 			String accettaOfferta = "UPDATE OFFERTA SET statoofferta = 'Accettata' WHERE matstudente = ? AND idannuncio = ? RETURNING idofferta";
 			PreparedStatement stmtAccettaOfferta = conn.prepareStatement(accettaOfferta);
-			stmtAccettaOfferta.setString(1, controller.getMatricola(offerta.getStudente()));
+			stmtAccettaOfferta.setString(1, offerta.getStudente().getMatricola());
 			stmtAccettaOfferta.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
 			
 			ResultSet rs = stmtAccettaOfferta.executeQuery();
@@ -313,7 +313,7 @@ public class OffertaDAO {
 			Connection conn = ConnessioneDB.getConnection();
 			String accettaOfferta = "UPDATE OFFERTA SET statoofferta = 'Rifiutata' WHERE matstudente = ? AND idannuncio = ?";
 			PreparedStatement stmtAccettaOfferta = conn.prepareStatement(accettaOfferta);
-			stmtAccettaOfferta.setString(1, controller.getMatricola(controller.getStudenteOfferta(offerta)));
+			stmtAccettaOfferta.setString(1, offerta.getStudente().getMatricola());
 			stmtAccettaOfferta.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
 			
 			if (stmtAccettaOfferta.executeUpdate() > 0) {
@@ -338,7 +338,7 @@ public class OffertaDAO {
 
             String query = "SELECT idOfferta FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, controller.getMatricola(controller.getStudenteOfferta(offerta)));
+            stmt.setString(1, offerta.getStudente().getMatricola());
             stmt.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
             ResultSet rs = stmt.executeQuery();
 
@@ -360,18 +360,29 @@ public class OffertaDAO {
         
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String queryOggettiOfferti = "SELECT * FROM OGGETTIOFFERTI AS OO NATURAL JOIN OGGETTO AS OG NATURAL JOIN OFFERTA AS OF WHERE OO.idOfferta = ? AND OF.idannuncio = ?";
+            String queryOggettiOfferti = "SELECT * FROM OGGETTIOFFERTI AS OO "
+    		+ "NATURAL JOIN OGGETTO AS OG NATURAL JOIN OFFERTA AS OF INNER JOIN STUDENTE AS S ON O.matstudente = S.matricola "
+    		+ "WHERE OO.idOfferta = ? AND OF.idannuncio = ?";
+            
             PreparedStatement stmtOggettiOfferti = conn.prepareStatement(queryOggettiOfferti);
-            stmtOggettiOfferti.setInt(1, controller.getIdByOfferta(offerta));
+            stmtOggettiOfferti.setInt(1, offerta.getIdOfferta());
             stmtOggettiOfferti.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
 
             ResultSet rsOggettiOfferti = stmtOggettiOfferti.executeQuery();
             while (rsOggettiOfferti.next()) {
+                Studente studente = new Studente(
+            		rsOggettiOfferti.getString("matricola"),
+            		rsOggettiOfferti.getString("email"),
+            		rsOggettiOfferti.getString("nome"),
+            		rsOggettiOfferti.getString("cognome"),
+            		rsOggettiOfferti.getString("username")
+        		);
+                
             	Oggetto oggetto = new Oggetto(
         			rsOggettiOfferti.getString("immagineoggetto"),
         			rsOggettiOfferti.getString("categoria"),
         			rsOggettiOfferti.getString("descrizione"),
-					controller.getStudenteByMatricola(rsOggettiOfferti.getString("matstudente"))
+					studente
 				);
                 oggetti.add(oggetto);
             }
@@ -390,21 +401,32 @@ public class OffertaDAO {
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM OFFERTA AS O INNER JOIN ANNUNCIO AS A ON O.idannuncio = A.idannuncio WHERE O.matstudente = ? ORDER BY O.dataPubblicazione";
+            String query = "SELECT * FROM OFFERTA AS O INNER JOIN ANNUNCIO AS A ON O.idannuncio = A.idannuncio "
+    		+ "INNER JOIN OGGETTO AS OG ON A.idoggetto = OG.idoggetto WHERE O.matstudente = ? ORDER BY O.dataPubblicazione";
+            
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, controller.getMatricola(studente));
+            stmt.setString(1, studente.getMatricola());
 
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 String tipologia = rs.getString("tipologia");
+                
                 Sede sede = new Sede(
-    					rs.getString("ptop"),
-    					rs.getString("descrizione"),
-    					rs.getString("civico"),
-    					rs.getString("cap")
+					rs.getString("ptop"),
+					rs.getString("descrizione"),
+					rs.getString("civico"),
+					rs.getString("cap")
 				);
+                
             	sede.setIdSede(rs.getInt("idSede"));
+            	
+            	Oggetto oggetto = new Oggetto(
+        			rs.getString("immagineoggetto"),
+        			rs.getString("categoria"),
+        			rs.getString("descrizione"),
+					studente
+				);
             	
             	Annuncio annuncio = new Annuncio(
 					rs.getString("titoloannuncio"),
@@ -414,7 +436,7 @@ public class OffertaDAO {
 					rs.getDouble("prezzo"),
 					rs.getString("tipologia"),
 					rs.getString("descrizioneAnnuncio"),
-					controller.getOggettoById(rs.getInt("idoggetto")),
+					oggetto,
 					sede,
 					rs.getString("giorni"),
 					rs.getTimestamp("dataPubblicazione")
@@ -423,12 +445,20 @@ public class OffertaDAO {
             	annuncio.setIdAnnuncio(rs.getInt("idannuncio"));
                 	
                 Offerta offerta = null;
+                
+                Studente s = new Studente(
+            		rs.getString("matricola"),
+            		rs.getString("email"),
+            		rs.getString("nome"),
+            		rs.getString("cognome"),
+            		rs.getString("username")
+        		);
 
                 switch (tipologia) {
                     case "Vendita":
                         offerta = new OffertaVendita(
                             rs.getTimestamp("dataPubblicazione"),
-                            controller.getStudenteByMatricola(rs.getString("matstudente")),
+                            s,
                             annuncio,
                             rs.getDouble("prezzoofferta")
                         );
@@ -437,7 +467,7 @@ public class OffertaDAO {
                     case "Regalo":
                         offerta = new OffertaRegalo(
                             rs.getTimestamp("dataPubblicazione"),
-                            controller.getStudenteByMatricola(rs.getString("matstudente")),
+                            s,
                             annuncio,
                             rs.getString("motivazione")
                         );
@@ -446,10 +476,9 @@ public class OffertaDAO {
                     case "Scambio":
                         offerta = new OffertaScambio(
                             rs.getTimestamp("dataPubblicazione"),
-                            controller.getStudenteByMatricola(rs.getString("matstudente")),
+                            s,
                             annuncio
                         );
-                        controller.setOggettiOfferti((OffertaScambio) offerta, controller.getOggettiOffertiByOfferta(offerta));
                     break;
 
                     default:
@@ -458,7 +487,7 @@ public class OffertaDAO {
                 }
 
                 if (offerta != null) {
-                    controller.setStatoOfferta(offerta, rs.getString("statoofferta"));
+                    offerta.setStatoOfferta(rs.getString("statoofferta"));
                     offerte.add(offerta);
                 }
             }
@@ -478,14 +507,14 @@ public class OffertaDAO {
             if (offerta instanceof OffertaScambio) {
                 String eliminaOggettiOfferti = "DELETE FROM OGGETTIOFFERTI WHERE idOfferta = ?";
                 try (PreparedStatement stmtEliminaOggetti = conn.prepareStatement(eliminaOggettiOfferti)) {
-                    stmtEliminaOggetti.setInt(1, controller.getIdByOfferta(offerta));
+                    stmtEliminaOggetti.setInt(1, offerta.getIdOfferta());
                     stmtEliminaOggetti.executeUpdate();
                 }
             }
 
             String eliminaOfferta = "DELETE FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
             try (PreparedStatement stmtEliminaOfferta = conn.prepareStatement(eliminaOfferta)) {
-                stmtEliminaOfferta.setString(1, controller.getMatricola(controller.getStudenteOfferta(offerta)));
+                stmtEliminaOfferta.setString(1, offerta.getStudente().getMatricola());
                 stmtEliminaOfferta.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
 
                 int righeEliminate = stmtEliminaOfferta.executeUpdate();
@@ -529,7 +558,7 @@ public class OffertaDAO {
 			}
 			
 			PreparedStatement stmt = conn.prepareStatement(query);
-			stmt.setString(1, controller.getMatricola(studente));
+			stmt.setString(1, studente.getMatricola());
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
@@ -569,7 +598,7 @@ public class OffertaDAO {
 			}
 			
 			PreparedStatement stmt = conn.prepareStatement(query);
-			stmt.setString(1, controller.getMatricola(studente));
+			stmt.setString(1, studente.getMatricola());
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
@@ -595,7 +624,7 @@ public class OffertaDAO {
 			PreparedStatement stmt = conn.prepareStatement(query);
 			stmt.setString(1, "Vendita");
 			stmt.setString(2, "Accettata");
-			stmt.setString(3, controller.getMatricola(studente));
+			stmt.setString(3, studente.getMatricola());
 			ResultSet rs = stmt.executeQuery();
 			
 			if (rs.next()) {

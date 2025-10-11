@@ -12,11 +12,11 @@ import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
 public class AnnuncioDAO {
-	public void SaveAnnuncio(Annuncio annuncio, Oggetto oggetto, Sede sede) {
+	public int SaveAnnuncio(Annuncio annuncio, Oggetto oggetto, Sede sede) {
 		try {			
 		    Connection conn = ConnessioneDB.getConnection();
 		    
-		    String queryCheck = "SELECT * FROM ANNUNCIO AS A NATURAL JOIN SEDE AS S NATURAL JOIN OGGETTO AS O WHERE A.titoloannuncio = ? AND A.statoannuncio = ? AND A.fasciaorariainizio = ? AND A.fasciaorariafine = ? "
+		    String queryCheck = "SELECT * FROM ANNUNCIO AS A INNER JOIN SEDE AS S ON A.idSede = S.idSede INNER JOIN OGGETTO AS O ON A.idOggetto = O.idOggetto WHERE A.titoloannuncio = ? AND A.statoannuncio = ? AND A.fasciaorariainizio = ? AND A.fasciaorariafine = ? "
     		+ "AND A.prezzo = ? AND A.tipologia = ? AND A.descrizioneannuncio = ? AND O.matstudente = ? AND O.idoggetto = ? AND S.idsede = ? AND A.giorni = ? AND A.dataPubblicazione = ?";
 		    
 		    PreparedStatement checkStatement = conn.prepareStatement(queryCheck);
@@ -36,9 +36,10 @@ public class AnnuncioDAO {
 		    ResultSet resultSet = checkStatement.executeQuery();
 		    
 		    if (resultSet.next()) {
-		        System.out.println("Sede già esistente.");
+		    	System.out.println("Annuncio già presente nel database. Inserimento annullato.");
 		        resultSet.close();
 		        checkStatement.close();
+		        return 1;
 		    }
 		    
 		    else {
@@ -64,12 +65,16 @@ public class AnnuncioDAO {
 			    
 	            if (rowsInserted == 0) {
 	                System.out.println("Errore: inserimento fallito.");
+	                return 1;
 	            }
 		    }
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
+			return 1;
 		}
+		
+		return 0;
 	}
 	
     public ArrayList<Annuncio> getAnnunci(Studente studente) {
@@ -192,7 +197,7 @@ public class AnnuncioDAO {
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query1 = "SELECT * FROM ANNUNCIO AS A NATURAL JOIN SEDE AS S NATURAL JOIN OGGETTO AS O WHERE A.statoannuncio = ? AND O.matstudente <> ? ";
+            String query1 = "SELECT * FROM ANNUNCIO AS A NATURAL JOIN SEDE AS S NATURAL JOIN OGGETTO AS O WHERE A.statoannuncio = ? AND O.matstudente <> ?";
             String query2 = "";
             String query3 = "";
             String query4 = "";
