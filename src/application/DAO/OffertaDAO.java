@@ -1,4 +1,4 @@
-package application.PostgresDAO;
+package application.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import application.InterfacePostgresDAO.InterfaceOffertaDAO;
 import application.entity.Annuncio;
 import application.entity.Offerta;
 import application.entity.OffertaRegalo;
@@ -16,7 +17,7 @@ import application.entity.Sede;
 import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
-public class OffertaDAO {
+public class OffertaDAO implements InterfaceOffertaDAO {
 	public int SaveOffertaVendita(OffertaVendita offertaVendita) {
 	    try {
 	        Connection conn = ConnessioneDB.getConnection();
@@ -295,8 +296,6 @@ public class OffertaDAO {
                         );
                     	
                     	offerta.setIdOfferta(rs.getInt("idofferta"));
-                    	
-                    	System.out.println("Recupero oggetti offerti per l'offerta di scambio (ID Offerta: " + offerta.getIdOfferta() + ")");
 
                         ArrayList<Oggetto> oggettiOfferti = new ArrayList<Oggetto>();
                         String queryOggetti = "SELECT * FROM OGGETTIOFFERTI AS OO INNER JOIN OGGETTO AS O ON OO.idOggetto = O.idOggetto WHERE OO.idOfferta = ?";
@@ -324,12 +323,6 @@ public class OffertaDAO {
 
                         OffertaScambio offertaScambio = (OffertaScambio) offerta;
                         offertaScambio.setOggettiOfferti(oggettiOfferti);
-                        
-                        System.out.println("Oggetti offerti per l'offerta di scambio (ID Offerta: " + offerta.getIdOfferta() + "):");
-                        
-                        for (Oggetto ogg : oggettiOfferti) {
-							System.out.println("Oggetto offerto: " + ogg.getDescrizione());
-						}
                     break;
 
                     default:
@@ -541,7 +534,7 @@ public class OffertaDAO {
                             annuncio,
                             rs.getDouble("prezzoofferta")
                         );
-                        break;
+                    break;
 
                     case "Regalo":
                         offerta = new OffertaRegalo(
@@ -550,7 +543,7 @@ public class OffertaDAO {
                             annuncio,
                             rs.getString("motivazione")
                         );
-                        break;
+                    break;
 
                     case "Scambio":
                         OffertaScambio offertaScambio = new OffertaScambio(
@@ -564,7 +557,7 @@ public class OffertaDAO {
                         offertaScambio.setOggettiOfferti(oggettiOfferti);
                         
                         offerta = offertaScambio;
-                        break;
+                    break;
 
                     default:
                         System.out.println("Tipologia non riconosciuta: " + tipologia);

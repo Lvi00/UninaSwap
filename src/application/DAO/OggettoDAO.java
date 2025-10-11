@@ -1,14 +1,16 @@
-package application.PostgresDAO;
+package application.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import application.InterfacePostgresDAO.InterfaceOggettoDAO;
 import application.entity.Oggetto;
 import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
-public class OggettoDAO {	
+public class OggettoDAO implements InterfaceOggettoDAO {	
 	public int SaveOggetto(Oggetto oggetto) {
 	    int idOggettoInserito = -1;
 

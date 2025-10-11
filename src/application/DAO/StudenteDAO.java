@@ -1,13 +1,15 @@
-package application.PostgresDAO;
+package application.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import application.InterfacePostgresDAO.InterfaceStudenteDAO;
 import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
-public class StudenteDAO{	
+public class StudenteDAO implements InterfaceStudenteDAO {	
 	public int Save(Studente studente, String password) {
 		try {
 	        Connection conn = ConnessioneDB.getConnection();

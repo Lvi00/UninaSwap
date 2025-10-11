@@ -1,4 +1,4 @@
-package application.PostgresDAO;
+package application.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,9 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import application.InterfacePostgresDAO.InterfaceOggettiOffertiDAO;
 import application.resources.ConnessioneDB;
 
-public class OggettiOffertiDAO {
+public class OggettiOffertiDAO implements InterfaceOggettiOffertiDAO {
 	public void SaveOggettoOfferto(int idOfferta, int idOggetto) {
 		try {
 			Connection conn = ConnessioneDB.getConnection();

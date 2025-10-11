@@ -1,15 +1,15 @@
-
-package application.PostgresDAO;
+package application.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import application.InterfacePostgresDAO.InterfaceSedeDAO;
 import application.entity.Sede;
 import application.resources.ConnessioneDB;
 
-public class SedeDAO {
+public class SedeDAO implements InterfaceSedeDAO {
 	public int SaveSade(Sede sede) {
 		int idSedeInserita = -1;
 		

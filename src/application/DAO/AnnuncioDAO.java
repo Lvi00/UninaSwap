@@ -1,17 +1,19 @@
-package application.PostgresDAO;
+package application.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import application.InterfacePostgresDAO.InterfaceAnnuncioDAO;
 import application.entity.Annuncio;
 import application.entity.Oggetto;
 import application.entity.Sede;
 import application.entity.Studente;
 import application.resources.ConnessioneDB;
 
-public class AnnuncioDAO {
+public class AnnuncioDAO implements InterfaceAnnuncioDAO {
 	public int SaveAnnuncio(Annuncio annuncio, Oggetto oggetto, Sede sede) {
 		try {			
 		    Connection conn = ConnessioneDB.getConnection();
