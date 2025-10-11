@@ -199,7 +199,7 @@ public class AnnuncioDAO implements InterfaceAnnuncioDAO {
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query1 = "SELECT * FROM ANNUNCIO AS A NATURAL JOIN SEDE AS S NATURAL JOIN OGGETTO AS O WHERE A.statoannuncio = ? AND O.matstudente <> ?";
+            String query1 = "SELECT * FROM ANNUNCIO AS A NATURAL JOIN SEDE AS S NATURAL JOIN OGGETTO AS O WHERE A.statoannuncio = ? AND O.matstudente <> ? ";
             String query2 = "";
             String query3 = "";
             String query4 = "";

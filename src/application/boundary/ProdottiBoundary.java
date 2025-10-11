@@ -42,6 +42,7 @@ public class ProdottiBoundary {
     private String tipologia = null;
 
     enum Categorie {
+    	Nessuno,
         Abbigliamento,
         Informatica,
         Elettronica,
