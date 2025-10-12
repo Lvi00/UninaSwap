@@ -559,13 +559,24 @@ public class Controller {
 	}
 	
 	public int rimuoviAnnuncio(Annuncio annuncio) {
+		ArrayList<Offerta> offerteCollegate = offertaDAO.getOffertebyAnnuncio(annuncio);
+		
+		for(Offerta o : offerteCollegate) {
+			if(o instanceof OffertaScambio) {
+				ArrayList<Integer> idOggettiDaRimuovere = oggettiOffertiDAO.rimuoviOggettiOffertiByIdOfferta(o.getIdOfferta());
+				for(Integer idOggetto : idOggettiDaRimuovere) {
+					oggettoDAO.rimuoviOggettoByIdOggetto(idOggetto);
+				}
+			}
+		}
+		
 		int risultatoRimozioneAnnuncio = annuncioDAO.rimuoviAnnuncio(annuncio);
+		
 		int risultatoRimozioneOfferte = rimuoviOfferte(annuncio.getIdAnnuncio());
-		int risultatoRimozioneOggettiOfferti = rimuoviOggettiOfferti(annuncio.getOggetto().getIdOggetto());
-        int risultatoRimozioneOggetto = (annuncio.getOggetto().getIdOggetto());
+        int risultatoRimozioneOggetto = rimuoviOggetto(annuncio.getOggetto().getIdOggetto());
         int risultatoRimozioneSede = rimuoviSede(annuncio.getSede().getIdSede());
 		
-		if(risultatoRimozioneAnnuncio >= 0 && risultatoRimozioneOfferte >= 0 && risultatoRimozioneOggettiOfferti >= 0 && risultatoRimozioneOggetto >= 0 && risultatoRimozioneSede >= 0) {
+		if(risultatoRimozioneAnnuncio >= 0 && risultatoRimozioneOfferte >= 0 && risultatoRimozioneOggetto >= 0 && risultatoRimozioneSede >= 0) {
 			this.studente.getAnnunciPubblicati().clear();
 			return 0;
 		}
@@ -603,7 +614,6 @@ public class Controller {
 
 	    for (Offerta offerta : offerte) {
 	        if (offerta instanceof OffertaScambio) {
-	            System.out.println("Chiamo getOggettiOffertiByOfferta per offerta ID " + offerta.getIdOfferta());
 	            setOggettiOfferti((OffertaScambio) offerta, getOggettiOffertiByOfferta(offerta));
 	        }
 	    }
@@ -654,7 +664,17 @@ public class Controller {
 	}
     
     public int eliminaOfferta(Offerta offerta) {
-		return offertaDAO.eliminaOfferta(offerta);
+		if(offerta instanceof OffertaScambio) {
+			ArrayList<Integer> idOggettiDaRimuovere = oggettiOffertiDAO.rimuoviOggettiOffertiByIdOfferta(offerta.getIdOfferta());
+			for(Integer idOggetto : idOggettiDaRimuovere) {
+				oggettoDAO.rimuoviOggettoByIdOggetto(idOggetto);
+			}
+			SvuotaOfferteInviate();
+		}
+		
+		int risultato = offertaDAO.eliminaOfferta(offerta);
+		
+		return risultato;
 	}
     
     public void SvuotaAnnunciPubblicati() {

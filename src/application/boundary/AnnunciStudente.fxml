@@ -87,7 +87,7 @@
                         </AnchorPane>
                         <AnchorPane fx:id="OfferteAnnunciPane" prefHeight="498.0" prefWidth="950.0" visible="false">
                            <children>
-                              <Label fx:id="labelOfferteAnnuncio" layoutX="120.0" layoutY="45.0" style="-fx-font-weight: bold;">
+                              <Label fx:id="labelOfferteAnnuncio" layoutX="120.0" layoutY="45.0" style="-fx-font-weight: bold;" wrapText="true">
                                  <font>
                                     <Font size="20.0" />
                                  </font>

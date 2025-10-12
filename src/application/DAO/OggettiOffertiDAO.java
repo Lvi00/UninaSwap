@@ -31,7 +31,7 @@ public class OggettiOffertiDAO implements InterfaceOggettiOffertiDAO {
 	    try {
 	        Connection conn = ConnessioneDB.getConnection();
 
-	        String selectOggetti = "SELECT idOggetto FROM OggettiOfferti WHERE idOfferta = ?";
+	        String selectOggetti = "SELECT idOggetto FROM OGGETTIOFFERTI WHERE idOfferta = ?";
 	        PreparedStatement selectStmt = conn.prepareStatement(selectOggetti);
 	        selectStmt.setInt(1, idOfferta);
 	        ResultSet rs = selectStmt.executeQuery();

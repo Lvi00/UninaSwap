@@ -234,9 +234,9 @@ public class AnnunciStudenteBoundary {
         ObservableList<Offerta> offerteRicevute = FXCollections.observableArrayList(controller.getOffertebyAnnuncio(annuncio));
 
         if (offerteRicevute == null || offerteRicevute.isEmpty()) {
-            labelOfferteAnnuncio.setText("Non ci sono offerte per l'annuncio: " + annuncio.getTitoloAnnuncio());
+            labelOfferteAnnuncio.setText("Non ci sono offerte per questo annuncio");
         } else {
-            labelOfferteAnnuncio.setText("Queste sono le offerte dell'annuncio: " + annuncio.getTitoloAnnuncio());
+            labelOfferteAnnuncio.setText("Offerte dell'annuncio: " + annuncio.getTitoloAnnuncio());
         }
 
         int column = 0;

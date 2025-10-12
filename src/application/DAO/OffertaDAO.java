@@ -581,29 +581,24 @@ public class OffertaDAO implements InterfaceOffertaDAO {
     public int eliminaOfferta(Offerta offerta) {
         try{
         	Connection conn = ConnessioneDB.getConnection();
-            if (offerta instanceof OffertaScambio) {
-                String eliminaOggettiOfferti = "DELETE FROM OGGETTIOFFERTI WHERE idOfferta = ?";
-                try (PreparedStatement stmtEliminaOggetti = conn.prepareStatement(eliminaOggettiOfferti)) {
-                    stmtEliminaOggetti.setInt(1, offerta.getIdOfferta());
-                    stmtEliminaOggetti.executeUpdate();
-                }
-            }
 
             String eliminaOfferta = "DELETE FROM OFFERTA WHERE matstudente = ? AND idannuncio = ?";
-            try (PreparedStatement stmtEliminaOfferta = conn.prepareStatement(eliminaOfferta)) {
-                stmtEliminaOfferta.setString(1, offerta.getStudente().getMatricola());
-                stmtEliminaOfferta.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
+        	PreparedStatement stmtEliminaOfferta = conn.prepareStatement(eliminaOfferta);
+            stmtEliminaOfferta.setString(1, offerta.getStudente().getMatricola());
+            stmtEliminaOfferta.setInt(2, offerta.getAnnuncio().getIdAnnuncio());
 
-                int righeEliminate = stmtEliminaOfferta.executeUpdate();
-                if (righeEliminate > 0) {
-                    System.out.println("Offerta eliminata con successo.");
-                    return 0;
-                } else {
-                    System.out.println("Nessuna offerta eliminata.");
-                    return 1;
-                }
+            int righeEliminate = stmtEliminaOfferta.executeUpdate();
+            
+            if (righeEliminate > 0) {
+                System.out.println("Offerta eliminata con successo.");
+                return 0;
             }
-        } catch (SQLException e) {
+            else {
+                System.out.println("Nessuna offerta eliminata.");
+                return 1;
+            }
+        }
+        catch (SQLException e) {
             e.printStackTrace();
             return 1;
         }
