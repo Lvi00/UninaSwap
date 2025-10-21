@@ -1,7 +1,6 @@
 package application.boundary;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import application.control.Controller;
 import application.entity.Offerta;
