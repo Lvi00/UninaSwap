@@ -55,26 +55,22 @@
     -fx-font-size: 15px;
 }
 
-/* ScrollPane container */
 .scroll-pane {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-padding: 10;
 }
 
-/* Viewport (contenuto visibile) */
 .scroll-pane .viewport {
-    -fx-background-color: rgba(255, 255, 255, 0.8); /* colore di sfondo chiaro */
+    -fx-background-color: rgba(255, 255, 255, 0.8);
     -fx-background-insets: 0;
     -fx-background-radius: 8;
 }
 
-/* Barre di scorrimento */
 .scroll-bar {
     -fx-background-color: transparent;
 }
 
-/* Thumb (parte mobile) */
 .scroll-bar .thumb {
     -fx-background-color: #c2c2c2;
     -fx-background-insets: 0;
@@ -83,12 +79,10 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 1);
 }
 
-/* Track (binario) */
 .scroll-bar .track {
     -fx-background-color: transparent;
 }
 
-/* Pulsanti freccia (opzionali) */
 .scroll-bar .increment-button,
 .scroll-bar .decrement-button {
     -fx-padding: 0;
@@ -179,7 +173,6 @@
     -fx-alignment: center;
 }
 
-/*Nome profilo in alto a destra */
 #label-profilo{
 	-fx-font-weight: bold;
 	-fx-label-padding: 0px 15px 0px 0px;
@@ -233,17 +226,17 @@
 }
 
 .ProfileBord{
-    -fx-border-color: black;       /* Colore del bordo */
-    -fx-border-width: 2px;         /* Spessore del bordo */
-    -fx-border-style: solid;       /* Stile del bordo (solid, dashed, dotted...) */
-    -fx-border-radius: 5px;        /* Angoli arrotondati (opzionale) */
-    -fx-padding: 10px;             /* Spazio interno (opzionale) */
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
 }
 
 #logout{
 	-fx-border-color: red;
 }
-/* Modern CheckBox Style */
+
 .check-box {
     -fx-cursor: hand;
     -fx-padding: 5;
@@ -251,7 +244,6 @@
     -fx-text-fill: #333333;
 }
 
-/* Nascondi il box di default */
 .check-box .box {
     -fx-background-color: transparent;
     -fx-border-color: #ccc;
@@ -264,30 +256,25 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 1,0,0,1);
 }
 
-/* Effetto hover */
 .check-box:hover .box {
     -fx-border-color: #0078d7;
 }
 
-/* Stato selezionato */
 .check-box:selected .box {
     -fx-background-color: #0078d7;
     -fx-border-color: #0078d7;
 }
 
-/* Spunta moderna */
 .check-box:selected .mark {
     -fx-background-color: white;
     -fx-scale-x: 0.7;
     -fx-scale-y: 0.7;
 }
 
-/* Testo della checkbox */
 .check-box .text {
     -fx-padding: 0 0 0 10;
 }
 
-/* Modern RadioButton Style */
 .radio-button {
     -fx-cursor: hand;
     -fx-padding: 5 10 5 10;
@@ -295,7 +282,6 @@
     -fx-text-fill: #333333;
 }
 
-/* Nascondi il cerchio di default */
 .radio-button .radio {
     -fx-background-color: transparent;
     -fx-border-color: #ccc;
@@ -307,29 +293,24 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 1,0,0,1);
 }
 
-/* Effetto hover */
 .radio-button:hover .radio {
     -fx-border-color: #0078d7;
 }
 
-/* Stato selezionato */
 .radio-button:selected .radio {
     -fx-background-color: #0078d7;
     -fx-border-color: #0078d7;
 }
 
-/* Punto centrale moderno */
 .radio-button:selected .radio .dot {
     -fx-background-color: white;
     -fx-translate-y: -0.7;
 }
 
-/* Testo della radio */
 .radio-button .text {
     -fx-padding: 0 0 0 10;
 }
 
-/* Modern ChoiceBox Style */
 .choice-box {
     -fx-font-size: 14px;
     -fx-background-color: #f8f8f8;
@@ -339,34 +320,29 @@
     -fx-border-width: 2;
 }
 
-/* Effetto hover */
 .choice-box:hover {
     -fx-border-color: #0078d7;
 }
 
-/* Testo selezionato */
 .choice-box .label {
     -fx-text-fill: #333333;
 }
 
-/* Lista a tendina */
 .choice-box .list-cell {
     -fx-padding: 5 10;
     -fx-background-color: white;
     -fx-text-fill: #333333;
 }
 
-/* Hover sulle voci della lista */
 .choice-box .list-cell:hover {
     -fx-background-color: #e6f0ff;
 }
 
-/* Freccia dropdown personalizzata più grande */
 .choice-box .arrow {
     -fx-background-color: #153464;
     -fx-background-insets: 0;
-    -fx-padding: 3.1; /* padding leggermente maggiore */
-    -fx-shape: "M 0 0 L 8 0 L 4 4 Z"; /* triangolo più grande */
+    -fx-padding: 3.1;
+    -fx-shape: "M 0 0 L 8 0 L 4 4 Z";
 }
 
 .text-field, .password-field {
@@ -377,26 +353,22 @@
     -fx-border-radius: 10;
     -fx-background-radius: 10;
     -fx-border-width: 2;
-    -fx-prompt-text-fill: #999999; /* colore del placeholder */
+    -fx-prompt-text-fill: #999999;
 }
 
-/* Effetto hover */
 .text-field:hover, .password-field:hover {
     -fx-border-color: #0078d7;
 }
 
-/* Focus (quando l'utente scrive dentro) */
 .text-field:focused, .password-field:focused {
     -fx-border-color: #0078d7;
-    -fx-background-color: #ffffff; /* leggero cambiamento di sfondo */
+    -fx-background-color: #ffffff;
 }
 
-/* Testo dentro il campo */
 .text-field .text, .password-field .text {
     -fx-text-fill: #333333;
 }
 
-/* Stile moderno per TextArea */
 .text-area {
     -fx-padding: 5 10 5 10;
     -fx-font-size: 14px;
@@ -405,22 +377,19 @@
     -fx-border-radius: 6;
     -fx-background-radius: 6;
     -fx-border-width: 2;
-    -fx-prompt-text-fill: #999999; /* colore del placeholder */
+    -fx-prompt-text-fill: #999999;
     -fx-cursor: text;
 }
 
-/* Effetto hover */
 .text-area:hover {
     -fx-border-color: #0078d7;
 }
 
-/* Focus (quando l'utente scrive dentro) */
 .text-area:focused {
     -fx-border-color: #0078d7;
-    -fx-background-color: #ffffff; /* leggero cambiamento di sfondo */
+    -fx-background-color: #ffffff;
 }
 
-/* Testo dentro il campo */
 .text-area .text {
     -fx-text-fill: #333333;
 }
@@ -477,7 +446,6 @@
     -fx-faint-focus-color: transparent;
 }
 
-/* Stile base del BarChart */
 .chart {
     -fx-background-color: transparent;
     -fx-legend-visible: false;
@@ -503,21 +471,19 @@
     -fx-font-weight: bold;
 }
 
-/* Serie con colori moderni */
 .default-color0.chart-bar {
-    -fx-bar-fill: #6a11cb;   /* viola */
+    -fx-bar-fill: #6a11cb;
 }
 .default-color1.chart-bar {
-    -fx-bar-fill: #2575fc;   /* blu */
+    -fx-bar-fill: #2575fc;
 }
 .default-color2.chart-bar {
-    -fx-bar-fill: #ff6a00;   /* arancio */
+    -fx-bar-fill: #ff6a00;
 }
 .default-color3.chart-bar {
-    -fx-bar-fill: #43e97b;   /* verde */
+    -fx-bar-fill: #43e97b;
 }
 
-/* Effetto hover */
 .chart-bar:hover {
     -fx-opacity: 0.8;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0.2, 0, 2);
