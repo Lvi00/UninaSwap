@@ -239,7 +239,6 @@ public class Controller {
 	}
 	
 	public int checkDatiAnnuncio(ArrayList<String> datiAnnuncio, File fileSelezionato, Studente studente, ArrayList<String> listaOggettiDesiderati) {
-		
 		String titolo = datiAnnuncio.get(0).trim();
 		if(titolo == "" || titolo.length() > 50) return 1;
 		
