@@ -55,13 +55,11 @@ public class PopupOfferteBoundary {
     @FXML private Label titoloAnnuncio;
     @FXML private Label descrizioneAnnuncio;
     @FXML private Label prezzoAnnuncio;
-    @FXML private Label usernameAnnuncio;
     @FXML private Label disponibilitàAnnuncio;
     @FXML private Label categoriaAnnuncio;
     @FXML private Label labelDataPubblicazione;
     @FXML private Label sedeAnnuncio;
     @FXML private ImageView immagineAnnuncio;
-    @FXML private ImageView immagineProfilo;
     @FXML private AnchorPane PaneOfferteVendita;
     @FXML private AnchorPane PaneOfferteScambio;
     @FXML private AnchorPane PaneOfferteRegalo;
@@ -124,9 +122,7 @@ public class PopupOfferteBoundary {
             String formattedDate = data.toLocalDateTime().format(formatter);
             
             labelDataPubblicazione.setText(formattedDate);
-            
-            usernameAnnuncio.setText(controller.getUsername(controller.getStudenteOggetto(controller.getOggettoAnnuncio(annuncio))));
-            
+                        
             disponibilitàAnnuncio.setText(
                 controller.giorniDisponibilitaAnnuncio(annuncio) + " dalle " + controller.getFasciaInizioAnnuncio(annuncio) + " alle " + controller.getFasciaFineAnnuncio(annuncio)
             );
@@ -158,13 +154,6 @@ public class PopupOfferteBoundary {
                 } else {
                     img = new Image(getClass().getResource(path).toExternalForm());
                 }
-
-                immagineProfilo.setImage(img);
-                immagineProfilo.setFitWidth(94);
-                immagineProfilo.setFitHeight(94);
-                immagineProfilo.setPreserveRatio(false);
-                Circle clip = new Circle(47, 47, 47);
-                immagineProfilo.setClip(clip);
                 
                 switch(controller.getTipologiaAnnuncio(annuncio)) {
 	                case "Scambio":

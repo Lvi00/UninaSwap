@@ -84,7 +84,7 @@ public class AnnuncioDAO implements InterfaceAnnuncioDAO {
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM ANNUNCIO AS A NATURAL JOIN SEDE AS S NATURAL JOIN OGGETTO AS O WHERE O.matstudente <> ? AND A.statoannuncio = ? LIMIT 100";
+            String query = "SELECT * FROM ANNUNCIO AS A INNER JOIN SEDE AS S ON S.idsede = A.idsede INNER JOIN OGGETTO AS O ON A.idoggetto = O.idoggetto WHERE O.matstudente <> ? AND A.statoannuncio = ? LIMIT 100";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, studente.getMatricola());
             statement.setBoolean(2, true);
@@ -142,7 +142,7 @@ public class AnnuncioDAO implements InterfaceAnnuncioDAO {
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM ANNUNCIO AS A NATURAL JOIN SEDE AS S NATURAL JOIN OGGETTO AS O WHERE O.matstudente = ? ORDER BY A.statoannuncio DESC LIMIT 100";
+            String query = "SELECT * FROM ANNUNCIO AS A INNER JOIN SEDE AS S ON S.idsede = A.idsede INNER JOIN OGGETTO AS O ON A.idoggetto = O.idoggetto WHERE O.matstudente = ? ORDER BY A.statoannuncio DESC LIMIT 100";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, studente.getMatricola());
             ResultSet rs = statement.executeQuery();
@@ -199,7 +199,7 @@ public class AnnuncioDAO implements InterfaceAnnuncioDAO {
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query1 = "SELECT * FROM ANNUNCIO AS A NATURAL JOIN SEDE AS S NATURAL JOIN OGGETTO AS O WHERE A.statoannuncio = ? AND O.matstudente <> ? ";
+            String query1 = "SELECT * FROM ANNUNCIO AS A INNER JOIN SEDE AS S ON A.idsede = S.idsede INNER JOIN OGGETTO AS O ON A.idoggetto = O.idoggetto WHERE A.statoannuncio = ? AND O.matstudente <> ? ";
             String query2 = "";
             String query3 = "";
             String query4 = "";

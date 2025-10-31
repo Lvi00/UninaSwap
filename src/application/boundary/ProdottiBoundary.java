@@ -173,9 +173,6 @@ public class ProdottiBoundary {
 
         Label tipo = new Label(controller.getCategoriaOggetto(controller.getOggettoAnnuncio(annuncio)) + " - " + controller.getTipologiaAnnuncio(annuncio));
         tipo.setStyle("-fx-text-fill: gray;");
-
-        Label venditore = new Label("Pubblicato da " + controller.getUsername(controller.getStudenteOggetto(controller.getOggettoAnnuncio(annuncio))));
-        venditore.setStyle("-fx-text-fill: #153464;");
         
         Label disponibilità = new Label("Disponibile il " + (controller.giorniDisponibilitaAnnuncio(annuncio) != null ? controller.giorniDisponibilitaAnnuncio(annuncio) : "N/D")
         + "\ndalle " + controller.getFasciaInizioAnnuncio(annuncio) + " alle " + controller.getFasciaFineAnnuncio(annuncio));
@@ -186,7 +183,7 @@ public class ProdottiBoundary {
         VBox.setMargin(button, new Insets(4, 0, 4, 0));
         button.setOnMouseClicked(e -> showPopupOfferte(e, annuncio));
 
-        box.getChildren().addAll(titolo, prezzo, tipo, venditore, disponibilità, button);
+        box.getChildren().addAll(titolo, prezzo, tipo, disponibilità, button);
 
         return box;
     }

@@ -43,16 +43,6 @@
                         </Pane>
       				<VBox alignment="TOP_CENTER" layoutX="683.0" layoutY="13.0" prefHeight="425.0" prefWidth="100.0" spacing="8">
       				    <children>
-      				        <Pane prefHeight="100.0" prefWidth="100.0" style="-fx-border-radius: 50; -fx-background-radius: 50; -fx-border-color: black; -fx-border-width: 3;">
-      				            <children>
-      				                <ImageView fx:id="immagineProfilo" fitHeight="94.0" fitWidth="94.0" layoutX="3.0" layoutY="3.0" preserveRatio="true" />
-      				            </children>
-      				        </Pane>
-      				        <Label fx:id="usernameAnnuncio" style="-fx-font-weight: bold;">
-      				            <font>
-      				                <Font size="16.0" />
-      				            </font>
-      				        </Label>
       				        <Region prefWidth="100.0" VBox.vgrow="ALWAYS" />
             				        <Button fx:id="buttonOfferta" mnemonicParsing="false" prefHeight="31.0" styleClass="tasto-secondario">
                            <cursor>
