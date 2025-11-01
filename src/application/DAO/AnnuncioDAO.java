@@ -79,18 +79,34 @@ public class AnnuncioDAO implements InterfaceAnnuncioDAO {
 		return 0;
 	}
 	
-    public ArrayList<Annuncio> getAnnunci(Studente studente) {
+    public ArrayList<Annuncio> getAnnunci(Studente studenteLoggato) {
         ArrayList<Annuncio> annunci = new ArrayList<Annuncio>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM ANNUNCIO AS A INNER JOIN SEDE AS S ON S.idsede = A.idsede INNER JOIN OGGETTO AS O ON A.idoggetto = O.idoggetto WHERE O.matstudente <> ? AND A.statoannuncio = ? LIMIT 100";
+            String query = "SELECT * FROM ANNUNCIO AS A INNER JOIN SEDE AS S ON S.idsede = A.idsede "
+    		+ "INNER JOIN OGGETTO AS O ON A.idoggetto = O.idoggetto "
+    		+ "INNER JOIN STUDENTE AS ST ON O.matstudente = ST.matricola "
+    		+ "WHERE O.matstudente <> ? AND A.statoannuncio = ? LIMIT 100";
+            
             PreparedStatement statement = conn.prepareStatement(query);
-            statement.setString(1, studente.getMatricola());
+            statement.setString(1, studenteLoggato.getMatricola());
             statement.setBoolean(2, true);
             ResultSet rs = statement.executeQuery();
             
             while (rs.next()) {
+				Studente studente = new Studente(
+					rs.getString("matricola"),
+					rs.getString("email"),
+					rs.getString("nome"),
+					rs.getString("cognome"),
+					rs.getString("username")
+				);
+				
+				if(rs.getString("immagineprofilo") != null && !rs.getString("immagineprofilo").isEmpty()) {
+					studente.setImmagine(rs.getString("immagineprofilo"));
+				}
+				
             	Oggetto oggetto = new Oggetto(
 					rs.getString("immagineoggetto"),
 					rs.getString("categoria"),
@@ -137,17 +153,33 @@ public class AnnuncioDAO implements InterfaceAnnuncioDAO {
         return annunci;
     }
     
-    public ArrayList<Annuncio> getAnnunciStudente(Studente studente) {
+    public ArrayList<Annuncio> getAnnunciStudente(Studente studenteLoggato) {
         ArrayList<Annuncio> annunci = new ArrayList<Annuncio>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query = "SELECT * FROM ANNUNCIO AS A INNER JOIN SEDE AS S ON S.idsede = A.idsede INNER JOIN OGGETTO AS O ON A.idoggetto = O.idoggetto WHERE O.matstudente = ? ORDER BY A.statoannuncio DESC LIMIT 100";
+            String query = "SELECT * FROM ANNUNCIO AS A INNER JOIN SEDE AS S ON S.idsede = A.idsede "
+    		+ "INNER JOIN OGGETTO AS O ON A.idoggetto = O.idoggetto "
+    		+ "INNER JOIN STUDENTE AS ST ON O.matstudente = ST.matricola "
+    		+ "WHERE O.matstudente = ? ORDER BY A.statoannuncio DESC LIMIT 100";
+            
             PreparedStatement statement = conn.prepareStatement(query);
-            statement.setString(1, studente.getMatricola());
+            statement.setString(1, studenteLoggato.getMatricola());
             ResultSet rs = statement.executeQuery();
             
             while (rs.next()) {
+				Studente studente = new Studente(
+					rs.getString("matricola"),
+					rs.getString("email"),
+					rs.getString("nome"),
+					rs.getString("cognome"),
+					rs.getString("username")
+				);
+				
+				if(rs.getString("immagineprofilo") != null && !rs.getString("immagineprofilo").isEmpty()) {
+					studente.setImmagine(rs.getString("immagineprofilo"));
+				}
+					
             	Oggetto oggetto = new Oggetto(
 					rs.getString("immagineoggetto"),
 					rs.getString("categoria"),
@@ -194,12 +226,15 @@ public class AnnuncioDAO implements InterfaceAnnuncioDAO {
         return annunci;
     }
     
-    public ArrayList<Annuncio> getAnnunciByFiltri(Studente studente, String keyword, String categoria, String tipologia) {
+    public ArrayList<Annuncio> getAnnunciByFiltri(Studente studenteLoggato, String keyword, String categoria, String tipologia) {
         ArrayList<Annuncio> annunci = new ArrayList<Annuncio>();
 
         try {
             Connection conn = ConnessioneDB.getConnection();
-            String query1 = "SELECT * FROM ANNUNCIO AS A INNER JOIN SEDE AS S ON A.idsede = S.idsede INNER JOIN OGGETTO AS O ON A.idoggetto = O.idoggetto WHERE A.statoannuncio = ? AND O.matstudente <> ? ";
+            String query1 = "SELECT * FROM ANNUNCIO AS A INNER JOIN SEDE AS S ON A.idsede = S.idsede "
+            		+ "INNER JOIN OGGETTO AS O ON A.idoggetto = O.idoggetto "
+            		+ "INNER JOIN STUDENTE AS ST ON O.matstudente = ST.matricola "
+            		+ "WHERE A.statoannuncio = ? AND O.matstudente <> ? ";
             String query2 = "";
             String query3 = "";
             String query4 = "";
@@ -221,7 +256,7 @@ public class AnnuncioDAO implements InterfaceAnnuncioDAO {
             int index = 1;
             
             statement.setBoolean(index++, true);
-            statement.setString(index++, studente.getMatricola());
+            statement.setString(index++, studenteLoggato.getMatricola());
 
             if (!query2.isEmpty()) {
                 statement.setString(index++, keyword + "%");
@@ -236,6 +271,18 @@ public class AnnuncioDAO implements InterfaceAnnuncioDAO {
             ResultSet rs = statement.executeQuery();
             
             while (rs.next()) {
+				Studente studente = new Studente(
+					rs.getString("matricola"),
+					rs.getString("email"),
+					rs.getString("nome"),
+					rs.getString("cognome"),
+					rs.getString("username")
+				);
+				
+				if(rs.getString("immagineprofilo") != null && !rs.getString("immagineprofilo").isEmpty()) {
+					studente.setImmagine(rs.getString("immagineprofilo"));
+				}
+					
             	Oggetto oggetto = new Oggetto(
 					rs.getString("immagineoggetto"),
 					rs.getString("categoria"),
@@ -279,7 +326,7 @@ public class AnnuncioDAO implements InterfaceAnnuncioDAO {
         }
 
         return annunci;
-    }
+   }
    
    public void cambiaStatoAnnuncio(Annuncio annuncio) {
 	    try {
